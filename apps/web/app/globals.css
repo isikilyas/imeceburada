@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-ink-950 text-silver-300;
+}
+
+::selection {
+  @apply bg-gold-500/30 text-gold-400;
+}
+
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(212, 175, 55, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 175, 55, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.hero-glow {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.22), transparent 60%),
+    radial-gradient(circle at 85% 20%, rgba(212, 175, 55, 0.1), transparent 45%),
+    radial-gradient(circle at 10% 30%, rgba(228, 230, 234, 0.06), transparent 40%);
+}
+
+.logo-halo {
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.35), transparent 70%);
+  filter: blur(20px);
+}
+
+.gradient-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.5), rgba(212, 175, 55, 0), rgba(212, 175, 55, 0.25));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.gradient-border:hover::before {
+  opacity: 1;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.12);
+  }
+}
+
+.animate-ken-burns {
+  animation: ken-burns 6.5s ease-out both;
+}
+
+.cinematic-vignette {
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+@keyframes progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-progress-fill {
+  transform-origin: left;
+  animation: progress-fill linear both;
+}
+
+@keyframes slide-text-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.animate-slide-text-in {
+  animation: slide-text-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

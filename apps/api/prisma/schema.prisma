@@ -1,0 +1,443 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CANDIDATE
+  COMPANY
+  SUPPLIER
+  SUBCONTRACTOR
+  ADMIN
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  DAILY
+  CONTRACT
+}
+
+enum JobStatus {
+  ACTIVE
+  CLOSED
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWED
+  ACCEPTED
+  REJECTED
+}
+
+enum WagePeriod {
+  DAILY
+  MONTHLY
+  HOURLY
+}
+
+enum ExperienceLevel {
+  JUNIOR
+  MID
+  SENIOR
+}
+
+enum PriceSubmissionType {
+  ACTUAL
+  OFFER
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  BUSY
+}
+
+enum EquipmentStatus {
+  AVAILABLE
+  RENTED
+  SOLD
+  INACTIVE
+}
+
+enum EquipmentListingType {
+  RENT
+  SALE
+}
+
+enum SiteRequestType {
+  WORKER
+  EQUIPMENT
+}
+
+enum SiteRequestStatus {
+  OPEN
+  CLOSED
+}
+
+enum SiteRequestResponseStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum MembershipStatus {
+  NONE
+  PENDING
+  ACTIVE
+  EXPIRED
+  CANCELED
+}
+
+enum MembershipPlan {
+  MONTHLY
+  YEARLY
+}
+
+enum MaterialListingStatus {
+  AVAILABLE
+  INACTIVE
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  passwordResetTokenHash    String?
+  passwordResetExpiresAt    DateTime?
+
+  candidateProfile         CandidateProfile?
+  companyProfile           CompanyProfile?
+  supplierProfile          SupplierProfile?
+  subcontractorProfile     SubcontractorProfile?
+  wageSubmissions          WageSubmission[]
+  materialPriceSubmissions MaterialPriceSubmission[]
+  equipmentListings        EquipmentListing[]
+  siteRequestsCreated      SiteRequest[]
+  siteRequestResponses     SiteRequestResponse[]
+  favorites                Favorite[]
+
+  @@map("users")
+}
+
+model CandidateProfile {
+  id                  String   @id @default(uuid())
+  userId              String   @unique
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName            String
+  phone               String?
+  city                String
+  district            String?
+  experienceYears     Int      @default(0)
+  skills              String[] @default([])
+  workPreferences     String[] @default([])
+  primaryTradeCategory String?
+  isPublic            Boolean  @default(false)
+  photoUrl            String?
+  photoVisible        Boolean  @default(true)
+  availabilityStatus  AvailabilityStatus @default(AVAILABLE)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  applications Application[]
+
+  @@index([isPublic, primaryTradeCategory, city, district])
+  @@map("candidate_profiles")
+}
+
+model CompanyProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName String
+  sector      String?
+  city        String
+  district    String?
+
+  phone                       String?
+  phoneVerifiedAt             DateTime?
+  phoneVerificationCode       String?
+  phoneVerificationExpiresAt  DateTime?
+
+  membershipStatus    MembershipStatus @default(NONE)
+  membershipExpiresAt DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  jobPostings   JobPosting[]
+  subscriptions MembershipSubscription[]
+
+  @@map("company_profiles")
+}
+
+/// Tedarikçi hesabı — CANDIDATE/COMPANY'den ayrı, üçüncü bir kayıt rolü.
+/// COMPANY gibi ücretli üyelik alır ama sadece inşaat malzemesi ilanı
+/// (MaterialListing) verebilir, iş ilanı açamaz.
+model SupplierProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName String
+  city        String
+  district    String?
+  supplyCategories String[]
+
+  phone                      String?
+  phoneVerifiedAt            DateTime?
+  phoneVerificationCode      String?
+  phoneVerificationExpiresAt DateTime?
+
+  membershipStatus    MembershipStatus @default(NONE)
+  membershipExpiresAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  materialListings MaterialListing[]
+  subscriptions    MembershipSubscription[]
+
+  @@map("supplier_profiles")
+}
+
+/// Taşeron firma hesabı — CANDIDATE/COMPANY/SUPPLIER'dan ayrı, dördüncü bir
+/// kayıt rolü. Bireysel usta değil, faturalı/kurumsal iş yapan taşeron
+/// firmaları temsil eder (örn. "kalıpçı taşeron firması"). COMPANY gibi
+/// ücretli üyelik alır, dizin üzerinden diğer şirketler tarafından aranabilir.
+model SubcontractorProfile {
+  id                    String   @id @default(uuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName           String
+  city                  String
+  district              String?
+  tradeCategories       String[]
+  description           String?
+  isPublic              Boolean  @default(true)
+
+  phone                      String?
+  phoneVerifiedAt            DateTime?
+  phoneVerificationCode      String?
+  phoneVerificationExpiresAt DateTime?
+
+  membershipStatus    MembershipStatus @default(NONE)
+  membershipExpiresAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subscriptions MembershipSubscription[]
+
+  @@index([isPublic, city, district])
+  @@map("subcontractor_profiles")
+}
+
+model MaterialListing {
+  id           String                @id @default(uuid())
+  supplierId   String
+  supplier     SupplierProfile       @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  materialType String
+  unit         String
+  city         String
+  district     String?
+  price        Int
+  photoUrl     String?
+  description  String
+  status       MaterialListingStatus @default(AVAILABLE)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+
+  @@index([materialType, city, status])
+  @@map("material_listings")
+}
+
+/// companyId, supplierId veya subcontractorId'den TAM OLARAK biri dolu olmalı
+/// (uygulama katmanında denetlenir).
+model MembershipSubscription {
+  id              String                @id @default(uuid())
+  companyId       String?
+  company         CompanyProfile?       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  supplierId      String?
+  supplier        SupplierProfile?      @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  subcontractorId String?
+  subcontractor   SubcontractorProfile? @relation(fields: [subcontractorId], references: [id], onDelete: Cascade)
+  plan            MembershipPlan
+  status          MembershipStatus      @default(PENDING)
+
+  iyzicoPricingPlanReferenceCode String?
+  iyzicoSubscriptionReferenceCode String?
+  checkoutToken                   String?
+
+  startedAt        DateTime?
+  currentPeriodEnd DateTime?
+  canceledAt       DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId, status])
+  @@index([supplierId, status])
+  @@index([subcontractorId, status])
+  @@map("membership_subscriptions")
+}
+
+model JobPosting {
+  id             String         @id @default(uuid())
+  companyId      String
+  company        CompanyProfile @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title          String
+  listingType    String         @default("PERSONNEL")
+  tradeCategory  String
+  city           String
+  district       String?
+  employmentType EmploymentType
+  salaryMin      Int?
+  salaryMax      Int?
+  isUrgent       Boolean        @default(false)
+  description    String
+  status         JobStatus      @default(ACTIVE)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  applications Application[]
+
+  @@index([tradeCategory, city, status])
+  @@index([isUrgent])
+  @@map("job_postings")
+}
+
+model Application {
+  id          String            @id @default(uuid())
+  jobId       String
+  job         JobPosting        @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  candidateId String
+  candidate   CandidateProfile  @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  message     String?
+  status      ApplicationStatus @default(PENDING)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@unique([jobId, candidateId])
+  @@map("applications")
+}
+
+model WageSubmission {
+  id              String          @id @default(uuid())
+  tradeCategory   String
+  city            String
+  district        String?
+  experienceLevel ExperienceLevel
+  amount          Int
+  period          WagePeriod
+  submissionType  PriceSubmissionType @default(ACTUAL)
+  submittedById   String
+  submittedBy     User            @relation(fields: [submittedById], references: [id], onDelete: Cascade)
+  createdAt       DateTime        @default(now())
+
+  @@index([tradeCategory, city, createdAt])
+  @@map("wage_submissions")
+}
+
+model MaterialPriceSubmission {
+  id            String   @id @default(uuid())
+  materialType  String
+  unit          String
+  city          String
+  district      String?
+  amount        Int
+  submissionType PriceSubmissionType @default(ACTUAL)
+  submittedById String
+  submittedBy   User     @relation(fields: [submittedById], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+
+  @@index([materialType, city, createdAt])
+  @@map("material_price_submissions")
+}
+
+enum FavoriteListingType {
+  JOB
+  EQUIPMENT
+  MATERIAL_LISTING
+  SITE_REQUEST
+}
+
+model Favorite {
+  id          String              @id @default(uuid())
+  userId      String
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listingType FavoriteListingType
+  listingId   String
+  createdAt   DateTime            @default(now())
+
+  @@unique([userId, listingType, listingId])
+  @@index([userId])
+  @@map("favorites")
+}
+
+model EquipmentListing {
+  id            String               @id @default(uuid())
+  ownerId       String
+  owner         User                 @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  equipmentType String
+  capacity      String?
+  city          String
+  district      String?
+  listingType   EquipmentListingType @default(RENT)
+  dailyRate     Int?
+  hourlyRate    Int?
+  salePrice     Int?
+  photoUrl      String?
+  description   String
+  status        EquipmentStatus      @default(AVAILABLE)
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  @@index([equipmentType, city, status])
+  @@index([listingType])
+  @@map("equipment_listings")
+}
+
+model SiteRequest {
+  id            String            @id @default(uuid())
+  createdById   String
+  createdBy     User              @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  requestType   SiteRequestType
+  tradeCategory String?
+  equipmentType String?
+  title         String
+  description   String
+  city          String
+  district      String?
+  latitude      Float
+  longitude     Float
+  neededCount   Int               @default(1)
+  neededBy      DateTime?
+  status        SiteRequestStatus @default(OPEN)
+  createdAt     DateTime          @default(now())
+
+  responses SiteRequestResponse[]
+
+  @@index([city, status, requestType])
+  @@map("site_requests")
+}
+
+model SiteRequestResponse {
+  id            String                     @id @default(uuid())
+  siteRequestId String
+  siteRequest   SiteRequest                @relation(fields: [siteRequestId], references: [id], onDelete: Cascade)
+  responderId   String
+  responder     User                       @relation(fields: [responderId], references: [id], onDelete: Cascade)
+  message       String?
+  status        SiteRequestResponseStatus  @default(PENDING)
+  createdAt     DateTime                   @default(now())
+
+  @@unique([siteRequestId, responderId])
+  @@map("site_request_responses")
+}

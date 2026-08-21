@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bau360
+      POSTGRES_PASSWORD: bau360
+      POSTGRES_DB: bau360
+    ports:
+      - "5432:5432"
+    volumes:
+      - bau360_pgdata:/var/lib/postgresql/data
+
+volumes:
+  bau360_pgdata:
