@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/job.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
@@ -8,8 +10,6 @@ import '../../widgets/province_district_picker.dart';
 import '../equipment/equipment_list_screen.dart';
 import '../material_listings/material_listings_screen.dart';
 import 'job_detail_screen.dart';
-
-const _allTrades = Option('', 'Tüm Meslekler');
 
 class JobsListScreen extends StatefulWidget {
   const JobsListScreen({super.key});
@@ -51,7 +51,7 @@ class _JobsListScreenState extends State<JobsListScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('jobs.connectionError'));
     } finally {
       setState(() => _isLoading = false);
     }
@@ -59,19 +59,20 @@ class _JobsListScreenState extends State<JobsListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('İş İlanları'),
+        title: Text(t('jobs.list.title')),
         actions: [
           IconButton(
-            tooltip: 'Ekipman İlanları',
+            tooltip: t('jobs.list.equipmentTooltip'),
             icon: const Icon(Icons.construction_outlined),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const EquipmentListScreen()),
             ),
           ),
           IconButton(
-            tooltip: 'Malzeme İlanları',
+            tooltip: t('jobs.list.materialTooltip'),
             icon: const Icon(Icons.storefront_outlined),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const MaterialListingsScreen()),
@@ -83,9 +84,9 @@ class _JobsListScreenState extends State<JobsListScreen> {
         padding: const EdgeInsets.all(16),
         children: [
           AppDropdown(
-            label: 'Meslek',
+            label: t('jobs.list.tradeLabel'),
             value: _tradeCategory,
-            options: [_allTrades, ...tradeCategories],
+            options: [Option('', t('jobs.list.allTrades')), ...tradeCategories],
             onChanged: (v) {
               setState(() => _tradeCategory = v);
               _load();
@@ -119,9 +120,9 @@ class _JobsListScreenState extends State<JobsListScreen> {
               child: Text(_error!, style: const TextStyle(color: AppColors.red400)),
             ),
           if (!_isLoading && _error == null && _jobs.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(12),
-              child: Text('Sonuç bulunamadı.', style: TextStyle(color: AppColors.silver500)),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(t('jobs.list.empty'), style: const TextStyle(color: AppColors.silver500)),
             ),
           ..._jobs.map(
             (job) => Card(

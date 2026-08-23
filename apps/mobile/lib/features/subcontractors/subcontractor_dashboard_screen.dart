@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/subcontractor.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/province_district_picker.dart';
@@ -63,15 +64,16 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
     } on ApiException catch (e) {
       setState(() => _loadError = e.message);
     } catch (_) {
-      setState(() => _loadError = 'Profil yüklenemedi');
+      setState(() => _loadError = context.read<LocaleStore>().t('subcontractors.dashboard.loadError'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
   Future<void> _save() async {
+    final t = context.read<LocaleStore>().t;
     if (_tradeCategories.isEmpty) {
-      setState(() => _saveError = 'En az bir branş/meslek seçmelisin');
+      setState(() => _saveError = t('subcontractors.dashboard.tradeRequiredError'));
       return;
     }
     setState(() {
@@ -92,7 +94,7 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
     } on ApiException catch (e) {
       setState(() => _saveError = e.message);
     } catch (_) {
-      setState(() => _saveError = 'Kaydedilemedi');
+      setState(() => _saveError = t('subcontractors.dashboard.saveError'));
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
@@ -100,14 +102,15 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Taşeron Firma Profilim'),
+        title: Text(t('subcontractors.dashboard.title')),
         actions: [
           TextButton(
             onPressed: () =>
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) => const MembershipScreen())),
-            child: const Text('Üyelik'),
+            child: Text(t('subcontractors.dashboard.membership')),
           ),
         ],
       ),
@@ -118,17 +121,16 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
               : ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 12),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
                       child: Text(
-                        'Dizinde görünmek ve firmaların size ulaşabilmesi için aktif üyeliğin ve '
-                        'doğrulanmış telefon numaran olmalı.',
-                        style: TextStyle(color: AppColors.silver500, fontSize: 12),
+                        t('subcontractors.dashboard.hint'),
+                        style: const TextStyle(color: AppColors.silver500, fontSize: 12),
                       ),
                     ),
                     TextField(
                       controller: _companyNameController,
-                      decoration: const InputDecoration(labelText: 'Firma Adı'),
+                      decoration: InputDecoration(labelText: t('subcontractors.dashboard.companyNameLabel')),
                     ),
                     const SizedBox(height: 12),
                     TradeCategoryMultiPicker(
@@ -145,15 +147,15 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
                     TextField(
                       controller: _descriptionController,
                       maxLines: 3,
-                      decoration: const InputDecoration(labelText: 'Açıklama'),
+                      decoration: InputDecoration(labelText: t('subcontractors.dashboard.descriptionLabel')),
                     ),
                     const SizedBox(height: 14),
                     CheckboxListTile(
                       value: _isPublic,
                       onChanged: (v) => setState(() => _isPublic = v ?? true),
-                      title: const Text(
-                        'Profilimi firmaların arayabileceği taşeron firma dizininde göster',
-                        style: TextStyle(color: AppColors.silver300, fontSize: 14),
+                      title: Text(
+                        t('subcontractors.dashboard.publicToggleLabel'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
                       contentPadding: EdgeInsets.zero,
@@ -165,12 +167,12 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
                     ],
                     if (_saved) ...[
                       const SizedBox(height: 8),
-                      const Text('Kaydedildi!', style: TextStyle(color: AppColors.green400)),
+                      Text(t('subcontractors.dashboard.saved'), style: const TextStyle(color: AppColors.green400)),
                     ],
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: _isSaving ? null : _save,
-                      child: Text(_isSaving ? 'Kaydediliyor...' : 'Kaydet'),
+                      child: Text(_isSaving ? t('subcontractors.dashboard.saving') : t('subcontractors.dashboard.save')),
                     ),
                   ],
                 ),

@@ -3,13 +3,12 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/subcontractor.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
 import '../../widgets/province_district_picker.dart';
 import 'subcontractor_detail_screen.dart';
-
-const _allTrades = Option('', 'Tüm Meslekler');
 
 class SubcontractorDirectoryScreen extends StatefulWidget {
   const SubcontractorDirectoryScreen({super.key});
@@ -51,7 +50,7 @@ class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScr
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('subcontractors.connectionError'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -59,22 +58,24 @@ class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScr
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
+    final allTrades = Option('', t('subcontractors.directory.allTrades'));
     return Scaffold(
-      appBar: AppBar(title: const Text('Taşeron Firma Dizini')),
+      appBar: AppBar(title: Text(t('subcontractors.directory.title'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 12),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
             child: Text(
-              'Faturalı iş yapan taşeron firmaları meslek ve bölgeye göre bul.',
-              style: TextStyle(color: AppColors.silver500, fontSize: 13),
+              t('subcontractors.directory.hint'),
+              style: const TextStyle(color: AppColors.silver500, fontSize: 13),
             ),
           ),
           AppDropdown(
-            label: 'Meslek',
+            label: t('subcontractors.directory.tradeLabel'),
             value: _tradeCategory,
-            options: [_allTrades, ...tradeCategories],
+            options: [allTrades, ...tradeCategories],
             onChanged: (v) {
               setState(() => _tradeCategory = v);
               _load();
@@ -108,9 +109,9 @@ class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScr
               child: Text(_error!, style: const TextStyle(color: AppColors.red400)),
             ),
           if (!_isLoading && _error == null && _subcontractors.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(12),
-              child: Text('Sonuç bulunamadı.', style: TextStyle(color: AppColors.silver500)),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(t('subcontractors.directory.noResults'), style: const TextStyle(color: AppColors.silver500)),
             ),
           ..._subcontractors.map(
             (s) => Card(

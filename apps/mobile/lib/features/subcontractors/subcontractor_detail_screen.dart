@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/subcontractor.dart';
 import '../../theme/app_theme.dart';
 import '../../core/phone.dart';
@@ -35,7 +36,7 @@ class _SubcontractorDetailScreenState extends State<SubcontractorDetailScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('subcontractors.connectionError'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -43,14 +44,16 @@ class _SubcontractorDetailScreenState extends State<SubcontractorDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     final subcontractor = _subcontractor;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Taşeron Detayı'),
+        title: Text(t('subcontractors.detail.title')),
         actions: [
           if (subcontractor != null)
             WhatsAppShareButton(
-              text: "🏢 ${subcontractor.companyName} — ${subcontractor.city}\nİmece Burada'da incele:",
+              text: t('subcontractors.detail.shareText',
+                  vars: {'companyName': subcontractor.companyName, 'city': subcontractor.city}),
             ),
         ],
       ),
@@ -58,11 +61,11 @@ class _SubcontractorDetailScreenState extends State<SubcontractorDetailScreen> {
           ? const Center(child: CircularProgressIndicator(color: AppColors.gold500))
           : _error != null
               ? Center(child: Text(_error!, style: const TextStyle(color: AppColors.red400)))
-              : _buildContent(),
+              : _buildContent(t),
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(String Function(String key, {Map<String, String>? vars}) t) {
     final subcontractor = _subcontractor;
     if (subcontractor == null) return const SizedBox.shrink();
 
@@ -110,14 +113,14 @@ class _SubcontractorDetailScreenState extends State<SubcontractorDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('İletişim', style: TextStyle(color: AppColors.silver500, fontSize: 12)),
+                Text(t('subcontractors.detail.contactLabel'), style: const TextStyle(color: AppColors.silver500, fontSize: 12)),
                 const SizedBox(height: 4),
                 Text(maskPhone(subcontractor.phone!), style: const TextStyle(color: AppColors.gold400, fontSize: 16)),
                 const SizedBox(height: 10),
                 WhatsAppContactButton(
                   phone: subcontractor.phone!,
-                  message:
-                      'Merhaba, platformunuzdaki ${subcontractor.companyName} profilinizi gördüm. Görüşmek isterseniz müsait misiniz?',
+                  message: t('subcontractors.detail.contactMessage',
+                      vars: {'companyName': subcontractor.companyName}),
                 ),
               ],
             ),

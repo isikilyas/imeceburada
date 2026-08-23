@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/constants.dart';
+import '../core/locale_store.dart';
 import 'app_dropdown.dart';
 
 /// İl + ilçe seçimi — web'deki ProvinceDistrictSelect ile aynı davranış:
@@ -22,15 +24,16 @@ class ProvinceDistrictPicker extends StatelessWidget {
     this.allowEmptyCity = false,
   });
 
-  static const _emptyDistrict = Option('', 'İlçe seç');
-  static const _allDistricts = Option('', 'Tüm İlçeler');
-  static const _allCities = Option('', 'Tüm Şehirler');
-
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
+    final emptyDistrict = Option('', t('widgets.provinceDistrict.selectDistrict'));
+    final allDistricts = Option('', t('widgets.provinceDistrict.allDistricts'));
+    final allCities = Option('', t('widgets.provinceDistrict.allCities'));
+
     final districts = city.isEmpty ? <String>[] : districtsForProvince(city);
     final districtOptions = [
-      allowEmptyDistrict ? _allDistricts : _emptyDistrict,
+      allowEmptyDistrict ? allDistricts : emptyDistrict,
       ...districts.map((d) => Option(d, d)),
     ];
     final districtValue = districts.contains(district) ? district : '';
@@ -38,10 +41,10 @@ class ProvinceDistrictPicker extends StatelessWidget {
     return Column(
       children: [
         AppDropdown(
-          label: 'Şehir',
+          label: t('widgets.provinceDistrict.city'),
           value: city,
           options: [
-            if (allowEmptyCity) _allCities,
+            if (allowEmptyCity) allCities,
             ...turkishProvinces.map((p) => Option(p, p)),
           ],
           onChanged: (v) {
@@ -50,7 +53,7 @@ class ProvinceDistrictPicker extends StatelessWidget {
           },
         ),
         AppDropdown(
-          label: 'İlçe',
+          label: t('widgets.provinceDistrict.district'),
           value: districtValue,
           options: districtOptions,
           onChanged: onDistrictChanged,

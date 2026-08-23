@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/equipment_listing.dart';
 import '../../theme/app_theme.dart';
 import 'new_equipment_screen.dart';
@@ -37,7 +38,7 @@ class _EquipmentMineScreenState extends State<EquipmentMineScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('equipment.error.connection'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -61,9 +62,10 @@ class _EquipmentMineScreenState extends State<EquipmentMineScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ekipman İlanlarım'),
+        title: Text(t('equipment.mine.title')),
         actions: [
           IconButton(onPressed: _openNew, icon: const Icon(Icons.add)),
         ],
@@ -79,9 +81,9 @@ class _EquipmentMineScreenState extends State<EquipmentMineScreen> {
                     padding: const EdgeInsets.all(16),
                     children: [
                       if (_listings.isEmpty)
-                        const Padding(
-                          padding: EdgeInsets.all(12),
-                          child: Text('Henüz ilan vermedin.', style: TextStyle(color: AppColors.silver500)),
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(t('equipment.mine.empty'), style: const TextStyle(color: AppColors.silver500)),
                         ),
                       ..._listings.map((listing) {
                         final active = listing.status == 'AVAILABLE';
@@ -102,7 +104,7 @@ class _EquipmentMineScreenState extends State<EquipmentMineScreen> {
                                       const SizedBox(height: 4),
                                       Text(
                                         '${listing.city}${listing.district != null ? ' / ${listing.district}' : ''} · '
-                                        '${active ? 'Aktif' : 'Pasif'}',
+                                        '${active ? t('equipment.mine.active') : t('equipment.mine.inactive')}',
                                         style: const TextStyle(color: AppColors.silver500, fontSize: 12),
                                       ),
                                     ],
@@ -111,7 +113,7 @@ class _EquipmentMineScreenState extends State<EquipmentMineScreen> {
                                 if (active)
                                   TextButton(
                                     onPressed: () => _close(listing.id),
-                                    child: const Text('Kapat'),
+                                    child: Text(t('equipment.mine.close')),
                                   ),
                               ],
                             ),

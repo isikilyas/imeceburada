@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
+import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 
 /// iyzico'nun `checkoutFormContent` HTML+JS içeriğini bir WebView'de açar.
@@ -70,8 +71,9 @@ class _CheckoutWebViewScreenState extends State<CheckoutWebViewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Ödeme')),
+      appBar: AppBar(title: Text(t('membership.paymentTitle'))),
       body: Stack(
         children: [
           WebViewWidget(controller: _controller),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/equipment_category_picker.dart';
 import '../../widgets/province_district_picker.dart';
@@ -56,7 +57,7 @@ class _NewEquipmentScreenState extends State<NewEquipmentScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'İlan oluşturulamadı');
+      setState(() => _error = context.read<LocaleStore>().t('equipment.new.submitError'));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -64,8 +65,9 @@ class _NewEquipmentScreenState extends State<NewEquipmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Yeni Ekipman İlanı')),
+      appBar: AppBar(title: Text(t('equipment.new.title'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -78,7 +80,7 @@ class _NewEquipmentScreenState extends State<NewEquipmentScreen> {
           ),
           TextField(
             controller: _capacityController,
-            decoration: const InputDecoration(labelText: 'Kapasite (opsiyonel, örn. 20 Ton)'),
+            decoration: InputDecoration(labelText: t('equipment.new.capacityLabel')),
           ),
           const SizedBox(height: 12),
           ProvinceDistrictPicker(
@@ -97,7 +99,7 @@ class _NewEquipmentScreenState extends State<NewEquipmentScreen> {
                 child: TextField(
                   controller: _dailyRateController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Günlük Ücret (₺)'),
+                  decoration: InputDecoration(labelText: t('equipment.new.dailyRateLabel')),
                 ),
               ),
               const SizedBox(width: 12),
@@ -105,7 +107,7 @@ class _NewEquipmentScreenState extends State<NewEquipmentScreen> {
                 child: TextField(
                   controller: _hourlyRateController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Saatlik Ücret (₺)'),
+                  decoration: InputDecoration(labelText: t('equipment.new.hourlyRateLabel')),
                 ),
               ),
             ],
@@ -114,7 +116,7 @@ class _NewEquipmentScreenState extends State<NewEquipmentScreen> {
           TextField(
             controller: _descriptionController,
             maxLines: 4,
-            decoration: const InputDecoration(labelText: 'Açıklama'),
+            decoration: InputDecoration(labelText: t('equipment.new.descriptionLabel')),
           ),
           if (_error != null) ...[
             const SizedBox(height: 12),
@@ -123,7 +125,7 @@ class _NewEquipmentScreenState extends State<NewEquipmentScreen> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _isSubmitting ? null : _submit,
-            child: Text(_isSubmitting ? 'Yayınlanıyor...' : 'İlanı Yayınla'),
+            child: Text(_isSubmitting ? t('equipment.new.publishing') : t('equipment.new.publish')),
           ),
         ],
       ),

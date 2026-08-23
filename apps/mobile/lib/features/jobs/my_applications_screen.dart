@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/auth_store.dart';
+import '../../core/locale_store.dart';
 import '../../models/application.dart';
 import '../../theme/app_theme.dart';
 import 'job_detail_screen.dart';
@@ -33,7 +34,7 @@ class _MyApplicationsScreenState extends State<MyApplicationsScreen> {
       final items = (raw as List).map((e) => JobApplication.fromJson(e as Map<String, dynamic>)).toList();
       setState(() => _applications = items);
     } catch (_) {
-      setState(() => _error = 'Başvurular yüklenemedi');
+      setState(() => _error = context.read<LocaleStore>().t('jobs.applications.loadFailed'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -41,14 +42,15 @@ class _MyApplicationsScreenState extends State<MyApplicationsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Başvurularım')),
+      appBar: AppBar(title: Text(t('jobs.applications.title'))),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator(color: AppColors.gold500))
           : _error != null
               ? Center(child: Text(_error!, style: const TextStyle(color: AppColors.red400)))
               : _applications.isEmpty
-                  ? const Center(child: Text('Henüz başvurun yok.', style: TextStyle(color: AppColors.silver500)))
+                  ? Center(child: Text(t('jobs.applications.empty'), style: const TextStyle(color: AppColors.silver500)))
                   : ListView.builder(
                       padding: const EdgeInsets.all(16),
                       itemCount: _applications.length,

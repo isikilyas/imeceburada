@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/job.dart';
 import '../../theme/app_theme.dart';
 import 'new_job_screen.dart';
@@ -37,7 +38,7 @@ class _CompanyJobsScreenState extends State<CompanyJobsScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('jobs.connectionError'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -61,9 +62,10 @@ class _CompanyJobsScreenState extends State<CompanyJobsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('İlanlarım'),
+        title: Text(t('jobs.company.title')),
         actions: [
           IconButton(onPressed: _openNewJob, icon: const Icon(Icons.add)),
         ],
@@ -79,9 +81,9 @@ class _CompanyJobsScreenState extends State<CompanyJobsScreen> {
                     padding: const EdgeInsets.all(16),
                     children: [
                       if (_jobs.isEmpty)
-                        const Padding(
-                          padding: EdgeInsets.all(12),
-                          child: Text('Henüz ilan açmadın.', style: TextStyle(color: AppColors.silver500)),
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(t('jobs.company.empty'), style: const TextStyle(color: AppColors.silver500)),
                         ),
                       ..._jobs.map((job) {
                         final active = job.status == 'ACTIVE';
@@ -99,7 +101,7 @@ class _CompanyJobsScreenState extends State<CompanyJobsScreen> {
                                       const SizedBox(height: 4),
                                       Text(
                                         '${job.city}${job.district != null ? ' / ${job.district}' : ''} · '
-                                        '${active ? 'Aktif' : 'Kapalı'}',
+                                        '${active ? t('jobs.company.active') : t('jobs.company.closed')}',
                                         style: const TextStyle(color: AppColors.silver500, fontSize: 12),
                                       ),
                                       Text(
@@ -112,7 +114,7 @@ class _CompanyJobsScreenState extends State<CompanyJobsScreen> {
                                 if (active)
                                   TextButton(
                                     onPressed: () => _close(job.id),
-                                    child: const Text('Kapat'),
+                                    child: Text(t('jobs.company.close')),
                                   ),
                               ],
                             ),

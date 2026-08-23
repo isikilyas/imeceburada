@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../core/phone.dart';
 import '../../models/equipment_listing.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/whatsapp_contact_button.dart';
 import '../../widgets/whatsapp_share_button.dart';
+
+typedef _Translate = String Function(String key, {Map<String, String>? vars});
 
 class EquipmentDetailScreen extends StatefulWidget {
   final String id;
@@ -34,7 +38,7 @@ class _EquipmentDetailScreenState extends State<EquipmentDetailScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('equipment.error.connection'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -42,15 +46,18 @@ class _EquipmentDetailScreenState extends State<EquipmentDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     final listing = _listing;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ekipman Detayı'),
+        title: Text(t('equipment.detail.title')),
         actions: [
           if (listing != null)
             WhatsAppShareButton(
-              text:
-                  "🏗️ ${equipmentTypes.labelFor(listing.equipmentType)} — ${listing.city}\nİmece Burada'da incele:",
+              text: t('equipment.detail.shareText', vars: {
+                'label': equipmentTypes.labelFor(listing.equipmentType),
+                'city': listing.city,
+              }),
             ),
         ],
       ),
@@ -58,11 +65,11 @@ class _EquipmentDetailScreenState extends State<EquipmentDetailScreen> {
           ? const Center(child: CircularProgressIndicator(color: AppColors.gold500))
           : _error != null
               ? Center(child: Text(_error!, style: const TextStyle(color: AppColors.red400)))
-              : _buildContent(),
+              : _buildContent(t),
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(_Translate t) {
     final listing = _listing;
     if (listing == null) return const SizedBox.shrink();
     final label = equipmentTypes.labelFor(listing.equipmentType);
@@ -85,9 +92,11 @@ class _EquipmentDetailScreenState extends State<EquipmentDetailScreen> {
             spacing: 12,
             children: [
               if (listing.dailyRate != null)
-                Text('${listing.dailyRate} ₺/gün', style: const TextStyle(color: AppColors.silver400)),
+                Text(t('equipment.priceDaily', vars: {'price': listing.dailyRate.toString()}),
+                    style: const TextStyle(color: AppColors.silver400)),
               if (listing.hourlyRate != null)
-                Text('${listing.hourlyRate} ₺/saat', style: const TextStyle(color: AppColors.silver400)),
+                Text(t('equipment.priceHourly', vars: {'price': listing.hourlyRate.toString()}),
+                    style: const TextStyle(color: AppColors.silver400)),
             ],
           ),
         ],
@@ -105,22 +114,22 @@ class _EquipmentDetailScreenState extends State<EquipmentDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('İletişim', style: TextStyle(color: AppColors.silver500, fontSize: 12)),
+                Text(t('equipment.detail.contactLabel'), style: const TextStyle(color: AppColors.silver500, fontSize: 12)),
                 const SizedBox(height: 4),
                 Text(maskPhone(listing.ownerPhone!), style: const TextStyle(color: AppColors.gold400, fontSize: 16)),
                 const SizedBox(height: 10),
                 WhatsAppContactButton(
                   phone: listing.ownerPhone!,
-                  message: 'Merhaba, platformunuzdaki $label ilanınızı gördüm. Kiralama için müsait misiniz?',
+                  message: t('equipment.detail.contactMessage', vars: {'label': label}),
                 ),
               ],
             ),
           ),
         ] else ...[
           const SizedBox(height: 20),
-          const Text(
-            'İlan sahibi iletişim numarası paylaşmamış.',
-            style: TextStyle(color: AppColors.silver500, fontSize: 13),
+          Text(
+            t('equipment.detail.noContact'),
+            style: const TextStyle(color: AppColors.silver500, fontSize: 13),
           ),
         ],
       ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/constants.dart';
+import '../core/locale_store.dart';
 import '../theme/app_theme.dart';
 import 'app_dropdown.dart';
 
@@ -62,6 +64,7 @@ class _TradeCategoryPickerState extends State<TradeCategoryPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     final field = _field;
     final branch = field.branches.firstWhere(
       (b) => b.label == _branchLabel,
@@ -71,7 +74,7 @@ class _TradeCategoryPickerState extends State<TradeCategoryPicker> {
     return Column(
       children: [
         AppDropdown(
-          label: 'Çalışma Alanı',
+          label: t('widgets.tradeCategory.fieldLabel'),
           value: field.label,
           options: tradeFields.map((f) => Option(f.label, '${f.icon} ${f.label}')).toList(),
           onChanged: (v) {
@@ -85,7 +88,7 @@ class _TradeCategoryPickerState extends State<TradeCategoryPicker> {
           },
         ),
         AppDropdown(
-          label: 'Branş',
+          label: t('widgets.tradeCategory.branchLabel'),
           value: branch.label,
           options: field.branches.map((b) => Option(b.label, b.label)).toList(),
           onChanged: (v) {
@@ -95,7 +98,7 @@ class _TradeCategoryPickerState extends State<TradeCategoryPicker> {
           },
         ),
         AppDropdown(
-          label: 'Meslek',
+          label: t('widgets.tradeCategory.professionLabel'),
           value: branch.professions.any((p) => p.value == widget.value)
               ? widget.value
               : branch.professions.first.value,
@@ -133,6 +136,7 @@ class _TradeCategoryMultiPickerState extends State<TradeCategoryMultiPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -156,7 +160,7 @@ class _TradeCategoryMultiPickerState extends State<TradeCategoryMultiPicker> {
         TradeCategoryPicker(value: _pending, onChanged: (v) => setState(() => _pending = v)),
         SizedBox(
           width: double.infinity,
-          child: OutlinedButton(onPressed: _add, child: const Text('+ Branş Ekle')),
+          child: OutlinedButton(onPressed: _add, child: Text(t('widgets.tradeCategory.addButton'))),
         ),
         const SizedBox(height: 14),
       ],

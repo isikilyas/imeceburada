@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/equipment_listing.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
 import '../../widgets/province_district_picker.dart';
 import 'equipment_detail_screen.dart';
 import 'new_equipment_screen.dart';
-
-const _allEquipment = Option('', 'Tüm Ekipmanlar');
 
 class EquipmentListScreen extends StatefulWidget {
   const EquipmentListScreen({super.key});
@@ -51,7 +51,7 @@ class _EquipmentListScreenState extends State<EquipmentListScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('equipment.error.connection'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -59,12 +59,14 @@ class _EquipmentListScreenState extends State<EquipmentListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
+    final allEquipment = Option('', t('equipment.allEquipment'));
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ekipman İlanları'),
+        title: Text(t('equipment.list.title')),
         actions: [
           IconButton(
-            tooltip: 'Yeni İlan',
+            tooltip: t('equipment.list.newListingTooltip'),
             icon: const Icon(Icons.add_circle_outline),
             onPressed: () async {
               final created = await Navigator.of(context).push<bool>(
@@ -79,9 +81,9 @@ class _EquipmentListScreenState extends State<EquipmentListScreen> {
         padding: const EdgeInsets.all(16),
         children: [
           AppDropdown(
-            label: 'Ekipman',
+            label: t('equipment.list.filterLabel'),
             value: _equipmentType,
-            options: [_allEquipment, ...equipmentTypes],
+            options: [allEquipment, ...equipmentTypes],
             onChanged: (v) {
               setState(() => _equipmentType = v);
               _load();
@@ -115,9 +117,9 @@ class _EquipmentListScreenState extends State<EquipmentListScreen> {
               child: Text(_error!, style: const TextStyle(color: AppColors.red400)),
             ),
           if (!_isLoading && _error == null && _listings.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(12),
-              child: Text('Sonuç bulunamadı.', style: TextStyle(color: AppColors.silver500)),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(t('equipment.list.noResults'), style: const TextStyle(color: AppColors.silver500)),
             ),
           ..._listings.map(
             (listing) => Card(
@@ -133,9 +135,9 @@ class _EquipmentListScreenState extends State<EquipmentListScreen> {
                 ),
                 trailing: Text(
                   listing.dailyRate != null
-                      ? '${listing.dailyRate} ₺/gün'
+                      ? t('equipment.priceDaily', vars: {'price': listing.dailyRate.toString()})
                       : listing.hourlyRate != null
-                          ? '${listing.hourlyRate} ₺/saat'
+                          ? t('equipment.priceHourly', vars: {'price': listing.hourlyRate.toString()})
                           : '',
                   style: const TextStyle(color: AppColors.gold400, fontSize: 12),
                 ),

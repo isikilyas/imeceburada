@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/equipment_category_picker.dart';
 import '../../widgets/province_district_picker.dart';
@@ -35,8 +36,9 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
   String? _error;
 
   Future<void> _submit() async {
+    final t = context.read<LocaleStore>().t;
     if (_picked == null) {
-      setState(() => _error = 'Lütfen haritadan şantiye konumunu işaretle');
+      setState(() => _error = t('siteRadar.newRequest.pickLocationError'));
       return;
     }
     setState(() {
@@ -60,7 +62,7 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Çağrı oluşturulamadı');
+      setState(() => _error = t('siteRadar.newRequest.submitError'));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -68,8 +70,9 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Anlık Çağrı Aç')),
+      appBar: AppBar(title: Text(t('siteRadar.openRequestCta'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -77,7 +80,7 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
             children: [
               Expanded(
                 child: _TypeButton(
-                  label: 'Usta / İşçi',
+                  label: t('siteRadar.type.worker'),
                   selected: _requestType == 'WORKER',
                   onTap: () => setState(() => _requestType = 'WORKER'),
                 ),
@@ -85,7 +88,7 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: _TypeButton(
-                  label: 'İş Makinesi',
+                  label: t('siteRadar.type.equipment'),
                   selected: _requestType == 'EQUIPMENT',
                   onTap: () => setState(() => _requestType = 'EQUIPMENT'),
                 ),
@@ -105,7 +108,7 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
             ),
           TextField(
             controller: _titleController,
-            decoration: const InputDecoration(labelText: 'Başlık (örn: Bu akşama kadar 3 kalıpçı lazım)'),
+            decoration: InputDecoration(labelText: t('siteRadar.newRequest.titleLabel')),
           ),
           const SizedBox(height: 12),
           ProvinceDistrictPicker(
@@ -121,7 +124,7 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text('Gereken Sayı', style: TextStyle(color: AppColors.silver500)),
+              Text(t('siteRadar.newRequest.neededCountLabel'), style: const TextStyle(color: AppColors.silver500)),
               const Spacer(),
               IconButton(
                 onPressed: () => setState(() => _neededCount = (_neededCount - 1).clamp(1, 999)),
@@ -138,10 +141,10 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
           TextField(
             controller: _descriptionController,
             maxLines: 3,
-            decoration: const InputDecoration(labelText: 'Açıklama'),
+            decoration: InputDecoration(labelText: t('siteRadar.newRequest.descriptionLabel')),
           ),
           const SizedBox(height: 16),
-          const Text('Konum (haritada dokunarak işaretle)', style: TextStyle(color: AppColors.silver500, fontSize: 13)),
+          Text(t('siteRadar.newRequest.locationLabel'), style: const TextStyle(color: AppColors.silver500, fontSize: 13)),
           const SizedBox(height: 6),
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -178,7 +181,7 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _isSubmitting ? null : _submit,
-            child: Text(_isSubmitting ? 'Yayınlanıyor...' : 'Çağrıyı Yayınla'),
+            child: Text(_isSubmitting ? t('siteRadar.newRequest.publishing') : t('siteRadar.newRequest.publish')),
           ),
         ],
       ),

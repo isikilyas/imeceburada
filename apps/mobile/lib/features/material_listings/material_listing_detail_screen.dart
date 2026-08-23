@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../core/phone.dart';
 import '../../models/material_listing.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/whatsapp_contact_button.dart';
 import '../../widgets/whatsapp_share_button.dart';
+
+typedef _Translate = String Function(String key, {Map<String, String>? vars});
 
 class MaterialListingDetailScreen extends StatefulWidget {
   final String id;
@@ -34,7 +38,7 @@ class _MaterialListingDetailScreenState extends State<MaterialListingDetailScree
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('materialListings.error.connection'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -42,14 +46,18 @@ class _MaterialListingDetailScreenState extends State<MaterialListingDetailScree
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     final listing = _listing;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Malzeme İlanı'),
+        title: Text(t('materialListings.detail.title')),
         actions: [
           if (listing != null)
             WhatsAppShareButton(
-              text: "🧱 ${materialTypes.labelFor(listing.materialType)} — ${listing.city}\nİmece Burada'da incele:",
+              text: t('materialListings.detail.shareText', vars: {
+                'label': materialTypes.labelFor(listing.materialType),
+                'city': listing.city,
+              }),
             ),
         ],
       ),
@@ -57,11 +65,11 @@ class _MaterialListingDetailScreenState extends State<MaterialListingDetailScree
           ? const Center(child: CircularProgressIndicator(color: AppColors.gold500))
           : _error != null
               ? Center(child: Text(_error!, style: const TextStyle(color: AppColors.red400)))
-              : _buildContent(),
+              : _buildContent(t),
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(_Translate t) {
     final listing = _listing;
     if (listing == null) return const SizedBox.shrink();
     final label = materialTypes.labelFor(listing.materialType);
@@ -77,7 +85,7 @@ class _MaterialListingDetailScreenState extends State<MaterialListingDetailScree
         ),
         const SizedBox(height: 8),
         Text(
-          '${listing.price} ₺/${listing.unit}',
+          t('materialListings.price', vars: {'price': listing.price.toString(), 'unit': listing.unit}),
           style: const TextStyle(color: AppColors.gold400, fontSize: 18, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 16),
@@ -94,22 +102,22 @@ class _MaterialListingDetailScreenState extends State<MaterialListingDetailScree
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('İletişim', style: TextStyle(color: AppColors.silver500, fontSize: 12)),
+                Text(t('materialListings.detail.contactLabel'), style: const TextStyle(color: AppColors.silver500, fontSize: 12)),
                 const SizedBox(height: 4),
                 Text(maskPhone(listing.supplierPhone!), style: const TextStyle(color: AppColors.gold400, fontSize: 16)),
                 const SizedBox(height: 10),
                 WhatsAppContactButton(
                   phone: listing.supplierPhone!,
-                  message: 'Merhaba, platformunuzdaki $label ilanınızı gördüm. Sipariş için müsait misiniz?',
+                  message: t('materialListings.detail.contactMessage', vars: {'label': label}),
                 ),
               ],
             ),
           ),
         ] else ...[
           const SizedBox(height: 20),
-          const Text(
-            'Tedarikçi iletişim numarası paylaşmamış.',
-            style: TextStyle(color: AppColors.silver500, fontSize: 13),
+          Text(
+            t('materialListings.detail.noContact'),
+            style: const TextStyle(color: AppColors.silver500, fontSize: 13),
           ),
         ],
       ],

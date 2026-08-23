@@ -1,15 +1,38 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/province_district_picker.dart';
 
-const _turkishWeekdays = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'];
-const _turkishMonths = [
-  'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-  'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık',
-];
+typedef _Translate = String Function(String key, {Map<String, String>? vars});
+
+List<String> _weekdayLabels(_Translate t) => [
+      t('weather.weekday.monday'),
+      t('weather.weekday.tuesday'),
+      t('weather.weekday.wednesday'),
+      t('weather.weekday.thursday'),
+      t('weather.weekday.friday'),
+      t('weather.weekday.saturday'),
+      t('weather.weekday.sunday'),
+    ];
+
+List<String> _monthLabels(_Translate t) => [
+      t('weather.month.january'),
+      t('weather.month.february'),
+      t('weather.month.march'),
+      t('weather.month.april'),
+      t('weather.month.may'),
+      t('weather.month.june'),
+      t('weather.month.july'),
+      t('weather.month.august'),
+      t('weather.month.september'),
+      t('weather.month.october'),
+      t('weather.month.november'),
+      t('weather.month.december'),
+    ];
 
 class _DailyForecast {
   final String date;
@@ -47,34 +70,34 @@ class _RiskFlag {
   const _RiskFlag(this.icon, this.label);
 }
 
-({String icon, String text}) _describeWeatherCode(int code) {
-  if (code == 0) return (icon: '☀️', text: 'Açık');
-  if (code == 1 || code == 2) return (icon: '🌤️', text: 'Parçalı bulutlu');
-  if (code == 3) return (icon: '☁️', text: 'Kapalı');
-  if (code == 45 || code == 48) return (icon: '🌫️', text: 'Sisli');
-  if (code >= 51 && code <= 57) return (icon: '🌦️', text: 'Çisenti');
-  if (code >= 61 && code <= 67) return (icon: '🌧️', text: 'Yağmurlu');
-  if (code >= 71 && code <= 77) return (icon: '❄️', text: 'Kar yağışlı');
-  if (code >= 80 && code <= 82) return (icon: '🌧️', text: 'Sağanak yağmur');
-  if (code >= 85 && code <= 86) return (icon: '🌨️', text: 'Kar sağanağı');
-  if (code >= 95) return (icon: '⛈️', text: 'Gök gürültülü fırtına');
-  return (icon: '🌡️', text: 'Hava durumu');
+({String icon, String text}) _describeWeatherCode(int code, _Translate t) {
+  if (code == 0) return (icon: '☀️', text: t('weather.condition.clear'));
+  if (code == 1 || code == 2) return (icon: '🌤️', text: t('weather.condition.partlyCloudy'));
+  if (code == 3) return (icon: '☁️', text: t('weather.condition.cloudy'));
+  if (code == 45 || code == 48) return (icon: '🌫️', text: t('weather.condition.foggy'));
+  if (code >= 51 && code <= 57) return (icon: '🌦️', text: t('weather.condition.drizzle'));
+  if (code >= 61 && code <= 67) return (icon: '🌧️', text: t('weather.condition.rainy'));
+  if (code >= 71 && code <= 77) return (icon: '❄️', text: t('weather.condition.snowy'));
+  if (code >= 80 && code <= 82) return (icon: '🌧️', text: t('weather.condition.heavyRain'));
+  if (code >= 85 && code <= 86) return (icon: '🌨️', text: t('weather.condition.heavySnow'));
+  if (code >= 95) return (icon: '⛈️', text: t('weather.condition.thunderstorm'));
+  return (icon: '🌡️', text: t('weather.condition.unknown'));
 }
 
-List<_RiskFlag> _dayRisks(_DailyForecast d) {
+List<_RiskFlag> _dayRisks(_DailyForecast d, _Translate t) {
   final risks = <_RiskFlag>[];
-  if (d.tempMin <= 0) risks.add(const _RiskFlag('❄️', 'Don riski'));
-  if (d.tempMax >= 33) risks.add(const _RiskFlag('🔥', 'Aşırı sıcak'));
-  if (d.windMax >= 40) risks.add(const _RiskFlag('💨', 'Kuvvetli rüzgar'));
-  if (d.precipProbability >= 70) risks.add(const _RiskFlag('🌧️', 'Yoğun yağış riski'));
+  if (d.tempMin <= 0) risks.add(_RiskFlag('❄️', t('weather.risk.frostDay')));
+  if (d.tempMax >= 33) risks.add(_RiskFlag('🔥', t('weather.risk.extremeHeat')));
+  if (d.windMax >= 40) risks.add(_RiskFlag('💨', t('weather.risk.strongWind')));
+  if (d.precipProbability >= 70) risks.add(_RiskFlag('🌧️', t('weather.risk.heavyRainDay')));
   return risks;
 }
 
-_RiskFlag? _hourRisk(_HourlyForecast h) {
-  if (h.temperature <= 0) return const _RiskFlag('❄️', 'Don');
-  if (h.temperature >= 33) return const _RiskFlag('🔥', 'Aşırı sıcak');
-  if (h.windSpeed >= 40) return const _RiskFlag('💨', 'Kuvvetli rüzgar');
-  if (h.precipProbability >= 70) return const _RiskFlag('🌧️', 'Yoğun yağış');
+_RiskFlag? _hourRisk(_HourlyForecast h, _Translate t) {
+  if (h.temperature <= 0) return _RiskFlag('❄️', t('weather.risk.frostHour'));
+  if (h.temperature >= 33) return _RiskFlag('🔥', t('weather.risk.extremeHeat'));
+  if (h.windSpeed >= 40) return _RiskFlag('💨', t('weather.risk.strongWind'));
+  if (h.precipProbability >= 70) return _RiskFlag('🌧️', t('weather.risk.heavyRainHour'));
   return null;
 }
 
@@ -116,7 +139,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       final results = (geoData['results'] as List?) ?? [];
       if (results.isEmpty) {
         setState(() {
-          _error = 'Bu bölge için hava durumu verisi bulunamadı.';
+          _error = context.read<LocaleStore>().t('weather.error.noData');
           _isLoading = false;
         });
         return;
@@ -163,23 +186,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
         _hourly = hourly;
       });
     } catch (_) {
-      setState(() => _error = 'Hava durumu verisi alınamadı.');
+      setState(() => _error = context.read<LocaleStore>().t('weather.error.fetchFailed'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
-  String _formatDayLabel(String dateStr) {
+  String _formatDayLabel(String dateStr, _Translate t) {
     final date = DateTime.parse(dateStr);
-    final weekday = _turkishWeekdays[date.weekday - 1];
-    final month = _turkishMonths[date.month - 1];
+    final weekday = _weekdayLabels(t)[date.weekday - 1];
+    final month = _monthLabels(t)[date.month - 1];
     return '$weekday, ${date.day} $month';
   }
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Şantiye Hava Durumu')),
+      appBar: AppBar(title: Text(t('weather.title'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -203,7 +227,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             children: [
               Expanded(
                 child: _RangeButton(
-                  label: 'Haftalık (7 gün)',
+                  label: t('weather.rangeWeekly'),
                   selected: _rangeDays == 7,
                   onTap: () {
                     setState(() => _rangeDays = 7);
@@ -214,7 +238,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: _RangeButton(
-                  label: '16 Günlük',
+                  label: t('weather.range16Days'),
                   selected: _rangeDays == 16,
                   onTap: () {
                     setState(() => _rangeDays = 16);
@@ -225,10 +249,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
             ],
           ),
           const SizedBox(height: 6),
-          const Text(
-            'Not: Güvenilir hava tahmini en fazla ~16 gün ileriye kadar yapılabilir, tam aylık (30 günlük) '
-            'tahmin sunmuyoruz.',
-            style: TextStyle(color: AppColors.silver500, fontSize: 12),
+          Text(
+            t('weather.disclaimer'),
+            style: const TextStyle(color: AppColors.silver500, fontSize: 12),
           ),
           const SizedBox(height: 12),
           if (_isLoading) const Center(child: CircularProgressIndicator(color: AppColors.gold500)),
@@ -236,16 +259,21 @@ class _WeatherScreenState extends State<WeatherScreen> {
             Text(_error!, style: const TextStyle(color: AppColors.red400)),
           if (!_isLoading && _error == null)
             ..._daily.map((d) {
-              final desc = _describeWeatherCode(d.weatherCode);
-              final risks = _dayRisks(d);
+              final desc = _describeWeatherCode(d.weatherCode, t);
+              final risks = _dayRisks(d, t);
               final dayHours = _hourly.where((h) => h.time.startsWith(d.date)).toList();
               return Card(
                 margin: const EdgeInsets.only(bottom: 10),
                 child: ExpansionTile(
-                  title: Text('${desc.icon} ${_formatDayLabel(d.date)}',
+                  title: Text('${desc.icon} ${_formatDayLabel(d.date, t)}',
                       style: Theme.of(context).textTheme.titleMedium),
                   subtitle: Text(
-                    '${desc.text} · ${d.tempMin}° / ${d.tempMax}°C · 💨 ${d.windMax} km/s',
+                    t('weather.dailySummary', vars: {
+                      'condition': desc.text,
+                      'tempMin': d.tempMin.toString(),
+                      'tempMax': d.tempMax.toString(),
+                      'windMax': d.windMax.toString(),
+                    }),
                     style: const TextStyle(color: AppColors.silver500),
                   ),
                   trailing: risks.isNotEmpty
@@ -271,7 +299,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         spacing: 8,
                         runSpacing: 8,
                         children: dayHours.map((h) {
-                          final risk = _hourRisk(h);
+                          final risk = _hourRisk(h, t);
                           return Container(
                             width: 90,
                             padding: const EdgeInsets.all(8),
@@ -284,7 +312,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               children: [
                                 Text(h.time.substring(11, 16),
                                     style: const TextStyle(color: AppColors.silver300, fontSize: 12)),
-                                Text('${h.temperature}°C · 💨${h.windSpeed}',
+                                Text(
+                                    t('weather.hourlySummary', vars: {
+                                      'temperature': h.temperature.toString(),
+                                      'windSpeed': h.windSpeed.toString(),
+                                    }),
                                     style: const TextStyle(color: AppColors.silver500, fontSize: 11)),
                                 if (risk != null)
                                   Text('${risk.icon} ${risk.label}',

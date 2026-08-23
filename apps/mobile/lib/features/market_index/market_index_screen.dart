@@ -1,7 +1,9 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/index_point.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
@@ -57,7 +59,7 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('marketIndex.connectionError'));
     } finally {
       setState(() => _isLoading = false);
     }
@@ -73,19 +75,20 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Canlı Piyasa Endeksi'),
+        title: Text(t('marketIndex.title')),
         actions: [
           IconButton(
-            tooltip: 'Şantiye Hava Durumu',
+            tooltip: t('marketIndex.weatherTooltip'),
             icon: const Icon(Icons.wb_sunny_outlined),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const WeatherScreen()),
             ),
           ),
           IconButton(
-            tooltip: 'Malzeme İlanları',
+            tooltip: t('marketIndex.materialTooltip'),
             icon: const Icon(Icons.storefront_outlined),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const MaterialListingsScreen()),
@@ -103,7 +106,7 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
         backgroundColor: AppColors.gold500,
         foregroundColor: AppColors.ink950,
         icon: const Icon(Icons.add),
-        label: const Text('Bilgi Paylaş'),
+        label: Text(t('marketIndex.shareInfo')),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -114,7 +117,7 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
             children: [
               Expanded(
                 child: _ModeButton(
-                  label: 'İşçilik',
+                  label: t('marketIndex.laborMode'),
                   selected: _mode == _IndexMode.labor,
                   onTap: () => _onModeChanged(_IndexMode.labor),
                 ),
@@ -122,7 +125,7 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: _ModeButton(
-                  label: 'Malzeme',
+                  label: t('marketIndex.materialMode'),
                   selected: _mode == _IndexMode.material,
                   onTap: () => _onModeChanged(_IndexMode.material),
                 ),
@@ -131,7 +134,7 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
           ),
           const SizedBox(height: 16),
           AppDropdown(
-            label: _mode == _IndexMode.labor ? 'Meslek' : 'Malzeme',
+            label: _mode == _IndexMode.labor ? t('marketIndex.professionLabel') : t('marketIndex.materialLabel'),
             value: _category,
             options: _categoryOptions,
             onChanged: (v) {
@@ -140,7 +143,7 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
             },
           ),
           AppDropdown(
-            label: 'Şehir',
+            label: t('marketIndex.cityLabel'),
             value: _city,
             options: turkishProvinces.map((p) => Option(p, p)).toList(),
             onChanged: (v) {
@@ -156,11 +159,11 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
               child: Text(_error!, style: const TextStyle(color: AppColors.red400)),
             ),
           if (!_isLoading && _error == null && _points.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(12),
+            Padding(
+              padding: const EdgeInsets.all(12),
               child: Text(
-                'Bu filtre için yeterli veri yok (en az 3 veri girişi gerekir).',
-                style: TextStyle(color: AppColors.silver500),
+                t('marketIndex.noData'),
+                style: const TextStyle(color: AppColors.silver500),
               ),
             ),
           ..._points.map((p) => _IndexCard(point: p, numberFormat: _numberFormat)),
@@ -213,6 +216,7 @@ class _IndexCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     final unitSuffix = point.unit != null ? '₺/${point.unit}' : '₺';
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
@@ -224,15 +228,23 @@ class _IndexCard extends StatelessWidget {
             Text(point.month, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 4),
             Text(
-              'Ortalama: ${numberFormat.format(point.averageAmount)} $unitSuffix · Medyan: ${numberFormat.format(point.medianAmount)} $unitSuffix',
+              t('marketIndex.stats', vars: {
+                'avg': numberFormat.format(point.averageAmount),
+                'median': numberFormat.format(point.medianAmount),
+                'unit': unitSuffix,
+              }),
               style: const TextStyle(color: AppColors.silver400, fontSize: 13),
             ),
             const SizedBox(height: 2),
-            Text('Örneklem: ${point.sampleSize}', style: const TextStyle(color: AppColors.silver500, fontSize: 12)),
+            Text(t('marketIndex.sampleSize', vars: {'count': point.sampleSize.toString()}),
+                style: const TextStyle(color: AppColors.silver500, fontSize: 12)),
             if (point.expectationAverage != null) ...[
               const SizedBox(height: 4),
               Text(
-                'Piyasa beklentisi (teklif ortalaması): ${numberFormat.format(point.expectationAverage)} $unitSuffix',
+                t('marketIndex.expectation', vars: {
+                  'value': numberFormat.format(point.expectationAverage),
+                  'unit': unitSuffix,
+                }),
                 style: const TextStyle(color: AppColors.green400, fontSize: 12),
               ),
             ],

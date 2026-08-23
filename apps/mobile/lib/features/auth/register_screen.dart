@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/material_category_picker.dart';
 import '../../widgets/province_district_picker.dart';
@@ -10,11 +11,11 @@ import '../../widgets/trade_category_picker.dart';
 
 enum _Role { candidate, company, supplier, subcontractor }
 
-const _roleLabels = {
-  _Role.candidate: 'İş Arayan Personel',
-  _Role.company: 'Firma',
-  _Role.supplier: 'Yapı Tedarik',
-  _Role.subcontractor: 'Taşeron Firma',
+const _roleLabelKeys = {
+  _Role.candidate: 'auth.roleCandidate',
+  _Role.company: 'auth.roleCompany',
+  _Role.supplier: 'auth.roleSupplier',
+  _Role.subcontractor: 'auth.roleSubcontractor',
 };
 
 class _RegisterScreenState extends State<RegisterScreen> {
@@ -34,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _submit() async {
     if (_role == _Role.subcontractor && _subcontractorTradeCategories.isEmpty) {
-      setState(() => _error = 'En az bir branş/meslek seçmelisin');
+      setState(() => _error = context.read<LocaleStore>().t('auth.subcontractorCategoryRequired'));
       return;
     }
     setState(() {
@@ -88,7 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Kayıt oluşturulamadı');
+      setState(() => _error = context.read<LocaleStore>().t('auth.registerFailedGeneric'));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -96,8 +97,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Kayıt Ol')),
+      appBar: AppBar(title: Text(t('auth.registerTitle'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -110,7 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             childAspectRatio: 2.6,
             children: _Role.values
                 .map((role) => _RoleButton(
-                      label: _roleLabels[role]!,
+                      label: t(_roleLabelKeys[role]!),
                       selected: _role == role,
                       onTap: () => setState(() => _role = role),
                     ))
@@ -118,25 +120,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           if (_role == _Role.supplier) ...[
             const SizedBox(height: 8),
-            const Text(
-              'Yapı Tedarik üyeliği sadece inşaat malzemesi ilanı vermek içindir — iş ilanı '
-              'açamazsın. Tedarik ettiğin ürün/hizmet gruplarını seçmen isteğe bağlı.',
-              style: TextStyle(color: AppColors.silver500, fontSize: 12),
+            Text(
+              t('auth.supplierInfoText'),
+              style: const TextStyle(color: AppColors.silver500, fontSize: 12),
             ),
           ],
           if (_role == _Role.subcontractor) ...[
             const SizedBox(height: 8),
-            const Text(
-              'Taşeron Firma üyeliği, hangi branşta taşeronluk yaptığını diğer firmaların '
-              'bulabileceği şekilde ilan eder.',
-              style: TextStyle(color: AppColors.silver500, fontSize: 12),
+            Text(
+              t('auth.subcontractorInfoText'),
+              style: const TextStyle(color: AppColors.silver500, fontSize: 12),
             ),
           ],
           const SizedBox(height: 16),
           TextField(
             controller: _nameController,
             decoration: InputDecoration(
-              labelText: _role == _Role.candidate ? 'Ad Soyad' : 'Firma Adı',
+              labelText: _role == _Role.candidate ? t('auth.fullNameLabel') : t('auth.companyNameLabel'),
             ),
           ),
           const SizedBox(height: 12),
@@ -153,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextField(
               controller: _descriptionController,
               maxLines: 2,
-              decoration: const InputDecoration(labelText: 'Açıklama (opsiyonel)'),
+              decoration: InputDecoration(labelText: t('auth.descriptionOptionalLabel')),
             ),
             const SizedBox(height: 12),
           ],
@@ -166,13 +166,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
           TextField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(labelText: 'E-posta'),
+            decoration: InputDecoration(labelText: t('auth.emailLabel')),
           ),
           const SizedBox(height: 12),
           TextField(
             controller: _passwordController,
             obscureText: true,
-            decoration: const InputDecoration(labelText: 'Şifre (en az 8 karakter)'),
+            decoration: InputDecoration(labelText: t('auth.passwordMinLabel')),
           ),
           if (_error != null) ...[
             const SizedBox(height: 12),
@@ -181,7 +181,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _isSubmitting ? null : _submit,
-            child: Text(_isSubmitting ? 'Kayıt oluşturuluyor...' : 'Kayıt Ol'),
+            child: Text(_isSubmitting ? t('auth.registerSubmitting') : t('auth.registerButton')),
           ),
         ],
       ),

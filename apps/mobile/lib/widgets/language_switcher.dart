@@ -9,11 +9,12 @@ class LanguageSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = context.watch<LocaleStore>();
+    final t = store.t;
     final current = availableLocales.firstWhere((l) => l.code == store.locale);
 
     return ListTile(
       leading: Text(current.flag, style: const TextStyle(fontSize: 20)),
-      title: const Text('Dil / Language', style: TextStyle(color: AppColors.silver300)),
+      title: Text(t('widgets.languageSwitcher.title'), style: const TextStyle(color: AppColors.silver300)),
       subtitle: Text(current.label, style: const TextStyle(color: AppColors.silver500)),
       trailing: const Icon(Icons.chevron_right, color: AppColors.silver500),
       onTap: () => _openPicker(context, store),
@@ -21,6 +22,7 @@ class LanguageSwitcher extends StatelessWidget {
   }
 
   void _openPicker(BuildContext context, LocaleStore store) {
+    final t = store.t;
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.ink900,
@@ -45,7 +47,7 @@ class LanguageSwitcher extends StatelessWidget {
                 enabled: false,
                 leading: Text(l.flag, style: const TextStyle(fontSize: 20)),
                 title: Text(l.label, style: const TextStyle(color: AppColors.silver500)),
-                trailing: const Text('Yakında', style: TextStyle(color: AppColors.silver500, fontSize: 12)),
+                trailing: Text(t('widgets.languageSwitcher.comingSoon'), style: const TextStyle(color: AppColors.silver500, fontSize: 12)),
               ),
             ),
           ],

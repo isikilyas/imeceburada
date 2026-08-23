@@ -7,11 +7,11 @@ import 'features/home/root_tabs.dart';
 import 'theme/app_theme.dart';
 
 void main() {
-  runApp(const ImeceYapiApp());
+  runApp(const ImeceBuradaApp());
 }
 
-class ImeceYapiApp extends StatelessWidget {
-  const ImeceYapiApp({super.key});
+class ImeceBuradaApp extends StatelessWidget {
+  const ImeceBuradaApp({super.key});
 
   @override
   Widget build(BuildContext context) {

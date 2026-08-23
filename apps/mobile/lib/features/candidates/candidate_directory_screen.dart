@@ -3,13 +3,12 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/candidate_directory.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
 import '../../widgets/province_district_picker.dart';
 import 'candidate_detail_screen.dart';
-
-const _allTrades = Option('', 'Tüm Meslekler');
 
 class CandidateDirectoryScreen extends StatefulWidget {
   const CandidateDirectoryScreen({super.key});
@@ -50,7 +49,7 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('candidates.connectionError'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -58,15 +57,17 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
+    final allTrades = Option('', t('candidates.directory.allTrades'));
     return Scaffold(
-      appBar: AppBar(title: const Text('Usta / Aday Dizini')),
+      appBar: AppBar(title: Text(t('candidates.directory.title'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           AppDropdown(
-            label: 'Meslek',
+            label: t('candidates.directory.tradeLabel'),
             value: _tradeCategory,
-            options: [_allTrades, ...tradeCategories],
+            options: [allTrades, ...tradeCategories],
             onChanged: (v) {
               setState(() => _tradeCategory = v);
               _load();
@@ -100,9 +101,9 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
               child: Text(_error!, style: const TextStyle(color: AppColors.red400)),
             ),
           if (!_isLoading && _error == null && _candidates.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(12),
-              child: Text('Sonuç bulunamadı.', style: TextStyle(color: AppColors.silver500)),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(t('candidates.directory.noResults'), style: const TextStyle(color: AppColors.silver500)),
             ),
           ..._candidates.map(
             (c) => Card(
@@ -118,7 +119,10 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
                   ],
                 ),
                 subtitle: Text(
-                  '${c.city}${c.district != null ? ' / ${c.district}' : ''} · ${c.experienceYears} yıl deneyim',
+                  t('candidates.directory.itemSubtitle', vars: {
+                    'location': '${c.city}${c.district != null ? ' / ${c.district}' : ''}',
+                    'years': c.experienceYears.toString(),
+                  }),
                   style: const TextStyle(color: AppColors.silver500),
                 ),
                 trailing: Text(

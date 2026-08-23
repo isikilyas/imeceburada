@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/material_listing.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
 import '../../widgets/province_district_picker.dart';
 import 'material_listing_detail_screen.dart';
-
-const _allMaterials = Option('', 'Tüm Malzemeler');
 
 class MaterialListingsScreen extends StatefulWidget {
   const MaterialListingsScreen({super.key});
@@ -48,7 +48,7 @@ class _MaterialListingsScreenState extends State<MaterialListingsScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('materialListings.error.connection'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -56,15 +56,17 @@ class _MaterialListingsScreenState extends State<MaterialListingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
+    final allMaterials = Option('', t('materialListings.allMaterials'));
     return Scaffold(
-      appBar: AppBar(title: const Text('Malzeme İlanları')),
+      appBar: AppBar(title: Text(t('materialListings.list.title'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           AppDropdown(
-            label: 'Malzeme',
+            label: t('materialListings.list.filterLabel'),
             value: _materialType,
-            options: const [_allMaterials, ...materialTypes],
+            options: [allMaterials, ...materialTypes],
             onChanged: (v) {
               setState(() => _materialType = v);
               _load();
@@ -98,9 +100,9 @@ class _MaterialListingsScreenState extends State<MaterialListingsScreen> {
               child: Text(_error!, style: const TextStyle(color: AppColors.red400)),
             ),
           if (!_isLoading && _error == null && _listings.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(12),
-              child: Text('Sonuç bulunamadı.', style: TextStyle(color: AppColors.silver500)),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(t('materialListings.list.noResults'), style: const TextStyle(color: AppColors.silver500)),
             ),
           ..._listings.map(
             (listing) => Card(
@@ -115,7 +117,7 @@ class _MaterialListingsScreenState extends State<MaterialListingsScreen> {
                   style: const TextStyle(color: AppColors.silver500),
                 ),
                 trailing: Text(
-                  '${listing.price} ₺/${listing.unit}',
+                  t('materialListings.price', vars: {'price': listing.price.toString(), 'unit': listing.unit}),
                   style: const TextStyle(color: AppColors.gold400, fontWeight: FontWeight.w600),
                 ),
                 onTap: () => Navigator.of(context).push(

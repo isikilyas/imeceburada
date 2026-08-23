@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/api_client.dart';
 import '../core/constants.dart';
+import '../core/locale_store.dart';
 import '../models/material_listing.dart';
 import '../theme/app_theme.dart';
+import 'app_dropdown.dart';
+import 'province_district_picker.dart';
 import '../features/material_listings/material_listing_detail_screen.dart';
 import '../features/material_listings/material_listings_screen.dart';
 
 /// Ana ekrandaki (Piyasa sekmesi) ücretsiz tedarikçi reklam alanı — web'deki
 /// ana sayfa "Tedarikçi Vitrini" bölümünün mobil karşılığı. Ücretli "öne
-/// çıkar" katmanı yok, sadece aktif malzeme ilanlarından bir örneklem.
+/// çıkar" katmanı yok, sadece aktif malzeme ilanlarından bir örneklem;
+/// web'deki gibi malzeme + il/ilçe filtresiyle daraltılabilir.
 class SupplierSpotlight extends StatefulWidget {
   const SupplierSpotlight({super.key});
 
@@ -19,7 +24,11 @@ class SupplierSpotlight extends StatefulWidget {
 class _SupplierSpotlightState extends State<SupplierSpotlight> {
   final _api = ApiClient();
   bool _isLoading = true;
+  bool _everLoaded = false;
   List<MaterialListing> _listings = [];
+  String _materialType = '';
+  String _city = '';
+  String _district = '';
 
   @override
   void initState() {
@@ -28,21 +37,35 @@ class _SupplierSpotlightState extends State<SupplierSpotlight> {
   }
 
   Future<void> _load() async {
+    setState(() => _isLoading = true);
     try {
-      final raw = await _api.get('/material-listings', query: {'pageSize': '6'});
+      final raw = await _api.get('/material-listings', query: {
+        'pageSize': '6',
+        if (_materialType.isNotEmpty) 'materialType': _materialType,
+        if (_city.isNotEmpty) 'city': _city,
+        if (_district.isNotEmpty) 'district': _district,
+      });
       final map = raw as Map<String, dynamic>;
       final items = (map['items'] as List).map((e) => MaterialListing.fromJson(e as Map<String, dynamic>)).toList();
       if (mounted) setState(() => _listings = items);
     } catch (_) {
       // sessizce geç — vitrin sadece veri varsa gösterilir
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _everLoaded = true;
+        });
+      }
     }
   }
 
+  bool get _isFiltered => _materialType.isNotEmpty || _city.isNotEmpty || _district.isNotEmpty;
+
   @override
   Widget build(BuildContext context) {
-    if (_isLoading || _listings.isEmpty) return const SizedBox.shrink();
+    final t = context.watch<LocaleStore>().t;
+    if (_everLoaded && !_isFiltered && _listings.isEmpty) return const SizedBox.shrink();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,18 +73,59 @@ class _SupplierSpotlightState extends State<SupplierSpotlight> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Tedarikçi Vitrini',
-              style: TextStyle(color: AppColors.silver300, fontWeight: FontWeight.w600, fontSize: 16),
+            Text(
+              t('widgets.supplierSpotlight.heading'),
+              style: const TextStyle(color: AppColors.silver300, fontWeight: FontWeight.w600, fontSize: 16),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const MaterialListingsScreen()),
               ),
-              child: const Text('Tümü →', style: TextStyle(color: AppColors.gold400, fontSize: 13)),
+              child: Text(t('widgets.supplierSpotlight.viewAll'),
+                  style: const TextStyle(color: AppColors.gold400, fontSize: 13)),
             ),
           ],
         ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: AppDropdown(
+                label: t('widgets.supplierSpotlight.materialLabel'),
+                value: _materialType,
+                options: [Option('', t('widgets.supplierSpotlight.allMaterials')), ...materialTypes],
+                onChanged: (v) {
+                  setState(() => _materialType = v);
+                  _load();
+                },
+              ),
+            ),
+          ],
+        ),
+        ProvinceDistrictPicker(
+          city: _city,
+          district: _district,
+          allowEmptyCity: true,
+          allowEmptyDistrict: true,
+          onCityChanged: (v) {
+            setState(() {
+              _city = v;
+              _district = '';
+            });
+            _load();
+          },
+          onDistrictChanged: (v) {
+            setState(() => _district = v);
+            _load();
+          },
+        ),
+        const SizedBox(height: 8),
+        if (!_isLoading && _listings.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(t('widgets.supplierSpotlight.noResults'),
+                style: const TextStyle(color: AppColors.silver500, fontSize: 13)),
+          ),
         SizedBox(
           height: 100,
           child: ListView.separated(

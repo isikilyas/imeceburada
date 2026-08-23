@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
 import '../../widgets/province_district_picker.dart';
@@ -51,7 +52,7 @@ class _NewJobScreenState extends State<NewJobScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'İlan oluşturulamadı');
+      setState(() => _error = context.read<LocaleStore>().t('jobs.new.createFailed'));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -59,18 +60,19 @@ class _NewJobScreenState extends State<NewJobScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Yeni İlan Aç')),
+      appBar: AppBar(title: Text(t('jobs.new.title'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           TextField(
             controller: _titleController,
-            decoration: const InputDecoration(labelText: 'Başlık'),
+            decoration: InputDecoration(labelText: t('jobs.new.titleLabel')),
           ),
           const SizedBox(height: 12),
           AppDropdown(
-            label: 'Ne Arıyorsunuz?',
+            label: t('jobs.new.listingTypeLabel'),
             value: _listingType,
             options: listingIntents,
             onChanged: (v) => setState(() => _listingType = v),
@@ -86,7 +88,7 @@ class _NewJobScreenState extends State<NewJobScreen> {
             onDistrictChanged: (v) => setState(() => _district = v),
           ),
           AppDropdown(
-            label: 'Çalışma Şekli',
+            label: t('jobs.new.employmentTypeLabel'),
             value: _employmentType,
             options: employmentTypes,
             onChanged: (v) => setState(() => _employmentType = v),
@@ -97,7 +99,7 @@ class _NewJobScreenState extends State<NewJobScreen> {
                 child: TextField(
                   controller: _salaryMinController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Min. Ücret (₺, opsiyonel)'),
+                  decoration: InputDecoration(labelText: t('jobs.new.minSalaryLabel')),
                 ),
               ),
               const SizedBox(width: 12),
@@ -105,7 +107,7 @@ class _NewJobScreenState extends State<NewJobScreen> {
                 child: TextField(
                   controller: _salaryMaxController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Max. Ücret (₺, opsiyonel)'),
+                  decoration: InputDecoration(labelText: t('jobs.new.maxSalaryLabel')),
                 ),
               ),
             ],
@@ -114,7 +116,7 @@ class _NewJobScreenState extends State<NewJobScreen> {
           TextField(
             controller: _descriptionController,
             maxLines: 4,
-            decoration: const InputDecoration(labelText: 'Açıklama'),
+            decoration: InputDecoration(labelText: t('jobs.new.descriptionLabel')),
           ),
           if (_error != null) ...[
             const SizedBox(height: 12),
@@ -123,7 +125,7 @@ class _NewJobScreenState extends State<NewJobScreen> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _isSubmitting ? null : _submit,
-            child: Text(_isSubmitting ? 'Yayınlanıyor...' : 'İlanı Yayınla'),
+            child: Text(_isSubmitting ? t('jobs.new.publishing') : t('jobs.new.publish')),
           ),
         ],
       ),

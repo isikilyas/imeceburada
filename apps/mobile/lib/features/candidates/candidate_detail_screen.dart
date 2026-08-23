@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/candidate_directory.dart';
 import '../../theme/app_theme.dart';
 import '../../core/phone.dart';
@@ -34,7 +35,7 @@ class _CandidateDetailScreenState extends State<CandidateDetailScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('candidates.connectionError'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -42,17 +43,18 @@ class _CandidateDetailScreenState extends State<CandidateDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Aday Detayı')),
+      appBar: AppBar(title: Text(t('candidates.detail.title'))),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator(color: AppColors.gold500))
           : _error != null
               ? Center(child: Text(_error!, style: const TextStyle(color: AppColors.red400)))
-              : _buildContent(),
+              : _buildContent(t),
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(String Function(String key, {Map<String, String>? vars}) t) {
     final candidate = _candidate;
     if (candidate == null) return const SizedBox.shrink();
 
@@ -73,7 +75,9 @@ class _CandidateDetailScreenState extends State<CandidateDetailScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                candidate.availabilityStatus == 'AVAILABLE' ? '🟢 Müsait' : '🔴 Şu An Çalışıyor',
+                candidate.availabilityStatus == 'AVAILABLE'
+                    ? t('candidates.detail.availableBadge')
+                    : t('candidates.detail.busyBadge'),
                 style: TextStyle(
                   color: candidate.availabilityStatus == 'AVAILABLE' ? AppColors.green400 : AppColors.silver500,
                   fontSize: 12,
@@ -85,7 +89,7 @@ class _CandidateDetailScreenState extends State<CandidateDetailScreen> {
         ),
         const SizedBox(height: 4),
         Text(
-          '${candidate.city} · ${candidate.experienceYears} yıl deneyim',
+          t('candidates.detail.meta', vars: {'city': candidate.city, 'years': candidate.experienceYears.toString()}),
           style: const TextStyle(color: AppColors.silver500),
         ),
         const SizedBox(height: 8),
@@ -125,16 +129,16 @@ class _CandidateDetailScreenState extends State<CandidateDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('İletişim', style: TextStyle(color: AppColors.silver500, fontSize: 12)),
+                Text(t('candidates.detail.contactLabel'), style: const TextStyle(color: AppColors.silver500, fontSize: 12)),
                 const SizedBox(height: 4),
                 Text(maskPhone(candidate.phone!), style: const TextStyle(color: AppColors.gold400, fontSize: 16)),
                 const SizedBox(height: 10),
                 WhatsAppContactButton(
                   phone: candidate.phone!,
-                  message:
-                      'Merhaba, platformunuzdaki ${tradeCategories.labelFor(candidate.primaryTradeCategory ?? '')} profilinizi gördüm. Görüşmek isterseniz müsait misiniz?',
+                  message: t('candidates.detail.contactMessage',
+                      vars: {'trade': tradeCategories.labelFor(candidate.primaryTradeCategory ?? '')}),
                   disabled: candidate.availabilityStatus != 'AVAILABLE',
-                  disabledLabel: 'Şu an iş aramıyor',
+                  disabledLabel: t('candidates.detail.notAvailable'),
                 ),
               ],
             ),

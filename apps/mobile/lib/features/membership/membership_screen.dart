@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/membership.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
@@ -53,7 +54,7 @@ class _MembershipScreenState extends State<MembershipScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('membership.connectionErrorGeneric'));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -72,7 +73,7 @@ class _MembershipScreenState extends State<MembershipScreen> {
     } on ApiException catch (e) {
       setState(() => _phoneError = e.message);
     } catch (_) {
-      setState(() => _phoneError = 'Kod gönderilemedi');
+      setState(() => _phoneError = context.read<LocaleStore>().t('membership.codeSendFailed'));
     } finally {
       if (mounted) setState(() => _isPhoneSubmitting = false);
     }
@@ -91,7 +92,7 @@ class _MembershipScreenState extends State<MembershipScreen> {
     } on ApiException catch (e) {
       setState(() => _phoneError = e.message);
     } catch (_) {
-      setState(() => _phoneError = 'Kod doğrulanamadı');
+      setState(() => _phoneError = context.read<LocaleStore>().t('membership.codeVerifyFailed'));
     } finally {
       if (mounted) setState(() => _isPhoneSubmitting = false);
     }
@@ -119,7 +120,7 @@ class _MembershipScreenState extends State<MembershipScreen> {
     } on ApiException catch (e) {
       setState(() => _checkoutError = e.message);
     } catch (_) {
-      setState(() => _checkoutError = 'Ödeme başlatılamadı');
+      setState(() => _checkoutError = context.read<LocaleStore>().t('membership.checkoutStartFailed'));
     } finally {
       if (mounted) setState(() => _isCheckoutSubmitting = false);
     }
@@ -127,17 +128,18 @@ class _MembershipScreenState extends State<MembershipScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Üyelik')),
+      appBar: AppBar(title: Text(t('membership.title'))),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator(color: AppColors.gold500))
           : _error != null
               ? Center(child: Text(_error!, style: const TextStyle(color: AppColors.red400)))
-              : _buildContent(),
+              : _buildContent(t),
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(String Function(String, {Map<String, String>? vars}) t) {
     final membership = _membership;
     if (membership == null) return const SizedBox.shrink();
 
@@ -147,11 +149,13 @@ class _MembershipScreenState extends State<MembershipScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Üyeliğin aktif ✓', style: TextStyle(color: AppColors.gold400, fontSize: 18)),
+            Text(t('membership.activeStatus'), style: const TextStyle(color: AppColors.gold400, fontSize: 18)),
             if (membership.expiresAt != null) ...[
               const SizedBox(height: 8),
               Text(
-                'Bitiş tarihi: ${DateTime.parse(membership.expiresAt!).toLocal().toString().split(' ').first}',
+                t('membership.expiresAt', vars: {
+                  'date': DateTime.parse(membership.expiresAt!).toLocal().toString().split(' ').first,
+                }),
                 style: const TextStyle(color: AppColors.silver500),
               ),
             ],
@@ -164,17 +168,17 @@ class _MembershipScreenState extends State<MembershipScreen> {
       return ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text('Telefon Doğrulama', style: TextStyle(color: AppColors.silver300, fontSize: 18)),
+          Text(t('membership.phoneVerificationTitle'), style: const TextStyle(color: AppColors.silver300, fontSize: 18)),
           const SizedBox(height: 8),
-          const Text(
-            'Üyelik için önce telefon numaranı doğrulaman gerekiyor.',
-            style: TextStyle(color: AppColors.silver500, fontSize: 13),
+          Text(
+            t('membership.phoneVerificationPrompt'),
+            style: const TextStyle(color: AppColors.silver500, fontSize: 13),
           ),
           const SizedBox(height: 16),
           if (!_codeSent) ...[
             TextField(
               controller: _phoneController,
-              decoration: const InputDecoration(labelText: 'Telefon (+90...)'),
+              decoration: InputDecoration(labelText: t('membership.phoneLabel')),
             ),
             const SizedBox(height: 12),
             if (_phoneError != null) ...[
@@ -183,13 +187,13 @@ class _MembershipScreenState extends State<MembershipScreen> {
             ],
             ElevatedButton(
               onPressed: _isPhoneSubmitting ? null : _sendCode,
-              child: Text(_isPhoneSubmitting ? 'Gönderiliyor...' : 'Kod Gönder'),
+              child: Text(_isPhoneSubmitting ? t('membership.sendingCode') : t('membership.sendCodeButton')),
             ),
           ] else ...[
             TextField(
               controller: _codeController,
               maxLength: 6,
-              decoration: const InputDecoration(labelText: 'Doğrulama Kodu'),
+              decoration: InputDecoration(labelText: t('membership.verificationCodeLabel')),
             ),
             if (_phoneError != null) ...[
               Text(_phoneError!, style: const TextStyle(color: AppColors.red400)),
@@ -197,7 +201,7 @@ class _MembershipScreenState extends State<MembershipScreen> {
             ],
             ElevatedButton(
               onPressed: _isPhoneSubmitting ? null : _verifyCode,
-              child: Text(_isPhoneSubmitting ? 'Doğrulanıyor...' : 'Doğrula'),
+              child: Text(_isPhoneSubmitting ? t('membership.verifyingCode') : t('membership.verifyButton')),
             ),
           ],
         ],
@@ -207,14 +211,14 @@ class _MembershipScreenState extends State<MembershipScreen> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        const Text('Üyelik Planı Seç', style: TextStyle(color: AppColors.silver300, fontSize: 18)),
+        Text(t('membership.selectPlanTitle'), style: const TextStyle(color: AppColors.silver300, fontSize: 18)),
         const SizedBox(height: 12),
         Row(
           children: [
             Expanded(
               child: _PlanCard(
-                label: 'Aylık',
-                priceLabel: '499 ₺ / ay',
+                label: t('membership.monthlyPlanLabel'),
+                priceLabel: t('membership.monthlyPriceLabel'),
                 selected: _plan == 'MONTHLY',
                 onTap: () => setState(() => _plan = 'MONTHLY'),
               ),
@@ -222,8 +226,8 @@ class _MembershipScreenState extends State<MembershipScreen> {
             const SizedBox(width: 8),
             Expanded(
               child: _PlanCard(
-                label: 'Yıllık',
-                priceLabel: '4.990 ₺ / yıl',
+                label: t('membership.yearlyPlanLabel'),
+                priceLabel: t('membership.yearlyPriceLabel'),
                 selected: _plan == 'YEARLY',
                 onTap: () => setState(() => _plan = 'YEARLY'),
               ),
@@ -231,22 +235,25 @@ class _MembershipScreenState extends State<MembershipScreen> {
           ],
         ),
         const SizedBox(height: 16),
-        TextField(controller: _identityController, decoration: const InputDecoration(labelText: 'TCKN / VKN')),
+        TextField(
+          controller: _identityController,
+          decoration: InputDecoration(labelText: t('membership.identityNumberLabel')),
+        ),
         const SizedBox(height: 12),
         TextField(
           controller: _billingNameController,
-          decoration: const InputDecoration(labelText: 'Fatura Yetkilisi Ad Soyad'),
+          decoration: InputDecoration(labelText: t('membership.billingContactNameLabel')),
         ),
         const SizedBox(height: 12),
         AppDropdown(
-          label: 'Fatura Şehri',
+          label: t('membership.billingCityLabel'),
           value: _billingCity,
           options: turkishProvinces.map((p) => Option(p, p)).toList(),
           onChanged: (v) => setState(() => _billingCity = v),
         ),
         TextField(
           controller: _billingAddressController,
-          decoration: const InputDecoration(labelText: 'Fatura Adresi'),
+          decoration: InputDecoration(labelText: t('membership.billingAddressLabel')),
         ),
         if (_checkoutError != null) ...[
           const SizedBox(height: 12),
@@ -255,7 +262,7 @@ class _MembershipScreenState extends State<MembershipScreen> {
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: _isCheckoutSubmitting ? null : _startCheckout,
-          child: Text(_isCheckoutSubmitting ? 'Yönlendiriliyor...' : 'Ödemeye Geç'),
+          child: Text(_isCheckoutSubmitting ? t('membership.redirecting') : t('membership.proceedToPaymentButton')),
         ),
       ],
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
+import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 
 /// Şifre sıfırlama linki e-postayla gönderilir; linki tamamlama (yeni şifre
@@ -36,7 +38,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'İstek gönderilemedi');
+      if (mounted) {
+        setState(() => _error = context.read<LocaleStore>().t('auth.forgotPasswordRequestFailed'));
+      }
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -44,21 +48,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Şifremi Unuttum')),
+      appBar: AppBar(title: Text(t('auth.forgotPasswordTitle'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           if (_done)
-            const Text(
-              'Girdiğin e-posta adresi sistemde kayıtlıysa, şifre sıfırlama linkini içeren bir e-posta gönderildi.',
-              style: TextStyle(color: AppColors.silver300),
+            Text(
+              t('auth.forgotPasswordDone'),
+              style: const TextStyle(color: AppColors.silver300),
             )
           else ...[
             TextField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: 'E-posta'),
+              decoration: InputDecoration(labelText: t('auth.emailLabel')),
             ),
             if (_error != null) ...[
               const SizedBox(height: 12),
@@ -67,7 +72,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _isSubmitting ? null : _submit,
-              child: Text(_isSubmitting ? 'Gönderiliyor...' : 'Sıfırlama Linki Gönder'),
+              child: Text(_isSubmitting ? t('auth.forgotPasswordSubmitting') : t('auth.forgotPasswordSubmitButton')),
             ),
           ],
         ],

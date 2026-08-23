@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/candidate_profile.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/multi_checkbox_list.dart';
@@ -67,7 +68,9 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     } on ApiException catch (e) {
       setState(() => _loadError = e.message);
     } catch (_) {
-      setState(() => _loadError = 'Profil yüklenemedi');
+      if (mounted) {
+        setState(() => _loadError = context.read<LocaleStore>().t('profile.candidateProfile.loadFailed'));
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -94,7 +97,9 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     } on ApiException catch (e) {
       setState(() => _saveError = e.message);
     } catch (_) {
-      setState(() => _saveError = 'Kaydedilemedi');
+      if (mounted) {
+        setState(() => _saveError = context.read<LocaleStore>().t('profile.candidateProfile.saveFailed'));
+      }
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
@@ -102,8 +107,9 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Profilim')),
+      appBar: AppBar(title: Text(t('profile.candidateProfile.title'))),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator(color: AppColors.gold500))
           : _loadError != null
@@ -125,28 +131,32 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                     TextField(
                       controller: _experienceYearsController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Deneyim (yıl)'),
+                      decoration: InputDecoration(labelText: t('profile.candidateProfile.experienceYearsLabel')),
                     ),
                     const SizedBox(height: 12),
                     TextField(
                       controller: _phoneController,
-                      decoration: const InputDecoration(labelText: 'Telefon', hintText: '+905551234567'),
+                      decoration: InputDecoration(
+                        labelText: t('profile.candidateProfile.phoneLabel'),
+                        hintText: '+905551234567',
+                      ),
                     ),
                     const SizedBox(height: 14),
                     MultiCheckboxList(
-                      label: 'Çalışma Şekli Tercihlerim',
+                      label: t('profile.candidateProfile.workPreferencesLabel'),
                       options: workPreferences,
                       values: _workPreferences,
                       onChanged: (v) => setState(() => _workPreferences = v),
                     ),
                     const SizedBox(height: 14),
-                    const Text('Müsaitlik Durumu', style: TextStyle(color: AppColors.silver300, fontSize: 14)),
+                    Text(t('profile.candidateProfile.availabilityLabel'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14)),
                     const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: _AvailabilityButton(
-                            label: '🟢 Müsaitim',
+                            label: t('profile.candidateProfile.availableStatus'),
                             selected: _availabilityStatus == 'AVAILABLE',
                             selectedColor: const Color(0xFF16A34A),
                             onTap: () => setState(() => _availabilityStatus = 'AVAILABLE'),
@@ -155,7 +165,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: _AvailabilityButton(
-                            label: '🔴 Şu An Çalışıyorum',
+                            label: t('profile.candidateProfile.busyStatus'),
                             selected: _availabilityStatus == 'BUSY',
                             selectedColor: AppColors.ink700,
                             onTap: () => setState(() => _availabilityStatus = 'BUSY'),
@@ -164,17 +174,17 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      '"Şu an çalışıyorum" seçersen dizindeki WhatsApp ile iletişim butonun geçici olarak kapanır.',
-                      style: TextStyle(color: AppColors.silver500, fontSize: 12),
+                    Text(
+                      t('profile.candidateProfile.busyStatusHint'),
+                      style: const TextStyle(color: AppColors.silver500, fontSize: 12),
                     ),
                     const SizedBox(height: 14),
                     CheckboxListTile(
                       value: _isPublic,
                       onChanged: (v) => setState(() => _isPublic = v ?? false),
-                      title: const Text(
-                        'Profilimi firmaların arayabileceği usta dizininde göster',
-                        style: TextStyle(color: AppColors.silver300, fontSize: 14),
+                      title: Text(
+                        t('profile.candidateProfile.publicListingLabel'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
                       contentPadding: EdgeInsets.zero,
@@ -186,12 +196,14 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                     ],
                     if (_saved) ...[
                       const SizedBox(height: 8),
-                      const Text('Kaydedildi!', style: TextStyle(color: AppColors.green400)),
+                      Text(t('profile.candidateProfile.saved'), style: const TextStyle(color: AppColors.green400)),
                     ],
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: _isSaving ? null : _save,
-                      child: Text(_isSaving ? 'Kaydediliyor...' : 'Kaydet'),
+                      child: Text(_isSaving
+                          ? t('profile.candidateProfile.saving')
+                          : t('profile.candidateProfile.saveButton')),
                     ),
                   ],
                 ),

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/site_request.dart';
 import '../../theme/app_theme.dart';
 import '../auth/login_screen.dart';
@@ -47,7 +48,7 @@ class _SiteRequestDetailScreenState extends State<SiteRequestDetailScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('siteRadar.connectionError'));
     } finally {
       setState(() => _isLoading = false);
     }
@@ -75,7 +76,7 @@ class _SiteRequestDetailScreenState extends State<SiteRequestDetailScreen> {
     } on ApiException catch (e) {
       setState(() => _respondError = e.message);
     } catch (_) {
-      setState(() => _respondError = 'Yanıt gönderilemedi');
+      setState(() => _respondError = context.read<LocaleStore>().t('siteRadar.detail.respondError'));
     } finally {
       if (mounted) setState(() => _isResponding = false);
     }
@@ -83,14 +84,15 @@ class _SiteRequestDetailScreenState extends State<SiteRequestDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     final request = _request;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Çağrı Detayı'),
+        title: Text(t('siteRadar.detail.title')),
         actions: [
           if (request != null)
             WhatsAppShareButton(
-              text: "🚨 Anlık Çağrı: ${request.title} — ${request.city}\nİmece Burada'da incele:",
+              text: t('siteRadar.detail.shareText', vars: {'title': request.title, 'city': request.city}),
             ),
         ],
       ),
@@ -100,11 +102,11 @@ class _SiteRequestDetailScreenState extends State<SiteRequestDetailScreen> {
               ? Center(child: Text(_error!, style: const TextStyle(color: AppColors.red400)))
               : request == null
                   ? const SizedBox.shrink()
-                  : _buildContent(request),
+                  : _buildContent(request, t),
     );
   }
 
-  Widget _buildContent(SiteRequest request) {
+  Widget _buildContent(SiteRequest request, String Function(String key, {Map<String, String>? vars}) t) {
     final kindLabel = request.requestType == 'WORKER'
         ? tradeCategories.labelFor(request.tradeCategory ?? '')
         : equipmentTypes.labelFor(request.equipmentType ?? '');
@@ -123,7 +125,11 @@ class _SiteRequestDetailScreenState extends State<SiteRequestDetailScreen> {
         Text(request.title, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 22)),
         const SizedBox(height: 4),
         Text(
-          '${request.createdByName} · $location · ${request.neededCount} adet gerekiyor',
+          t('siteRadar.detail.meta', vars: {
+            'name': request.createdByName,
+            'location': location,
+            'count': request.neededCount.toString(),
+          }),
           style: const TextStyle(color: AppColors.silver500),
         ),
         const SizedBox(height: 16),
@@ -157,15 +163,15 @@ class _SiteRequestDetailScreenState extends State<SiteRequestDetailScreen> {
         ),
         const SizedBox(height: 20),
         if (isOwner)
-          Text('${request.responseCount} yanıt aldın (yanıt yönetimi 3. adımda profil ekranına eklenecek).',
+          Text(t('siteRadar.detail.ownerResponses', vars: {'count': request.responseCount.toString()}),
               style: const TextStyle(color: AppColors.silver500))
         else if (_responded)
-          const Text('Yanıtın gönderildi!', style: TextStyle(color: AppColors.green400))
+          Text(t('siteRadar.detail.responseSent'), style: const TextStyle(color: AppColors.green400))
         else ...[
           TextField(
             controller: _messageController,
             maxLines: 2,
-            decoration: const InputDecoration(labelText: 'Mesaj (opsiyonel)'),
+            decoration: InputDecoration(labelText: t('siteRadar.detail.messageLabel')),
           ),
           const SizedBox(height: 10),
           if (_respondError != null) ...[
@@ -174,7 +180,7 @@ class _SiteRequestDetailScreenState extends State<SiteRequestDetailScreen> {
           ],
           ElevatedButton(
             onPressed: _isResponding ? null : _respond,
-            child: Text(_isResponding ? 'Gönderiliyor...' : 'Yanıt Ver'),
+            child: Text(_isResponding ? t('siteRadar.detail.sending') : t('siteRadar.detail.respond')),
           ),
         ],
       ],

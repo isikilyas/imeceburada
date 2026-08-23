@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../core/locale_store.dart';
 import '../core/phone.dart';
 import '../theme/app_theme.dart';
 
@@ -9,14 +11,14 @@ class WhatsAppContactButton extends StatelessWidget {
   final String phone;
   final String message;
   final bool disabled;
-  final String disabledLabel;
+  final String? disabledLabel;
 
   const WhatsAppContactButton({
     super.key,
     required this.phone,
     required this.message,
     this.disabled = false,
-    this.disabledLabel = 'Şu an müsait değil',
+    this.disabledLabel,
   });
 
   Future<void> _open() async {
@@ -28,6 +30,7 @@ class WhatsAppContactButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     if (disabled) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -36,7 +39,7 @@ class WhatsAppContactButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
         ),
         child: Text(
-          '🔴 $disabledLabel',
+          '🔴 ${disabledLabel ?? t('widgets.whatsappContact.disabledLabel')}',
           style: const TextStyle(color: AppColors.silver500, fontSize: 13),
         ),
       );
@@ -48,7 +51,7 @@ class WhatsAppContactButton extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       icon: const Text('💬'),
-      label: const Text('WhatsApp ile İletişime Geç'),
+      label: Text(t('widgets.whatsappContact.buttonLabel')),
     );
   }
 }

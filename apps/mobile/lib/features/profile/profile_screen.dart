@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/auth_store.dart';
+import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import '../auth/login_screen.dart';
 import '../auth/register_screen.dart';
@@ -15,11 +16,11 @@ import '../equipment/equipment_mine_screen.dart';
 import '../../widgets/language_switcher.dart';
 import 'candidate_profile_screen.dart';
 
-const Map<String, String> _roleLabels = {
-  'CANDIDATE': 'İş Arayan Personel Hesabı',
-  'COMPANY': 'Firma Hesabı',
-  'SUPPLIER': 'Yapı Tedarik Hesabı',
-  'SUBCONTRACTOR': 'Taşeron Firma Hesabı',
+const Map<String, String> _roleLabelKeys = {
+  'CANDIDATE': 'profile.roleCandidate',
+  'COMPANY': 'profile.roleCompany',
+  'SUPPLIER': 'profile.roleSupplier',
+  'SUBCONTRACTOR': 'profile.roleSubcontractor',
 };
 
 /// VKN/belge doğrulama Faz 2'nin sonraki bir adımında eklenecek.
@@ -30,9 +31,10 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthStore>();
     final user = auth.user;
+    final t = context.watch<LocaleStore>().t;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profil')),
+      appBar: AppBar(title: Text(t('profile.title'))),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -41,93 +43,96 @@ class ProfileScreen extends StatelessWidget {
             const LanguageSwitcher(),
             const SizedBox(height: 12),
             if (user == null) ...[
-              const Text(
-                'Profilini görmek, ilan/çağrı vermek ve piyasa verisine katkı sunmak için giriş yapmalısın.',
-                style: TextStyle(color: AppColors.silver500),
+              Text(
+                t('profile.loginPrompt'),
+                style: const TextStyle(color: AppColors.silver500),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginScreen())),
-                child: const Text('Giriş Yap'),
+                child: Text(t('profile.loginButton')),
               ),
               const SizedBox(height: 12),
               OutlinedButton(
                 onPressed: () =>
                     Navigator.of(context).push(MaterialPageRoute(builder: (_) => const RegisterScreen())),
-                child: const Text('Kayıt Ol'),
+                child: Text(t('profile.registerButton')),
               ),
             ] else ...[
               const Icon(Icons.account_circle, color: AppColors.gold500, size: 64),
               const SizedBox(height: 12),
               Text(user.email, style: const TextStyle(color: AppColors.silver300, fontSize: 16)),
               const SizedBox(height: 4),
-              Text(_roleLabels[user.role] ?? user.role, style: const TextStyle(color: AppColors.silver500)),
+              Text(
+                _roleLabelKeys[user.role] != null ? t(_roleLabelKeys[user.role]!) : user.role,
+                style: const TextStyle(color: AppColors.silver500),
+              ),
               const SizedBox(height: 24),
               if (user.role == 'CANDIDATE') ...[
                 OutlinedButton(
                   onPressed: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const CandidateProfileScreen())),
-                  child: const Text('Profilimi Düzenle'),
+                  child: Text(t('profile.editProfileButton')),
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton(
                   onPressed: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const MyApplicationsScreen())),
-                  child: const Text('Başvurularım'),
+                  child: Text(t('profile.myApplicationsButton')),
                 ),
               ],
               if (user.role == 'COMPANY') ...[
                 OutlinedButton(
                   onPressed: () =>
                       Navigator.of(context).push(MaterialPageRoute(builder: (_) => const CompanyJobsScreen())),
-                  child: const Text('İlanlarım'),
+                  child: Text(t('profile.myListingsButton')),
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton(
                   onPressed: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const CandidateDirectoryScreen())),
-                  child: const Text('Usta / Aday Dizini'),
+                  child: Text(t('profile.candidateDirectoryButton')),
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton(
                   onPressed: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const SubcontractorDirectoryScreen())),
-                  child: const Text('Taşeron Firma Dizini'),
+                  child: Text(t('profile.subcontractorDirectoryButton')),
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton(
                   onPressed: () =>
                       Navigator.of(context).push(MaterialPageRoute(builder: (_) => const MembershipScreen())),
-                  child: const Text('Üyelik'),
+                  child: Text(t('profile.membershipButton')),
                 ),
               ],
               if (user.role == 'SUPPLIER')
                 OutlinedButton(
                   onPressed: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const SupplierDashboardScreen())),
-                  child: const Text('Yapı Tedarik Paneli'),
+                  child: Text(t('profile.supplierPanelButton')),
                 ),
               if (user.role == 'SUBCONTRACTOR')
                 OutlinedButton(
                   onPressed: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const SubcontractorDashboardScreen())),
-                  child: const Text('Taşeron Firma Panelim'),
+                  child: Text(t('profile.subcontractorPanelButton')),
                 ),
               const SizedBox(height: 12),
               OutlinedButton(
                 onPressed: () =>
                     Navigator.of(context).push(MaterialPageRoute(builder: (_) => const EquipmentMineScreen())),
-                child: const Text('Ekipman İlanlarım'),
+                child: Text(t('profile.myEquipmentListingsButton')),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'VKN / Ticaret Sicili doğrulama bir sonraki adımda eklenecek.',
-                style: TextStyle(color: AppColors.silver500, fontSize: 13),
+              Text(
+                t('profile.verificationComingSoon'),
+                style: const TextStyle(color: AppColors.silver500, fontSize: 13),
               ),
               const Spacer(),
               OutlinedButton(
                 onPressed: () => context.read<AuthStore>().logout(),
-                child: const Text('Çıkış Yap'),
+                child: Text(t('profile.logoutButton')),
               ),
             ],
           ],

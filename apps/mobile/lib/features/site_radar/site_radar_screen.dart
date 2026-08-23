@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/site_request.dart';
 import '../../theme/app_theme.dart';
 import '../auth/login_screen.dart';
@@ -47,7 +48,7 @@ class _SiteRadarScreenState extends State<SiteRadarScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('siteRadar.connectionError'));
     } finally {
       setState(() => _isLoading = false);
     }
@@ -67,24 +68,25 @@ class _SiteRadarScreenState extends State<SiteRadarScreen> {
     if (created == true) _load();
   }
 
-  String _subtitle(SiteRequest r) {
+  String _subtitle(SiteRequest r, String Function(String key, {Map<String, String>? vars}) t) {
     final label = r.requestType == 'WORKER'
         ? tradeCategories.labelFor(r.tradeCategory ?? '')
         : equipmentTypes.labelFor(r.equipmentType ?? '');
     final location = r.district != null ? '${r.city} / ${r.district}' : r.city;
-    return '$label · $location · ${r.neededCount} adet';
+    return t('siteRadar.itemSubtitle', vars: {'label': label, 'location': location, 'count': r.neededCount.toString()});
   }
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Şantiye Radarı')),
+      appBar: AppBar(title: Text(t('siteRadar.screenTitle'))),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _openNewRequest,
         backgroundColor: AppColors.gold500,
         foregroundColor: AppColors.ink950,
         icon: const Icon(Icons.add_location_alt),
-        label: const Text('Anlık Çağrı Aç'),
+        label: Text(t('siteRadar.openRequestCta')),
       ),
       body: Column(
         children: [
@@ -92,17 +94,17 @@ class _SiteRadarScreenState extends State<SiteRadarScreen> {
             padding: const EdgeInsets.all(12),
             child: Row(
               children: [
-                _FilterChip(label: 'Tümü', selected: _typeFilter == null, onTap: () {
+                _FilterChip(label: t('siteRadar.filter.all'), selected: _typeFilter == null, onTap: () {
                   setState(() => _typeFilter = null);
                   _load();
                 }),
                 const SizedBox(width: 8),
-                _FilterChip(label: 'Usta / İşçi', selected: _typeFilter == 'WORKER', onTap: () {
+                _FilterChip(label: t('siteRadar.type.worker'), selected: _typeFilter == 'WORKER', onTap: () {
                   setState(() => _typeFilter = 'WORKER');
                   _load();
                 }),
                 const SizedBox(width: 8),
-                _FilterChip(label: 'İş Makinesi', selected: _typeFilter == 'EQUIPMENT', onTap: () {
+                _FilterChip(label: t('siteRadar.type.equipment'), selected: _typeFilter == 'EQUIPMENT', onTap: () {
                   setState(() => _typeFilter = 'EQUIPMENT');
                   _load();
                 }),
@@ -145,8 +147,8 @@ class _SiteRadarScreenState extends State<SiteRadarScreen> {
                 : _error != null
                     ? Center(child: Text(_error!, style: const TextStyle(color: AppColors.red400)))
                     : _requests.isEmpty
-                        ? const Center(
-                            child: Text('Şu anda açık çağrı yok.', style: TextStyle(color: AppColors.silver500)),
+                        ? Center(
+                            child: Text(t('siteRadar.emptyState'), style: const TextStyle(color: AppColors.silver500)),
                           )
                         : ListView.builder(
                             padding: const EdgeInsets.all(12),
@@ -157,8 +159,8 @@ class _SiteRadarScreenState extends State<SiteRadarScreen> {
                                 margin: const EdgeInsets.only(bottom: 10),
                                 child: ListTile(
                                   title: Text(r.title, style: Theme.of(context).textTheme.titleMedium),
-                                  subtitle: Text(_subtitle(r), style: const TextStyle(color: AppColors.silver500)),
-                                  trailing: Text('${r.responseCount} yanıt', style: const TextStyle(color: AppColors.gold400)),
+                                  subtitle: Text(_subtitle(r, t), style: const TextStyle(color: AppColors.silver500)),
+                                  trailing: Text(t('siteRadar.responseCount', vars: {'count': r.responseCount.toString()}), style: const TextStyle(color: AppColors.gold400)),
                                   onTap: () => Navigator.of(context).push(
                                     MaterialPageRoute(builder: (_) => SiteRequestDetailScreen(id: r.id)),
                                   ),

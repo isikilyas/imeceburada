@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../core/locale_store.dart';
 
 /// Bir ilanı herhangi bir WhatsApp sohbeti/grubuna paylaşmak için — sabit bir
 /// kişiye değil, kullanıcının kendi WhatsApp'ındaki paylaşım seçicisini açar.
@@ -15,8 +17,9 @@ class WhatsAppShareButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return IconButton(
-      tooltip: "WhatsApp'ta Paylaş",
+      tooltip: t('widgets.whatsappShare.tooltip'),
       icon: const Icon(Icons.share_outlined),
       onPressed: _share,
     );

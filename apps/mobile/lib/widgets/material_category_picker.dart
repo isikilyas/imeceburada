@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/constants.dart';
+import '../core/locale_store.dart';
 import '../theme/app_theme.dart';
 import 'app_dropdown.dart';
 
@@ -34,6 +36,7 @@ class _MaterialCategoryMultiPickerState extends State<MaterialCategoryMultiPicke
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     final category = _category;
 
     return Column(
@@ -57,7 +60,7 @@ class _MaterialCategoryMultiPickerState extends State<MaterialCategoryMultiPicke
             ),
           ),
         AppDropdown(
-          label: 'Ürün / Hizmet Kategorisi',
+          label: t('widgets.materialCategory.categoryLabel'),
           value: category.label,
           options: materialCategories.map((c) => Option(c.label, '${c.icon} ${c.label}')).toList(),
           onChanged: (v) {
@@ -69,14 +72,14 @@ class _MaterialCategoryMultiPickerState extends State<MaterialCategoryMultiPicke
           },
         ),
         AppDropdown(
-          label: 'Ürün / Hizmet',
+          label: t('widgets.materialCategory.itemLabel'),
           value: _pendingItem,
           options: category.items,
           onChanged: (v) => setState(() => _pendingItem = v),
         ),
         SizedBox(
           width: double.infinity,
-          child: OutlinedButton(onPressed: _add, child: const Text('+ Kategori Ekle')),
+          child: OutlinedButton(onPressed: _add, child: Text(t('widgets.materialCategory.addButton'))),
         ),
         const SizedBox(height: 14),
       ],

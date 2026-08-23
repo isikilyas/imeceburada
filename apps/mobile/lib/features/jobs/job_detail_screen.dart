@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/job.dart';
 import '../../theme/app_theme.dart';
 import '../auth/login_screen.dart';
@@ -44,7 +45,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Bağlantı hatası, tekrar deneyin');
+      setState(() => _error = context.read<LocaleStore>().t('jobs.connectionError'));
     } finally {
       setState(() => _isLoading = false);
     }
@@ -68,7 +69,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     } on ApiException catch (e) {
       setState(() => _applyError = e.message);
     } catch (_) {
-      setState(() => _applyError = 'Başvuru gönderilemedi');
+      setState(() => _applyError = context.read<LocaleStore>().t('jobs.applyFailed'));
     } finally {
       if (mounted) setState(() => _isApplying = false);
     }
@@ -78,14 +79,19 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   Widget build(BuildContext context) {
     final job = _job;
     final user = context.watch<AuthStore>().user;
+    final t = context.watch<LocaleStore>().t;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('İlan Detayı'),
+        title: Text(t('jobs.detail.title')),
         actions: [
           if (job != null)
             WhatsAppShareButton(
-              text: "🏗️ ${job.title} — ${job.companyName} (${job.city})\nİmece Burada'da incele:",
+              text: t('jobs.detail.shareText', vars: {
+                'title': job.title,
+                'company': job.companyName,
+                'city': job.city,
+              }),
             ),
         ],
       ),
@@ -121,13 +127,13 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                         Text(job.description, style: const TextStyle(color: AppColors.silver300, height: 1.4)),
                         const SizedBox(height: 24),
                         if (user?.role == 'COMPANY')
-                          const Text('Şirket hesapları başvuru yapamaz.', style: TextStyle(color: AppColors.silver500))
+                          Text(t('jobs.detail.companyCannotApply'), style: const TextStyle(color: AppColors.silver500))
                         else if (_applied)
-                          const Text('Başvurun alındı!', style: TextStyle(color: AppColors.green400))
+                          Text(t('jobs.detail.applied'), style: const TextStyle(color: AppColors.green400))
                         else ...[
                           ElevatedButton(
                             onPressed: _isApplying ? null : _apply,
-                            child: Text(_isApplying ? 'Gönderiliyor...' : 'Başvur'),
+                            child: Text(_isApplying ? t('jobs.detail.submitting') : t('jobs.detail.apply')),
                           ),
                           if (_applyError != null) ...[
                             const SizedBox(height: 8),

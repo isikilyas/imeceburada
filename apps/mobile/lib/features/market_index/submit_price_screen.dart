@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
 import '../../widgets/province_district_picker.dart';
@@ -72,7 +73,7 @@ class _SubmitPriceScreenState extends State<SubmitPriceScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Gönderilemedi');
+      setState(() => _error = context.read<LocaleStore>().t('marketIndex.submit.failed'));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -80,8 +81,10 @@ class _SubmitPriceScreenState extends State<SubmitPriceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: Text(widget.isLabor ? 'Yevmiye/Maaş Bilgisi Paylaş' : 'Malzeme Fiyatı Paylaş')),
+      appBar: AppBar(
+          title: Text(widget.isLabor ? t('marketIndex.submit.laborTitle') : t('marketIndex.submit.materialTitle'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -93,17 +96,16 @@ class _SubmitPriceScreenState extends State<SubmitPriceScreen> {
               borderRadius: BorderRadius.circular(8),
               color: AppColors.ink800,
             ),
-            child: const Text(
-              'Lütfen gerçek ve güncel bilgi paylaş. Yanlış veya uydurma veri, herkesin gördüğü endeksin '
-              'güvenilirliğini bozar.',
-              style: TextStyle(color: AppColors.silver400, fontSize: 12),
+            child: Text(
+              t('marketIndex.submit.notice'),
+              style: const TextStyle(color: AppColors.silver400, fontSize: 12),
             ),
           ),
           if (widget.isLabor)
             TradeCategoryPicker(value: _tradeCategory, onChanged: (v) => setState(() => _tradeCategory = v))
           else
             AppDropdown(
-              label: 'Malzeme',
+              label: t('marketIndex.submit.materialLabel'),
               value: _materialType,
               options: materialTypes,
               onChanged: (v) => setState(() => _materialType = v),
@@ -120,13 +122,13 @@ class _SubmitPriceScreenState extends State<SubmitPriceScreen> {
           ),
           if (widget.isLabor) ...[
             AppDropdown(
-              label: 'Deneyim',
+              label: t('marketIndex.submit.experienceLabel'),
               value: _experienceLevel,
               options: experienceLevels,
               onChanged: (v) => setState(() => _experienceLevel = v),
             ),
             AppDropdown(
-              label: 'Periyot',
+              label: t('marketIndex.submit.periodLabel'),
               value: _period,
               options: wagePeriods,
               onChanged: (v) => setState(() => _period = v),
@@ -135,11 +137,11 @@ class _SubmitPriceScreenState extends State<SubmitPriceScreen> {
           TextField(
             controller: _amountController,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Tutar (₺)'),
+            decoration: InputDecoration(labelText: t('marketIndex.submit.amountLabel')),
           ),
           const SizedBox(height: 12),
           AppDropdown(
-            label: 'Bu bilgi neyi yansıtıyor?',
+            label: t('marketIndex.submit.typeLabel'),
             value: _submissionType,
             options: priceSubmissionTypes,
             onChanged: (v) => setState(() => _submissionType = v),
@@ -150,12 +152,12 @@ class _SubmitPriceScreenState extends State<SubmitPriceScreen> {
           ],
           if (_done) ...[
             const SizedBox(height: 8),
-            const Text('Teşekkürler, katkın kaydedildi!', style: TextStyle(color: AppColors.green400)),
+            Text(t('marketIndex.submit.thanks'), style: const TextStyle(color: AppColors.green400)),
           ],
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _isSubmitting ? null : _submit,
-            child: Text(_isSubmitting ? 'Gönderiliyor...' : 'Paylaş'),
+            child: Text(_isSubmitting ? t('marketIndex.submit.submitting') : t('marketIndex.submit.share')),
           ),
         ],
       ),

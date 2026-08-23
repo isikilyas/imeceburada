@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/constants.dart';
+import '../core/locale_store.dart';
 import 'app_dropdown.dart';
 
 EquipmentCategory? _categoryOf(String itemValue) {
@@ -37,12 +39,13 @@ class _EquipmentCategoryPickerState extends State<EquipmentCategoryPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     final category = _category;
 
     return Column(
       children: [
         AppDropdown(
-          label: 'Ekipman Kategorisi',
+          label: t('widgets.equipmentCategory.categoryLabel'),
           value: category.label,
           options: equipmentCategories.map((c) => Option(c.label, '${c.icon} ${c.label}')).toList(),
           onChanged: (v) {
@@ -52,7 +55,7 @@ class _EquipmentCategoryPickerState extends State<EquipmentCategoryPicker> {
           },
         ),
         AppDropdown(
-          label: 'Ekipman',
+          label: t('widgets.equipmentCategory.itemLabel'),
           value: category.items.any((i) => i.value == widget.value) ? widget.value : category.items.first.value,
           options: category.items,
           onChanged: widget.onChanged,

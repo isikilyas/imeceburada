@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
+import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import 'forgot_password_screen.dart';
 import 'register_screen.dart';
@@ -67,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'Giriş yapılamadı');
+      setState(() => _error = context.read<LocaleStore>().t('auth.loginFailedGeneric'));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -75,26 +76,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
-      appBar: AppBar(title: const Text('Giriş Yap')),
+      appBar: AppBar(title: Text(t('auth.loginTitle'))),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           TextField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(labelText: 'E-posta'),
+            decoration: InputDecoration(labelText: t('auth.emailLabel')),
           ),
           const SizedBox(height: 12),
           TextField(
             controller: _passwordController,
             obscureText: true,
-            decoration: const InputDecoration(labelText: 'Şifre'),
+            decoration: InputDecoration(labelText: t('auth.passwordLabel')),
           ),
           CheckboxListTile(
             value: _rememberEmail,
             onChanged: (v) => setState(() => _rememberEmail = v ?? false),
-            title: const Text('Beni Hatırla', style: TextStyle(color: AppColors.silver300, fontSize: 14)),
+            title: Text(t('auth.rememberMeLabel'), style: const TextStyle(color: AppColors.silver300, fontSize: 14)),
             controlAffinity: ListTileControlAffinity.leading,
             contentPadding: EdgeInsets.zero,
             activeColor: AppColors.gold500,
@@ -105,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
               ),
-              child: const Text('Şifremi Unuttum?', style: TextStyle(color: AppColors.silver400)),
+              child: Text(t('auth.forgotPasswordLink'), style: const TextStyle(color: AppColors.silver400)),
             ),
           ),
           if (_error != null) ...[
@@ -115,14 +117,14 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 8),
           ElevatedButton(
             onPressed: _isSubmitting ? null : _submit,
-            child: Text(_isSubmitting ? 'Giriş yapılıyor...' : 'Giriş Yap'),
+            child: Text(_isSubmitting ? t('auth.loginSubmitting') : t('auth.loginButton')),
           ),
           const SizedBox(height: 16),
           TextButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const RegisterScreen()),
             ),
-            child: const Text('Hesabın yok mu? Kayıt ol', style: TextStyle(color: AppColors.gold400)),
+            child: Text(t('auth.noAccountRegisterLink'), style: const TextStyle(color: AppColors.gold400)),
           ),
         ],
       ),

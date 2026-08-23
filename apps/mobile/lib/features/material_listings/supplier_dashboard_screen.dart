@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/constants.dart';
+import '../../core/locale_store.dart';
 import '../../models/material_listing.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
@@ -66,7 +67,7 @@ class _SupplierDashboardScreenState extends State<SupplierDashboardScreen> {
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } catch (_) {
-      setState(() => _error = 'İlan oluşturulamadı');
+      setState(() => _error = context.read<LocaleStore>().t('materialListings.dashboard.submitError'));
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
     }
@@ -74,43 +75,45 @@ class _SupplierDashboardScreenState extends State<SupplierDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tedarikçi Paneli'),
+        title: Text(t('materialListings.dashboard.title')),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const MembershipScreen()),
             ),
-            child: const Text('Üyelik', style: TextStyle(color: AppColors.gold400)),
+            child: Text(t('materialListings.dashboard.membership'), style: const TextStyle(color: AppColors.gold400)),
           ),
         ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text('İlanlarım', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18)),
+          Text(t('materialListings.dashboard.myListings'), style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18)),
           const SizedBox(height: 12),
           if (_isLoading) const Center(child: CircularProgressIndicator(color: AppColors.gold500)),
           if (!_isLoading && _listings.isEmpty)
-            const Text('Henüz ilan vermedin.', style: TextStyle(color: AppColors.silver500)),
+            Text(t('materialListings.dashboard.empty'), style: const TextStyle(color: AppColors.silver500)),
           ..._listings.map(
             (listing) => Card(
               margin: const EdgeInsets.only(bottom: 10),
               child: ListTile(
                 title: Text(materialTypes.labelFor(listing.materialType)),
                 subtitle: Text(
-                  '${listing.city}${listing.district != null ? ' / ${listing.district}' : ''} · ${listing.price} ₺/${listing.unit} · ${listing.status == "AVAILABLE" ? "Aktif" : "Pasif"}',
+                  '${listing.city}${listing.district != null ? ' / ${listing.district}' : ''} · ${listing.price} ₺/${listing.unit} · '
+                  '${listing.status == "AVAILABLE" ? t('materialListings.dashboard.active') : t('materialListings.dashboard.inactive')}',
                   style: const TextStyle(color: AppColors.silver500),
                 ),
               ),
             ),
           ),
           const Divider(height: 32, color: AppColors.ink800),
-          Text('Yeni Malzeme İlanı', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18)),
+          Text(t('materialListings.dashboard.newListingTitle'), style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18)),
           const SizedBox(height: 12),
           AppDropdown(
-            label: 'Malzeme',
+            label: t('materialListings.dashboard.materialLabel'),
             value: _materialType,
             options: materialTypes,
             onChanged: (v) => setState(() => _materialType = v),
@@ -128,13 +131,13 @@ class _SupplierDashboardScreenState extends State<SupplierDashboardScreen> {
           TextField(
             controller: _priceController,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Birim Fiyat (₺)'),
+            decoration: InputDecoration(labelText: t('materialListings.dashboard.priceLabel')),
           ),
           const SizedBox(height: 12),
           TextField(
             controller: _descriptionController,
             maxLines: 3,
-            decoration: const InputDecoration(labelText: 'Açıklama'),
+            decoration: InputDecoration(labelText: t('materialListings.dashboard.descriptionLabel')),
           ),
           if (_error != null) ...[
             const SizedBox(height: 12),
@@ -143,7 +146,7 @@ class _SupplierDashboardScreenState extends State<SupplierDashboardScreen> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _isSubmitting ? null : _create,
-            child: Text(_isSubmitting ? 'Oluşturuluyor...' : 'İlanı Yayınla'),
+            child: Text(_isSubmitting ? t('materialListings.dashboard.creating') : t('materialListings.dashboard.publish')),
           ),
         ],
       ),
