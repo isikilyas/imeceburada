@@ -90,7 +90,7 @@ class _SiteRequestDetailScreenState extends State<SiteRequestDetailScreen> {
         actions: [
           if (request != null)
             WhatsAppShareButton(
-              text: "🚨 Anlık Çağrı: ${request.title} — ${request.city}\nİmece Yapı'da incele:",
+              text: "🚨 Anlık Çağrı: ${request.title} — ${request.city}\nİmece Burada'da incele:",
             ),
         ],
       ),

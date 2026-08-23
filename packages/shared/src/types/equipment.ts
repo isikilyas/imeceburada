@@ -5,6 +5,7 @@ export interface EquipmentListingDto {
   ownerId: string;
   ownerName: string;
   ownerPhone?: string | null;
+  ownerVerified: boolean;
   equipmentType: string;
   capacity?: string | null;
   city: string;

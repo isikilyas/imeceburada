@@ -50,7 +50,7 @@ class _SubcontractorDetailScreenState extends State<SubcontractorDetailScreen> {
         actions: [
           if (subcontractor != null)
             WhatsAppShareButton(
-              text: "🏢 ${subcontractor.companyName} — ${subcontractor.city}\nİmece Yapı'da incele:",
+              text: "🏢 ${subcontractor.companyName} — ${subcontractor.city}\nİmece Burada'da incele:",
             ),
         ],
       ),

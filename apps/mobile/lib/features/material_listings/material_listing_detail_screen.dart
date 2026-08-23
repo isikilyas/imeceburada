@@ -49,7 +49,7 @@ class _MaterialListingDetailScreenState extends State<MaterialListingDetailScree
         actions: [
           if (listing != null)
             WhatsAppShareButton(
-              text: "🧱 ${materialTypes.labelFor(listing.materialType)} — ${listing.city}\nİmece Yapı'da incele:",
+              text: "🧱 ${materialTypes.labelFor(listing.materialType)} — ${listing.city}\nİmece Burada'da incele:",
             ),
         ],
       ),

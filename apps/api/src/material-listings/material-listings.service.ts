@@ -22,7 +22,7 @@ interface ListingWithSupplier {
   description: string;
   status: string;
   createdAt: Date;
-  supplier: { companyName: string; phone: string | null };
+  supplier: { companyName: string; phone: string | null; phoneVerifiedAt: Date | null };
 }
 
 @Injectable()
@@ -145,6 +145,7 @@ export class MaterialListingsService {
     supplierId: listing.supplierId,
     supplierName: listing.supplier.companyName,
     supplierPhone: listing.supplier.phone,
+    supplierVerified: !!listing.supplier.phoneVerifiedAt,
     materialType: listing.materialType,
     unit: listing.unit,
     city: listing.city,

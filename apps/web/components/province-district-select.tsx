@@ -2,6 +2,7 @@
 
 import { getDistrictsForProvince, TURKISH_PROVINCES } from "@bau360/shared";
 import { Field, selectClass } from "@/components/form";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 interface ProvinceDistrictSelectProps {
   city: string;
@@ -27,6 +28,7 @@ export function ProvinceDistrictSelect({
   allowEmptyDistrict = false,
   allowEmptyCity = false,
 }: ProvinceDistrictSelectProps) {
+  const { t } = useLocale();
   const districts = city ? getDistrictsForProvince(city) : [];
 
   function handleCityChange(nextCity: string) {
@@ -36,9 +38,9 @@ export function ProvinceDistrictSelect({
 
   return (
     <div className="grid grid-cols-2 gap-3">
-      <Field label="Şehir">
+      <Field label={t("formComponents.provinceDistrict.city")}>
         <select value={city} onChange={(e) => handleCityChange(e.target.value)} className={selectClass}>
-          {allowEmptyCity && <option value="">Tüm Şehirler</option>}
+          {allowEmptyCity && <option value="">{t("formComponents.provinceDistrict.allCities")}</option>}
           {TURKISH_PROVINCES.map((p) => (
             <option key={p} value={p}>
               {p}
@@ -46,7 +48,7 @@ export function ProvinceDistrictSelect({
           ))}
         </select>
       </Field>
-      <Field label="İlçe">
+      <Field label={t("formComponents.provinceDistrict.district")}>
         <select
           value={district}
           onChange={(e) => onDistrictChange(e.target.value)}
@@ -54,7 +56,11 @@ export function ProvinceDistrictSelect({
           className={selectClass}
         >
           {(allowEmptyDistrict || !district) && (
-            <option value="">{allowEmptyDistrict ? "Tüm İlçeler" : "İlçe seç"}</option>
+            <option value="">
+              {allowEmptyDistrict
+                ? t("formComponents.provinceDistrict.allDistricts")
+                : t("formComponents.provinceDistrict.selectDistrict")}
+            </option>
           )}
           {districts.map((d) => (
             <option key={d} value={d}>

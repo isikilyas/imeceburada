@@ -1,0 +1,15 @@
+{
+  "name": "İmece Burada",
+  "short_name": "İmece Burada",
+  "description": "İnşaat sektörüne özel iş ilanları, ekipman/malzeme pazaryeri ve canlı piyasa endeksi.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "lang": "tr",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

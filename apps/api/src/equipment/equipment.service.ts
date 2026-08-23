@@ -28,7 +28,7 @@ interface EquipmentWithOwner {
   createdAt: Date;
   owner: {
     candidateProfile: { fullName: string; phone: string | null } | null;
-    companyProfile: { companyName: string; phone: string | null } | null;
+    companyProfile: { companyName: string; phone: string | null; phoneVerifiedAt: Date | null } | null;
   };
 }
 
@@ -141,6 +141,7 @@ export class EquipmentService {
     ownerId: listing.ownerId,
     ownerName: listing.owner.companyProfile?.companyName ?? listing.owner.candidateProfile?.fullName ?? "Kullanıcı",
     ownerPhone: listing.owner.companyProfile?.phone ?? listing.owner.candidateProfile?.phone ?? null,
+    ownerVerified: !!listing.owner.companyProfile?.phoneVerifiedAt,
     equipmentType: listing.equipmentType,
     capacity: listing.capacity,
     city: listing.city,

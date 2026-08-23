@@ -20,10 +20,14 @@ const STATIC_ROUTES = [
 async function fetchIds(path: string): Promise<string[]> {
   try {
     const res = await fetch(`${API_URL}${path}?pageSize=200`, { next: { revalidate: 3600 } });
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`sitemap: ${path} returned ${res.status} — dynamic URLs for this section will be missing`);
+      return [];
+    }
     const data = (await res.json()) as { items?: { id: string }[] };
     return (data.items ?? []).map((item) => item.id);
-  } catch {
+  } catch (err) {
+    console.error(`sitemap: failed to fetch ${path} — dynamic URLs for this section will be missing`, err);
     return [];
   }
 }

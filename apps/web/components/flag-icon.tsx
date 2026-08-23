@@ -1,4 +1,4 @@
-export type FlagCode = "tr" | "gb" | "de" | "ru" | "sa";
+export type FlagCode = "tr" | "gb" | "de" | "ru" | "sa" | "es" | "fr";
 
 /**
  * Ülke bayrakları emoji olarak Windows'ta genellikle "TR"/"GB" gibi harf
@@ -48,6 +48,21 @@ export function FlagIcon({ code, className = "h-3.5 w-5" }: { code: FlagCode; cl
       return (
         <svg viewBox="0 0 30 20" className={`${common} ${className}`} aria-hidden="true">
           <rect width="30" height="20" fill="#006C35" />
+        </svg>
+      );
+    case "es":
+      return (
+        <svg viewBox="0 0 30 20" className={`${common} ${className}`} aria-hidden="true">
+          <rect width="30" height="20" fill="#AA151B" />
+          <rect y="5" width="30" height="10" fill="#F1BF00" />
+        </svg>
+      );
+    case "fr":
+      return (
+        <svg viewBox="0 0 30 20" className={`${common} ${className}`} aria-hidden="true">
+          <rect width="30" height="20" fill="#fff" />
+          <rect width="10" height="20" fill="#0055A4" />
+          <rect x="20" width="10" height="20" fill="#EF4135" />
         </svg>
       );
   }

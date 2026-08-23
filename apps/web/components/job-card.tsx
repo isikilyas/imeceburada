@@ -1,20 +1,17 @@
+"use client";
+
 import Link from "next/link";
-import { JobPostingDto, TRADE_CATEGORIES, EMPLOYMENT_TYPES, LISTING_INTENTS } from "@bau360/shared";
+import { JobPostingDto, TRADE_CATEGORIES } from "@bau360/shared";
 import { FavoriteButton } from "@/components/favorite-button";
+import { VerifiedBadge } from "@/components/verified-badge";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 function tradeLabel(value: string) {
   return TRADE_CATEGORIES.find((t) => t.value === value)?.label ?? value;
 }
 
-function employmentLabel(value: string) {
-  return EMPLOYMENT_TYPES.find((t) => t.value === value)?.label ?? value;
-}
-
-function listingTypeLabel(value: string) {
-  return LISTING_INTENTS.find((l) => l.value === value)?.label ?? value;
-}
-
 export function JobCard({ job }: { job: JobPostingDto }) {
+  const { t } = useLocale();
   return (
     <Link
       href={`/jobs/${job.id}`}
@@ -30,8 +27,11 @@ export function JobCard({ job }: { job: JobPostingDto }) {
             </span>
           )}
           <h3 className="font-medium text-silver-200">{job.title}</h3>
-          <p className="text-sm text-silver-500">{job.companyName}</p>
-          <p className="mt-1 text-xs text-silver-400">{listingTypeLabel(job.listingType)}</p>
+          <p className="flex items-center gap-1 text-sm text-silver-500">
+            {job.companyName}
+            {job.companyVerified && <VerifiedBadge />}
+          </p>
+          <p className="mt-1 text-xs text-silver-400">{t(`enums.listingIntent.${job.listingType}`)}</p>
         </div>
         <div className="flex shrink-0 items-center gap-1">
           <span className="rounded-full bg-ink-800 px-3 py-1 text-xs text-gold-400">
@@ -46,7 +46,7 @@ export function JobCard({ job }: { job: JobPostingDto }) {
           {job.district ? ` / ${job.district}` : ""}
         </span>
         <span>·</span>
-        <span>{employmentLabel(job.employmentType)}</span>
+        <span>{t(`enums.employmentType.${job.employmentType}`)}</span>
         {(job.salaryMin || job.salaryMax) && (
           <>
             <span>·</span>

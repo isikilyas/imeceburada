@@ -6,7 +6,8 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@bau360/shared": "workspace:*",
@@ -19,6 +20,7 @@
     "recharts": "^2.12.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@types/leaflet": "^1.9.12",
     "@types/node": "^20.14.15",
     "@types/react": "^18.3.5",

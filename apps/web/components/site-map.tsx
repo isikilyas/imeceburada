@@ -2,14 +2,20 @@
 
 import dynamic from "next/dynamic";
 import type { SiteMapMarker } from "./site-map-inner";
+import { useLocale } from "@/lib/i18n/locale-context";
+
+function MapLoadingFallback() {
+  const { t } = useLocale();
+  return (
+    <div className="flex h-full min-h-[16rem] items-center justify-center rounded-lg border border-ink-800 bg-ink-900 text-sm text-silver-500">
+      {t("components.siteMap.loading")}
+    </div>
+  );
+}
 
 const SiteMapInner = dynamic(() => import("./site-map-inner").then((m) => m.SiteMapInner), {
   ssr: false,
-  loading: () => (
-    <div className="flex h-full min-h-[16rem] items-center justify-center rounded-lg border border-ink-800 bg-ink-900 text-sm text-silver-500">
-      Harita yükleniyor...
-    </div>
-  ),
+  loading: () => <MapLoadingFallback />,
 });
 
 const TURKEY_CENTER: [number, number] = [39.0, 35.2];

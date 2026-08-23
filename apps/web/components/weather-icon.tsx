@@ -12,20 +12,12 @@ export function weatherKindFromCode(code: number): WeatherKind {
   return "cloudy";
 }
 
-const LABELS: Record<WeatherKind, string> = {
-  clear: "Açık",
-  "partly-cloudy": "Parçalı bulutlu",
-  cloudy: "Kapalı",
-  fog: "Sisli",
-  drizzle: "Çisenti",
-  rain: "Yağmurlu",
-  snow: "Kar yağışlı",
-  storm: "Gök gürültülü fırtına",
-};
-
-export function weatherLabel(kind: WeatherKind): string {
-  return LABELS[kind];
-}
+/**
+ * Hava durumu koşulu için görüntülenen metin, bu dosyada hook'a erişimi olmayan
+ * (React context'i olmayan) saf bir yardımcı fonksiyon yerine, `t()` çağrısı
+ * yapabilen weather-widget.tsx içinde components.weatherWidget.conditions.*
+ * anahtarları üzerinden çevrilir — bkz. weather-widget.tsx WEATHER_CONDITION_KEYS.
+ */
 
 /** Sade, tek renkli (currentColor) çizim ikonları — emoji yerine platformlar arası tutarlı görünüm için. */
 export function WeatherIcon({ kind, className = "h-7 w-7" }: { kind: WeatherKind; className?: string }) {

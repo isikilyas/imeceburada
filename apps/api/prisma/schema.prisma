@@ -441,3 +441,4 @@ model SiteRequestResponse {
   @@unique([siteRequestId, responderId])
   @@map("site_request_responses")
 }
+

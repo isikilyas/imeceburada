@@ -1,13 +1,18 @@
+"use client";
+
 import Link from "next/link";
 import { EquipmentListingDto, EQUIPMENT_TYPES } from "@bau360/shared";
 import { FavoriteButton } from "@/components/favorite-button";
 import { ListingThumbnail } from "@/components/listing-thumbnail";
+import { VerifiedBadge } from "@/components/verified-badge";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 function equipmentLabel(value: string) {
   return EQUIPMENT_TYPES.find((e) => e.value === value)?.label ?? value;
 }
 
 export function EquipmentCard({ listing }: { listing: EquipmentListingDto }) {
+  const { t } = useLocale();
   return (
     <Link
       href={`/equipment/${listing.id}`}
@@ -22,13 +27,16 @@ export function EquipmentCard({ listing }: { listing: EquipmentListingDto }) {
                 listing.listingType === "SALE" ? "bg-gold-500/15 text-gold-400" : "bg-ink-800 text-silver-400"
               }`}
             >
-              {listing.listingType === "SALE" ? "Satılık" : "Kiralık"}
+              {t(`enums.equipmentListingType.${listing.listingType}`)}
             </span>
             <h3 className="mt-1 font-medium text-silver-200">
               {equipmentLabel(listing.equipmentType)}
               {listing.capacity ? ` · ${listing.capacity}` : ""}
             </h3>
-            <p className="text-sm text-silver-500">{listing.ownerName}</p>
+            <p className="flex items-center gap-1 text-sm text-silver-500">
+              {listing.ownerName}
+              {listing.ownerVerified && <VerifiedBadge />}
+            </p>
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-1">

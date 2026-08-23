@@ -112,11 +112,12 @@ export class JobsService {
     description: string;
     status: string;
     createdAt: Date;
-    company: { companyName: string };
+    company: { companyName: string; phoneVerifiedAt: Date | null };
   }) => ({
     id: job.id,
     companyId: job.companyId,
     companyName: job.company.companyName,
+    companyVerified: !!job.company.phoneVerifiedAt,
     title: job.title,
     listingType: job.listingType,
     tradeCategory: job.tradeCategory,

@@ -50,7 +50,7 @@ class _EquipmentDetailScreenState extends State<EquipmentDetailScreen> {
           if (listing != null)
             WhatsAppShareButton(
               text:
-                  "🏗️ ${equipmentTypes.labelFor(listing.equipmentType)} — ${listing.city}\nİmece Yapı'da incele:",
+                  "🏗️ ${equipmentTypes.labelFor(listing.equipmentType)} — ${listing.city}\nİmece Burada'da incele:",
             ),
         ],
       ),

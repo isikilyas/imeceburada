@@ -4,6 +4,7 @@ import { MouseEvent, useState } from "react";
 import { FavoriteListingType } from "@bau360/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useFavorites } from "@/lib/favorites-context";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 export function FavoriteButton({
   listingType,
@@ -16,6 +17,7 @@ export function FavoriteButton({
 }) {
   const { user } = useAuth();
   const { isFavorited, toggleFavorite } = useFavorites();
+  const { t } = useLocale();
   const [isPending, setIsPending] = useState(false);
 
   if (!user) return null;
@@ -40,8 +42,8 @@ export function FavoriteButton({
       onClick={handleClick}
       disabled={isPending}
       aria-pressed={active}
-      aria-label={active ? "Favorilerden çıkar" : "Favorilere ekle"}
-      title={active ? "Favorilerden çıkar" : "Favorilere ekle"}
+      aria-label={active ? t("components.favoriteButton.remove") : t("components.favoriteButton.add")}
+      title={active ? t("components.favoriteButton.remove") : t("components.favoriteButton.add")}
       className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition hover:bg-ink-800 disabled:opacity-60 ${className}`}
     >
       <svg

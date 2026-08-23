@@ -1,6 +1,7 @@
 "use client";
 
 import { toWhatsAppPhone } from "@/lib/phone";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 interface WhatsAppContactButtonProps {
   phone: string;
@@ -23,9 +24,11 @@ export function WhatsAppContactButton({
   phone,
   message,
   disabled = false,
-  disabledLabel = "Şu an müsait değil",
+  disabledLabel,
   className,
 }: WhatsAppContactButtonProps) {
+  const { t } = useLocale();
+
   if (disabled) {
     return (
       <span
@@ -34,7 +37,7 @@ export function WhatsAppContactButton({
           "inline-flex items-center gap-1.5 rounded-md border border-ink-800 px-3 py-1.5 text-sm text-silver-500"
         }
       >
-        🔴 {disabledLabel}
+        🔴 {disabledLabel ?? t("components.whatsappContactButton.unavailable")}
       </span>
     );
   }
@@ -53,7 +56,7 @@ export function WhatsAppContactButton({
         "inline-flex items-center gap-1.5 rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-green-500"
       }
     >
-      💬 WhatsApp ile İletişime Geç
+      💬 {t("components.whatsappContactButton.contact")}
     </button>
   );
 }

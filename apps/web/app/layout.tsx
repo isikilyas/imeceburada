@@ -1,25 +1,25 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { Providers } from "./providers";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { GoogleAnalytics } from "@/components/google-analytics";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-const TITLE = "İmece Yapı — İnşaat İş İlanları & Piyasa Endeksi";
-const DESCRIPTION = "İnşaat sektörüne özel iş ilanları ve işçilik ücret piyasa endeksi.";
+const TITLE = "İmece Burada";
+const DESCRIPTION = "İnşaat sektörüne özel iş ilanları ve İnşaat Pazaryeri platformu.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: TITLE,
   description: DESCRIPTION,
-  icons: { icon: "/favicon.png" },
+  icons: { icon: "/favicon.png", apple: "/favicon.png" },
+  manifest: "/manifest.json",
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
     url: SITE_URL,
-    siteName: "İmece Yapı",
-    images: [{ url: "/logo.png", width: 1024, height: 559, alt: "İmece Yapı" }],
+    siteName: "İmece Burada",
+    images: [{ url: "/logo.png", width: 897, height: 249, alt: "İmece Burada" }],
     locale: "tr_TR",
     type: "website",
   },
@@ -31,15 +31,16 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#0a0a0a",
+};
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="tr">
-      <body className="blueprint-grid flex min-h-screen flex-col">
-        <Providers>
-          <Header />
-          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
-          <Footer />
-        </Providers>
+      <body className="blueprint-grid min-h-screen">
+        <GoogleAnalytics />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

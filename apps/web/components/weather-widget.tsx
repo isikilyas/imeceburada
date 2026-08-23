@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { WeatherIcon, weatherKindFromCode, weatherLabel } from "@/components/weather-icon";
+import { WeatherIcon, weatherKindFromCode, WeatherKind } from "@/components/weather-icon";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 interface WeatherData {
   temperature: number;
@@ -14,7 +15,19 @@ interface WeatherData {
 
 const ISTANBUL = { lat: 41.0082, lon: 28.9784, label: "İstanbul" };
 
+const WEATHER_CONDITION_KEYS: Record<WeatherKind, string> = {
+  clear: "clear",
+  "partly-cloudy": "partlyCloudy",
+  cloudy: "cloudy",
+  fog: "fog",
+  drizzle: "drizzle",
+  rain: "rain",
+  snow: "snow",
+  storm: "storm",
+};
+
 export function WeatherWidget() {
+  const { t } = useLocale();
   const [locationLabel, setLocationLabel] = useState(ISTANBUL.label);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [error, setError] = useState(false);
@@ -39,7 +52,7 @@ export function WeatherWidget() {
     if (typeof navigator !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          setLocationLabel("Konumunuz");
+          setLocationLabel(t("components.weatherWidget.yourLocation"));
           loadWeather(pos.coords.latitude, pos.coords.longitude);
         },
         () => loadWeather(ISTANBUL.lat, ISTANBUL.lon),
@@ -55,7 +68,7 @@ export function WeatherWidget() {
     return (
       <div className="inline-flex items-center gap-3 rounded-2xl bg-ink-900 px-7 py-5 text-base text-silver-500 ring-1 ring-ink-800">
         <span className="h-2 w-2 animate-pulse rounded-full bg-gold-400" />
-        Hava durumu yükleniyor...
+        {t("components.weatherWidget.loading")}
       </div>
     );
   }
@@ -84,7 +97,7 @@ export function WeatherWidget() {
               <span className="text-2xl font-bold leading-none text-silver-50">{weather.temperature}°</span>
             </div>
             <div className="mt-1 flex items-center gap-2 text-sm text-silver-500">
-              <span>{weatherLabel(kind)}</span>
+              <span>{t(`components.weatherWidget.conditions.${WEATHER_CONDITION_KEYS[kind]}`)}</span>
               <span className="text-silver-700">·</span>
               <span className="inline-flex items-center gap-0.5 text-sky-400">
                 <svg viewBox="0 0 24 24" className="h-3 w-3 fill-current">
@@ -103,7 +116,7 @@ export function WeatherWidget() {
         </div>
 
         <span className="ms-auto flex shrink-0 items-center gap-1 self-center rounded-full px-3 py-1.5 text-sm font-medium text-gold-400 transition group-hover:bg-gold-500/10">
-          Haftalık tahmin
+          {t("components.weatherWidget.weeklyForecast")}
           <svg viewBox="0 0 24 24" className="h-4 w-4 transition group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth={2}>
             <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -116,8 +129,8 @@ export function WeatherWidget() {
             <div className="flex items-start gap-2.5 rounded-xl bg-blue-500/10 px-3.5 py-2.5 ring-1 ring-blue-500/20">
               <span className="mt-0.5 text-base">❄️</span>
               <p className="text-sm leading-relaxed text-blue-300">
-                <span className="font-semibold">Don Uyarısı:</span> Bugün sıcaklık 0°C&apos;nin altına düşebilir —
-                beton döküm ve sıva işlerini erteleyin.
+                <span className="font-semibold">{t("components.weatherWidget.frostWarningTitle")}</span>{" "}
+                {t("components.weatherWidget.frostWarningText")}
               </p>
             </div>
           )}
@@ -125,8 +138,8 @@ export function WeatherWidget() {
             <div className="flex items-start gap-2.5 rounded-xl bg-orange-500/10 px-3.5 py-2.5 ring-1 ring-orange-500/20">
               <span className="mt-0.5 text-base">🔥</span>
               <p className="text-sm leading-relaxed text-orange-300">
-                <span className="font-semibold">Sıcak Hava Uyarısı:</span> Öğle saatlerinde çalışmaya ara verin,
-                işçilerin bol su içtiğinden emin olun.
+                <span className="font-semibold">{t("components.weatherWidget.heatWarningTitle")}</span>{" "}
+                {t("components.weatherWidget.heatWarningText")}
               </p>
             </div>
           )}

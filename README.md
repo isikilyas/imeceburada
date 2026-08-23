@@ -1,4 +1,4 @@
-# İmece Yapı
+# İmece Burada
 
 İnşaat sektörüne özel iş arama platformu + canlı piyasa endeksi (işçilik ücreti,
 malzeme fiyatları), ekipman/makine kiralama pazaryeri ve harita tabanlı anlık

@@ -1,3 +1,7 @@
+"use client";
+
+import { useLocale } from "@/lib/i18n/locale-context";
+
 interface StoreBadgeProps {
   href: string;
   className?: string;
@@ -12,6 +16,7 @@ const titleClass = "-mt-0.5 block truncate text-xs font-semibold tracking-tight 
 
 /** Apple'ın resmi "Download on the App Store" rozetiyle aynı düzende, sade bir yeniden çizim. */
 export function AppStoreBadge({ href, className = "" }: StoreBadgeProps) {
+  const { t } = useLocale();
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={`${badgeBase} ${className}`}>
       <svg viewBox="0 0 24 24" className={`${iconClass} fill-white`}>
@@ -19,8 +24,8 @@ export function AppStoreBadge({ href, className = "" }: StoreBadgeProps) {
         <path d="M14.964 6.16c.582-.705.975-1.685.867-2.66-.838.034-1.852.558-2.454 1.263-.54.622-1.013 1.62-.885 2.577.933.073 1.887-.474 2.472-1.18z" />
       </svg>
       <span className={textWrapClass}>
-        <span className={kickerClass}>Download on the</span>
-        <span className={titleClass}>App Store</span>
+        <span className={kickerClass}>{t("components.storeBadges.appStore.kicker")}</span>
+        <span className={titleClass}>{t("components.storeBadges.appStore.title")}</span>
       </span>
     </a>
   );
@@ -28,6 +33,7 @@ export function AppStoreBadge({ href, className = "" }: StoreBadgeProps) {
 
 /** Google Play'in resmi rozetiyle aynı düzende, sade bir yeniden çizim. */
 export function GooglePlayBadge({ href, className = "" }: StoreBadgeProps) {
+  const { t } = useLocale();
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={`${badgeBase} ${className}`}>
       <svg viewBox="0 0 24 24" className={iconClass}>
@@ -37,8 +43,8 @@ export function GooglePlayBadge({ href, className = "" }: StoreBadgeProps) {
         <path d="M16.2 9.3L5.3 3c-.7-.4-1.3-.3-1.7.1L13 12.4l3.2-3.1z" fill="#00D95F" />
       </svg>
       <span className={textWrapClass}>
-        <span className={kickerClass}>GET IT ON</span>
-        <span className={titleClass}>Google Play</span>
+        <span className={kickerClass}>{t("components.storeBadges.googlePlay.kicker")}</span>
+        <span className={titleClass}>{t("components.storeBadges.googlePlay.title")}</span>
       </span>
     </a>
   );
@@ -46,6 +52,7 @@ export function GooglePlayBadge({ href, className = "" }: StoreBadgeProps) {
 
 /** Huawei AppGallery'nin resmi rozetiyle aynı düzende, sade bir yeniden çizim. */
 export function AppGalleryBadge({ href, className = "" }: StoreBadgeProps) {
+  const { t } = useLocale();
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={`${badgeBase} ${className}`}>
       <svg viewBox="0 0 24 24" className={iconClass}>
@@ -59,8 +66,8 @@ export function AppGalleryBadge({ href, className = "" }: StoreBadgeProps) {
         <path d="M8.4 8.6h7.2l-3.6 6.8-3.6-6.8z" fill="#C7000B" />
       </svg>
       <span className={textWrapClass}>
-        <span className={kickerClass}>Explore it on</span>
-        <span className={titleClass}>AppGallery</span>
+        <span className={kickerClass}>{t("components.storeBadges.appGallery.kicker")}</span>
+        <span className={titleClass}>{t("components.storeBadges.appGallery.title")}</span>
       </span>
     </a>
   );

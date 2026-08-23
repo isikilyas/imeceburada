@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { AppStoreBadge, GooglePlayBadge, AppGalleryBadge } from "@/components/store-badges";
+import Image from "next/image";
 
 export function Footer() {
   const { t } = useLocale();
@@ -16,8 +16,8 @@ export function Footer() {
           <div>
             <Image
               src="/logo.png"
-              alt="İmece Yapı"
-              width={132}
+              alt="İmece Burada"
+              width={259}
               height={72}
               className="h-10 w-auto rounded-md shadow-[0_2px_10px_rgba(0,0,0,0.35)] ring-1 ring-black/10"
             />
@@ -55,7 +55,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 border-t border-ink-800 pt-6 text-center text-xs text-silver-500 sm:text-start">
-          © {year} İmece Yapı. Tüm hakları saklıdır.
+          © {year} İmece Burada. Tüm hakları saklıdır.
         </div>
       </div>
     </footer>

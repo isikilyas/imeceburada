@@ -1,65 +1,47 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useLocale } from "@/lib/i18n/locale-context";
 
-interface AdSlide {
+interface AdSlideDef {
+  key: string;
   icon: string;
-  title: string;
-  text: string;
-  cta: string;
   href: string;
   glow: string;
 }
 
-const SLIDES: AdSlide[] = [
-  {
-    icon: "👷",
-    title: "İş mi Arıyorsun?",
-    text: "Ücretsiz üye ol, mesleğine ve bölgene uygun ilanları keşfet.",
-    cta: "Ücretsiz Kayıt Ol",
-    href: "/register",
-    glow: "rgba(212,175,55,0.45)",
-  },
-  {
-    icon: "🏗️",
-    title: "Ekipman mı Lazım?",
-    text: "Kiralık iş makineleri ve ekipmanlar tek platformda.",
-    cta: "Ekipmanlara Göz At",
-    href: "/equipment",
-    glow: "rgba(56,189,248,0.35)",
-  },
-  {
-    icon: "📊",
-    title: "Piyasa Nerede?",
-    text: "Bölgesel işçilik ücret endeksini canlı olarak takip et.",
-    cta: "Endeksi Gör",
-    href: "/wage-index",
-    glow: "rgba(52,211,153,0.35)",
-  },
-  {
-    icon: "📍",
-    title: "Acil İhtiyaç mı Var?",
-    text: "Haritada anlık usta ve ekipman çağrısı aç.",
-    cta: "Şantiye Radarı",
-    href: "/site-radar",
-    glow: "rgba(248,113,113,0.35)",
-  },
-  {
-    icon: "🧱",
-    title: "Malzeme Tedarikinde",
-    text: "Tedarikçilerden güncel inşaat malzemesi ilanlarını incele.",
-    cta: "Malzeme İlanları",
-    href: "/material-listings",
-    glow: "rgba(251,146,60,0.35)",
-  },
+interface AdSlide extends AdSlideDef {
+  title: string;
+  text: string;
+  cta: string;
+}
+
+const SLIDE_DEFS: AdSlideDef[] = [
+  { key: "jobSeeker", icon: "👷", href: "/register", glow: "rgba(212,175,55,0.45)" },
+  { key: "equipment", icon: "🏗️", href: "/equipment", glow: "rgba(56,189,248,0.35)" },
+  { key: "wageIndex", icon: "📊", href: "/wage-index", glow: "rgba(52,211,153,0.35)" },
+  { key: "siteRadar", icon: "📍", href: "/site-radar", glow: "rgba(248,113,113,0.35)" },
+  { key: "materials", icon: "🧱", href: "/material-listings", glow: "rgba(251,146,60,0.35)" },
 ];
 
 const INTERVAL_MS = 6000;
 
 export function AdSlideshow() {
+  const { t } = useLocale();
   const [index, setIndex] = useState(0);
   const [cycle, setCycle] = useState(0);
+
+  const SLIDES: AdSlide[] = useMemo(
+    () =>
+      SLIDE_DEFS.map((def) => ({
+        ...def,
+        title: t(`components.adSlideshow.${def.key}.title`),
+        text: t(`components.adSlideshow.${def.key}.text`),
+        cta: t(`components.adSlideshow.${def.key}.cta`),
+      })),
+    [t],
+  );
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -83,7 +65,7 @@ export function AdSlideshow() {
       {/* Üst ilerleme çubukları */}
       <div className="absolute inset-x-3 top-5 z-20 flex gap-1">
         {SLIDES.map((slide, i) => (
-          <div key={slide.title} className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/15">
+          <div key={slide.key} className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/15">
             {i === index && (
               <div
                 key={cycle}
@@ -100,7 +82,7 @@ export function AdSlideshow() {
         const isActive = i === index;
         return (
           <Link
-            key={slide.title}
+            key={slide.key}
             href={slide.href}
             aria-hidden={!isActive}
             tabIndex={isActive ? 0 : -1}
@@ -139,13 +121,13 @@ export function AdSlideshow() {
       <div className="absolute inset-x-0 bottom-5 z-20 flex justify-center gap-1.5">
         {SLIDES.map((slide, i) => (
           <button
-            key={slide.title}
+            key={slide.key}
             type="button"
             onClick={(e) => {
               e.preventDefault();
               goTo(i);
             }}
-            aria-label={`${i + 1}. slayt`}
+            aria-label={t("components.adSlideshow.slideAriaLabel", { index: i + 1 })}
             className={`h-1.5 rounded-full transition-all ${
               i === index ? "w-4 bg-gold-400" : "w-1.5 bg-white/25 hover:bg-white/40"
             }`}

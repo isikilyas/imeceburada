@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { EQUIPMENT_CAPACITY_OPTIONS_BY_CATEGORY, EQUIPMENT_CATEGORIES } from "@bau360/shared";
 import { Field, inputClass, selectClass } from "@/components/form";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 const OTHER = "__OTHER__";
 
@@ -23,6 +24,7 @@ function findCategoryLabel(equipmentType: string): string | undefined {
  * metin girişine düşer.
  */
 export function EquipmentCapacitySelect({ equipmentType, value, onChange }: EquipmentCapacitySelectProps) {
+  const { t } = useLocale();
   const categoryLabel = findCategoryLabel(equipmentType);
   const options = categoryLabel ? EQUIPMENT_CAPACITY_OPTIONS_BY_CATEGORY[categoryLabel] : undefined;
 
@@ -44,14 +46,14 @@ export function EquipmentCapacitySelect({ equipmentType, value, onChange }: Equi
 
   if (!options) {
     return (
-      <Field label="Kapasite (opsiyonel, örn. 45 kVA, 120 lt/dk)">
+      <Field label={t("formComponents.equipmentCapacity.labelFreeform")}>
         <input value={value} onChange={(e) => onChange(e.target.value)} className={inputClass} />
       </Field>
     );
   }
 
   return (
-    <Field label="Kapasite (opsiyonel)">
+    <Field label={t("formComponents.equipmentCapacity.label")}>
       {mode === "list" ? (
         <select
           value={value}
@@ -65,20 +67,20 @@ export function EquipmentCapacitySelect({ equipmentType, value, onChange }: Equi
           }}
           className={selectClass}
         >
-          <option value="">Belirtilmedi</option>
+          <option value="">{t("formComponents.equipmentCapacity.unspecified")}</option>
           {options.map((c) => (
             <option key={c} value={c}>
               {c}
             </option>
           ))}
-          <option value={OTHER}>Diğer (elle gir)</option>
+          <option value={OTHER}>{t("formComponents.equipmentCapacity.other")}</option>
         </select>
       ) : (
         <div className="flex gap-2">
           <input
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="Örn. 1.2 m³ kova"
+            placeholder={t("formComponents.equipmentCapacity.placeholder")}
             className={inputClass}
           />
           <button
@@ -89,7 +91,7 @@ export function EquipmentCapacitySelect({ equipmentType, value, onChange }: Equi
             }}
             className="shrink-0 rounded-md border border-ink-700 px-3 text-sm text-silver-400 hover:border-gold-500"
           >
-            Listeden Seç
+            {t("formComponents.equipmentCapacity.selectFromList")}
           </button>
         </div>
       )}

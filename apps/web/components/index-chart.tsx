@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 export interface IndexChartPoint {
   month: string;
@@ -31,11 +32,15 @@ function CustomTooltip({
   payload,
   label,
   unitLabel,
+  sampleSizeLabel,
+  expectationSampleSizeLabel,
 }: {
   active?: boolean;
   payload?: { value: number; name: string; color: string }[];
   label?: string;
   unitLabel: string;
+  sampleSizeLabel: (count: number) => string;
+  expectationSampleSizeLabel: (count: number) => string;
 }) {
   if (!active || !payload?.length) return null;
   const point = (payload[0] as unknown as { payload: IndexChartPoint }).payload;
@@ -49,19 +54,23 @@ function CustomTooltip({
             {p.name}: {p.value.toLocaleString("tr-TR")} {unitLabel}
           </p>
         ))}
-      {point?.sampleSize !== undefined && <p className="mt-1 text-silver-500">Örneklem: {point.sampleSize}</p>}
+      {point?.sampleSize !== undefined && (
+        <p className="mt-1 text-silver-500">{sampleSizeLabel(point.sampleSize)}</p>
+      )}
       {point?.expectationSampleSize ? (
-        <p className="text-silver-500">Beklenti örneklemi: {point.expectationSampleSize}</p>
+        <p className="text-silver-500">{expectationSampleSizeLabel(point.expectationSampleSize)}</p>
       ) : null}
     </div>
   );
 }
 
 export function IndexChart({ data, unitLabel }: { data: IndexChartPoint[]; unitLabel: string }) {
+  const { t } = useLocale();
+
   if (data.length === 0) {
     return (
       <div className="flex h-64 items-center justify-center rounded-lg border border-ink-800 bg-ink-900 text-sm text-silver-500">
-        Bu filtre için yeterli veri yok (en az 3 veri girişi gerekir).
+        {t("components.indexChart.insufficientData")}
       </div>
     );
   }
@@ -75,12 +84,20 @@ export function IndexChart({ data, unitLabel }: { data: IndexChartPoint[]; unitL
           <CartesianGrid stroke={GRID_COLOR} vertical={false} />
           <XAxis dataKey="month" stroke={AXIS_COLOR} fontSize={12} tickLine={false} axisLine={{ stroke: GRID_COLOR }} />
           <YAxis stroke={AXIS_COLOR} fontSize={12} tickLine={false} axisLine={{ stroke: GRID_COLOR }} width={60} />
-          <Tooltip content={<CustomTooltip unitLabel={unitLabel} />} />
+          <Tooltip
+            content={
+              <CustomTooltip
+                unitLabel={unitLabel}
+                sampleSizeLabel={(count) => t("components.indexChart.sampleSize", { count })}
+                expectationSampleSizeLabel={(count) => t("components.indexChart.expectationSampleSize", { count })}
+              />
+            }
+          />
           <Legend wrapperStyle={{ fontSize: 12, color: "#c7cbd1" }} />
           <Line
             type="monotone"
             dataKey="averageAmount"
-            name="Ortalama"
+            name={t("components.indexChart.average")}
             stroke={COLOR_AVERAGE}
             strokeWidth={2}
             dot={{ r: 4, fill: COLOR_AVERAGE }}
@@ -88,7 +105,7 @@ export function IndexChart({ data, unitLabel }: { data: IndexChartPoint[]; unitL
           <Line
             type="monotone"
             dataKey="medianAmount"
-            name="Medyan"
+            name={t("components.indexChart.median")}
             stroke={COLOR_MEDIAN}
             strokeWidth={2}
             dot={{ r: 4, fill: COLOR_MEDIAN }}
@@ -97,7 +114,7 @@ export function IndexChart({ data, unitLabel }: { data: IndexChartPoint[]; unitL
             <Line
               type="monotone"
               dataKey="expectationAverage"
-              name="Piyasa Beklentisi (Teklif)"
+              name={t("components.indexChart.marketExpectation")}
               stroke={COLOR_EXPECTATION}
               strokeWidth={2}
               strokeDasharray="5 4"

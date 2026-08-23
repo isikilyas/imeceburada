@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MATERIAL_CATEGORIES, MATERIAL_CATEGORY_ITEMS } from "@bau360/shared";
 import { Field, selectClass } from "@/components/form";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 interface MaterialCategoryMultiSelectProps {
   values: string[];
@@ -10,6 +11,7 @@ interface MaterialCategoryMultiSelectProps {
 }
 
 export function MaterialCategoryMultiSelect({ values, onChange }: MaterialCategoryMultiSelectProps) {
+  const { t } = useLocale();
   const [pending, setPending] = useState(MATERIAL_CATEGORIES[0].items[0].value);
 
   function handleAdd() {
@@ -35,7 +37,7 @@ export function MaterialCategoryMultiSelect({ values, onChange }: MaterialCatego
                 type="button"
                 onClick={() => handleRemove(v)}
                 className="text-silver-500 hover:text-red-400"
-                aria-label="Kaldır"
+                aria-label={t("formComponents.materialCategory.remove")}
               >
                 ×
               </button>
@@ -44,7 +46,7 @@ export function MaterialCategoryMultiSelect({ values, onChange }: MaterialCatego
         </div>
       )}
 
-      <Field label="Tedarik Edilen Ürün/Hizmet Grubu">
+      <Field label={t("formComponents.materialCategory.label")}>
         <select value={pending} onChange={(e) => setPending(e.target.value)} className={selectClass}>
           {MATERIAL_CATEGORIES.map((category) => (
             <optgroup key={category.label} label={`${category.icon} ${category.label}`}>
@@ -62,7 +64,7 @@ export function MaterialCategoryMultiSelect({ values, onChange }: MaterialCatego
         onClick={handleAdd}
         className="w-full rounded-md border border-ink-700 py-2 text-sm font-medium text-silver-300 hover:border-gold-500 hover:text-gold-400"
       >
-        + Kategori Ekle
+        {t("formComponents.materialCategory.addButton")}
       </button>
     </div>
   );

@@ -21,7 +21,7 @@ class ImeceYapiApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LocaleStore()..init()),
       ],
       child: MaterialApp(
-        title: 'İmece Yapı',
+        title: 'İmece Burada',
         debugShowCheckedModeBanner: false,
         theme: buildAppTheme(),
         home: const RootTabs(),

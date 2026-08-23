@@ -2,8 +2,10 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 export function SearchBox({ className = "", onSubmit }: { className?: string; onSubmit?: () => void }) {
+  const { t } = useLocale();
   const [q, setQ] = useState("");
   const router = useRouter();
 
@@ -31,7 +33,7 @@ export function SearchBox({ className = "", onSubmit }: { className?: string; on
         type="search"
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="İlan ara..."
+        placeholder={t("formComponents.searchBox.placeholder")}
         className="w-full rounded-md border border-ink-700 bg-ink-900 py-1.5 ps-8 pe-3 text-sm text-silver-200 placeholder:text-silver-500 focus:border-gold-500 focus:outline-none"
       />
     </form>

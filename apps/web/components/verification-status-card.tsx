@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 interface VerificationStatusCardProps {
   phoneVerified: boolean;
@@ -13,25 +16,28 @@ export function VerificationStatusCard({
   membershipStatus,
   membershipExpiresAt,
 }: VerificationStatusCardProps) {
+  const { t } = useLocale();
   const isActive = membershipStatus === "ACTIVE";
 
   return (
     <div className="rounded-lg border border-ink-800 bg-ink-900 p-4">
-      <p className="mb-3 text-sm font-medium text-silver-300">Hesap Durumu</p>
+      <p className="mb-3 text-sm font-medium text-silver-300">{t("formComponents.verification.accountStatus")}</p>
       <div className="space-y-2 text-sm">
         <div className="flex items-center justify-between">
-          <span className="text-silver-500">Telefon Doğrulama</span>
+          <span className="text-silver-500">{t("formComponents.verification.phoneVerification")}</span>
           <span className={phoneVerified ? "text-green-400" : "text-red-400"}>
-            {phoneVerified ? "✓ Doğrulandı" : "✗ Doğrulanmadı"}
+            {phoneVerified ? t("formComponents.verification.verified") : t("formComponents.verification.notVerified")}
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-silver-500">Üyelik</span>
-          <span className={isActive ? "text-green-400" : "text-red-400"}>{isActive ? "✓ Aktif" : "✗ Pasif"}</span>
+          <span className="text-silver-500">{t("formComponents.verification.membership")}</span>
+          <span className={isActive ? "text-green-400" : "text-red-400"}>
+            {isActive ? t("formComponents.verification.active") : t("formComponents.verification.inactive")}
+          </span>
         </div>
         {isActive && membershipExpiresAt && (
           <div className="flex items-center justify-between">
-            <span className="text-silver-500">Bitiş Tarihi</span>
+            <span className="text-silver-500">{t("formComponents.verification.expiresAt")}</span>
             <span className="text-silver-400">{new Date(membershipExpiresAt).toLocaleDateString("tr-TR")}</span>
           </div>
         )}
@@ -41,7 +47,7 @@ export function VerificationStatusCard({
           href="/membership"
           className="mt-3 block rounded-md bg-gold-500 py-2 text-center text-sm font-medium text-ink-950 hover:bg-gold-400"
         >
-          Üyeliği Etkinleştir
+          {t("formComponents.verification.activateMembership")}
         </Link>
       )}
     </div>

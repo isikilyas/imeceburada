@@ -1,20 +1,33 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { MATERIAL_TYPES, MaterialListingDto, PaginatedResult } from "@bau360/shared";
 import { apiFetch } from "@/lib/api-client";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { Field, selectClass } from "@/components/form";
+import { ProvinceDistrictSelect } from "@/components/province-district-select";
 
 export function SupplierSpotlight() {
   const { t } = useLocale();
-  const { data } = useQuery({
-    queryKey: ["supplier-spotlight"],
-    queryFn: () => apiFetch<PaginatedResult<MaterialListingDto>>("/material-listings?pageSize=6"),
+  const [materialType, setMaterialType] = useState("");
+  const [city, setCity] = useState("");
+  const [district, setDistrict] = useState("");
+
+  const params = new URLSearchParams({ pageSize: "6" });
+  if (materialType) params.set("materialType", materialType);
+  if (city) params.set("city", city);
+  if (district) params.set("district", district);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["supplier-spotlight", materialType, city, district],
+    queryFn: () => apiFetch<PaginatedResult<MaterialListingDto>>(`/material-listings?${params.toString()}`),
   });
 
   const listings = data?.items ?? [];
-  if (listings.length === 0) return null;
+  const isFiltered = !!(materialType || city || district);
+  if (!isFiltered && !isLoading && listings.length === 0) return null;
 
   return (
     <section className="flex flex-col gap-6 py-16">
@@ -27,6 +40,32 @@ export function SupplierSpotlight() {
           {t("home.supplierSpotlightViewAll")}
         </Link>
       </div>
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <Field label={t("filters.material")}>
+          <select value={materialType} onChange={(e) => setMaterialType(e.target.value)} className={selectClass}>
+            <option value="">{t("filters.allMaterials")}</option>
+            {MATERIAL_TYPES.map((m) => (
+              <option key={m.value} value={m.value}>
+                {t(`enums.materialType.${m.value}`)}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <div className="sm:col-span-2">
+          <ProvinceDistrictSelect
+            city={city}
+            district={district}
+            onCityChange={setCity}
+            onDistrictChange={setDistrict}
+            allowEmptyCity
+            allowEmptyDistrict
+          />
+        </div>
+      </div>
+
+      {!isLoading && listings.length === 0 && <p className="text-sm text-silver-500">{t("common.noResults")}</p>}
+
       <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-2">
         {listings.map((listing) => {
           const label = MATERIAL_TYPES.find((m) => m.value === listing.materialType)?.label ?? listing.materialType;

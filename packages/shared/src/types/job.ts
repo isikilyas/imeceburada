@@ -4,6 +4,7 @@ export interface JobPostingDto {
   id: string;
   companyId: string;
   companyName: string;
+  companyVerified: boolean;
   title: string;
   listingType: ListingIntent;
   tradeCategory: string;

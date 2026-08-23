@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { TRADE_FIELDS } from "@bau360/shared";
 import { Field, selectClass } from "@/components/form";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 interface TradeCategorySelectProps {
   value: string;
@@ -22,6 +23,7 @@ function findLocation(value: string) {
 }
 
 export function TradeCategorySelect({ value, onChange, allowEmpty = false }: TradeCategorySelectProps) {
+  const { t } = useLocale();
   const located = findLocation(value);
   const [fieldLabel, setFieldLabel] = useState(
     located?.fieldLabel ?? (allowEmpty ? "" : TRADE_FIELDS[0].label),
@@ -68,9 +70,9 @@ export function TradeCategorySelect({ value, onChange, allowEmpty = false }: Tra
 
   return (
     <div className="space-y-3">
-      <Field label="Çalışma Alanı">
+      <Field label={t("formComponents.tradeCategory.field")}>
         <select value={fieldLabel} onChange={(e) => handleFieldChange(e.target.value)} className={selectClass}>
-          {allowEmpty && <option value="">Tüm Alanlar</option>}
+          {allowEmpty && <option value="">{t("formComponents.tradeCategory.allFields")}</option>}
           {TRADE_FIELDS.map((f) => (
             <option key={f.label} value={f.label}>
               {f.icon} {f.label}
@@ -78,14 +80,14 @@ export function TradeCategorySelect({ value, onChange, allowEmpty = false }: Tra
           ))}
         </select>
       </Field>
-      <Field label="Branş">
+      <Field label={t("formComponents.tradeCategory.branch")}>
         <select
           value={branchLabel}
           onChange={(e) => handleBranchChange(e.target.value)}
           disabled={!fieldLabel}
           className={selectClass}
         >
-          {allowEmpty && <option value="">Tüm Branşlar</option>}
+          {allowEmpty && <option value="">{t("formComponents.tradeCategory.allBranches")}</option>}
           {branches.map((b) => (
             <option key={b.label} value={b.label}>
               {b.label}
@@ -93,14 +95,14 @@ export function TradeCategorySelect({ value, onChange, allowEmpty = false }: Tra
           ))}
         </select>
       </Field>
-      <Field label="Meslek">
+      <Field label={t("formComponents.tradeCategory.profession")}>
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
           disabled={!branchLabel}
           className={selectClass}
         >
-          {allowEmpty && <option value="">Tüm Meslekler</option>}
+          {allowEmpty && <option value="">{t("formComponents.tradeCategory.allProfessions")}</option>}
           {professions.map((p) => (
             <option key={p.value} value={p.value}>
               {p.label}

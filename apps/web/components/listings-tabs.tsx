@@ -1,42 +1,45 @@
 "use client";
 
 import Link from "next/link";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 interface ListingsTabsProps {
   active: "jobs" | "equipment" | "materials";
 }
 
-const TABS: {
+const TAB_DEFS: {
   key: "jobs" | "equipment" | "materials";
   href: string;
   icon: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
 }[] = [
   {
     key: "jobs",
     href: "/jobs",
     icon: "👷",
-    title: "İş İlanları",
-    description: "Usta, işçi ve teknik personel ilanları",
+    titleKey: "components.listingsTabs.jobsTitle",
+    descriptionKey: "components.listingsTabs.jobsDesc",
   },
   {
     key: "equipment",
     href: "/equipment",
     icon: "🏗️",
-    title: "Ekipman Arıyorum",
-    description: "Kiralık iş makinesi ve ekipman ilanları",
+    titleKey: "components.listingsTabs.equipmentTitle",
+    descriptionKey: "components.listingsTabs.equipmentDesc",
   },
   {
     key: "materials",
     href: "/material-listings",
     icon: "🧱",
-    title: "Malzeme İlanları",
-    description: "Tedarikçilerden inşaat malzemesi ilanları",
+    titleKey: "components.listingsTabs.materialsTitle",
+    descriptionKey: "components.listingsTabs.materialsDesc",
   },
 ];
 
 export function ListingsTabs({ active }: ListingsTabsProps) {
+  const { t } = useLocale();
+  const TABS = TAB_DEFS.map((tab) => ({ ...tab, title: t(tab.titleKey), description: t(tab.descriptionKey) }));
   return (
     <div className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
       {TABS.map((tab) => {

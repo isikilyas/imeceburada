@@ -5,6 +5,7 @@ export interface MaterialListingDto {
   supplierId: string;
   supplierName: string;
   supplierPhone?: string | null;
+  supplierVerified: boolean;
   materialType: string;
   unit: string;
   city: string;

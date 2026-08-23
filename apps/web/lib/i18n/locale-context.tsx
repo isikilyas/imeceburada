@@ -10,6 +10,8 @@ export const AVAILABLE_LOCALES: { code: Locale; label: string; flagCode: FlagCod
   { code: "de", label: "Deutsch", flagCode: "de" },
   { code: "ru", label: "Русский", flagCode: "ru" },
   { code: "ar", label: "العربية", flagCode: "sa" },
+  { code: "es", label: "Español", flagCode: "es" },
+  { code: "fr", label: "Français", flagCode: "fr" },
 ];
 
 /** Henüz çevrilmemiş diller — seçici bunları listeler ama tıklanamaz, gösterge amaçlı. */
@@ -25,7 +27,7 @@ const STORAGE_KEY = "bau360-locale";
 interface LocaleContextValue {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (path: string) => string;
+  t: (path: string, vars?: Record<string, string | number>) => string;
 }
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
@@ -57,8 +59,10 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(STORAGE_KEY, next);
   }
 
-  function t(path: string): string {
-    return getNested(translations[locale], path) ?? path;
+  function t(path: string, vars?: Record<string, string | number>): string {
+    const raw = getNested(translations[locale], path) ?? path;
+    if (!vars) return raw;
+    return raw.replace(/\{\{(\w+)\}\}/g, (match, key) => (key in vars ? String(vars[key]) : match));
   }
 
   return <LocaleContext.Provider value={{ locale, setLocale, t }}>{children}</LocaleContext.Provider>;

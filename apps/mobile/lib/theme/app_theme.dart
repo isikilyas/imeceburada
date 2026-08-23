@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// İmece Yapı marka renkleri — web (Next.js/Tailwind) tarafındaki paletle birebir aynı,
+/// İmece Burada marka renkleri — web (Next.js/Tailwind) tarafındaki paletle birebir aynı,
 /// platformlar arası görsel tutarlılık için.
 class AppColors {
   AppColors._();

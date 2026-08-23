@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { TRADE_CATEGORIES, TRADE_FIELDS } from "@bau360/shared";
 import { TradeCategorySelect } from "@/components/trade-category-select";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 interface TradeCategoryMultiSelectProps {
   values: string[];
@@ -10,6 +11,7 @@ interface TradeCategoryMultiSelectProps {
 }
 
 export function TradeCategoryMultiSelect({ values, onChange }: TradeCategoryMultiSelectProps) {
+  const { t } = useLocale();
   const [pending, setPending] = useState(TRADE_FIELDS[0].branches[0].professions[0].value);
 
   function handleAdd() {
@@ -35,7 +37,7 @@ export function TradeCategoryMultiSelect({ values, onChange }: TradeCategoryMult
                 type="button"
                 onClick={() => handleRemove(v)}
                 className="text-silver-500 hover:text-red-400"
-                aria-label="Kaldır"
+                aria-label={t("formComponents.tradeCategory.remove")}
               >
                 ×
               </button>
@@ -50,7 +52,7 @@ export function TradeCategoryMultiSelect({ values, onChange }: TradeCategoryMult
         onClick={handleAdd}
         className="w-full rounded-md border border-ink-700 py-2 text-sm font-medium text-silver-300 hover:border-gold-500 hover:text-gold-400"
       >
-        + Branş Ekle
+        {t("formComponents.tradeCategory.addButton")}
       </button>
     </div>
   );

@@ -85,7 +85,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
         actions: [
           if (job != null)
             WhatsAppShareButton(
-              text: "🏗️ ${job.title} — ${job.companyName} (${job.city})\nİmece Yapı'da incele:",
+              text: "🏗️ ${job.title} — ${job.companyName} (${job.city})\nİmece Burada'da incele:",
             ),
         ],
       ),
