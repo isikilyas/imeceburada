@@ -10,10 +10,10 @@ import {
   RegisterCompanyInput,
   RegisterSupplierInput,
   RegisterSubcontractorInput,
-} from "@bau360/shared";
+} from "@imeceburada/shared";
 import { apiFetch, ApiError } from "./api-client";
 
-const STORAGE_KEY = "bau360.auth";
+const STORAGE_KEY = "imeceburada.auth";
 
 interface StoredAuth {
   user: AuthUser;

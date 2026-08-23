@@ -44,7 +44,7 @@ docker compose up -d
 # bilgilerinle güncelle.
 
 # 4) Prisma şemasını uygula ve demo veriyi yükle
-pnpm --filter @bau360/api prisma generate
+pnpm --filter @imeceburada/api prisma generate
 pnpm db:migrate
 pnpm db:seed
 
@@ -57,8 +57,8 @@ pnpm dev
 - API: http://localhost:3001/api
 - Web: http://localhost:3000
 
-Sadece tek bir uygulamayı çalıştırmak için: `pnpm --filter @bau360/web dev`,
-`pnpm --filter @bau360/api dev`.
+Sadece tek bir uygulamayı çalıştırmak için: `pnpm --filter @imeceburada/web dev`,
+`pnpm --filter @imeceburada/api dev`.
 
 ## Kurulum — Mobil (Flutter)
 
@@ -71,7 +71,7 @@ create` bunu otomatik yapar). İlk kurulumda:
 cd apps/mobile
 
 # android/ios/web native klasörlerini üret (mevcut lib/ ve pubspec.yaml korunur)
-flutter create --org com.bau360 --project-name bau360 .
+flutter create --org com.imeceburada --project-name imeceburada .
 
 # bağımlılıkları indir
 flutter pub get
@@ -87,8 +87,8 @@ API adresi varsayılan olarak `http://localhost:3001/api`'dir
 
 ### Demo hesaplar (seed sonrası)
 
-- Şirket: `demo-sirket@bau360.com` / `Deneme123!`
-- Aday: `demo-aday@bau360.com` / `Deneme123!`
+- Şirket: `demo-sirket@imeceburada.com` / `Deneme123!`
+- Aday: `demo-aday@imeceburada.com` / `Deneme123!`
 
 ## Kapsam (Faz 1)
 

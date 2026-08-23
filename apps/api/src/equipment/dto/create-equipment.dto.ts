@@ -1,5 +1,5 @@
 import { IsIn, IsInt, IsOptional, IsString, Min, MinLength } from "class-validator";
-import { EQUIPMENT_TYPE_VALUES, EquipmentListingType } from "@bau360/shared";
+import { EQUIPMENT_TYPE_VALUES, EquipmentListingType } from "@imeceburada/shared";
 
 const EQUIPMENT_LISTING_TYPE_VALUES: EquipmentListingType[] = ["RENT", "SALE"];
 

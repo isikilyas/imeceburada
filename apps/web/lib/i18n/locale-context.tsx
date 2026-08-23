@@ -22,7 +22,7 @@ const LOCALE_CODES = AVAILABLE_LOCALES.map((l) => l.code);
 /** Sağdan sola yazılan diller — <html dir> bu listeye göre senkronize edilir. */
 const RTL_LOCALES: Locale[] = ["ar"];
 
-const STORAGE_KEY = "bau360-locale";
+const STORAGE_KEY = "imeceburada-locale";
 
 interface LocaleContextValue {
   locale: Locale;

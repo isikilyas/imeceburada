@@ -1,5 +1,5 @@
 import { IsIn, IsInt, IsOptional, IsString, Min } from "class-validator";
-import { MATERIAL_TYPE_VALUES, PriceSubmissionType } from "@bau360/shared";
+import { MATERIAL_TYPE_VALUES, PriceSubmissionType } from "@imeceburada/shared";
 
 const PRICE_SUBMISSION_TYPE_VALUES: PriceSubmissionType[] = ["ACTUAL", "OFFER"];
 

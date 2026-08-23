@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { TRADE_FIELDS, TURKISH_PROVINCES, UserRole } from "@bau360/shared";
+import { TRADE_FIELDS, TURKISH_PROVINCES, UserRole } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass } from "@/components/form";

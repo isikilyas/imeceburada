@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { EMPLOYMENT_TYPES, JobPostingDto, LISTING_INTENTS, PaginatedResult } from "@bau360/shared";
+import { EMPLOYMENT_TYPES, JobPostingDto, LISTING_INTENTS, PaginatedResult } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { JobCard } from "@/components/job-card";
 import { Field, selectClass } from "@/components/form";

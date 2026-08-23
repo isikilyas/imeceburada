@@ -1,5 +1,5 @@
 import { IsIn } from "class-validator";
-import { ApplicationStatus } from "@bau360/shared";
+import { ApplicationStatus } from "@imeceburada/shared";
 
 const APPLICATION_STATUS_VALUES: ApplicationStatus[] = ["PENDING", "REVIEWED", "ACCEPTED", "REJECTED"];
 

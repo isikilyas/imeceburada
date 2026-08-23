@@ -13,7 +13,7 @@ import {
   ListingIntent,
   TRADE_FIELDS,
   TURKISH_PROVINCES,
-} from "@bau360/shared";
+} from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { ApiError } from "@/lib/api-client";

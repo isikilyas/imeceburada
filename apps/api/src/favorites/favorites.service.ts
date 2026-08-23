@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { FavoriteListingType } from "@bau360/shared";
+import { FavoriteListingType } from "@imeceburada/shared";
 import { PrismaService } from "../prisma/prisma.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateFavoriteDto } from "./dto/create-favorite.dto";

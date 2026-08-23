@@ -1,5 +1,5 @@
 import { IsIn } from "class-validator";
-import { SiteRequestResponseStatus } from "@bau360/shared";
+import { SiteRequestResponseStatus } from "@imeceburada/shared";
 
 const RESPONSE_STATUS_VALUES: SiteRequestResponseStatus[] = ["ACCEPTED", "REJECTED"];
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EquipmentListingDto, EQUIPMENT_TYPES } from "@bau360/shared";
+import { EquipmentListingDto, EQUIPMENT_TYPES } from "@imeceburada/shared";
 import { apiFetch, API_ORIGIN } from "@/lib/api-client";
 import { EquipmentDetailClient } from "./equipment-detail-client";
 

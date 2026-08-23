@@ -2,7 +2,7 @@
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { EQUIPMENT_TYPES, SiteRequestDto, TRADE_CATEGORIES } from "@bau360/shared";
+import { EQUIPMENT_TYPES, SiteRequestDto, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 

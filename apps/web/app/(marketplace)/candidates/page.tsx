@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { CandidateDirectoryEntryDto, PaginatedResult, TRADE_CATEGORIES } from "@bau360/shared";
+import { CandidateDirectoryEntryDto, PaginatedResult, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";

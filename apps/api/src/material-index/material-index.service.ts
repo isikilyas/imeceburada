@@ -3,7 +3,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateMaterialSubmissionDto } from "./dto/create-material-submission.dto";
 import { MaterialIndexQueryDto } from "./dto/material-index-query.dto";
-import { getMaterialUnit, MaterialIndexPoint, WAGE_INDEX_MIN_SAMPLE_SIZE } from "@bau360/shared";
+import { getMaterialUnit, MaterialIndexPoint, WAGE_INDEX_MIN_SAMPLE_SIZE } from "@imeceburada/shared";
 
 interface MaterialIndexRow {
   month: string;

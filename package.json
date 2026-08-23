@@ -1,5 +1,5 @@
 {
-  "name": "bau360",
+  "name": "imeceburada",
   "private": true,
   "packageManager": "pnpm@9.12.0",
   "engines": {
@@ -9,8 +9,8 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "db:migrate": "pnpm --filter @bau360/api prisma migrate dev",
-    "db:seed": "pnpm --filter @bau360/api prisma db seed"
+    "db:migrate": "pnpm --filter @imeceburada/api prisma migrate dev",
+    "db:seed": "pnpm --filter @imeceburada/api prisma db seed"
   },
   "devDependencies": {
     "turbo": "^2.1.3",

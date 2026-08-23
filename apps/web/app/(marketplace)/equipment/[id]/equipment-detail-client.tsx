@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { EquipmentListingDto, EQUIPMENT_TYPES } from "@bau360/shared";
+import { EquipmentListingDto, EQUIPMENT_TYPES } from "@imeceburada/shared";
 import { apiFetch, API_ORIGIN } from "@/lib/api-client";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { WhatsAppShareButton } from "@/components/whatsapp-share-button";

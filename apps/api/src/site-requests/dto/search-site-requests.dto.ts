@@ -1,5 +1,5 @@
 import { IsIn, IsOptional, IsString } from "class-validator";
-import { SiteRequestType } from "@bau360/shared";
+import { SiteRequestType } from "@imeceburada/shared";
 
 const SITE_REQUEST_TYPE_VALUES: SiteRequestType[] = ["WORKER", "EQUIPMENT"];
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { EquipmentListingDto, EQUIPMENT_LISTING_TYPES, EquipmentListingType, PaginatedResult } from "@bau360/shared";
+import { EquipmentListingDto, EQUIPMENT_LISTING_TYPES, EquipmentListingType, PaginatedResult } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { EquipmentCard } from "@/components/equipment-card";

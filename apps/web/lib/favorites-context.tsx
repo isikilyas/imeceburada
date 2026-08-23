@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
-import { FavoriteDto, FavoriteListingType } from "@bau360/shared";
+import { FavoriteDto, FavoriteListingType } from "@imeceburada/shared";
 import { useAuth } from "./auth-context";
 import { ApiError } from "./api-client";
 

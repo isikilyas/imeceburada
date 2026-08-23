@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TRADE_CATEGORIES, TRADE_FIELDS } from "@bau360/shared";
+import { TRADE_CATEGORIES, TRADE_FIELDS } from "@imeceburada/shared";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { useLocale } from "@/lib/i18n/locale-context";
 

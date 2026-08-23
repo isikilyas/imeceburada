@@ -1,5 +1,5 @@
 import { IsIn, IsString } from "class-validator";
-import { FavoriteListingType } from "@bau360/shared";
+import { FavoriteListingType } from "@imeceburada/shared";
 
 const FAVORITE_LISTING_TYPE_VALUES: FavoriteListingType[] = ["JOB", "EQUIPMENT", "MATERIAL_LISTING", "SITE_REQUEST"];
 

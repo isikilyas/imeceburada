@@ -8,7 +8,7 @@ import {
   MEMBERSHIP_PLANS,
   MembershipPlan,
   TURKISH_PROVINCES,
-} from "@bau360/shared";
+} from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass, selectClass } from "@/components/form";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { TRADE_CATEGORIES, WAGE_PERIODS, WageScalePoint } from "@bau360/shared";
+import { TRADE_CATEGORIES, WAGE_PERIODS, WageScalePoint } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 

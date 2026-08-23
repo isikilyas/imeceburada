@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { MATERIAL_TYPES, MaterialListingDto, PaginatedResult } from "@bau360/shared";
+import { MATERIAL_TYPES, MaterialListingDto, PaginatedResult } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { Field, selectClass } from "@/components/form";

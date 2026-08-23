@@ -4,7 +4,7 @@ import { ConfigService } from "@nestjs/config";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { PrismaService } from "../../prisma/prisma.service";
 import { RequestUser } from "../types/request-user";
-import { UserRole } from "@bau360/shared";
+import { UserRole } from "@imeceburada/shared";
 
 interface JwtPayload {
   sub: string;

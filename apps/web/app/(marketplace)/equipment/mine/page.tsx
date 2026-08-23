@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { EQUIPMENT_TYPES, EquipmentListingDto } from "@bau360/shared";
+import { EQUIPMENT_TYPES, EquipmentListingDto } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ListingPhotoUploader } from "@/components/listing-photo-uploader";
 import { useLocale } from "@/lib/i18n/locale-context";

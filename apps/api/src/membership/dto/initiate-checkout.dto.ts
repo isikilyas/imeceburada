@@ -1,5 +1,5 @@
 import { IsIn, IsOptional, IsString, Length } from "class-validator";
-import { MembershipPlan } from "@bau360/shared";
+import { MembershipPlan } from "@imeceburada/shared";
 
 const MEMBERSHIP_PLAN_VALUES: MembershipPlan[] = ["MONTHLY", "YEARLY"];
 

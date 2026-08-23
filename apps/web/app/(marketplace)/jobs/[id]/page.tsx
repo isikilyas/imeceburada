@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { JobPostingDto } from "@bau360/shared";
+import { JobPostingDto } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { JobDetailClient } from "./job-detail-client";
 

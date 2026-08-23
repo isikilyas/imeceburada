@@ -1,4 +1,4 @@
-import { UserRole } from "@bau360/shared";
+import { UserRole } from "@imeceburada/shared";
 
 export interface RequestUser {
   id: string;

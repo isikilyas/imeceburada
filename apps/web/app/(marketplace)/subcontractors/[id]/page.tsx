@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { SubcontractorDirectoryDetailDto, TRADE_CATEGORIES } from "@bau360/shared";
+import { SubcontractorDirectoryDetailDto, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { WhatsAppShareButton } from "@/components/whatsapp-share-button";

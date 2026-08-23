@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/common";
-import { FavoriteListingType } from "@bau360/shared";
+import { FavoriteListingType } from "@imeceburada/shared";
 import { FavoritesService } from "./favorites.service";
 import { CreateFavoriteDto } from "./dto/create-favorite.dto";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";

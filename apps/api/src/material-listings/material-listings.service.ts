@@ -6,7 +6,7 @@ import { RequestUser } from "../auth/types/request-user";
 import { CreateMaterialListingDto } from "./dto/create-material-listing.dto";
 import { UpdateMaterialListingDto } from "./dto/update-material-listing.dto";
 import { SearchMaterialListingsDto } from "./dto/search-material-listings.dto";
-import { getMaterialUnit } from "@bau360/shared";
+import { getMaterialUnit } from "@imeceburada/shared";
 
 const supplierInclude = { supplier: true };
 

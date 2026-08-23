@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { EquipmentListingDto, EQUIPMENT_TYPES } from "@bau360/shared";
+import { EquipmentListingDto, EQUIPMENT_TYPES } from "@imeceburada/shared";
 import { FavoriteButton } from "@/components/favorite-button";
 import { ListingThumbnail } from "@/components/listing-thumbnail";
 import { VerifiedBadge } from "@/components/verified-badge";

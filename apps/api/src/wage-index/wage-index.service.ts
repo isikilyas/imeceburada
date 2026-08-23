@@ -3,7 +3,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateWageSubmissionDto } from "./dto/create-wage-submission.dto";
 import { WageIndexQueryDto } from "./dto/wage-index-query.dto";
-import { WAGE_INDEX_MIN_SAMPLE_SIZE, WageIndexPoint, WageScalePoint } from "@bau360/shared";
+import { WAGE_INDEX_MIN_SAMPLE_SIZE, WageIndexPoint, WageScalePoint } from "@imeceburada/shared";
 
 interface WageIndexRow {
   month: string;

@@ -40,7 +40,7 @@ async function bootstrap() {
 
   const port = config.get<number>("PORT") ?? 3001;
   await app.listen(port);
-  console.log(`bau360 API http://localhost:${port}/api adresinde çalışıyor`);
+  console.log(`İmece Burada API http://localhost:${port}/api adresinde çalışıyor`);
 }
 
 bootstrap();

@@ -8,7 +8,7 @@ import '../../theme/app_theme.dart';
 import 'forgot_password_screen.dart';
 import 'register_screen.dart';
 
-const _rememberedEmailKey = 'bau360.rememberedEmail';
+const _rememberedEmailKey = 'imeceburada.rememberedEmail';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -8,7 +8,7 @@ import { ApiError } from "@/lib/api-client";
 import { Field, inputClass } from "@/components/form";
 import { useLocale } from "@/lib/i18n/locale-context";
 
-const REMEMBERED_EMAIL_KEY = "bau360.rememberedEmail";
+const REMEMBERED_EMAIL_KEY = "imeceburada.rememberedEmail";
 
 export default function LoginPage() {
   const { login } = useAuth();

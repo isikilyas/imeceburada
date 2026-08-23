@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MATERIAL_TYPES, MaterialListingDto } from "@bau360/shared";
+import { MATERIAL_TYPES, MaterialListingDto } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { MaterialListingDetailClient } from "./material-listing-detail-client";
 

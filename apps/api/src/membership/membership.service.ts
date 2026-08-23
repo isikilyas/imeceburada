@@ -5,7 +5,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { IyzicoService } from "../iyzico/iyzico.service";
 import { RequestUser } from "../auth/types/request-user";
 import { InitiateCheckoutDto } from "./dto/initiate-checkout.dto";
-import { CompanyMembershipDto, InitiateCheckoutResponse, MEMBERSHIP_PLANS } from "@bau360/shared";
+import { CompanyMembershipDto, InitiateCheckoutResponse, MEMBERSHIP_PLANS } from "@imeceburada/shared";
 
 interface PayingProfile {
   id: string;

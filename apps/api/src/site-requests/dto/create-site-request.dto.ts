@@ -9,7 +9,7 @@ import {
   Min,
   MinLength,
 } from "class-validator";
-import { EQUIPMENT_TYPE_VALUES, SiteRequestType, TRADE_CATEGORY_VALUES } from "@bau360/shared";
+import { EQUIPMENT_TYPE_VALUES, SiteRequestType, TRADE_CATEGORY_VALUES } from "@imeceburada/shared";
 
 const SITE_REQUEST_TYPE_VALUES: SiteRequestType[] = ["WORKER", "EQUIPMENT"];
 

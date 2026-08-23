@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MATERIAL_CATEGORIES, MATERIAL_CATEGORY_ITEMS } from "@bau360/shared";
+import { MATERIAL_CATEGORIES, MATERIAL_CATEGORY_ITEMS } from "@imeceburada/shared";
 import { Field, selectClass } from "@/components/form";
 import { useLocale } from "@/lib/i18n/locale-context";
 

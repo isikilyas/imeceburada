@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { JobPostingDto, TRADE_CATEGORIES } from "@bau360/shared";
+import { JobPostingDto, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { apiFetch, ApiError } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";

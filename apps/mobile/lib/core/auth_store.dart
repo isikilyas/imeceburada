@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/auth.dart';
 import 'api_client.dart';
 
-const _storageKey = 'bau360.auth';
+const _storageKey = 'imeceburada.auth';
 
 /// Kimlik doğrulama durumunu tutan basit bir ChangeNotifier — Provider ile
 /// widget ağacına sağlanır (bkz. main.dart).

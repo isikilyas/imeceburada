@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { JobPostingDto, TRADE_CATEGORIES } from "@bau360/shared";
+import { JobPostingDto, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { FavoriteButton } from "@/components/favorite-button";
 import { VerifiedBadge } from "@/components/verified-badge";
 import { useLocale } from "@/lib/i18n/locale-context";

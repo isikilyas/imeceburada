@@ -13,7 +13,7 @@ import {
   WAGE_PERIODS,
   WagePeriod,
   WageIndexPoint,
-} from "@bau360/shared";
+} from "@imeceburada/shared";
 import { ApiError } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { Field, inputClass, selectClass } from "@/components/form";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { EQUIPMENT_CAPACITY_OPTIONS_BY_CATEGORY, EQUIPMENT_CATEGORIES } from "@bau360/shared";
+import { EQUIPMENT_CAPACITY_OPTIONS_BY_CATEGORY, EQUIPMENT_CATEGORIES } from "@imeceburada/shared";
 import { Field, inputClass, selectClass } from "@/components/form";
 import { useLocale } from "@/lib/i18n/locale-context";
 

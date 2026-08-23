@@ -1,5 +1,5 @@
 import { IsArray, IsEmail, IsIn, IsOptional, IsString, MinLength } from "class-validator";
-import { MATERIAL_CATEGORY_ITEM_VALUES } from "@bau360/shared";
+import { MATERIAL_CATEGORY_ITEM_VALUES } from "@imeceburada/shared";
 
 export class RegisterSupplierDto {
   @IsEmail()

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TRADE_FIELDS } from "@bau360/shared";
+import { TRADE_FIELDS } from "@imeceburada/shared";
 import { Field, selectClass } from "@/components/form";
 import { useLocale } from "@/lib/i18n/locale-context";
 

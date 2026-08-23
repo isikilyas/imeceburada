@@ -10,7 +10,7 @@ import {
   PriceSubmissionType,
   TURKISH_PROVINCES,
   getMaterialUnit,
-} from "@bau360/shared";
+} from "@imeceburada/shared";
 import { ApiError } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { Field, inputClass, selectClass } from "@/components/form";

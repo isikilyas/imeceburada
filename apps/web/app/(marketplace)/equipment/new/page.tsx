@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CreateEquipmentListingInput, EQUIPMENT_CATEGORIES, EQUIPMENT_LISTING_TYPES, TURKISH_PROVINCES } from "@bau360/shared";
+import { CreateEquipmentListingInput, EQUIPMENT_CATEGORIES, EQUIPMENT_LISTING_TYPES, TURKISH_PROVINCES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass } from "@/components/form";

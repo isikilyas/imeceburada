@@ -1,5 +1,5 @@
 import { ArrayMinSize, IsArray, IsBoolean, IsIn, IsOptional, IsString } from "class-validator";
-import { TRADE_CATEGORY_VALUES } from "@bau360/shared";
+import { TRADE_CATEGORY_VALUES } from "@imeceburada/shared";
 
 export class UpdateSubcontractorProfileDto {
   @IsOptional()

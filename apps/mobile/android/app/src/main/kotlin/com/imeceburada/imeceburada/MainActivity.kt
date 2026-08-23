@@ -1,4 +1,4 @@
-package com.bau360.bau360
+package com.imeceburada.imeceburada
 
 import io.flutter.embedding.android.FlutterActivity
 

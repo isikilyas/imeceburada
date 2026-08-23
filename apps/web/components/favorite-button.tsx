@@ -1,7 +1,7 @@
 "use client";
 
 import { MouseEvent, useState } from "react";
-import { FavoriteListingType } from "@bau360/shared";
+import { FavoriteListingType } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useFavorites } from "@/lib/favorites-context";
 import { useLocale } from "@/lib/i18n/locale-context";

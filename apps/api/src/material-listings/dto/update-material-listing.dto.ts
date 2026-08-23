@@ -1,6 +1,6 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { IsIn, IsOptional } from "class-validator";
-import { MaterialListingStatus } from "@bau360/shared";
+import { MaterialListingStatus } from "@imeceburada/shared";
 import { CreateMaterialListingDto } from "./create-material-listing.dto";
 
 const MATERIAL_LISTING_STATUS_VALUES: MaterialListingStatus[] = ["AVAILABLE", "INACTIVE"];

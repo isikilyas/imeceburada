@@ -15,7 +15,7 @@ import 'i18n/dictionaries/subcontractors.dart';
 import 'i18n/dictionaries/weather.dart';
 import 'i18n/dictionaries/widgets.dart';
 
-const _storageKey = 'bau360.locale';
+const _storageKey = 'imeceburada.locale';
 
 const List<String> supportedLocaleCodes = ['tr', 'en', 'de', 'ru', 'ar', 'es', 'fr'];
 

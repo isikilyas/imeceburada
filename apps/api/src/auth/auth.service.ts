@@ -11,7 +11,7 @@ import { RegisterSubcontractorDto } from "./dto/register-subcontractor.dto";
 import { LoginDto } from "./dto/login.dto";
 import { ForgotPasswordDto } from "./dto/forgot-password.dto";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
-import { AuthResponse, AuthTokens, UserRole } from "@bau360/shared";
+import { AuthResponse, AuthTokens, UserRole } from "@imeceburada/shared";
 import { EMAIL_SERVICE, EmailService } from "./email.service";
 
 const PASSWORD_RESET_TOKEN_TTL_MS = 60 * 60 * 1000;

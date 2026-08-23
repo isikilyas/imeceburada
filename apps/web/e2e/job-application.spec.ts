@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const CANDIDATE = { email: "demo-aday@bau360.com", password: "Deneme123!" };
+const CANDIDATE = { email: "demo-aday@imeceburada.com", password: "Deneme123!" };
 // Regression target: this seed job's id previously had a malformed v4 UUID
 // (version/variant nibbles in the wrong dash-group), which made class-validator's
 // @IsUUID() reject every application to any seeded job with a 400 error.

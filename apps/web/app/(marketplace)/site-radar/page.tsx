@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { SiteRequestDto, SITE_REQUEST_TYPES, TRADE_CATEGORIES, EQUIPMENT_TYPES } from "@bau360/shared";
+import { SiteRequestDto, SITE_REQUEST_TYPES, TRADE_CATEGORIES, EQUIPMENT_TYPES } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { SiteMap } from "@/components/site-map";

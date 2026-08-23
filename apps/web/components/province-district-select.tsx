@@ -1,6 +1,6 @@
 "use client";
 
-import { getDistrictsForProvince, TURKISH_PROVINCES } from "@bau360/shared";
+import { getDistrictsForProvince, TURKISH_PROVINCES } from "@imeceburada/shared";
 import { Field, selectClass } from "@/components/form";
 import { useLocale } from "@/lib/i18n/locale-context";
 

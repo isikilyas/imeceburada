@@ -1,5 +1,5 @@
 import { IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Min } from "class-validator";
-import { AvailabilityStatus, TRADE_CATEGORY_VALUES, WORK_PREFERENCE_VALUES } from "@bau360/shared";
+import { AvailabilityStatus, TRADE_CATEGORY_VALUES, WORK_PREFERENCE_VALUES } from "@imeceburada/shared";
 
 const AVAILABILITY_STATUS_VALUES: AvailabilityStatus[] = ["AVAILABLE", "BUSY"];
 

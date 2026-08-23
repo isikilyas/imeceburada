@@ -1,5 +1,5 @@
 import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Min, MinLength } from "class-validator";
-import { EmploymentType, LISTING_INTENT_VALUES, ListingIntent, TRADE_CATEGORY_VALUES } from "@bau360/shared";
+import { EmploymentType, LISTING_INTENT_VALUES, ListingIntent, TRADE_CATEGORY_VALUES } from "@imeceburada/shared";
 
 const EMPLOYMENT_TYPE_VALUES: EmploymentType[] = ["FULL_TIME", "PART_TIME", "DAILY", "CONTRACT"];
 

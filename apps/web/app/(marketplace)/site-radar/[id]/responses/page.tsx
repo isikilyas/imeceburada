@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { SiteRequestResponseDto, SiteRequestResponseStatus } from "@bau360/shared";
+import { SiteRequestResponseDto, SiteRequestResponseStatus } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 

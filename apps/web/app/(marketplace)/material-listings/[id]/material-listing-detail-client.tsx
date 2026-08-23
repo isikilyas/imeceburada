@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { MaterialListingDto } from "@bau360/shared";
+import { MaterialListingDto } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { WhatsAppShareButton } from "@/components/whatsapp-share-button";

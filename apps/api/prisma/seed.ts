@@ -9,10 +9,10 @@ async function main() {
   const passwordHash = await bcrypt.hash("Deneme123!", 10);
 
   const company = await prisma.user.upsert({
-    where: { email: "demo-sirket@bau360.com" },
+    where: { email: "demo-sirket@imeceburada.com" },
     update: {},
     create: {
-      email: "demo-sirket@bau360.com",
+      email: "demo-sirket@imeceburada.com",
       passwordHash,
       role: "COMPANY",
       companyProfile: {
@@ -31,10 +31,10 @@ async function main() {
   });
 
   const candidate = await prisma.user.upsert({
-    where: { email: "demo-aday@bau360.com" },
+    where: { email: "demo-aday@imeceburada.com" },
     update: {},
     create: {
-      email: "demo-aday@bau360.com",
+      email: "demo-aday@imeceburada.com",
       passwordHash,
       role: "CANDIDATE",
       candidateProfile: {
@@ -53,10 +53,10 @@ async function main() {
   });
 
   const supplier = await prisma.user.upsert({
-    where: { email: "demo-tedarikci@bau360.com" },
+    where: { email: "demo-tedarikci@imeceburada.com" },
     update: {},
     create: {
-      email: "demo-tedarikci@bau360.com",
+      email: "demo-tedarikci@imeceburada.com",
       passwordHash,
       role: "SUPPLIER",
       supplierProfile: {
@@ -151,9 +151,9 @@ async function main() {
 
   // ── Ek demo şirketler / tedarikçiler / taşeron ────────────────────────────
   const companyDefs = [
-    { email: "anadolu-yapi@bau360.com", name: "Anadolu Yapı Ltd.", sector: "Altyapı", city: "Ankara", phone: "+905552221100" },
-    { email: "ege-insaat@bau360.com", name: "Ege İnşaat Grup", sector: "Ticari Yapı", city: "İzmir", phone: "+905552221101" },
-    { email: "marmara-betonarme@bau360.com", name: "Marmara Betonarme A.Ş.", sector: "Betonarme", city: "Bursa", phone: "+905552221102" },
+    { email: "anadolu-yapi@imeceburada.com", name: "Anadolu Yapı Ltd.", sector: "Altyapı", city: "Ankara", phone: "+905552221100" },
+    { email: "ege-insaat@imeceburada.com", name: "Ege İnşaat Grup", sector: "Ticari Yapı", city: "İzmir", phone: "+905552221101" },
+    { email: "marmara-betonarme@imeceburada.com", name: "Marmara Betonarme A.Ş.", sector: "Betonarme", city: "Bursa", phone: "+905552221102" },
   ];
   const companies = [company];
   for (const def of companyDefs) {
@@ -182,8 +182,8 @@ async function main() {
   }
 
   const supplierDefs = [
-    { email: "akdeniz-yapi@bau360.com", name: "Akdeniz Yapı Market", city: "Antalya", phone: "+905553332200" },
-    { email: "karadeniz-demir@bau360.com", name: "Karadeniz Demir Çelik", city: "Trabzon", phone: "+905553332201" },
+    { email: "akdeniz-yapi@imeceburada.com", name: "Akdeniz Yapı Market", city: "Antalya", phone: "+905553332200" },
+    { email: "karadeniz-demir@imeceburada.com", name: "Karadeniz Demir Çelik", city: "Trabzon", phone: "+905553332201" },
   ];
   const suppliers = [supplier];
   for (const def of supplierDefs) {
@@ -211,10 +211,10 @@ async function main() {
   }
 
   const subcontractorUser = await prisma.user.upsert({
-    where: { email: "guven-kalip@bau360.com" },
+    where: { email: "guven-kalip@imeceburada.com" },
     update: {},
     create: {
-      email: "guven-kalip@bau360.com",
+      email: "guven-kalip@imeceburada.com",
       passwordHash,
       role: "SUBCONTRACTOR",
       subcontractorProfile: {
@@ -375,7 +375,7 @@ async function main() {
     }
   }
 
-  console.log("Seed tamamlandı. Demo giriş: demo-sirket@bau360.com / demo-aday@bau360.com, şifre: Deneme123!");
+  console.log("Seed tamamlandı. Demo giriş: demo-sirket@imeceburada.com / demo-aday@imeceburada.com, şifre: Deneme123!");
 }
 
 main()

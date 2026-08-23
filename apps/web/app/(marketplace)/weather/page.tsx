@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TURKISH_PROVINCES } from "@bau360/shared";
+import { TURKISH_PROVINCES } from "@imeceburada/shared";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { useLocale } from "@/lib/i18n/locale-context";
 

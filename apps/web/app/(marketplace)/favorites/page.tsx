@@ -2,7 +2,7 @@
 
 import { useQueries } from "@tanstack/react-query";
 import Link from "next/link";
-import { EquipmentListingDto, JobPostingDto, MATERIAL_TYPES, MaterialListingDto } from "@bau360/shared";
+import { EquipmentListingDto, JobPostingDto, MATERIAL_TYPES, MaterialListingDto } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";

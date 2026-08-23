@@ -10,7 +10,7 @@ import {
   MATERIAL_TYPES,
   MaterialListingDto,
   PaginatedResult,
-} from "@bau360/shared";
+} from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { JobCard } from "@/components/job-card";

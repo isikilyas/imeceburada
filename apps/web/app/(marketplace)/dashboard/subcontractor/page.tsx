@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { SubcontractorProfileDto, TRADE_FIELDS, TURKISH_PROVINCES } from "@bau360/shared";
+import { SubcontractorProfileDto, TRADE_FIELDS, TURKISH_PROVINCES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { ApiError } from "@/lib/api-client";

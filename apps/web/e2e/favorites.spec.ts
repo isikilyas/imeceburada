@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const CANDIDATE = { email: "demo-aday@bau360.com", password: "Deneme123!" };
+const CANDIDATE = { email: "demo-aday@imeceburada.com", password: "Deneme123!" };
 
 async function login(page: import("@playwright/test").Page) {
   await page.goto("/login");
