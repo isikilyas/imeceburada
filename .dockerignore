@@ -1,0 +1,9 @@
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+.git
+apps/mobile
+apps/web/e2e
+apps/api/uploads
+*.log
