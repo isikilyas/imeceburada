@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "build": "nest build",
     "dev": "nest start --watch",
     "start": "node dist/main",
+    "start:prod": "prisma migrate deploy && node dist/main",
     "lint": "tsc --noEmit -p tsconfig.json",
     "test": "jest",
     "prisma:generate": "prisma generate",

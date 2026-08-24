@@ -1,0 +1,16 @@
+# Railway builds this service with Root Directory = apps/api. Because the
+# repo is a pnpm workspace, "@imeceburada/shared" only resolves when
+# `pnpm install` runs from the monorepo root — so every phase here `cd`s back
+# up two levels before running pnpm, then targets this package with --filter.
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["cd ../.. && corepack enable && pnpm install --frozen-lockfile"]
+
+[phases.build]
+cmds = ["cd ../.. && pnpm --filter @imeceburada/api build"]
+
+[start]
+cmd = "cd ../.. && pnpm --filter @imeceburada/api run start:prod"
