@@ -18,6 +18,7 @@ import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { MaterialCategoryMultiSelect } from "@/components/material-category-multi-select";
 import { VerificationStatusCard } from "@/components/verification-status-card";
 import { ListingPhotoUploader } from "@/components/listing-photo-uploader";
+import { BetaBanner } from "@/components/beta-banner";
 
 function ProfileEditor() {
   const { authFetch } = useAuth();
@@ -148,6 +149,7 @@ export default function SupplierDashboardPage() {
 
   return (
     <div className="space-y-10">
+      <BetaBanner />
       <section>
         <h1 className="mb-4 text-2xl font-semibold text-silver-300">{t("dashboard.supplier.profileHeading")}</h1>
         <ProfileEditor />

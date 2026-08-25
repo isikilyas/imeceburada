@@ -6,6 +6,7 @@ import { IyzicoService } from "../iyzico/iyzico.service";
 import { RequestUser } from "../auth/types/request-user";
 import { InitiateCheckoutDto } from "./dto/initiate-checkout.dto";
 import { CompanyMembershipDto, InitiateCheckoutResponse, MEMBERSHIP_PLANS } from "@imeceburada/shared";
+import { isBetaFreeAccess } from "./beta.util";
 
 interface PayingProfile {
   id: string;
@@ -13,6 +14,7 @@ interface PayingProfile {
   phoneVerifiedAt: Date | null;
   membershipStatus: PrismaMembershipStatus;
   membershipExpiresAt: Date | null;
+  isPremium: boolean;
   userId: string;
 }
 
@@ -52,7 +54,12 @@ export class MembershipService {
   private updateProfileMembershipByRole(
     role: PayingRole,
     id: string,
-    data: { membershipStatus: PrismaMembershipStatus; membershipExpiresAt?: Date | null },
+    data: {
+      membershipStatus: PrismaMembershipStatus;
+      membershipExpiresAt?: Date | null;
+      isPremium?: boolean;
+      currentPlan?: "MONTHLY" | "YEARLY" | null;
+    },
   ) {
     if (role === "COMPANY") return this.prisma.companyProfile.update({ where: { id }, data });
     if (role === "SUPPLIER") return this.prisma.supplierProfile.update({ where: { id }, data });
@@ -79,11 +86,15 @@ export class MembershipService {
       orderBy: { createdAt: "desc" },
     });
 
+    const betaFreeAccess = isBetaFreeAccess(this.config);
+
     return {
       status: profile.membershipStatus as CompanyMembershipDto["status"],
       plan: latestSubscription?.plan ?? null,
       expiresAt: profile.membershipExpiresAt?.toISOString() ?? null,
       phoneVerified: !!profile.phoneVerifiedAt,
+      isPremium: betaFreeAccess || profile.isPremium,
+      betaFreeAccess,
     };
   }
 
@@ -180,6 +191,8 @@ export class MembershipService {
         await this.updateProfileMembershipByRole(user.role as PayingRole, ownerId, {
           membershipStatus: "ACTIVE",
           membershipExpiresAt: periodEnd,
+          isPremium: true,
+          currentPlan: subscription.plan,
         });
       }
     }
@@ -229,9 +242,14 @@ export class MembershipService {
       await this.updateProfileMembershipByRole(role, ownerId, {
         membershipStatus: "ACTIVE",
         membershipExpiresAt: periodEnd,
+        isPremium: true,
+        currentPlan: subscription.plan,
       });
     } else if (payload.iyziEventType === "subscription.order.failure") {
-      await this.updateProfileMembershipByRole(role, ownerId, { membershipStatus: "EXPIRED" });
+      await this.updateProfileMembershipByRole(role, ownerId, {
+        membershipStatus: "EXPIRED",
+        isPremium: false,
+      });
     }
 
     return { success: true };

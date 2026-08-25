@@ -11,6 +11,7 @@ import { Field, inputClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-select";
 import { VerificationStatusCard } from "@/components/verification-status-card";
+import { BetaBanner } from "@/components/beta-banner";
 
 function ProfileEditor() {
   const { authFetch } = useAuth();
@@ -134,6 +135,7 @@ export default function SubcontractorDashboardPage() {
 
   return (
     <div className="mx-auto max-w-xl">
+      <BetaBanner />
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-silver-300">{t("dashboard.subcontractor.profileHeading")}</h1>
         <Link href="/membership" className="text-sm text-gold-400 hover:underline">

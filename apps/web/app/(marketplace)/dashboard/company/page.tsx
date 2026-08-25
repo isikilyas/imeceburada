@@ -21,6 +21,7 @@ import { Field, inputClass, selectClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { VerificationStatusCard } from "@/components/verification-status-card";
+import { BetaBanner } from "@/components/beta-banner";
 
 function ProfileEditor() {
   const { authFetch } = useAuth();
@@ -154,6 +155,7 @@ export default function CompanyDashboardPage() {
 
   return (
     <div className="space-y-10">
+      <BetaBanner />
       <section>
         <h1 className="mb-4 text-2xl font-semibold text-silver-300">{t("dashboard.company.profileHeading")}</h1>
         <ProfileEditor />

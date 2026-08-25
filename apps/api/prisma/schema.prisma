@@ -168,6 +168,12 @@ model CompanyProfile {
 
   membershipStatus    MembershipStatus @default(NONE)
   membershipExpiresAt DateTime?
+  /// Gerçek ödeme durumundan bağımsız hızlı erişim bayrağı — üyelik ACTIVE
+  /// olunca veya Erken Erişim/Beta döneminde true tutulur.
+  isPremium           Boolean          @default(false)
+  /// En son (aktif ya da geçmiş) planın önbelleği — abonelik geçmişi için
+  /// hâlâ MembershipSubscription sorgulanır, bu sadece hızlı gösterim içindir.
+  currentPlan         MembershipPlan?
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -197,6 +203,12 @@ model SupplierProfile {
 
   membershipStatus    MembershipStatus @default(NONE)
   membershipExpiresAt DateTime?
+  /// Gerçek ödeme durumundan bağımsız hızlı erişim bayrağı — üyelik ACTIVE
+  /// olunca veya Erken Erişim/Beta döneminde true tutulur.
+  isPremium           Boolean          @default(false)
+  /// En son (aktif ya da geçmiş) planın önbelleği — abonelik geçmişi için
+  /// hâlâ MembershipSubscription sorgulanır, bu sadece hızlı gösterim içindir.
+  currentPlan         MembershipPlan?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -229,6 +241,12 @@ model SubcontractorProfile {
 
   membershipStatus    MembershipStatus @default(NONE)
   membershipExpiresAt DateTime?
+  /// Gerçek ödeme durumundan bağımsız hızlı erişim bayrağı — üyelik ACTIVE
+  /// olunca veya Erken Erişim/Beta döneminde true tutulur.
+  isPremium           Boolean          @default(false)
+  /// En son (aktif ya da geçmiş) planın önbelleği — abonelik geçmişi için
+  /// hâlâ MembershipSubscription sorgulanır, bu sadece hızlı gösterim içindir.
+  currentPlan         MembershipPlan?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

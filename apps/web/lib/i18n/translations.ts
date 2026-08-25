@@ -72,6 +72,7 @@ const base = {
       noResults: "Sonuç bulunamadı.",
       newListing: "Yeni İlan",
       myListings: "İlanlarım",
+      betaBanner: "imeceburada.com lansmanına özel: tüm kurumsal özellikler geçici süreyle ücretsizdir!",
     },
     pages: {
       jobsHeading: "İş İlanları",
@@ -227,6 +228,7 @@ const base = {
       noResults: "No results found.",
       newListing: "New Listing",
       myListings: "My Listings",
+      betaBanner: "Special for the imeceburada.com launch: all corporate features are free for a limited time!",
     },
     pages: {
       jobsHeading: "Job Listings",
@@ -383,6 +385,7 @@ const base = {
       noResults: "Keine Ergebnisse gefunden.",
       newListing: "Neue Anzeige",
       myListings: "Meine Anzeigen",
+      betaBanner: "Zum Start von imeceburada.com: Alle Unternehmensfunktionen sind vorübergehend kostenlos!",
     },
     pages: {
       jobsHeading: "Stellenanzeigen",
@@ -538,6 +541,7 @@ const base = {
       noResults: "Результатов не найдено.",
       newListing: "Новое объявление",
       myListings: "Мои объявления",
+      betaBanner: "Специально к запуску imeceburada.com: все корпоративные функции временно бесплатны!",
     },
     pages: {
       jobsHeading: "Вакансии",
@@ -692,6 +696,7 @@ const base = {
       noResults: "لم يتم العثور على نتائج.",
       newListing: "إعلان جديد",
       myListings: "إعلاناتي",
+      betaBanner: "بمناسبة إطلاق imeceburada.com: جميع الميزات المؤسسية مجانية مؤقتًا!",
     },
     pages: {
       jobsHeading: "إعلانات الوظائف",
@@ -848,6 +853,7 @@ const base = {
       noResults: "No se encontraron resultados.",
       newListing: "Nuevo Anuncio",
       myListings: "Mis Anuncios",
+      betaBanner: "Especial por el lanzamiento de imeceburada.com: ¡todas las funciones corporativas son gratis por tiempo limitado!",
     },
     pages: {
       jobsHeading: "Anuncios de Empleo",
@@ -1004,6 +1010,7 @@ const base = {
       noResults: "Aucun résultat trouvé.",
       newListing: "Nouvelle Annonce",
       myListings: "Mes Annonces",
+      betaBanner: "Spécial lancement d'imeceburada.com : toutes les fonctionnalités professionnelles sont gratuites pour une durée limitée !",
     },
     pages: {
       jobsHeading: "Offres d'Emploi",

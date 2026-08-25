@@ -19,6 +19,10 @@ export interface CompanyMembershipDto {
   plan?: MembershipPlan | null;
   expiresAt?: string | null;
   phoneVerified: boolean;
+  /** Gerçek ödeme durumundan bağımsız olarak şu an tam erişimi var mı (beta dönemi dahil). */
+  isPremium: boolean;
+  /** Erişimin ödenmiş bir üyelikten değil, Erken Erişim/Beta döneminden geldiğini belirtir. */
+  betaFreeAccess: boolean;
 }
 
 export interface InitiateCheckoutInput {

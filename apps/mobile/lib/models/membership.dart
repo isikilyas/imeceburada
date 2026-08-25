@@ -3,12 +3,16 @@ class CompanyMembership {
   final String? plan;
   final String? expiresAt;
   final bool phoneVerified;
+  final bool isPremium;
+  final bool betaFreeAccess;
 
   const CompanyMembership({
     required this.status,
     this.plan,
     this.expiresAt,
     required this.phoneVerified,
+    required this.isPremium,
+    required this.betaFreeAccess,
   });
 
   factory CompanyMembership.fromJson(Map<String, dynamic> json) => CompanyMembership(
@@ -16,6 +20,8 @@ class CompanyMembership {
         plan: json['plan'] as String?,
         expiresAt: json['expiresAt'] as String?,
         phoneVerified: json['phoneVerified'] as bool,
+        isPremium: json['isPremium'] as bool? ?? false,
+        betaFreeAccess: json['betaFreeAccess'] as bool? ?? false,
       );
 }
 

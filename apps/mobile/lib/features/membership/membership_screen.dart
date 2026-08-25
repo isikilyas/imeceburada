@@ -139,6 +139,30 @@ class _MembershipScreenState extends State<MembershipScreen> {
     );
   }
 
+  Widget _betaBanner(String Function(String, {Map<String, String>? vars}) t) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.gold500.withValues(alpha: 0.1),
+        border: Border.all(color: AppColors.gold500.withValues(alpha: 0.4)),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          const Text('🎉', style: TextStyle(fontSize: 16)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              t('membership.betaBanner'),
+              style: const TextStyle(color: AppColors.gold400, fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildContent(String Function(String, {Map<String, String>? vars}) t) {
     final membership = _membership;
     if (membership == null) return const SizedBox.shrink();
@@ -149,6 +173,7 @@ class _MembershipScreenState extends State<MembershipScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (membership.betaFreeAccess) _betaBanner(t),
             Text(t('membership.activeStatus'), style: const TextStyle(color: AppColors.gold400, fontSize: 18)),
             if (membership.expiresAt != null) ...[
               const SizedBox(height: 8),
@@ -168,6 +193,7 @@ class _MembershipScreenState extends State<MembershipScreen> {
       return ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          if (membership.betaFreeAccess) _betaBanner(t),
           Text(t('membership.phoneVerificationTitle'), style: const TextStyle(color: AppColors.silver300, fontSize: 18)),
           const SizedBox(height: 8),
           Text(
@@ -211,6 +237,7 @@ class _MembershipScreenState extends State<MembershipScreen> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        if (membership.betaFreeAccess) _betaBanner(t),
         Text(t('membership.selectPlanTitle'), style: const TextStyle(color: AppColors.silver300, fontSize: 18)),
         const SizedBox(height: 12),
         Row(

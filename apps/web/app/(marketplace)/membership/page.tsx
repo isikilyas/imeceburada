@@ -13,6 +13,7 @@ import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass, selectClass } from "@/components/form";
 import { IyzicoCheckoutForm } from "@/components/iyzico-checkout-form";
+import { BetaBanner } from "@/components/beta-banner";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 function PhoneVerification({ onVerified }: { onVerified: () => void }) {
@@ -232,6 +233,8 @@ export default function MembershipPage() {
   return (
     <div className="mx-auto max-w-lg">
       <h1 className="mb-6 text-2xl font-semibold text-silver-300">{t("pages.membershipHeading")}</h1>
+
+      {membership?.betaFreeAccess && <BetaBanner />}
 
       {membership?.status === "ACTIVE" ? (
         <div className="rounded-lg border border-gold-500/40 bg-ink-900 p-6">
