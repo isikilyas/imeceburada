@@ -52,7 +52,7 @@ export default function HomePage() {
       <AdSlot side="left" />
       <AdSlot side="right" />
       {/* Hero — logo-led, with a layered glow backdrop for a premium first impression */}
-      <section className="blueprint-grid hero-glow relative -mx-4 overflow-hidden px-4 py-20 sm:-mx-6 sm:px-6 sm:py-28">
+      <section className="blueprint-grid hero-glow relative -mx-4 overflow-hidden px-4 pb-8 pt-20 sm:-mx-6 sm:px-6 sm:pb-10 sm:pt-28">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent" />
         <div className="relative z-10 mx-auto max-w-3xl text-center">
           <div className="animate-fade-in-up relative mx-auto mb-8 flex h-20 w-64 items-center justify-center sm:h-24 sm:w-80">
@@ -110,7 +110,7 @@ export default function HomePage() {
       </section>
 
       {/* Weather — a full weekly overview, sized to match the stats panel below it */}
-      <div className="flex justify-center px-4 py-6 sm:px-6">
+      <div className="flex justify-center px-4 py-4 sm:px-6">
         <WeatherWidget />
       </div>
 
