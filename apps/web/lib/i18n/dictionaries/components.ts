@@ -65,6 +65,7 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
     weatherWidget: {
       loading: "Hava durumu yükleniyor...",
       yourLocation: "Konumunuz",
+      today: "Bugün",
       weeklyForecast: "Haftalık tahmin",
       conditions: {
         clear: "Açık",
@@ -169,6 +170,7 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
     weatherWidget: {
       loading: "Loading weather...",
       yourLocation: "Your Location",
+      today: "Today",
       weeklyForecast: "Weekly forecast",
       conditions: {
         clear: "Clear",
@@ -274,6 +276,7 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
     weatherWidget: {
       loading: "Wetter wird geladen...",
       yourLocation: "Dein Standort",
+      today: "Heute",
       weeklyForecast: "Wochenvorhersage",
       conditions: {
         clear: "Klar",
@@ -380,6 +383,7 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
     weatherWidget: {
       loading: "Загрузка погоды...",
       yourLocation: "Ваше местоположение",
+      today: "Сегодня",
       weeklyForecast: "Прогноз на неделю",
       conditions: {
         clear: "Ясно",
@@ -484,6 +488,7 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
     weatherWidget: {
       loading: "جارٍ تحميل الطقس...",
       yourLocation: "موقعك",
+      today: "اليوم",
       weeklyForecast: "توقعات الأسبوع",
       conditions: {
         clear: "صافٍ",
@@ -589,6 +594,7 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
     weatherWidget: {
       loading: "Cargando el clima...",
       yourLocation: "Tu ubicación",
+      today: "Hoy",
       weeklyForecast: "Pronóstico semanal",
       conditions: {
         clear: "Despejado",
@@ -695,6 +701,7 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
     weatherWidget: {
       loading: "Chargement de la météo...",
       yourLocation: "Votre position",
+      today: "Aujourd’hui",
       weeklyForecast: "Prévisions de la semaine",
       conditions: {
         clear: "Dégagé",

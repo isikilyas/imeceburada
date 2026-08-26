@@ -109,8 +109,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Weather — a slim utility strip, not another boxed card competing with the hero */}
-      <div className="flex justify-center py-6">
+      {/* Weather — a full weekly overview, sized to match the stats panel below it */}
+      <div className="flex justify-center px-4 py-6 sm:px-6">
         <WeatherWidget />
       </div>
 

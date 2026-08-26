@@ -5,12 +5,20 @@ import Link from "next/link";
 import { WeatherIcon, weatherKindFromCode, WeatherKind } from "@/components/weather-icon";
 import { useLocale } from "@/lib/i18n/locale-context";
 
+interface DayForecast {
+  date: string;
+  weatherCode: number;
+  tempMin: number;
+  tempMax: number;
+}
+
 interface WeatherData {
   temperature: number;
   weatherCode: number;
   windSpeed: number;
   todayMin: number;
   todayMax: number;
+  week: DayForecast[];
 }
 
 const ISTANBUL = { lat: 41.0082, lon: 28.9784, label: "İstanbul" };
@@ -27,23 +35,30 @@ const WEATHER_CONDITION_KEYS: Record<WeatherKind, string> = {
 };
 
 export function WeatherWidget() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [locationLabel, setLocationLabel] = useState(ISTANBUL.label);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     function loadWeather(lat: number, lon: number) {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min&timezone=auto`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=7&timezone=auto`;
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
+          const week: DayForecast[] = data.daily.time.map((date: string, i: number) => ({
+            date,
+            weatherCode: data.daily.weather_code[i],
+            tempMin: Math.round(data.daily.temperature_2m_min[i]),
+            tempMax: Math.round(data.daily.temperature_2m_max[i]),
+          }));
           setWeather({
             temperature: Math.round(data.current.temperature_2m),
             weatherCode: data.current.weather_code,
             windSpeed: Math.round(data.current.wind_speed_10m),
             todayMin: Math.round(data.daily.temperature_2m_min[0]),
             todayMax: Math.round(data.daily.temperature_2m_max[0]),
+            week,
           });
         })
         .catch(() => setError(true));
@@ -66,7 +81,7 @@ export function WeatherWidget() {
   if (error) return null;
   if (!weather) {
     return (
-      <div className="inline-flex items-center gap-3 rounded-2xl bg-ink-900 px-7 py-5 text-base text-silver-500 ring-1 ring-ink-800">
+      <div className="flex w-full max-w-4xl items-center gap-3 rounded-3xl bg-ink-900 px-7 py-6 text-base text-silver-500 ring-1 ring-ink-800">
         <span className="h-2 w-2 animate-pulse rounded-full bg-gold-400" />
         {t("components.weatherWidget.loading")}
       </div>
@@ -82,19 +97,17 @@ export function WeatherWidget() {
   return (
     <Link
       href="/weather"
-      className={`group inline-flex flex-col gap-4 bg-gradient-to-br from-ink-900 to-ink-950 px-7 py-5 text-start ring-1 ring-ink-800 transition duration-300 hover:-translate-y-0.5 hover:ring-gold-500/40 hover:shadow-[0_12px_36px_-14px_rgba(212,175,55,0.35)] ${
-        hasWarning ? "rounded-3xl" : "rounded-full"
-      }`}
+      className="group flex w-full max-w-4xl flex-col gap-5 rounded-3xl bg-gradient-to-br from-ink-900 to-ink-950 px-6 py-6 text-start ring-1 ring-ink-800 transition duration-300 hover:-translate-y-0.5 hover:ring-gold-500/40 hover:shadow-[0_12px_36px_-14px_rgba(212,175,55,0.35)] sm:px-8 sm:py-7"
     >
       <div className="flex flex-wrap items-center gap-6">
         <div className="flex items-center gap-4">
-          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gold-500/10 text-gold-400 ring-1 ring-gold-500/20 transition group-hover:scale-105 group-hover:bg-gold-500/15">
-            <WeatherIcon kind={kind} className="h-8 w-8" />
+          <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gold-500/10 text-gold-400 ring-1 ring-gold-500/20 transition group-hover:scale-105 group-hover:bg-gold-500/15">
+            <WeatherIcon kind={kind} className="h-9 w-9" />
           </span>
           <div>
             <div className="flex items-baseline gap-2">
               <span className="text-sm font-medium text-silver-400">{locationLabel}</span>
-              <span className="text-2xl font-bold leading-none text-silver-50">{weather.temperature}°</span>
+              <span className="text-3xl font-bold leading-none text-silver-50">{weather.temperature}°</span>
             </div>
             <div className="mt-1 flex items-center gap-2 text-sm text-silver-500">
               <span>{t(`components.weatherWidget.conditions.${WEATHER_CONDITION_KEYS[kind]}`)}</span>
@@ -121,6 +134,30 @@ export function WeatherWidget() {
             <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
+      </div>
+
+      <div className="grid grid-cols-4 gap-2 border-t border-ink-800 pt-5 sm:grid-cols-7">
+        {weather.week.map((day, i) => {
+          const dayKind = weatherKindFromCode(day.weatherCode);
+          const label = new Date(`${day.date}T00:00:00`).toLocaleDateString(locale, { weekday: "short" });
+          return (
+            <div
+              key={day.date}
+              className={`flex flex-col items-center gap-1.5 rounded-xl px-2 py-3 text-center ${
+                i === 0 ? "bg-gold-500/10 ring-1 ring-gold-500/20" : ""
+              }`}
+            >
+              <span className="text-xs font-medium capitalize text-silver-400">
+                {i === 0 ? t("components.weatherWidget.today") : label}
+              </span>
+              <WeatherIcon kind={dayKind} className="h-6 w-6 text-gold-400" />
+              <span className="text-xs text-silver-300">
+                <span className="text-orange-400">{day.tempMax}°</span>{" "}
+                <span className="text-sky-400">{day.tempMin}°</span>
+              </span>
+            </div>
+          );
+        })}
       </div>
 
       {hasWarning && (
