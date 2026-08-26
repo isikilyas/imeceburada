@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JobPostingDto } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { JobDetailClient } from "./job-detail-client";
+import { safeJsonLd } from "@/lib/safe-json-ld";
 
 async function getJob(id: string): Promise<JobPostingDto | null> {
   try {
@@ -38,7 +39,7 @@ export default async function JobDetailPage({ params }: { params: { id: string }
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: safeJsonLd({
               "@context": "https://schema.org/",
               "@type": "JobPosting",
               title: job.title,

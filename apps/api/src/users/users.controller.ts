@@ -8,7 +8,7 @@ import { UpdateCandidateProfileDto } from "./dto/update-candidate-profile.dto";
 import { UpdateCompanyProfileDto } from "./dto/update-company-profile.dto";
 import { UpdateSubcontractorProfileDto } from "./dto/update-subcontractor-profile.dto";
 import { UpdateSupplierProfileDto } from "./dto/update-supplier-profile.dto";
-import { photoUploadOptions } from "../common/photo-upload.util";
+import { photoUploadOptions, finalizeUploadedImage } from "../common/photo-upload.util";
 
 @UseGuards(JwtAuthGuard)
 @Controller("users/me")
@@ -44,7 +44,7 @@ export class UsersController {
   @UseInterceptors(FileInterceptor("photo", photoUploadOptions("candidates")))
   uploadCandidatePhoto(@CurrentUser() user: RequestUser, @UploadedFile() file: Express.Multer.File) {
     if (!file) throw new BadRequestException("Dosya bulunamadı");
-    return this.usersService.setCandidatePhoto(user, file.filename);
+    return this.usersService.setCandidatePhoto(user, finalizeUploadedImage(file));
   }
 
   @Delete("candidate-photo")

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { MATERIAL_TYPES, MaterialListingDto } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { MaterialListingDetailClient } from "./material-listing-detail-client";
+import { safeJsonLd } from "@/lib/safe-json-ld";
 
 async function getListing(id: string): Promise<MaterialListingDto | null> {
   try {
@@ -40,7 +41,7 @@ export default async function MaterialListingDetailPage({ params }: { params: { 
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: safeJsonLd({
               "@context": "https://schema.org/",
               "@type": "Product",
               name: label,

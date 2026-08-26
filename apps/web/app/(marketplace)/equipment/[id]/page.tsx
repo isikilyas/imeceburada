@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { EquipmentListingDto, EQUIPMENT_TYPES } from "@imeceburada/shared";
 import { apiFetch, API_ORIGIN } from "@/lib/api-client";
 import { EquipmentDetailClient } from "./equipment-detail-client";
+import { safeJsonLd } from "@/lib/safe-json-ld";
 
 async function getListing(id: string): Promise<EquipmentListingDto | null> {
   try {
@@ -47,7 +48,7 @@ export default async function EquipmentDetailPage({ params }: { params: { id: st
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: safeJsonLd({
               "@context": "https://schema.org/",
               "@type": "Product",
               name: label,

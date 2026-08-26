@@ -7,7 +7,7 @@ import { SearchEquipmentDto } from "./dto/search-equipment.dto";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { CurrentUser } from "../auth/decorators/current-user.decorator";
 import { RequestUser } from "../auth/types/request-user";
-import { photoUploadOptions } from "../common/photo-upload.util";
+import { photoUploadOptions, finalizeUploadedImage } from "../common/photo-upload.util";
 
 @Controller("equipment")
 export class EquipmentController {
@@ -52,7 +52,7 @@ export class EquipmentController {
   @UseInterceptors(FileInterceptor("photo", photoUploadOptions("equipment")))
   uploadPhoto(@CurrentUser() user: RequestUser, @Param("id") id: string, @UploadedFile() file: Express.Multer.File) {
     if (!file) throw new BadRequestException("Dosya bulunamadı");
-    return this.equipmentService.setPhoto(user, id, file.filename);
+    return this.equipmentService.setPhoto(user, id, finalizeUploadedImage(file));
   }
 
   @UseGuards(JwtAuthGuard)

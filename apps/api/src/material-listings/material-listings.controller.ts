@@ -14,7 +14,7 @@ import {
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { MaterialListingsService } from "./material-listings.service";
-import { photoUploadOptions } from "../common/photo-upload.util";
+import { photoUploadOptions, finalizeUploadedImage } from "../common/photo-upload.util";
 import { CreateMaterialListingDto } from "./dto/create-material-listing.dto";
 import { UpdateMaterialListingDto } from "./dto/update-material-listing.dto";
 import { SearchMaterialListingsDto } from "./dto/search-material-listings.dto";
@@ -73,7 +73,7 @@ export class MaterialListingsController {
   @UseInterceptors(FileInterceptor("photo", photoUploadOptions("materials")))
   uploadPhoto(@CurrentUser() user: RequestUser, @Param("id") id: string, @UploadedFile() file: Express.Multer.File) {
     if (!file) throw new BadRequestException("Dosya bulunamadı");
-    return this.materialListingsService.setPhoto(user, id, file.filename);
+    return this.materialListingsService.setPhoto(user, id, finalizeUploadedImage(file));
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
