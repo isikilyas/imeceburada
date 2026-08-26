@@ -55,7 +55,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col-reverse items-center justify-between gap-4 border-t border-ink-800 pt-6 text-center text-xs text-silver-500 sm:flex-row sm:text-start">
-          <span>© {year} İmece Burada. Tüm hakları saklıdır.</span>
+          <span>© {year} İmeceBurada. Tüm hakları saklıdır.</span>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-gold-400">
               Gizlilik Politikası
