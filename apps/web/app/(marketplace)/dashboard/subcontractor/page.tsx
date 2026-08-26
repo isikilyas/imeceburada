@@ -12,6 +12,7 @@ import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-select";
 import { VerificationStatusCard } from "@/components/verification-status-card";
 import { BetaBanner } from "@/components/beta-banner";
+import { FormSkeleton } from "@/components/form-skeleton";
 
 function ProfileEditor() {
   const { authFetch } = useAuth();
@@ -71,7 +72,7 @@ function ProfileEditor() {
     }
   }
 
-  if (isLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
+  if (isLoading) return <FormSkeleton rows={5} />;
 
   return (
     <div className="space-y-6">
@@ -128,7 +129,7 @@ export default function SubcontractorDashboardPage() {
   const { user, isLoading: authLoading } = useAuth();
   const { t } = useLocale();
 
-  if (authLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
+  if (authLoading) return <FormSkeleton rows={5} />;
   if (user?.role !== "SUBCONTRACTOR") {
     return <p className="text-silver-500">{t("dashboard.subcontractor.roleGuard")}</p>;
   }

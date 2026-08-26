@@ -19,6 +19,8 @@ import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { WageScaleCard } from "@/components/wage-scale-card";
 import { CandidatePhotoUploader } from "@/components/candidate-photo-uploader";
+import { FormSkeleton } from "@/components/form-skeleton";
+import { ListSkeleton } from "@/components/list-skeleton";
 
 function ProfileEditor() {
   const { authFetch } = useAuth();
@@ -86,7 +88,7 @@ function ProfileEditor() {
     }
   }
 
-  if (isLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
+  if (isLoading) return <FormSkeleton rows={5} />;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -212,7 +214,7 @@ export default function CandidateDashboardPage() {
     enabled: user?.role === "CANDIDATE",
   });
 
-  if (authLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
+  if (authLoading) return <FormSkeleton rows={5} />;
   if (user?.role !== "CANDIDATE")
     return <p className="text-silver-500">{t("dashboard.candidate.roleGuard")}</p>;
 
@@ -229,7 +231,7 @@ export default function CandidateDashboardPage() {
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
         <section>
           <h1 className="mb-6 text-2xl font-semibold text-silver-300">{t("dashboard.candidate.applicationsHeading")}</h1>
-          {isLoading && <p className="text-silver-500">{t("common.loading")}</p>}
+          {isLoading && <ListSkeleton count={3} />}
           {applications?.length === 0 && (
             <p className="text-silver-500">
               {t("dashboard.candidate.noApplications")}{" "}

@@ -19,6 +19,7 @@ import { MaterialCategoryMultiSelect } from "@/components/material-category-mult
 import { VerificationStatusCard } from "@/components/verification-status-card";
 import { ListingPhotoUploader } from "@/components/listing-photo-uploader";
 import { BetaBanner } from "@/components/beta-banner";
+import { FormSkeleton } from "@/components/form-skeleton";
 
 function ProfileEditor() {
   const { authFetch } = useAuth();
@@ -61,7 +62,7 @@ function ProfileEditor() {
     }
   }
 
-  if (isLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
+  if (isLoading) return <FormSkeleton rows={5} />;
 
   return (
     <div className="space-y-6">
@@ -143,7 +144,7 @@ export default function SupplierDashboardPage() {
     queryClient.invalidateQueries({ queryKey: ["my-material-listings"] });
   }
 
-  if (authLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
+  if (authLoading) return <FormSkeleton rows={5} />;
   if (user?.role !== "SUPPLIER")
     return <p className="text-silver-500">{t("dashboard.supplier.roleGuard")}</p>;
 

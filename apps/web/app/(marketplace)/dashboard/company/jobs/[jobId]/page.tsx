@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApplicationDto, ApplicationStatus } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { ListSkeleton } from "@/components/list-skeleton";
 
 export default function JobApplicationsPage() {
   const { jobId } = useParams<{ jobId: string }>();
@@ -28,7 +29,7 @@ export default function JobApplicationsPage() {
   return (
     <div>
       <h1 className="mb-6 text-2xl font-semibold text-silver-300">{t("dashboard.companyJobDetail.heading")}</h1>
-      {isLoading && <p className="text-silver-500">{t("common.loading")}</p>}
+      {isLoading && <ListSkeleton count={3} />}
       {applications?.length === 0 && (
         <p className="text-silver-500">{t("dashboard.companyJobDetail.noApplications")}</p>
       )}

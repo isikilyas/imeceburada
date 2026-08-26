@@ -1,11 +1,17 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:http/http.dart' as http;
 
 /// API taban adresi. Fiziksel cihaz/emülatörde localhost farklı anlamlara gelir:
 /// - Android emülatör: 10.0.2.2
 /// - iOS simülatör: localhost
 /// Çalıştırırken override etmek için: flutter run --dart-define=API_BASE_URL=http://10.0.2.2:3001/api
-const String _defaultBaseUrl = 'http://localhost:3001/api';
+///
+/// Release derlemesi (mağaza yapıları) --dart-define unutulsa bile production
+/// API'sine gider; debug/profile derlemeleri localhost'ta kalır.
+const String _defaultBaseUrl = kReleaseMode
+    ? 'https://imeceburadaapi-production.up.railway.app/api'
+    : 'http://localhost:3001/api';
 
 class ApiException implements Exception {
   final int statusCode;
@@ -19,11 +25,13 @@ class ApiException implements Exception {
 class ApiClient {
   ApiClient({String? baseUrl})
       : baseUrl = baseUrl ??
-            const String.fromEnvironment('API_BASE_URL', defaultValue: _defaultBaseUrl);
+            const String.fromEnvironment('API_BASE_URL',
+                defaultValue: _defaultBaseUrl);
 
   final String baseUrl;
 
-  Future<dynamic> get(String path, {Map<String, String>? query, String? accessToken}) async {
+  Future<dynamic> get(String path,
+      {Map<String, String>? query, String? accessToken}) async {
     final uri = Uri.parse('$baseUrl$path').replace(queryParameters: query);
     final response = await http.get(
       uri,
@@ -35,7 +43,8 @@ class ApiClient {
     return _handle(response);
   }
 
-  Future<dynamic> post(String path, {Map<String, dynamic>? body, String? accessToken}) async {
+  Future<dynamic> post(String path,
+      {Map<String, dynamic>? body, String? accessToken}) async {
     final uri = Uri.parse('$baseUrl$path');
     final response = await http.post(
       uri,
@@ -48,7 +57,8 @@ class ApiClient {
     return _handle(response);
   }
 
-  Future<dynamic> patch(String path, {Map<String, dynamic>? body, String? accessToken}) async {
+  Future<dynamic> patch(String path,
+      {Map<String, dynamic>? body, String? accessToken}) async {
     final uri = Uri.parse('$baseUrl$path');
     final response = await http.patch(
       uri,

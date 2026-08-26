@@ -54,8 +54,16 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-ink-800 pt-6 text-center text-xs text-silver-500 sm:text-start">
-          © {year} İmece Burada. Tüm hakları saklıdır.
+        <div className="mt-8 flex flex-col-reverse items-center justify-between gap-4 border-t border-ink-800 pt-6 text-center text-xs text-silver-500 sm:flex-row sm:text-start">
+          <span>© {year} İmece Burada. Tüm hakları saklıdır.</span>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="hover:text-gold-400">
+              Gizlilik Politikası
+            </Link>
+            <Link href="/terms" className="hover:text-gold-400">
+              Kullanım Şartları
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { GoogleAnalytics } from "@/components/google-analytics";
+
+const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-sans", display: "swap" });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const TITLE = "İmece Burada";
@@ -37,8 +40,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="tr">
-      <body className="blueprint-grid min-h-screen">
+    <html lang="tr" className={inter.variable}>
+      <body className="blueprint-grid min-h-screen font-sans">
         <GoogleAnalytics />
         <Providers>{children}</Providers>
       </body>

@@ -22,6 +22,7 @@ import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { VerificationStatusCard } from "@/components/verification-status-card";
 import { BetaBanner } from "@/components/beta-banner";
+import { FormSkeleton } from "@/components/form-skeleton";
 
 function ProfileEditor() {
   const { authFetch } = useAuth();
@@ -64,7 +65,7 @@ function ProfileEditor() {
     }
   }
 
-  if (isLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
+  if (isLoading) return <FormSkeleton rows={5} />;
 
   return (
     <div className="space-y-6">
@@ -150,7 +151,7 @@ export default function CompanyDashboardPage() {
     queryClient.invalidateQueries({ queryKey: ["my-jobs"] });
   }
 
-  if (authLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
+  if (authLoading) return <FormSkeleton rows={5} />;
   if (user?.role !== "COMPANY") return <p className="text-silver-500">{t("dashboard.company.roleGuard")}</p>;
 
   return (

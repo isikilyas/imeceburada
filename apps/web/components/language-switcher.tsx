@@ -14,6 +14,9 @@ export function LanguageSwitcher() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
+        aria-label={`${current.label} — dil seçimini değiştir`}
+        aria-haspopup="listbox"
+        aria-expanded={open}
         className="flex items-center gap-1.5 text-sm text-silver-300 hover:text-gold-400"
       >
         <FlagIcon code={current.flagCode} />
