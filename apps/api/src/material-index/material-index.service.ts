@@ -87,7 +87,7 @@ export class MaterialIndexService {
           ORDER BY "month" ASC
         `;
 
-    return rows.map((r) => ({
+    return rows.map((r: MaterialIndexRow) => ({
       month: r.month,
       materialType: r.materialType,
       city: r.city,

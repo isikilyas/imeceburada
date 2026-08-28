@@ -4,11 +4,24 @@ import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import helmet from "helmet";
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(ConfigService);
+
+  app.use(
+    helmet({
+      // API-only backend, no HTML views — CSP has nothing to protect here
+      // and would otherwise apply to the static /uploads image responses too.
+      contentSecurityPolicy: false,
+      // The web app runs on a different origin and loads listing/profile
+      // photos directly from /uploads via <img>; helmet's default
+      // same-origin policy would block that cross-origin image load.
+      crossOriginResourcePolicy: { policy: "cross-origin" },
+    }),
+  );
 
   app.useStaticAssets(join(process.cwd(), "uploads"), { prefix: "/uploads" });
 

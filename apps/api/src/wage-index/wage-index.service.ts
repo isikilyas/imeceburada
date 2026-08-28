@@ -104,7 +104,7 @@ export class WageIndexService {
           ORDER BY "month" ASC
         `;
 
-    return rows.map((r) => ({
+    return rows.map((r: WageIndexRow) => ({
       month: r.month,
       tradeCategory: r.tradeCategory,
       city: r.city,
@@ -173,7 +173,7 @@ export class WageIndexService {
           ORDER BY "period" ASC
         `;
 
-    return rows.map((r) => ({
+    return rows.map((r: WageScaleRow) => ({
       tradeCategory: r.tradeCategory,
       city: r.city,
       district: r.district,

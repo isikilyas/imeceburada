@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { SubcontractorProfile } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { SearchSubcontractorsDto } from "./dto/search-subcontractors.dto";
 
@@ -27,7 +28,7 @@ export class SubcontractorsService {
     ]);
 
     return {
-      items: items.map((s) => ({
+      items: items.map((s: SubcontractorProfile) => ({
         id: s.id,
         companyName: s.companyName,
         city: s.city,

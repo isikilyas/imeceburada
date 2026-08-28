@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { CandidateProfile } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { SearchCandidatesDto } from "./dto/search-candidates.dto";
 
@@ -27,7 +28,7 @@ export class CandidatesService {
     ]);
 
     return {
-      items: items.map((c) => ({
+      items: items.map((c: CandidateProfile) => ({
         id: c.id,
         fullName: c.fullName,
         city: c.city,
