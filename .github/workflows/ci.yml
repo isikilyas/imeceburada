@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+env:
+  # Build/lint/unit-test only — no real database is used, this just satisfies
+  # config validation (e.g. Prisma's `env("DATABASE_URL")` reference).
+  DATABASE_URL: "postgresql://ci:ci@localhost:5432/ci?schema=public"
+  JWT_ACCESS_SECRET: "ci-access-secret"
+  JWT_REFRESH_SECRET: "ci-refresh-secret"
+
+jobs:
+  web-api:
+    name: Web & API (lint, build, test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build (shared, api, web)
+        run: pnpm build
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: API unit tests
+        run: pnpm --filter @imeceburada/api test
+
+  mobile:
+    name: Mobile (analyze, test)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.6"
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test
