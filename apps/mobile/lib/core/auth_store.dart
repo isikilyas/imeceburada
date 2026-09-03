@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/auth.dart';
 import 'api_client.dart';
 
 const _storageKey = 'imeceburada.auth';
+const _secureStorage = FlutterSecureStorage();
 
 /// Kimlik doğrulama durumunu tutan basit bir ChangeNotifier — Provider ile
 /// widget ağacına sağlanır (bkz. main.dart).
@@ -20,13 +22,23 @@ class AuthStore extends ChangeNotifier {
   bool get isAuthenticated => _session != null;
 
   Future<void> init() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_storageKey);
+    var raw = await _secureStorage.read(key: _storageKey);
+    if (raw == null) {
+      // Eski sürümlerde token'lar SharedPreferences'ta düz metin saklanıyordu.
+      // Varsa bir kereliğine güvenli depolamaya taşı ve eski kopyayı sil.
+      final prefs = await SharedPreferences.getInstance();
+      final legacyRaw = prefs.getString(_storageKey);
+      if (legacyRaw != null) {
+        raw = legacyRaw;
+        await _secureStorage.write(key: _storageKey, value: legacyRaw);
+        await prefs.remove(_storageKey);
+      }
+    }
     if (raw != null) {
       try {
         _session = AuthSession.fromStorageJson(jsonDecode(raw) as Map<String, dynamic>);
       } catch (_) {
-        await prefs.remove(_storageKey);
+        await _secureStorage.delete(key: _storageKey);
       }
     }
     isLoading = false;
@@ -35,11 +47,10 @@ class AuthStore extends ChangeNotifier {
 
   Future<void> _persist(AuthSession? session) async {
     _session = session;
-    final prefs = await SharedPreferences.getInstance();
     if (session != null) {
-      await prefs.setString(_storageKey, jsonEncode(session.toStorageJson()));
+      await _secureStorage.write(key: _storageKey, value: jsonEncode(session.toStorageJson()));
     } else {
-      await prefs.remove(_storageKey);
+      await _secureStorage.delete(key: _storageKey);
     }
     notifyListeners();
   }
