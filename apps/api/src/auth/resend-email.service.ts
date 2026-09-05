@@ -11,19 +11,32 @@ import { EmailService } from "./email.service";
 @Injectable()
 export class ResendEmailService implements EmailService {
   private readonly logger = new Logger(ResendEmailService.name);
-  private readonly resend: Resend;
   private readonly fromAddress: string;
+  // `new Resend()` throws immediately if no API key is passed, which would
+  // crash the whole app at boot since Nest eagerly instantiates every
+  // provider — this class is registered regardless of whether a key is
+  // configured (see auth.module.ts), so the client is built lazily on first
+  // actual send instead of in the constructor.
+  private client: Resend | null = null;
 
   constructor(private readonly config: ConfigService) {
-    this.resend = new Resend(this.config.get<string>("RESEND_API_KEY"));
     // Kendi alan adımız Resend'de doğrulanana kadar Resend'in paylaşımlı test
     // alan adı kullanılıyor — bu adres herhangi bir alıcıya gönderim yapabilir,
     // sadece "gönderen" görünen adı imeceburada.com değil resend.dev olur.
     this.fromAddress = this.config.get<string>("RESEND_FROM_ADDRESS") ?? "İmece Burada <onboarding@resend.dev>";
   }
 
+  private getClient(): Resend {
+    if (!this.client) {
+      const apiKey = this.config.get<string>("RESEND_API_KEY");
+      if (!apiKey) throw new Error("RESEND_API_KEY tanımlı değil");
+      this.client = new Resend(apiKey);
+    }
+    return this.client;
+  }
+
   async sendPasswordResetLink(email: string, resetUrl: string): Promise<void> {
-    const { error } = await this.resend.emails.send({
+    const { error } = await this.getClient().emails.send({
       from: this.fromAddress,
       to: email,
       subject: "İmece Burada — Şifre sıfırlama",
