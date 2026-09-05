@@ -8,6 +8,7 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { ConsoleEmailService, EMAIL_SERVICE } from "./email.service";
 import { ResendEmailService } from "./resend-email.service";
 import { ConsoleSmsService, SMS_SERVICE } from "../phone-verification/sms.service";
+import { NetgsmSmsService } from "../phone-verification/netgsm-sms.service";
 
 @Module({
   imports: [PassportModule, JwtModule.register({})],
@@ -25,9 +26,16 @@ import { ConsoleSmsService, SMS_SERVICE } from "../phone-verification/sms.servic
       inject: [ConfigService, ResendEmailService, ConsoleEmailService],
     },
     ConsoleEmailService,
-    // Telefonla giriş kodu için de gerçek bir SMS sağlayıcısı seçilene kadar
-    // phone-verification modülüyle aynı geçici (sadece loglayan) uygulama.
-    { provide: SMS_SERVICE, useClass: ConsoleSmsService },
+    NetgsmSmsService,
+    ConsoleSmsService,
+    {
+      // NETGSM_USERCODE tanımlıysa gerçek SMS gönderilir; tanımlı değilse
+      // kodu sadece loglayan sürüme düşer (phone-verification.module.ts ile aynı desen).
+      provide: SMS_SERVICE,
+      useFactory: (config: ConfigService, netgsm: NetgsmSmsService, console: ConsoleSmsService) =>
+        config.get<string>("NETGSM_USERCODE") ? netgsm : console,
+      inject: [ConfigService, NetgsmSmsService, ConsoleSmsService],
+    },
   ],
   exports: [AuthService],
 })
