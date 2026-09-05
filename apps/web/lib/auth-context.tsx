@@ -35,6 +35,8 @@ interface AuthContextValue {
   user: AuthUser | null;
   isLoading: boolean;
   login: (input: LoginInput, keepSignedIn?: boolean) => Promise<void>;
+  requestPhoneLogin: (phone: string) => Promise<void>;
+  verifyPhoneLogin: (phone: string, code: string, keepSignedIn?: boolean) => Promise<void>;
   registerCandidate: (input: RegisterCandidateInput) => Promise<void>;
   registerCompany: (input: RegisterCompanyInput) => Promise<void>;
   registerSupplier: (input: RegisterSupplierInput) => Promise<void>;
@@ -98,6 +100,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await apiFetch<AuthResponse>("/auth/login", {
         method: "POST",
         body: JSON.stringify(input),
+      });
+      applyAuthResponse(res, keepSignedIn);
+    },
+    [applyAuthResponse],
+  );
+
+  const requestPhoneLogin = useCallback(async (phone: string) => {
+    await apiFetch("/auth/login/phone/request", { method: "POST", body: JSON.stringify({ phone }) });
+  }, []);
+
+  const verifyPhoneLogin = useCallback(
+    async (phone: string, code: string, keepSignedIn = true) => {
+      const res = await apiFetch<AuthResponse>("/auth/login/phone/verify", {
+        method: "POST",
+        body: JSON.stringify({ phone, code }),
       });
       applyAuthResponse(res, keepSignedIn);
     },
@@ -181,6 +198,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user: state?.user ?? null,
         isLoading,
         login,
+        requestPhoneLogin,
+        verifyPhoneLogin,
         registerCandidate,
         registerCompany,
         registerSupplier,

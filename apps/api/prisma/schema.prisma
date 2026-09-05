@@ -123,8 +123,25 @@ model User {
   siteRequestsCreated      SiteRequest[]
   siteRequestResponses     SiteRequestResponse[]
   favorites                Favorite[]
+  phoneLoginCode           PhoneLoginCode?
 
   @@map("users")
+}
+
+/// Telefonla (SMS tek kullanımlık kod) giriş için geçici doğrulama kodu.
+/// Sadece profili phoneVerifiedAt ile doğrulanmış kullanıcılar için üretilir
+/// — bkz. AuthService.requestPhoneLogin. phone-verification modülündeki
+/// profil-bazlı doğrulama kodlarından bilerek ayrı tutuluyor, ikisi aynı anda
+/// kullanılırsa birbirini ezmesin diye.
+model PhoneLoginCode {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash  String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("phone_login_codes")
 }
 
 model CandidateProfile {

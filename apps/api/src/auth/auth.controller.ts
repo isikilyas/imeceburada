@@ -9,6 +9,8 @@ import { LoginDto } from "./dto/login.dto";
 import { RefreshTokenDto } from "./dto/refresh-token.dto";
 import { ForgotPasswordDto } from "./dto/forgot-password.dto";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
+import { RequestPhoneLoginDto } from "./dto/request-phone-login.dto";
+import { VerifyPhoneLoginDto } from "./dto/verify-phone-login.dto";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { CurrentUser } from "./decorators/current-user.decorator";
 import { RequestUser } from "./types/request-user";
@@ -50,6 +52,18 @@ export class AuthController {
   @Post("refresh")
   refresh(@Body() dto: RefreshTokenDto) {
     return this.authService.refresh(dto.refreshToken);
+  }
+
+  @Throttle({ default: { limit: 3, ttl: 60_000 } })
+  @Post("login/phone/request")
+  requestPhoneLogin(@Body() dto: RequestPhoneLoginDto) {
+    return this.authService.requestPhoneLogin(dto);
+  }
+
+  @Throttle({ default: { limit: 8, ttl: 60_000 } })
+  @Post("login/phone/verify")
+  verifyPhoneLogin(@Body() dto: VerifyPhoneLoginDto) {
+    return this.authService.verifyPhoneLogin(dto);
   }
 
   @Throttle({ default: { limit: 3, ttl: 60_000 } })
