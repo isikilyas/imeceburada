@@ -2,7 +2,7 @@ import { ConflictException, Inject, Injectable, UnauthorizedException } from "@n
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import * as bcrypt from "bcrypt";
-import { createHash, randomBytes } from "crypto";
+import { createHash, randomBytes, randomInt } from "crypto";
 import { PrismaService } from "../prisma/prisma.service";
 import { RegisterCandidateDto } from "./dto/register-candidate.dto";
 import { RegisterCompanyDto } from "./dto/register-company.dto";
@@ -11,10 +11,14 @@ import { RegisterSubcontractorDto } from "./dto/register-subcontractor.dto";
 import { LoginDto } from "./dto/login.dto";
 import { ForgotPasswordDto } from "./dto/forgot-password.dto";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
+import { RequestPhoneLoginDto } from "./dto/request-phone-login.dto";
+import { VerifyPhoneLoginDto } from "./dto/verify-phone-login.dto";
 import { AuthResponse, AuthTokens, UserRole } from "@imeceburada/shared";
 import { EMAIL_SERVICE, EmailService } from "./email.service";
+import { SMS_SERVICE, SmsService } from "../phone-verification/sms.service";
 
 const PASSWORD_RESET_TOKEN_TTL_MS = 60 * 60 * 1000;
+const PHONE_LOGIN_CODE_TTL_MS = 10 * 60 * 1000;
 
 @Injectable()
 export class AuthService {
@@ -23,6 +27,7 @@ export class AuthService {
     private jwtService: JwtService,
     private config: ConfigService,
     @Inject(EMAIL_SERVICE) private emailService: EmailService,
+    @Inject(SMS_SERVICE) private smsService: SmsService,
   ) {}
 
   async registerCandidate(dto: RegisterCandidateDto): Promise<AuthResponse> {
@@ -161,6 +166,72 @@ export class AuthService {
       await this.emailService.sendPasswordResetLink(user.email, `${webBaseUrl}/reset-password?token=${rawToken}`);
     }
     return { success: true };
+  }
+
+  /**
+   * Telefonuyla giriş için telefon numarasını hangi kullanıcıya ait olduğunu
+   * bulur. Sadece profili doğrulanmış (phoneVerifiedAt dolu) hesaplar için
+   * çalışır — CANDIDATE'ler için henüz telefon doğrulama akışı yok, o yüzden
+   * kapsam dışında.
+   */
+  private async findUserByVerifiedPhone(
+    phone: string,
+  ): Promise<{ id: string; email: string; role: UserRole } | null> {
+    const company = await this.prisma.companyProfile.findFirst({
+      where: { phone, phoneVerifiedAt: { not: null } },
+      include: { user: true },
+    });
+    if (company) return company.user as { id: string; email: string; role: UserRole };
+
+    const supplier = await this.prisma.supplierProfile.findFirst({
+      where: { phone, phoneVerifiedAt: { not: null } },
+      include: { user: true },
+    });
+    if (supplier) return supplier.user as { id: string; email: string; role: UserRole };
+
+    const subcontractor = await this.prisma.subcontractorProfile.findFirst({
+      where: { phone, phoneVerifiedAt: { not: null } },
+      include: { user: true },
+    });
+    if (subcontractor) return subcontractor.user as { id: string; email: string; role: UserRole };
+
+    return null;
+  }
+
+  /**
+   * Numara enumerasyonunu önlemek için telefon sistemde olsun ya da olmasın
+   * her zaman aynı genel başarı cevabı döner (forgotPassword ile aynı desen).
+   */
+  async requestPhoneLogin(dto: RequestPhoneLoginDto): Promise<{ success: true }> {
+    const user = await this.findUserByVerifiedPhone(dto.phone);
+    if (user) {
+      const code = randomInt(100000, 1000000).toString();
+      const codeHash = createHash("sha256").update(code).digest("hex");
+      await this.prisma.phoneLoginCode.upsert({
+        where: { userId: user.id },
+        create: { userId: user.id, codeHash, expiresAt: new Date(Date.now() + PHONE_LOGIN_CODE_TTL_MS) },
+        update: { codeHash, expiresAt: new Date(Date.now() + PHONE_LOGIN_CODE_TTL_MS) },
+      });
+      await this.smsService.sendVerificationCode(dto.phone, code);
+    }
+    return { success: true };
+  }
+
+  async verifyPhoneLogin(dto: VerifyPhoneLoginDto): Promise<AuthResponse> {
+    const user = await this.findUserByVerifiedPhone(dto.phone);
+    if (!user) throw new UnauthorizedException("Kod hatalı veya süresi dolmuş");
+
+    const record = await this.prisma.phoneLoginCode.findUnique({ where: { userId: user.id } });
+    if (!record || record.expiresAt < new Date()) {
+      throw new UnauthorizedException("Kod hatalı veya süresi dolmuş");
+    }
+    const codeHash = createHash("sha256").update(dto.code).digest("hex");
+    if (record.codeHash !== codeHash) {
+      throw new UnauthorizedException("Kod hatalı veya süresi dolmuş");
+    }
+
+    await this.prisma.phoneLoginCode.delete({ where: { userId: user.id } });
+    return this.buildAuthResponse(user.id, user.email, user.role);
   }
 
   async resetPassword(dto: ResetPasswordDto): Promise<{ success: true }> {
