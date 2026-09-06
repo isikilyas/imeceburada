@@ -6,6 +6,7 @@ import '../../core/constants.dart';
 import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/material_category_picker.dart';
+import '../../widgets/password_field.dart';
 import '../../widgets/province_district_picker.dart';
 import '../../widgets/trade_category_picker.dart';
 
@@ -258,11 +259,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               decoration: InputDecoration(labelText: t('auth.emailLabel')),
             ),
             const SizedBox(height: 12),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: t('auth.passwordMinLabel')),
-            ),
+            PasswordField(controller: _passwordController, labelText: t('auth.passwordMinLabel')),
             if (_error != null) ...[
               const SizedBox(height: 12),
               Text(_error!, style: const TextStyle(color: AppColors.red400)),

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { TRADE_FIELDS, TURKISH_PROVINCES, UserRole } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api-client";
-import { Field, inputClass } from "@/components/form";
+import { Field, inputClass, PasswordInput } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-select";
 import { MaterialCategoryMultiSelect } from "@/components/material-category-multi-select";
@@ -266,14 +266,7 @@ export default function RegisterPage() {
             />
           </Field>
           <Field label="Şifre (en az 8 karakter)">
-            <input
-              type="password"
-              required
-              minLength={8}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={inputClass}
-            />
+            <PasswordInput required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
           </Field>
 
           {error && <p className="text-sm text-red-400">{error}</p>}

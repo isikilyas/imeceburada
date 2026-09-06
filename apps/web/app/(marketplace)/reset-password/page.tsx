@@ -4,7 +4,7 @@ import { FormEvent, Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { apiFetch, ApiError } from "@/lib/api-client";
-import { Field, inputClass } from "@/components/form";
+import { Field, PasswordInput } from "@/components/form";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 function ResetPasswordForm() {
@@ -48,14 +48,7 @@ function ResetPasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <Field label={t("misc.resetPassword.newPasswordLabel")}>
-        <input
-          type="password"
-          required
-          minLength={8}
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className={inputClass}
-        />
+        <PasswordInput required minLength={8} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
       </Field>
       {error && <p className="text-sm text-red-400">{error}</p>}
       <button
