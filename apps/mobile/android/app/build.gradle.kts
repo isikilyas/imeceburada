@@ -59,6 +59,14 @@ android {
             // so `flutter run --release` keeps working before that's set up.
             // Play Store submissions MUST use the real keystore.
             signingConfig = if (hasReleaseKeystore) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
+            // R8 minification is memory-hungry enough to hang/OOM release
+            // builds on memory-constrained dev machines (this one has 4GB
+            // total RAM). Play Store doesn't require it — it's an app-size
+            // optimization, not a submission requirement — so it's disabled
+            // here rather than blocking local release builds. Re-enable once
+            // building on a properly-resourced machine or CI.
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 }
