@@ -1,4 +1,5 @@
 import { InputHTMLAttributes, ReactNode, useState } from "react";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 export const inputClass =
   "w-full rounded-md border border-ink-700 bg-ink-900 px-3 py-2 text-silver-200 placeholder:text-silver-500 focus:border-gold-500 focus:outline-none";
@@ -16,6 +17,7 @@ export function Field({ label, children }: { label: string; children: ReactNode 
 
 /** Şifre alanı — sağdaki göz ikonuyla girilen şifreyi göster/gizle. */
 export function PasswordInput(props: InputHTMLAttributes<HTMLInputElement>) {
+  const { t } = useLocale();
   const [visible, setVisible] = useState(false);
   return (
     <div className="relative">
@@ -24,7 +26,7 @@ export function PasswordInput(props: InputHTMLAttributes<HTMLInputElement>) {
         type="button"
         onClick={() => setVisible((v) => !v)}
         tabIndex={-1}
-        aria-label={visible ? "Şifreyi gizle" : "Şifreyi göster"}
+        aria-label={visible ? t("auth.hidePassword") : t("auth.showPassword")}
         className="absolute inset-y-0 right-0 flex items-center px-3 text-silver-500 hover:text-silver-300"
       >
         {visible ? (

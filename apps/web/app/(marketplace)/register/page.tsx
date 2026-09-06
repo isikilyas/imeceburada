@@ -64,7 +64,7 @@ export default function RegisterPage() {
       await requestRegistrationPhoneCode(phone);
       setPhoneCodeSent(true);
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Kod gönderilemedi");
+      setError(err instanceof ApiError ? err.message : t("auth.sendCodeFailed"));
     } finally {
       setIsSendingCode(false);
     }
@@ -147,10 +147,8 @@ export default function RegisterPage() {
 
       {!phoneCodeSent ? (
         <form onSubmit={handleSendCode} className="space-y-4">
-          <p className="text-xs text-silver-500">
-            Önce telefon numaranı doğrulaman gerekiyor — aynı telefon numarasıyla yalnızca bir hesap açılabilir.
-          </p>
-          <Field label="Telefon Numarası">
+          <p className="text-xs text-silver-500">{t("auth.phoneRegisterHint")}</p>
+          <Field label={t("auth.phoneLabel")}>
             <input
               type="tel"
               required
@@ -167,16 +165,14 @@ export default function RegisterPage() {
             disabled={isSendingCode}
             className="w-full rounded-md bg-gold-500 py-2.5 font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60"
           >
-            {isSendingCode ? "Gönderiliyor..." : "Kod Gönder"}
+            {isSendingCode ? t("auth.sending") : t("auth.sendCode")}
           </button>
         </form>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="rounded-md border border-ink-700 bg-ink-900 p-3">
-            <p className="mb-2 text-sm text-silver-300">
-              <strong>{phone}</strong> numarasına gönderdiğimiz 6 haneli kodu gir.
-            </p>
-            <Field label="Doğrulama Kodu">
+            <p className="mb-2 text-sm text-silver-300">{t("auth.phoneCodeSentHint", { phone })}</p>
+            <Field label={t("auth.phoneCodeLabel")}>
               <input
                 type="text"
                 inputMode="numeric"
@@ -192,7 +188,7 @@ export default function RegisterPage() {
               onClick={() => setPhoneCodeSent(false)}
               className="mt-2 text-xs text-silver-500 hover:underline"
             >
-              Numarayı değiştir / kodu tekrar gönder
+              {t("auth.changePhone")}
             </button>
           </div>
 

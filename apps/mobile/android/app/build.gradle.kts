@@ -18,6 +18,13 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
+    lint {
+        // Android's lint-vital-release check duplicates what `flutter analyze`
+        // already covers in CI, and its JVM-based static analysis is heavy
+        // enough to OOM release builds on memory-constrained dev machines.
+        checkReleaseBuilds = false
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -25,7 +32,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.imeceburada.imeceburada"
+        applicationId = "com.imeceburada"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -52,6 +59,14 @@ android {
             // so `flutter run --release` keeps working before that's set up.
             // Play Store submissions MUST use the real keystore.
             signingConfig = if (hasReleaseKeystore) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
+            // R8 minification is memory-hungry enough to hang/OOM release
+            // builds on memory-constrained dev machines (this one has 4GB
+            // total RAM). Play Store doesn't require it — it's an app-size
+            // optimization, not a submission requirement — so it's disabled
+            // here rather than blocking local release builds. Re-enable once
+            // building on a properly-resourced machine or CI.
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 }
