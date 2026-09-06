@@ -21,7 +21,8 @@ export interface RegisterCandidateInput {
   fullName: string;
   city: string;
   district?: string;
-  phone?: string;
+  phone: string;
+  phoneCode: string;
 }
 
 export interface RegisterCompanyInput {
@@ -31,6 +32,8 @@ export interface RegisterCompanyInput {
   sector?: string;
   city: string;
   district?: string;
+  phone: string;
+  phoneCode: string;
 }
 
 export interface RegisterSupplierInput {
@@ -40,6 +43,8 @@ export interface RegisterSupplierInput {
   city: string;
   district?: string;
   supplyCategories?: string[];
+  phone: string;
+  phoneCode: string;
 }
 
 export interface RegisterSubcontractorInput {
@@ -50,6 +55,8 @@ export interface RegisterSubcontractorInput {
   district?: string;
   tradeCategories: string[];
   description?: string;
+  phone: string;
+  phoneCode: string;
 }
 
 export interface LoginInput {

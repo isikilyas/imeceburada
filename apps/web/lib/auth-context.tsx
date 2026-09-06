@@ -37,6 +37,7 @@ interface AuthContextValue {
   login: (input: LoginInput, keepSignedIn?: boolean) => Promise<void>;
   requestPhoneLogin: (phone: string) => Promise<void>;
   verifyPhoneLogin: (phone: string, code: string, keepSignedIn?: boolean) => Promise<void>;
+  requestRegistrationPhoneCode: (phone: string) => Promise<void>;
   registerCandidate: (input: RegisterCandidateInput) => Promise<void>;
   registerCompany: (input: RegisterCompanyInput) => Promise<void>;
   registerSupplier: (input: RegisterSupplierInput) => Promise<void>;
@@ -121,6 +122,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [applyAuthResponse],
   );
 
+  const requestRegistrationPhoneCode = useCallback(async (phone: string) => {
+    await apiFetch("/auth/register/request-phone-code", { method: "POST", body: JSON.stringify({ phone }) });
+  }, []);
+
   const registerCandidate = useCallback(
     async (input: RegisterCandidateInput) => {
       const res = await apiFetch<AuthResponse>("/auth/register/candidate", {
@@ -200,6 +205,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         login,
         requestPhoneLogin,
         verifyPhoneLogin,
+        requestRegistrationPhoneCode,
         registerCandidate,
         registerCompany,
         registerSupplier,

@@ -18,7 +18,13 @@ export class RegisterCandidateDto {
   @IsString()
   district?: string;
 
-  @IsOptional()
+  /** requestRegistrationPhoneCode ile SMS gönderilen numaranın aynısı olmalı. */
   @IsString()
-  phone?: string;
+  @MinLength(10)
+  phone!: string;
+
+  /** O numaraya gönderilen 6 haneli doğrulama kodu. */
+  @IsString()
+  @MinLength(6)
+  phoneCode!: string;
 }

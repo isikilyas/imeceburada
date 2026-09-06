@@ -144,12 +144,28 @@ model PhoneLoginCode {
   @@map("phone_login_codes")
 }
 
+/// Henüz hesabı olmayan bir kişinin kayıt sırasında telefonunu doğrulaması
+/// için geçici kod. Telefon (henüz kullanıcıya bağlı olmadığı için) burada
+/// birincil anahtar — bkz. AuthService.requestRegistrationPhoneCode /
+/// registerCandidate vb.
+model RegistrationPhoneCode {
+  phone     String   @id
+  codeHash  String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("registration_phone_codes")
+}
+
 model CandidateProfile {
   id                  String   @id @default(uuid())
   userId              String   @unique
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   fullName            String
   phone               String?
+  phoneVerifiedAt             DateTime?
+  phoneVerificationCode       String?
+  phoneVerificationExpiresAt  DateTime?
   city                String
   district            String?
   experienceYears     Int      @default(0)
