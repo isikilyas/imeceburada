@@ -27,4 +27,14 @@ export class RegisterSubcontractorDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  /** requestRegistrationPhoneCode ile SMS gönderilen numaranın aynısı olmalı. */
+  @IsString()
+  @MinLength(10)
+  phone!: string;
+
+  /** O numaraya gönderilen 6 haneli doğrulama kodu. */
+  @IsString()
+  @MinLength(6)
+  phoneCode!: string;
 }

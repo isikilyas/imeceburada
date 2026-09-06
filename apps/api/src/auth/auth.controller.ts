@@ -11,6 +11,7 @@ import { ForgotPasswordDto } from "./dto/forgot-password.dto";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
 import { RequestPhoneLoginDto } from "./dto/request-phone-login.dto";
 import { VerifyPhoneLoginDto } from "./dto/verify-phone-login.dto";
+import { RequestRegistrationPhoneCodeDto } from "./dto/request-registration-phone-code.dto";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { CurrentUser } from "./decorators/current-user.decorator";
 import { RequestUser } from "./types/request-user";
@@ -18,6 +19,12 @@ import { RequestUser } from "./types/request-user";
 @Controller("auth")
 export class AuthController {
   constructor(private authService: AuthService) {}
+
+  @Throttle({ default: { limit: 3, ttl: 60_000 } })
+  @Post("register/request-phone-code")
+  requestRegistrationPhoneCode(@Body() dto: RequestRegistrationPhoneCodeDto) {
+    return this.authService.requestRegistrationPhoneCode(dto);
+  }
 
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @Post("register/candidate")

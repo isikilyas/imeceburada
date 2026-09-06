@@ -13,12 +13,14 @@ import { ForgotPasswordDto } from "./dto/forgot-password.dto";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
 import { RequestPhoneLoginDto } from "./dto/request-phone-login.dto";
 import { VerifyPhoneLoginDto } from "./dto/verify-phone-login.dto";
+import { RequestRegistrationPhoneCodeDto } from "./dto/request-registration-phone-code.dto";
 import { AuthResponse, AuthTokens, UserRole } from "@imeceburada/shared";
 import { EMAIL_SERVICE, EmailService } from "./email.service";
 import { SMS_SERVICE, SmsService } from "../phone-verification/sms.service";
 
 const PASSWORD_RESET_TOKEN_TTL_MS = 60 * 60 * 1000;
 const PHONE_LOGIN_CODE_TTL_MS = 10 * 60 * 1000;
+const REGISTRATION_PHONE_CODE_TTL_MS = 10 * 60 * 1000;
 
 @Injectable()
 export class AuthService {
@@ -32,6 +34,7 @@ export class AuthService {
 
   async registerCandidate(dto: RegisterCandidateDto): Promise<AuthResponse> {
     await this.assertEmailAvailable(dto.email);
+    const phoneVerifiedAt = await this.consumeRegistrationPhoneCode(dto.phone, dto.phoneCode);
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
     const user = await this.prisma.user.create({
@@ -45,6 +48,7 @@ export class AuthService {
             city: dto.city,
             district: dto.district,
             phone: dto.phone,
+            phoneVerifiedAt,
           },
         },
       },
@@ -55,6 +59,7 @@ export class AuthService {
 
   async registerCompany(dto: RegisterCompanyDto): Promise<AuthResponse> {
     await this.assertEmailAvailable(dto.email);
+    const phoneVerifiedAt = await this.consumeRegistrationPhoneCode(dto.phone, dto.phoneCode);
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
     const user = await this.prisma.user.create({
@@ -68,6 +73,8 @@ export class AuthService {
             city: dto.city,
             district: dto.district,
             sector: dto.sector,
+            phone: dto.phone,
+            phoneVerifiedAt,
           },
         },
       },
@@ -78,6 +85,7 @@ export class AuthService {
 
   async registerSupplier(dto: RegisterSupplierDto): Promise<AuthResponse> {
     await this.assertEmailAvailable(dto.email);
+    const phoneVerifiedAt = await this.consumeRegistrationPhoneCode(dto.phone, dto.phoneCode);
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
     const user = await this.prisma.user.create({
@@ -91,6 +99,8 @@ export class AuthService {
             city: dto.city,
             district: dto.district,
             supplyCategories: dto.supplyCategories ?? [],
+            phone: dto.phone,
+            phoneVerifiedAt,
           },
         },
       },
@@ -101,6 +111,7 @@ export class AuthService {
 
   async registerSubcontractor(dto: RegisterSubcontractorDto): Promise<AuthResponse> {
     await this.assertEmailAvailable(dto.email);
+    const phoneVerifiedAt = await this.consumeRegistrationPhoneCode(dto.phone, dto.phoneCode);
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
     const user = await this.prisma.user.create({
@@ -115,6 +126,8 @@ export class AuthService {
             district: dto.district,
             tradeCategories: dto.tradeCategories,
             description: dto.description,
+            phone: dto.phone,
+            phoneVerifiedAt,
           },
         },
       },
@@ -177,6 +190,12 @@ export class AuthService {
   private async findUserByVerifiedPhone(
     phone: string,
   ): Promise<{ id: string; email: string; role: UserRole } | null> {
+    const candidate = await this.prisma.candidateProfile.findFirst({
+      where: { phone, phoneVerifiedAt: { not: null } },
+      include: { user: true },
+    });
+    if (candidate) return candidate.user as { id: string; email: string; role: UserRole };
+
     const company = await this.prisma.companyProfile.findFirst({
       where: { phone, phoneVerifiedAt: { not: null } },
       include: { user: true },
@@ -252,6 +271,62 @@ export class AuthService {
   private async assertEmailAvailable(email: string) {
     const existing = await this.prisma.user.findUnique({ where: { email } });
     if (existing) throw new ConflictException("Bu e-posta zaten kayıtlı");
+  }
+
+  /**
+   * Bir telefon numarasının başka bir (varsa) hesapta zaten doğrulanmış
+   * olup olmadığını kontrol eder — aynı numarayla ikinci bir hesap
+   * (farklı rolde olsa dahi) açılmasını engellemek için kullanılır.
+   * `excludeUserId` verilirse o kullanıcının kendi profili göz ardı edilir
+   * (mevcut bir hesabın telefonunu tekrar doğrularken kendine çarpmasın diye).
+   */
+  private async assertPhoneNotVerifiedElsewhere(phone: string, excludeUserId?: string): Promise<void> {
+    const [candidate, company, supplier, subcontractor] = await Promise.all([
+      this.prisma.candidateProfile.findFirst({ where: { phone, phoneVerifiedAt: { not: null } } }),
+      this.prisma.companyProfile.findFirst({ where: { phone, phoneVerifiedAt: { not: null } } }),
+      this.prisma.supplierProfile.findFirst({ where: { phone, phoneVerifiedAt: { not: null } } }),
+      this.prisma.subcontractorProfile.findFirst({ where: { phone, phoneVerifiedAt: { not: null } } }),
+    ]);
+    const match = candidate ?? company ?? supplier ?? subcontractor;
+    if (match && match.userId !== excludeUserId) {
+      throw new ConflictException("Bu telefon numarası başka bir hesapta kullanılıyor");
+    }
+  }
+
+  /**
+   * Kayıt formundan gönderilen telefon + kodu doğrular, kullanılan kodu
+   * siler ve doğrulama zamanını döner — registerX metotları bunu doğrudan
+   * profilin phoneVerifiedAt alanına yazar (kayıt anında zaten doğrulanmış
+   * sayılır, ayrıca profil-bazlı doğrulama akışından geçmesi gerekmez).
+   */
+  private async consumeRegistrationPhoneCode(phone: string, code: string): Promise<Date> {
+    const record = await this.prisma.registrationPhoneCode.findUnique({ where: { phone } });
+    if (!record || record.expiresAt < new Date()) {
+      throw new UnauthorizedException("Kod hatalı veya süresi dolmuş");
+    }
+    const codeHash = createHash("sha256").update(code).digest("hex");
+    if (record.codeHash !== codeHash) {
+      throw new UnauthorizedException("Kod hatalı veya süresi dolmuş");
+    }
+    // Kod gönderildikten sonra biri aynı numarayı başka bir hesapta
+    // doğrulamış olabilir — silmeden hemen önce bir kez daha kontrol et.
+    await this.assertPhoneNotVerifiedElsewhere(phone);
+    await this.prisma.registrationPhoneCode.delete({ where: { phone } });
+    return new Date();
+  }
+
+  async requestRegistrationPhoneCode(dto: RequestRegistrationPhoneCodeDto): Promise<{ success: true }> {
+    await this.assertPhoneNotVerifiedElsewhere(dto.phone);
+
+    const code = randomInt(100000, 1000000).toString();
+    const codeHash = createHash("sha256").update(code).digest("hex");
+    await this.prisma.registrationPhoneCode.upsert({
+      where: { phone: dto.phone },
+      create: { phone: dto.phone, codeHash, expiresAt: new Date(Date.now() + REGISTRATION_PHONE_CODE_TTL_MS) },
+      update: { codeHash, expiresAt: new Date(Date.now() + REGISTRATION_PHONE_CODE_TTL_MS) },
+    });
+    await this.smsService.sendVerificationCode(dto.phone, code);
+    return { success: true };
   }
 
   private signTokens(userId: string): AuthTokens {

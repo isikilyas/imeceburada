@@ -22,10 +22,16 @@ const ROLE_LABELS: Record<RegisterableRole, string> = {
 };
 
 export default function RegisterPage() {
-  const { registerCandidate, registerCompany, registerSupplier, registerSubcontractor } = useAuth();
+  const { registerCandidate, registerCompany, registerSupplier, registerSubcontractor, requestRegistrationPhoneCode } =
+    useAuth();
   const { t } = useLocale();
   const router = useRouter();
   const [role, setRole] = useState<RegisterableRole>("CANDIDATE");
+
+  const [phone, setPhone] = useState("");
+  const [phoneCode, setPhoneCode] = useState("");
+  const [phoneCodeSent, setPhoneCodeSent] = useState(false);
+  const [isSendingCode, setIsSendingCode] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,6 +49,27 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  function switchRole(next: RegisterableRole) {
+    setRole(next);
+    setError(null);
+    setPhoneCodeSent(false);
+    setPhoneCode("");
+  }
+
+  async function handleSendCode(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setIsSendingCode(true);
+    try {
+      await requestRegistrationPhoneCode(phone);
+      setPhoneCodeSent(true);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Kod gönderilemedi");
+    } finally {
+      setIsSendingCode(false);
+    }
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
@@ -50,9 +77,18 @@ export default function RegisterPage() {
     try {
       const districtValue = district || undefined;
       if (role === "CANDIDATE") {
-        await registerCandidate({ email, password, fullName, city, district: districtValue });
+        await registerCandidate({ email, password, fullName, city, district: districtValue, phone, phoneCode });
       } else if (role === "COMPANY") {
-        await registerCompany({ email, password, companyName, city, district: districtValue, sector: sector || undefined });
+        await registerCompany({
+          email,
+          password,
+          companyName,
+          city,
+          district: districtValue,
+          sector: sector || undefined,
+          phone,
+          phoneCode,
+        });
       } else if (role === "SUPPLIER") {
         await registerSupplier({
           email,
@@ -61,6 +97,8 @@ export default function RegisterPage() {
           city,
           district: districtValue,
           supplyCategories: supplyCategories.length > 0 ? supplyCategories : undefined,
+          phone,
+          phoneCode,
         });
       } else {
         if (tradeCategories.length === 0) {
@@ -76,6 +114,8 @@ export default function RegisterPage() {
           district: districtValue,
           tradeCategories,
           description: description || undefined,
+          phone,
+          phoneCode,
         });
       }
       router.push("/");
@@ -95,7 +135,7 @@ export default function RegisterPage() {
           <button
             key={r}
             type="button"
-            onClick={() => setRole(r)}
+            onClick={() => switchRole(r)}
             className={`rounded-md px-2 py-2 text-xs font-medium leading-tight ${
               role === r ? "bg-gold-500 text-ink-950" : "border border-ink-700 text-silver-400"
             }`}
@@ -105,13 +145,76 @@ export default function RegisterPage() {
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {role === "CANDIDATE" ? (
-          <Field label="Ad Soyad">
-            <input required value={fullName} onChange={(e) => setFullName(e.target.value)} className={inputClass} />
+      {!phoneCodeSent ? (
+        <form onSubmit={handleSendCode} className="space-y-4">
+          <p className="text-xs text-silver-500">
+            Önce telefon numaranı doğrulaman gerekiyor — aynı telefon numarasıyla yalnızca bir hesap açılabilir.
+          </p>
+          <Field label="Telefon Numarası">
+            <input
+              type="tel"
+              required
+              placeholder="05XX XXX XX XX"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className={inputClass}
+            />
           </Field>
-        ) : role === "COMPANY" ? (
-          <>
+
+          {error && <p className="text-sm text-red-400">{error}</p>}
+          <button
+            type="submit"
+            disabled={isSendingCode}
+            className="w-full rounded-md bg-gold-500 py-2.5 font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60"
+          >
+            {isSendingCode ? "Gönderiliyor..." : "Kod Gönder"}
+          </button>
+        </form>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="rounded-md border border-ink-700 bg-ink-900 p-3">
+            <p className="mb-2 text-sm text-silver-300">
+              <strong>{phone}</strong> numarasına gönderdiğimiz 6 haneli kodu gir.
+            </p>
+            <Field label="Doğrulama Kodu">
+              <input
+                type="text"
+                inputMode="numeric"
+                required
+                maxLength={6}
+                value={phoneCode}
+                onChange={(e) => setPhoneCode(e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+            <button
+              type="button"
+              onClick={() => setPhoneCodeSent(false)}
+              className="mt-2 text-xs text-silver-500 hover:underline"
+            >
+              Numarayı değiştir / kodu tekrar gönder
+            </button>
+          </div>
+
+          {role === "CANDIDATE" ? (
+            <Field label="Ad Soyad">
+              <input required value={fullName} onChange={(e) => setFullName(e.target.value)} className={inputClass} />
+            </Field>
+          ) : role === "COMPANY" ? (
+            <>
+              <Field label="Firma Adı">
+                <input
+                  required
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  className={inputClass}
+                />
+              </Field>
+              <Field label="Sektör (opsiyonel)">
+                <input value={sector} onChange={(e) => setSector(e.target.value)} className={inputClass} />
+              </Field>
+            </>
+          ) : (
             <Field label="Firma Adı">
               <input
                 required
@@ -120,81 +223,69 @@ export default function RegisterPage() {
                 className={inputClass}
               />
             </Field>
-            <Field label="Sektör (opsiyonel)">
-              <input value={sector} onChange={(e) => setSector(e.target.value)} className={inputClass} />
-            </Field>
-          </>
-        ) : (
-          <Field label="Firma Adı">
+          )}
+
+          {role === "SUPPLIER" && (
+            <>
+              <p className="text-xs text-silver-500">
+                Yapı Tedarik üyeliği sadece inşaat malzemesi ilanı vermek içindir — iş ilanı açamazsın. Tedarik
+                ettiğin ürün/hizmet gruplarını seçmen isteğe bağlı, sonradan panelinden de ekleyebilirsin.
+              </p>
+              <MaterialCategoryMultiSelect values={supplyCategories} onChange={setSupplyCategories} />
+            </>
+          )}
+
+          {role === "SUBCONTRACTOR" && (
+            <>
+              <p className="text-xs text-silver-500">
+                Taşeron Firma üyeliği, hangi branşta taşeronluk yaptığını (örn. kalıp taşeronluğu) diğer firmaların
+                seni bulabileceği şekilde ilan eder.
+              </p>
+              <TradeCategoryMultiSelect values={tradeCategories} onChange={setTradeCategories} />
+              <Field label="Açıklama (opsiyonel)">
+                <textarea
+                  rows={2}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className={inputClass}
+                  placeholder="Örn: Faturalı çalışırız, 10 kişilik ekibimiz var"
+                />
+              </Field>
+            </>
+          )}
+
+          <ProvinceDistrictSelect city={city} district={district} onCityChange={setCity} onDistrictChange={setDistrict} />
+
+          <Field label="E-posta">
             <input
+              type="email"
               required
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className={inputClass}
             />
           </Field>
-        )}
+          <Field label="Şifre (en az 8 karakter)">
+            <input
+              type="password"
+              required
+              minLength={8}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={inputClass}
+            />
+          </Field>
 
-        {role === "SUPPLIER" && (
-          <>
-            <p className="text-xs text-silver-500">
-              Yapı Tedarik üyeliği sadece inşaat malzemesi ilanı vermek içindir — iş ilanı açamazsın. Tedarik
-              ettiğin ürün/hizmet gruplarını seçmen isteğe bağlı, sonradan panelinden de ekleyebilirsin.
-            </p>
-            <MaterialCategoryMultiSelect values={supplyCategories} onChange={setSupplyCategories} />
-          </>
-        )}
-
-        {role === "SUBCONTRACTOR" && (
-          <>
-            <p className="text-xs text-silver-500">
-              Taşeron Firma üyeliği, hangi branşta taşeronluk yaptığını (örn. kalıp taşeronluğu) diğer firmaların
-              seni bulabileceği şekilde ilan eder.
-            </p>
-            <TradeCategoryMultiSelect values={tradeCategories} onChange={setTradeCategories} />
-            <Field label="Açıklama (opsiyonel)">
-              <textarea
-                rows={2}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className={inputClass}
-                placeholder="Örn: Faturalı çalışırız, 10 kişilik ekibimiz var"
-              />
-            </Field>
-          </>
-        )}
-
-        <ProvinceDistrictSelect city={city} district={district} onCityChange={setCity} onDistrictChange={setDistrict} />
-
-        <Field label="E-posta">
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={inputClass}
-          />
-        </Field>
-        <Field label="Şifre (en az 8 karakter)">
-          <input
-            type="password"
-            required
-            minLength={8}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={inputClass}
-          />
-        </Field>
-
-        {error && <p className="text-sm text-red-400">{error}</p>}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-md bg-gold-500 py-2.5 font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60"
-        >
-          {isSubmitting ? "Kayıt oluşturuluyor..." : "Kayıt Ol"}
-        </button>
-      </form>
+          {error && <p className="text-sm text-red-400">{error}</p>}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full rounded-md bg-gold-500 py-2.5 font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60"
+          >
+            {isSubmitting ? "Kayıt oluşturuluyor..." : "Kayıt Ol"}
+          </button>
+        </form>
+      )}
 
       <p className="mt-4 text-sm text-silver-500">
         Zaten hesabın var mı?{" "}

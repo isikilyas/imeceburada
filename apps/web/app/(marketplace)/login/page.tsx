@@ -161,8 +161,7 @@ export default function LoginPage() {
       ) : !codeSent ? (
         <form onSubmit={handleSendCode} className="space-y-4">
           <p className="text-xs text-silver-500">
-            Telefonla giriş, sadece telefon numarasını daha önce panelinden doğrulamış Firma, Yapı Tedarik ve Taşeron
-            Firma hesapları içindir.
+            Telefonla giriş, kayıt sırasında doğruladığın telefon numaranla çalışır.
           </p>
           <Field label="Telefon Numarası">
             <input
