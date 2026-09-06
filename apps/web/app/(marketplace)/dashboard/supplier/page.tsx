@@ -12,6 +12,7 @@ import {
 } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { DeleteAccountSection } from "@/components/delete-account-section";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass, selectClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
@@ -255,6 +256,8 @@ export default function SupplierDashboardPage() {
           </form>
         </section>
       </div>
+
+      <DeleteAccountSection />
     </div>
   );
 }

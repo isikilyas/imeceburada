@@ -161,6 +161,14 @@ class AuthStore extends ChangeNotifier {
     await _persist(null);
   }
 
+  /// Hesabı ve tüm verilerini kalıcı olarak siler. Başarılı olursa oturumu
+  /// da otomatik kapatır (sunucu tarafında hesap zaten yok olduğu için ayrıca
+  /// logout isteği atmaya gerek yok).
+  Future<void> deleteAccount({required String password}) async {
+    await authorizedDelete('/users/me', body: {'password': password});
+    await _persist(null);
+  }
+
   /// Erişim token'ı süresi dolmuşsa refresh token ile bir kez daha dener,
   /// ardından [call]'ı güncel access token ile çalıştırır. get/post/patch/delete
   /// yardımcıları bu ortak yeniden deneme mantığını paylaşır.
@@ -191,6 +199,6 @@ class AuthStore extends ChangeNotifier {
   Future<dynamic> authorizedPatch(String path, {Map<String, dynamic>? body}) =>
       _withRefresh((token) => _api.patch(path, body: body, accessToken: token));
 
-  Future<dynamic> authorizedDelete(String path) =>
-      _withRefresh((token) => _api.delete(path, accessToken: token));
+  Future<dynamic> authorizedDelete(String path, {Map<String, dynamic>? body}) =>
+      _withRefresh((token) => _api.delete(path, body: body, accessToken: token));
 }

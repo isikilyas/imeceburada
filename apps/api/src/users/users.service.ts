@@ -1,12 +1,14 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { unlink } from "fs/promises";
 import { join } from "path";
+import * as bcrypt from "bcrypt";
 import { PrismaService } from "../prisma/prisma.service";
 import { RequestUser } from "../auth/types/request-user";
 import { UpdateCandidateProfileDto } from "./dto/update-candidate-profile.dto";
 import { UpdateCompanyProfileDto } from "./dto/update-company-profile.dto";
 import { UpdateSubcontractorProfileDto } from "./dto/update-subcontractor-profile.dto";
 import { UpdateSupplierProfileDto } from "./dto/update-supplier-profile.dto";
+import { DeleteAccountDto } from "./dto/delete-account.dto";
 
 @Injectable()
 export class UsersService {
@@ -90,5 +92,26 @@ export class UsersService {
     const profile = await this.prisma.candidateProfile.findUnique({ where: { userId } });
     if (!profile) throw new NotFoundException("Aday profili bulunamadı");
     return profile.id;
+  }
+
+  /**
+   * Hesabı ve ona bağlı HER ŞEYİ (profil, ilanlar, başvurular, üyelik geçmişi,
+   * favoriler vb.) kalıcı olarak siler. Şema genelinde tüm ilişkiler
+   * onDelete: Cascade olduğu için tek bir user.delete() tüm grafiği temizler.
+   *
+   * NOT: Aktif ücretli bir üyeliği varsa (iyzico abonelik), bu sadece yerel
+   * kaydı siler — iyzico tarafındaki tekrarlayan ödemeyi iptal etmez. iyzico
+   * entegrasyonu gerçek anahtarlarla canlıya alındığında burada bir iptal
+   * çağrısı da eklenmeli.
+   */
+  async deleteMyAccount(user: RequestUser, dto: DeleteAccountDto): Promise<{ success: true }> {
+    const dbUser = await this.prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) throw new NotFoundException("Kullanıcı bulunamadı");
+
+    const passwordMatches = await bcrypt.compare(dto.password, dbUser.passwordHash);
+    if (!passwordMatches) throw new UnauthorizedException("Şifre hatalı");
+
+    await this.prisma.user.delete({ where: { id: user.id } });
+    return { success: true };
   }
 }

@@ -105,6 +105,17 @@ const base = {
       hidePassword: "Şifreyi gizle",
       showPassword: "Şifreyi göster",
     },
+    account: {
+      deleteHeading: "Hesabı Sil",
+      deleteWarning:
+        "Hesabını sildiğinde profilin, ilanların, başvuruların ve tüm verilerin kalıcı olarak silinir. Bu işlem geri alınamaz.",
+      deleteButton: "Hesabımı Sil",
+      deleteConfirmPasswordLabel: "Onaylamak için şifreni gir",
+      deleteConfirmButton: "Evet, Kalıcı Olarak Sil",
+      deleteCancelButton: "Vazgeç",
+      deleting: "Siliniyor...",
+      deleteFailed: "Hesap silinemedi",
+    },
     filters: {
       listingType: "İlan Türü",
       allListingTypes: "Tüm İlan Türleri",
@@ -275,6 +286,17 @@ const base = {
       changePhone: "Change number / resend code",
       hidePassword: "Hide password",
       showPassword: "Show password",
+    },
+    account: {
+      deleteHeading: "Delete Account",
+      deleteWarning:
+        "Deleting your account permanently removes your profile, listings, applications, and all your data. This cannot be undone.",
+      deleteButton: "Delete My Account",
+      deleteConfirmPasswordLabel: "Enter your password to confirm",
+      deleteConfirmButton: "Yes, Delete Permanently",
+      deleteCancelButton: "Cancel",
+      deleting: "Deleting...",
+      deleteFailed: "Could not delete the account",
     },
     filters: {
       listingType: "Listing Type",
@@ -449,6 +471,17 @@ const base = {
       hidePassword: "Passwort ausblenden",
       showPassword: "Passwort anzeigen",
     },
+    account: {
+      deleteHeading: "Konto löschen",
+      deleteWarning:
+        "Beim Löschen deines Kontos werden dein Profil, deine Anzeigen, Bewerbungen und alle deine Daten dauerhaft entfernt. Dies kann nicht rückgängig gemacht werden.",
+      deleteButton: "Mein Konto löschen",
+      deleteConfirmPasswordLabel: "Gib zur Bestätigung dein Passwort ein",
+      deleteConfirmButton: "Ja, dauerhaft löschen",
+      deleteCancelButton: "Abbrechen",
+      deleting: "Wird gelöscht...",
+      deleteFailed: "Konto konnte nicht gelöscht werden",
+    },
     filters: {
       listingType: "Anzeigenart",
       allListingTypes: "Alle Anzeigenarten",
@@ -620,6 +653,17 @@ const base = {
       hidePassword: "Скрыть пароль",
       showPassword: "Показать пароль",
     },
+    account: {
+      deleteHeading: "Удалить аккаунт",
+      deleteWarning:
+        "При удалении аккаунта твой профиль, объявления, отклики и все данные будут удалены безвозвратно. Это действие нельзя отменить.",
+      deleteButton: "Удалить мой аккаунт",
+      deleteConfirmPasswordLabel: "Введите пароль для подтверждения",
+      deleteConfirmButton: "Да, удалить безвозвратно",
+      deleteCancelButton: "Отмена",
+      deleting: "Удаление...",
+      deleteFailed: "Не удалось удалить аккаунт",
+    },
     filters: {
       listingType: "Тип объявления",
       allListingTypes: "Все типы объявлений",
@@ -789,6 +833,17 @@ const base = {
       changePhone: "تغيير الرقم / إعادة إرسال الرمز",
       hidePassword: "إخفاء كلمة المرور",
       showPassword: "إظهار كلمة المرور",
+    },
+    account: {
+      deleteHeading: "حذف الحساب",
+      deleteWarning:
+        "عند حذف حسابك، سيتم حذف ملفك الشخصي وإعلاناتك وطلباتك وجميع بياناتك نهائيًا. لا يمكن التراجع عن هذا الإجراء.",
+      deleteButton: "حذف حسابي",
+      deleteConfirmPasswordLabel: "أدخل كلمة المرور للتأكيد",
+      deleteConfirmButton: "نعم، احذف نهائيًا",
+      deleteCancelButton: "إلغاء",
+      deleting: "جارٍ الحذف...",
+      deleteFailed: "تعذّر حذف الحساب",
     },
     filters: {
       listingType: "نوع الإعلان",
@@ -962,6 +1017,17 @@ const base = {
       hidePassword: "Ocultar contraseña",
       showPassword: "Mostrar contraseña",
     },
+    account: {
+      deleteHeading: "Eliminar cuenta",
+      deleteWarning:
+        "Al eliminar tu cuenta se borran permanentemente tu perfil, anuncios, postulaciones y todos tus datos. Esta acción no se puede deshacer.",
+      deleteButton: "Eliminar mi cuenta",
+      deleteConfirmPasswordLabel: "Ingresa tu contraseña para confirmar",
+      deleteConfirmButton: "Sí, eliminar permanentemente",
+      deleteCancelButton: "Cancelar",
+      deleting: "Eliminando...",
+      deleteFailed: "No se pudo eliminar la cuenta",
+    },
     filters: {
       listingType: "Tipo de Anuncio",
       allListingTypes: "Todos los Tipos de Anuncios",
@@ -1134,6 +1200,17 @@ const base = {
       changePhone: "Changer de numéro / renvoyer le code",
       hidePassword: "Masquer le mot de passe",
       showPassword: "Afficher le mot de passe",
+    },
+    account: {
+      deleteHeading: "Supprimer le compte",
+      deleteWarning:
+        "La suppression de ton compte efface définitivement ton profil, tes annonces, tes candidatures et toutes tes données. Cette action est irréversible.",
+      deleteButton: "Supprimer mon compte",
+      deleteConfirmPasswordLabel: "Saisis ton mot de passe pour confirmer",
+      deleteConfirmButton: "Oui, supprimer définitivement",
+      deleteCancelButton: "Annuler",
+      deleting: "Suppression en cours...",
+      deleteFailed: "Impossible de supprimer le compte",
     },
     filters: {
       listingType: "Type d'Annonce",
