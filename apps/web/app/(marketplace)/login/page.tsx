@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api-client";
-import { Field, inputClass } from "@/components/form";
+import { Field, inputClass, PasswordInput } from "@/components/form";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 const REMEMBERED_EMAIL_KEY = "imeceburada.rememberedEmail";
@@ -126,13 +126,7 @@ export default function LoginPage() {
             />
           </Field>
           <Field label="Şifre">
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={inputClass}
-            />
+            <PasswordInput required value={password} onChange={(e) => setPassword(e.target.value)} />
           </Field>
 
           <div className="space-y-2">

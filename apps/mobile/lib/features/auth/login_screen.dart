@@ -5,6 +5,7 @@ import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/password_field.dart';
 import 'forgot_password_screen.dart';
 import 'register_screen.dart';
 
@@ -88,11 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
             decoration: InputDecoration(labelText: t('auth.emailLabel')),
           ),
           const SizedBox(height: 12),
-          TextField(
-            controller: _passwordController,
-            obscureText: true,
-            decoration: InputDecoration(labelText: t('auth.passwordLabel')),
-          ),
+          PasswordField(controller: _passwordController, labelText: t('auth.passwordLabel')),
           CheckboxListTile(
             value: _rememberEmail,
             onChanged: (v) => setState(() => _rememberEmail = v ?? false),
