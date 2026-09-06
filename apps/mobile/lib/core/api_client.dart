@@ -71,7 +71,8 @@ class ApiClient {
     return _handle(response);
   }
 
-  Future<dynamic> delete(String path, {String? accessToken}) async {
+  Future<dynamic> delete(String path,
+      {Map<String, dynamic>? body, String? accessToken}) async {
     final uri = Uri.parse('$baseUrl$path');
     final response = await http.delete(
       uri,
@@ -79,6 +80,7 @@ class ApiClient {
         'Content-Type': 'application/json',
         if (accessToken != null) 'Authorization': 'Bearer $accessToken',
       },
+      body: body != null ? jsonEncode(body) : null,
     );
     return _handle(response);
   }

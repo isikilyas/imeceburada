@@ -6,6 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { SubcontractorProfileDto, TRADE_FIELDS, TURKISH_PROVINCES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { DeleteAccountSection } from "@/components/delete-account-section";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
@@ -145,6 +146,10 @@ export default function SubcontractorDashboardPage() {
       </div>
       <p className="mb-4 text-xs text-silver-500">{t("dashboard.subcontractor.membershipHint")}</p>
       <ProfileEditor />
+
+      <div className="mt-10">
+        <DeleteAccountSection />
+      </div>
     </div>
   );
 }

@@ -15,6 +15,8 @@ import '../subcontractors/subcontractor_dashboard_screen.dart';
 import '../subcontractors/subcontractor_directory_screen.dart';
 import '../equipment/equipment_mine_screen.dart';
 import '../../widgets/language_switcher.dart';
+import '../../widgets/password_field.dart';
+import '../../core/api_client.dart';
 import 'candidate_profile_screen.dart';
 
 const Map<String, String> _roleLabelKeys = {
@@ -150,10 +152,81 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () => context.read<AuthStore>().logout(),
                 child: Text(t('profile.logoutButton')),
               ),
+              const SizedBox(height: 8),
+              TextButton(
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (_) => const _DeleteAccountDialog(),
+                ),
+                style: TextButton.styleFrom(foregroundColor: AppColors.red400),
+                child: Text(t('profile.deleteAccountButton')),
+              ),
             ],
           ],
         ),
       ),
+    );
+  }
+}
+
+class _DeleteAccountDialog extends StatefulWidget {
+  const _DeleteAccountDialog();
+
+  @override
+  State<_DeleteAccountDialog> createState() => _DeleteAccountDialogState();
+}
+
+class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
+  final _passwordController = TextEditingController();
+  bool _isSubmitting = false;
+  String? _error;
+
+  Future<void> _confirm() async {
+    setState(() {
+      _isSubmitting = true;
+      _error = null;
+    });
+    try {
+      await context.read<AuthStore>().deleteAccount(password: _passwordController.text);
+      if (mounted) Navigator.of(context).pop();
+    } on ApiException catch (e) {
+      setState(() => _error = e.message);
+    } catch (_) {
+      setState(() => _error = context.read<LocaleStore>().t('profile.deleteAccountFailed'));
+    } finally {
+      if (mounted) setState(() => _isSubmitting = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
+    return AlertDialog(
+      title: Text(t('profile.deleteAccountDialogTitle')),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(t('profile.deleteAccountDialogWarning'), style: const TextStyle(fontSize: 13)),
+          const SizedBox(height: 16),
+          PasswordField(controller: _passwordController, labelText: t('profile.deleteAccountPasswordLabel')),
+          if (_error != null) ...[
+            const SizedBox(height: 8),
+            Text(_error!, style: const TextStyle(color: AppColors.red400, fontSize: 12)),
+          ],
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: _isSubmitting ? null : () => Navigator.of(context).pop(),
+          child: Text(t('profile.deleteAccountCancelButton')),
+        ),
+        TextButton(
+          onPressed: _isSubmitting ? null : _confirm,
+          style: TextButton.styleFrom(foregroundColor: AppColors.red400),
+          child: Text(t('profile.deleteAccountConfirmButton')),
+        ),
+      ],
     );
   }
 }

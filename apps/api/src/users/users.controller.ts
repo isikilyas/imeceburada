@@ -1,4 +1,5 @@
 import { BadRequestException, Body, Controller, Delete, Get, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Throttle } from "@nestjs/throttler";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { UsersService } from "./users.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
@@ -8,6 +9,7 @@ import { UpdateCandidateProfileDto } from "./dto/update-candidate-profile.dto";
 import { UpdateCompanyProfileDto } from "./dto/update-company-profile.dto";
 import { UpdateSubcontractorProfileDto } from "./dto/update-subcontractor-profile.dto";
 import { UpdateSupplierProfileDto } from "./dto/update-supplier-profile.dto";
+import { DeleteAccountDto } from "./dto/delete-account.dto";
 import { photoUploadOptions, finalizeUploadedImage } from "../common/photo-upload.util";
 
 @UseGuards(JwtAuthGuard)
@@ -50,5 +52,11 @@ export class UsersController {
   @Delete("candidate-photo")
   removeCandidatePhoto(@CurrentUser() user: RequestUser) {
     return this.usersService.removeCandidatePhoto(user);
+  }
+
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Delete()
+  deleteAccount(@CurrentUser() user: RequestUser, @Body() dto: DeleteAccountDto) {
+    return this.usersService.deleteMyAccount(user, dto);
   }
 }

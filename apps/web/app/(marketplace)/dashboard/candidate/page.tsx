@@ -13,6 +13,7 @@ import {
 } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { DeleteAccountSection } from "@/components/delete-account-section";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
@@ -259,6 +260,8 @@ export default function CandidateDashboardPage() {
           <h2 className="mb-6 text-2xl font-semibold text-silver-300">{t("dashboard.candidate.profileHeading")}</h2>
           <ProfileEditor />
         </section>
+
+        <DeleteAccountSection />
       </div>
     </div>
   );
