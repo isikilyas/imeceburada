@@ -62,7 +62,7 @@ export default function LoginPage() {
       await requestPhoneLogin(phone);
       setCodeSent(true);
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Kod gönderilemedi");
+      setError(err instanceof ApiError ? err.message : t("auth.sendCodeFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -101,7 +101,7 @@ export default function LoginPage() {
             method === "email" ? "bg-gold-500 text-ink-950" : "border border-ink-700 text-silver-400"
           }`}
         >
-          E-posta ile
+          {t("auth.methodEmail")}
         </button>
         <button
           type="button"
@@ -110,7 +110,7 @@ export default function LoginPage() {
             method === "phone" ? "bg-gold-500 text-ink-950" : "border border-ink-700 text-silver-400"
           }`}
         >
-          Telefon ile
+          {t("auth.methodPhone")}
         </button>
       </div>
 
@@ -154,10 +154,8 @@ export default function LoginPage() {
         </form>
       ) : !codeSent ? (
         <form onSubmit={handleSendCode} className="space-y-4">
-          <p className="text-xs text-silver-500">
-            Telefonla giriş, kayıt sırasında doğruladığın telefon numaranla çalışır.
-          </p>
-          <Field label="Telefon Numarası">
+          <p className="text-xs text-silver-500">{t("auth.phoneLoginHint")}</p>
+          <Field label={t("auth.phoneLabel")}>
             <input
               type="tel"
               required
@@ -174,15 +172,13 @@ export default function LoginPage() {
             disabled={isSubmitting}
             className="w-full rounded-md bg-gold-500 py-2.5 font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60"
           >
-            {isSubmitting ? "Gönderiliyor..." : "Kod Gönder"}
+            {isSubmitting ? t("auth.sending") : t("auth.sendCode")}
           </button>
         </form>
       ) : (
         <form onSubmit={handleVerifyCode} className="space-y-4">
-          <p className="text-sm text-silver-300">
-            <strong>{phone}</strong> numarasına gönderdiğimiz 6 haneli kodu gir.
-          </p>
-          <Field label="Doğrulama Kodu">
+          <p className="text-sm text-silver-300">{t("auth.phoneCodeSentHint", { phone })}</p>
+          <Field label={t("auth.phoneCodeLabel")}>
             <input
               type="text"
               inputMode="numeric"
@@ -211,7 +207,7 @@ export default function LoginPage() {
             onClick={() => setCodeSent(false)}
             className="w-full text-center text-xs text-silver-500 hover:underline"
           >
-            Numarayı değiştir / kodu tekrar gönder
+            {t("auth.changePhone")}
           </button>
         </form>
       )}

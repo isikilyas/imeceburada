@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 /// Release derlemesi (mağaza yapıları) --dart-define unutulsa bile production
 /// API'sine gider; debug/profile derlemeleri localhost'ta kalır.
 const String _defaultBaseUrl = kReleaseMode
-    ? 'https://imeceburadaapi-production.up.railway.app/api'
+    ? 'https://api.imeceburada.com/api'
     : 'http://localhost:3001/api';
 
 class ApiException implements Exception {
