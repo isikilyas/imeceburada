@@ -52,4 +52,22 @@ export class ResendEmailService implements EmailService {
       throw new Error("Şifre sıfırlama e-postası gönderilemedi");
     }
   }
+
+  async sendVerificationCode(email: string, code: string): Promise<void> {
+    const { error } = await this.getClient().emails.send({
+      from: this.fromAddress,
+      to: email,
+      subject: "İmece Burada — Doğrulama kodun",
+      html: `
+        <p>Merhaba,</p>
+        <p>İmece Burada'ya kayıt olmak için doğrulama kodun:</p>
+        <p style="font-size: 24px; font-weight: bold; letter-spacing: 4px;">${code}</p>
+        <p>Bu kaydı sen başlatmadıysan bu e-postayı görmezden gelebilirsin.</p>
+      `,
+    });
+    if (error) {
+      this.logger.error(`Resend üzerinden doğrulama kodu gönderilemedi (${email}): ${JSON.stringify(error)}`);
+      throw new Error("Doğrulama kodu gönderilemedi");
+    }
+  }
 }

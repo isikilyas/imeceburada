@@ -18,13 +18,24 @@ export class RegisterCandidateDto {
   @IsString()
   district?: string;
 
-  /** requestRegistrationPhoneCode ile SMS gönderilen numaranın aynısı olmalı. */
+  /**
+   * Kimlik doğrulama iki yoldan biriyle yapılır: telefon (phone+phoneCode)
+   * ya da e-posta (emailCode) — ikisinden tam olarak biri dolu olmalı,
+   * bkz. AuthService.registerCandidate.
+   */
+  @IsOptional()
   @IsString()
   @MinLength(10)
-  phone!: string;
+  phone?: string;
 
-  /** O numaraya gönderilen 6 haneli doğrulama kodu. */
+  @IsOptional()
   @IsString()
   @MinLength(6)
-  phoneCode!: string;
+  phoneCode?: string;
+
+  /** E-postaya gönderilen 6 haneli doğrulama kodu (telefon yerine bu kullanılabilir). */
+  @IsOptional()
+  @IsString()
+  @MinLength(6)
+  emailCode?: string;
 }

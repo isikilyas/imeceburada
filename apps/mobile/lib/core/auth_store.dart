@@ -67,14 +67,21 @@ class AuthStore extends ChangeNotifier {
     await _api.post('/auth/register/request-phone-code', body: {'phone': phone});
   }
 
+  /// Kayıt formuna geçmeden önce e-postaya doğrulama kodu gönderir (telefon
+  /// doğrulamasına alternatif — bkz. requestRegistrationPhoneCode).
+  Future<void> requestRegistrationEmailCode(String email) async {
+    await _api.post('/auth/register/request-email-code', body: {'email': email});
+  }
+
   Future<void> registerCandidate({
     required String email,
     required String password,
     required String fullName,
     required String city,
     String? district,
-    required String phone,
-    required String phoneCode,
+    String? phone,
+    String? phoneCode,
+    String? emailCode,
   }) async {
     final json = await _api.post('/auth/register/candidate', body: {
       'email': email,
@@ -82,8 +89,9 @@ class AuthStore extends ChangeNotifier {
       'fullName': fullName,
       'city': city,
       if (district != null && district.isNotEmpty) 'district': district,
-      'phone': phone,
-      'phoneCode': phoneCode,
+      if (phone != null) 'phone': phone,
+      if (phoneCode != null) 'phoneCode': phoneCode,
+      if (emailCode != null) 'emailCode': emailCode,
     });
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
   }
@@ -94,8 +102,9 @@ class AuthStore extends ChangeNotifier {
     required String companyName,
     required String city,
     String? district,
-    required String phone,
-    required String phoneCode,
+    String? phone,
+    String? phoneCode,
+    String? emailCode,
   }) async {
     final json = await _api.post('/auth/register/company', body: {
       'email': email,
@@ -103,8 +112,9 @@ class AuthStore extends ChangeNotifier {
       'companyName': companyName,
       'city': city,
       if (district != null && district.isNotEmpty) 'district': district,
-      'phone': phone,
-      'phoneCode': phoneCode,
+      if (phone != null) 'phone': phone,
+      if (phoneCode != null) 'phoneCode': phoneCode,
+      if (emailCode != null) 'emailCode': emailCode,
     });
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
   }
@@ -116,8 +126,9 @@ class AuthStore extends ChangeNotifier {
     required String city,
     String? district,
     List<String>? supplyCategories,
-    required String phone,
-    required String phoneCode,
+    String? phone,
+    String? phoneCode,
+    String? emailCode,
   }) async {
     final json = await _api.post('/auth/register/supplier', body: {
       'email': email,
@@ -126,8 +137,9 @@ class AuthStore extends ChangeNotifier {
       'city': city,
       if (district != null && district.isNotEmpty) 'district': district,
       if (supplyCategories != null && supplyCategories.isNotEmpty) 'supplyCategories': supplyCategories,
-      'phone': phone,
-      'phoneCode': phoneCode,
+      if (phone != null) 'phone': phone,
+      if (phoneCode != null) 'phoneCode': phoneCode,
+      if (emailCode != null) 'emailCode': emailCode,
     });
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
   }
@@ -140,8 +152,9 @@ class AuthStore extends ChangeNotifier {
     String? district,
     required List<String> tradeCategories,
     String? description,
-    required String phone,
-    required String phoneCode,
+    String? phone,
+    String? phoneCode,
+    String? emailCode,
   }) async {
     final json = await _api.post('/auth/register/subcontractor', body: {
       'email': email,
@@ -151,8 +164,9 @@ class AuthStore extends ChangeNotifier {
       if (district != null && district.isNotEmpty) 'district': district,
       'tradeCategories': tradeCategories,
       if (description != null && description.isNotEmpty) 'description': description,
-      'phone': phone,
-      'phoneCode': phoneCode,
+      if (phone != null) 'phone': phone,
+      if (phoneCode != null) 'phoneCode': phoneCode,
+      if (emailCode != null) 'emailCode': emailCode,
     });
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
   }

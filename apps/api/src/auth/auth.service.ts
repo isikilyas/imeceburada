@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import * as bcrypt from "bcrypt";
@@ -14,6 +14,7 @@ import { ResetPasswordDto } from "./dto/reset-password.dto";
 import { RequestPhoneLoginDto } from "./dto/request-phone-login.dto";
 import { VerifyPhoneLoginDto } from "./dto/verify-phone-login.dto";
 import { RequestRegistrationPhoneCodeDto } from "./dto/request-registration-phone-code.dto";
+import { RequestRegistrationEmailCodeDto } from "./dto/request-registration-email-code.dto";
 import { AuthResponse, AuthTokens, UserRole } from "@imeceburada/shared";
 import { EMAIL_SERVICE, EmailService } from "./email.service";
 import { SMS_SERVICE, SmsService } from "../phone-verification/sms.service";
@@ -21,6 +22,7 @@ import { SMS_SERVICE, SmsService } from "../phone-verification/sms.service";
 const PASSWORD_RESET_TOKEN_TTL_MS = 60 * 60 * 1000;
 const PHONE_LOGIN_CODE_TTL_MS = 10 * 60 * 1000;
 const REGISTRATION_PHONE_CODE_TTL_MS = 10 * 60 * 1000;
+const REGISTRATION_EMAIL_CODE_TTL_MS = 10 * 60 * 1000;
 
 @Injectable()
 export class AuthService {
@@ -34,7 +36,7 @@ export class AuthService {
 
   async registerCandidate(dto: RegisterCandidateDto): Promise<AuthResponse> {
     await this.assertEmailAvailable(dto.email);
-    const phoneVerifiedAt = await this.consumeRegistrationPhoneCode(dto.phone, dto.phoneCode);
+    const phoneVerifiedAt = await this.verifyRegistrationIdentity(dto);
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
     const user = await this.prisma.user.create({
@@ -59,7 +61,7 @@ export class AuthService {
 
   async registerCompany(dto: RegisterCompanyDto): Promise<AuthResponse> {
     await this.assertEmailAvailable(dto.email);
-    const phoneVerifiedAt = await this.consumeRegistrationPhoneCode(dto.phone, dto.phoneCode);
+    const phoneVerifiedAt = await this.verifyRegistrationIdentity(dto);
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
     const user = await this.prisma.user.create({
@@ -85,7 +87,7 @@ export class AuthService {
 
   async registerSupplier(dto: RegisterSupplierDto): Promise<AuthResponse> {
     await this.assertEmailAvailable(dto.email);
-    const phoneVerifiedAt = await this.consumeRegistrationPhoneCode(dto.phone, dto.phoneCode);
+    const phoneVerifiedAt = await this.verifyRegistrationIdentity(dto);
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
     const user = await this.prisma.user.create({
@@ -111,7 +113,7 @@ export class AuthService {
 
   async registerSubcontractor(dto: RegisterSubcontractorDto): Promise<AuthResponse> {
     await this.assertEmailAvailable(dto.email);
-    const phoneVerifiedAt = await this.consumeRegistrationPhoneCode(dto.phone, dto.phoneCode);
+    const phoneVerifiedAt = await this.verifyRegistrationIdentity(dto);
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
     const user = await this.prisma.user.create({
@@ -327,6 +329,59 @@ export class AuthService {
     });
     await this.smsService.sendVerificationCode(dto.phone, code);
     return { success: true };
+  }
+
+  async requestRegistrationEmailCode(dto: RequestRegistrationEmailCodeDto): Promise<{ success: true }> {
+    // E-posta zaten kayıtlıysa kod göndermenin anlamı yok, kayıt son adımda
+    // zaten reddedilecek — burada erken ve net bir hata dönmek daha iyi UX.
+    await this.assertEmailAvailable(dto.email);
+
+    const code = randomInt(100000, 1000000).toString();
+    const codeHash = createHash("sha256").update(code).digest("hex");
+    await this.prisma.registrationEmailCode.upsert({
+      where: { email: dto.email },
+      create: { email: dto.email, codeHash, expiresAt: new Date(Date.now() + REGISTRATION_EMAIL_CODE_TTL_MS) },
+      update: { codeHash, expiresAt: new Date(Date.now() + REGISTRATION_EMAIL_CODE_TTL_MS) },
+    });
+    await this.emailService.sendVerificationCode(dto.email, code);
+    return { success: true };
+  }
+
+  private async consumeRegistrationEmailCode(email: string, code: string): Promise<void> {
+    const record = await this.prisma.registrationEmailCode.findUnique({ where: { email } });
+    if (!record || record.expiresAt < new Date()) {
+      throw new UnauthorizedException("Kod hatalı veya süresi dolmuş");
+    }
+    const codeHash = createHash("sha256").update(code).digest("hex");
+    if (record.codeHash !== codeHash) {
+      throw new UnauthorizedException("Kod hatalı veya süresi dolmuş");
+    }
+    await this.prisma.registrationEmailCode.delete({ where: { email } });
+  }
+
+  /**
+   * Kayıt sırasında kimlik doğrulaması iki yoldan biriyle yapılır: telefon
+   * (phone+phoneCode, SMS ile) ya da e-posta (emailCode). İkisinden tam
+   * olarak biri gönderilmiş olmalı. Telefon yolunda profile yazılacak
+   * phoneVerifiedAt zamanını döner; e-posta yolunda null döner (telefon
+   * numarası hiç kaydedilmez, sonradan profilden ayrıca doğrulanabilir).
+   */
+  private async verifyRegistrationIdentity(dto: {
+    email: string;
+    phone?: string;
+    phoneCode?: string;
+    emailCode?: string;
+  }): Promise<Date | null> {
+    const hasPhone = Boolean(dto.phone && dto.phoneCode);
+    const hasEmail = Boolean(dto.emailCode);
+    if (hasPhone === hasEmail) {
+      throw new BadRequestException("Telefon veya e-posta doğrulamasından tam olarak birini tamamlaman gerekiyor");
+    }
+    if (hasPhone) {
+      return this.consumeRegistrationPhoneCode(dto.phone!, dto.phoneCode!);
+    }
+    await this.consumeRegistrationEmailCode(dto.email, dto.emailCode!);
+    return null;
   }
 
   private signTokens(userId: string): AuthTokens {
