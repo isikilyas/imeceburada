@@ -1,4 +1,5 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateMaterialSubmissionDto } from "./dto/create-material-submission.dto";
@@ -25,11 +26,37 @@ function mapExpectation(average: number | null, sampleSize: number) {
 export class MaterialIndexService {
   constructor(private prisma: PrismaService) {}
 
+  private async getSubmitterPhone(user: RequestUser): Promise<string> {
+    const profile =
+      user.role === "CANDIDATE"
+        ? await this.prisma.candidateProfile.findUnique({ where: { userId: user.id } })
+        : user.role === "COMPANY"
+          ? await this.prisma.companyProfile.findUnique({ where: { userId: user.id } })
+          : user.role === "SUPPLIER"
+            ? await this.prisma.supplierProfile.findUnique({ where: { userId: user.id } })
+            : user.role === "SUBCONTRACTOR"
+              ? await this.prisma.subcontractorProfile.findUnique({ where: { userId: user.id } })
+              : null;
+    if (!profile?.phone) {
+      throw new BadRequestException("Bu işlem için profilinde kayıtlı bir telefon numarası olmalı");
+    }
+    return profile.phone;
+  }
+
   async submit(user: RequestUser, dto: CreateMaterialSubmissionDto) {
-    const submission = await this.prisma.materialPriceSubmission.create({
-      data: { ...dto, unit: getMaterialUnit(dto.materialType), submittedById: user.id },
-    });
-    return { success: true, id: submission.id };
+    const phone = await this.getSubmitterPhone(user);
+    const submissionMonth = new Date().toISOString().slice(0, 7); // "YYYY-MM"
+    try {
+      const submission = await this.prisma.materialPriceSubmission.create({
+        data: { ...dto, unit: getMaterialUnit(dto.materialType), submittedById: user.id, phone, submissionMonth },
+      });
+      return { success: true, id: submission.id };
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+        throw new ConflictException("Bu malzeme ve şehir için bu ay zaten veri girdin");
+      }
+      throw err;
+    }
   }
 
   /**

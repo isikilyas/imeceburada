@@ -55,22 +55,10 @@ class AuthStore extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> login({required String email, required String password}) async {
-    final json = await _api.post('/auth/login', body: {'email': email, 'password': password});
+  /// [identifier] e-posta ya da telefon numarası olabilir.
+  Future<void> login({required String identifier, required String password}) async {
+    final json = await _api.post('/auth/login', body: {'identifier': identifier, 'password': password});
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
-  }
-
-  /// Kayıt formuna geçmeden önce telefon numarasına SMS ile doğrulama kodu
-  /// gönderir. Aynı numara başka bir hesapta zaten doğrulanmışsa sunucu
-  /// ApiException fırlatır.
-  Future<void> requestRegistrationPhoneCode(String phone) async {
-    await _api.post('/auth/register/request-phone-code', body: {'phone': phone});
-  }
-
-  /// Kayıt formuna geçmeden önce e-postaya doğrulama kodu gönderir (telefon
-  /// doğrulamasına alternatif — bkz. requestRegistrationPhoneCode).
-  Future<void> requestRegistrationEmailCode(String email) async {
-    await _api.post('/auth/register/request-email-code', body: {'email': email});
   }
 
   Future<void> registerCandidate({
@@ -79,9 +67,7 @@ class AuthStore extends ChangeNotifier {
     required String fullName,
     required String city,
     String? district,
-    String? phone,
-    String? phoneCode,
-    String? emailCode,
+    required String phone,
   }) async {
     final json = await _api.post('/auth/register/candidate', body: {
       'email': email,
@@ -89,9 +75,7 @@ class AuthStore extends ChangeNotifier {
       'fullName': fullName,
       'city': city,
       if (district != null && district.isNotEmpty) 'district': district,
-      if (phone != null) 'phone': phone,
-      if (phoneCode != null) 'phoneCode': phoneCode,
-      if (emailCode != null) 'emailCode': emailCode,
+      'phone': phone,
     });
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
   }
@@ -102,9 +86,7 @@ class AuthStore extends ChangeNotifier {
     required String companyName,
     required String city,
     String? district,
-    String? phone,
-    String? phoneCode,
-    String? emailCode,
+    required String phone,
   }) async {
     final json = await _api.post('/auth/register/company', body: {
       'email': email,
@@ -112,9 +94,7 @@ class AuthStore extends ChangeNotifier {
       'companyName': companyName,
       'city': city,
       if (district != null && district.isNotEmpty) 'district': district,
-      if (phone != null) 'phone': phone,
-      if (phoneCode != null) 'phoneCode': phoneCode,
-      if (emailCode != null) 'emailCode': emailCode,
+      'phone': phone,
     });
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
   }
@@ -126,9 +106,7 @@ class AuthStore extends ChangeNotifier {
     required String city,
     String? district,
     List<String>? supplyCategories,
-    String? phone,
-    String? phoneCode,
-    String? emailCode,
+    required String phone,
   }) async {
     final json = await _api.post('/auth/register/supplier', body: {
       'email': email,
@@ -137,9 +115,7 @@ class AuthStore extends ChangeNotifier {
       'city': city,
       if (district != null && district.isNotEmpty) 'district': district,
       if (supplyCategories != null && supplyCategories.isNotEmpty) 'supplyCategories': supplyCategories,
-      if (phone != null) 'phone': phone,
-      if (phoneCode != null) 'phoneCode': phoneCode,
-      if (emailCode != null) 'emailCode': emailCode,
+      'phone': phone,
     });
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
   }
@@ -152,9 +128,7 @@ class AuthStore extends ChangeNotifier {
     String? district,
     required List<String> tradeCategories,
     String? description,
-    String? phone,
-    String? phoneCode,
-    String? emailCode,
+    required String phone,
   }) async {
     final json = await _api.post('/auth/register/subcontractor', body: {
       'email': email,
@@ -164,9 +138,7 @@ class AuthStore extends ChangeNotifier {
       if (district != null && district.isNotEmpty) 'district': district,
       'tradeCategories': tradeCategories,
       if (description != null && description.isNotEmpty) 'description': description,
-      if (phone != null) 'phone': phone,
-      if (phoneCode != null) 'phoneCode': phoneCode,
-      if (emailCode != null) 'emailCode': emailCode,
+      'phone': phone,
     });
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
   }

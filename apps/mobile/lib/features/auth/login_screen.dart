@@ -9,7 +9,7 @@ import '../../widgets/password_field.dart';
 import 'forgot_password_screen.dart';
 import 'register_screen.dart';
 
-const _rememberedEmailKey = 'imeceburada.rememberedEmail';
+const _rememberedIdentifierKey = 'imeceburada.rememberedIdentifier';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,32 +19,32 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController();
+  final _identifierController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _rememberEmail = false;
+  bool _rememberIdentifier = false;
   bool _isSubmitting = false;
   String? _error;
 
   @override
   void initState() {
     super.initState();
-    _loadRememberedEmail();
+    _loadRememberedIdentifier();
   }
 
-  Future<void> _loadRememberedEmail() async {
+  Future<void> _loadRememberedIdentifier() async {
     final prefs = await SharedPreferences.getInstance();
-    final remembered = prefs.getString(_rememberedEmailKey);
+    final remembered = prefs.getString(_rememberedIdentifierKey);
     if (remembered != null && mounted) {
       setState(() {
-        _emailController.text = remembered;
-        _rememberEmail = true;
+        _identifierController.text = remembered;
+        _rememberIdentifier = true;
       });
     }
   }
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _identifierController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -56,14 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     try {
       await context.read<AuthStore>().login(
-            email: _emailController.text.trim(),
+            identifier: _identifierController.text.trim(),
             password: _passwordController.text,
           );
       final prefs = await SharedPreferences.getInstance();
-      if (_rememberEmail) {
-        await prefs.setString(_rememberedEmailKey, _emailController.text.trim());
+      if (_rememberIdentifier) {
+        await prefs.setString(_rememberedIdentifierKey, _identifierController.text.trim());
       } else {
-        await prefs.remove(_rememberedEmailKey);
+        await prefs.remove(_rememberedIdentifierKey);
       }
       if (mounted) Navigator.of(context).pop();
     } on ApiException catch (e) {
@@ -84,15 +84,15 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(16),
         children: [
           TextField(
-            controller: _emailController,
+            controller: _identifierController,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(labelText: t('auth.emailLabel')),
+            decoration: InputDecoration(labelText: t('auth.identifierLabel')),
           ),
           const SizedBox(height: 12),
           PasswordField(controller: _passwordController, labelText: t('auth.passwordLabel')),
           CheckboxListTile(
-            value: _rememberEmail,
-            onChanged: (v) => setState(() => _rememberEmail = v ?? false),
+            value: _rememberIdentifier,
+            onChanged: (v) => setState(() => _rememberIdentifier = v ?? false),
             title: Text(t('auth.rememberMeLabel'), style: const TextStyle(color: AppColors.silver300, fontSize: 14)),
             controlAffinity: ListTileControlAffinity.leading,
             contentPadding: EdgeInsets.zero,
