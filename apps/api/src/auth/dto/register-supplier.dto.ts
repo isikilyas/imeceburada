@@ -1,5 +1,4 @@
-import { IsArray, IsEmail, IsIn, IsOptional, IsString, MinLength } from "class-validator";
-import { MATERIAL_CATEGORY_ITEM_VALUES } from "@imeceburada/shared";
+import { IsArray, IsEmail, IsOptional, IsString, Length, MinLength } from "class-validator";
 
 export class RegisterSupplierDto {
   @IsEmail()
@@ -21,7 +20,8 @@ export class RegisterSupplierDto {
 
   @IsOptional()
   @IsArray()
-  @IsIn(MATERIAL_CATEGORY_ITEM_VALUES, { each: true })
+  @IsString({ each: true })
+  @Length(2, 60, { each: true })
   supplyCategories?: string[];
 
   /**

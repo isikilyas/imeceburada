@@ -1,7 +1,7 @@
 import { MaterialListingsService } from "./material-listings.service";
 
 describe("MaterialListingsService.toDto", () => {
-  const service = new MaterialListingsService({} as never);
+  const service = new MaterialListingsService({} as never, {} as never);
 
   const baseListing = {
     id: "ml-1",

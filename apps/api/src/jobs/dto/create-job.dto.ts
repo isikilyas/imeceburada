@@ -1,5 +1,5 @@
-import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Min, MinLength } from "class-validator";
-import { EmploymentType, LISTING_INTENT_VALUES, ListingIntent, TRADE_CATEGORY_VALUES } from "@imeceburada/shared";
+import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Length, Min, MinLength } from "class-validator";
+import { EmploymentType, LISTING_INTENT_VALUES, ListingIntent } from "@imeceburada/shared";
 
 const EMPLOYMENT_TYPE_VALUES: EmploymentType[] = ["FULL_TIME", "PART_TIME", "DAILY", "CONTRACT"];
 
@@ -11,7 +11,8 @@ export class CreateJobDto {
   @IsIn(LISTING_INTENT_VALUES)
   listingType!: ListingIntent;
 
-  @IsIn(TRADE_CATEGORY_VALUES)
+  @IsString()
+  @Length(2, 60)
   tradeCategory!: string;
 
   @IsString()

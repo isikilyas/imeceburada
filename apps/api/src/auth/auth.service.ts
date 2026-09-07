@@ -4,6 +4,7 @@ import { ConfigService } from "@nestjs/config";
 import * as bcrypt from "bcrypt";
 import { createHash, randomBytes } from "crypto";
 import { PrismaService } from "../prisma/prisma.service";
+import { TaxonomyService } from "../taxonomy/taxonomy.service";
 import { RegisterCandidateDto } from "./dto/register-candidate.dto";
 import { RegisterCompanyDto } from "./dto/register-company.dto";
 import { RegisterSupplierDto } from "./dto/register-supplier.dto";
@@ -22,6 +23,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private config: ConfigService,
+    private taxonomyService: TaxonomyService,
     @Inject(EMAIL_SERVICE) private emailService: EmailService,
   ) {}
 
@@ -78,6 +80,9 @@ export class AuthService {
     await this.assertEmailAvailable(dto.email);
     await this.assertPhoneAvailable(dto.phone);
     const passwordHash = await bcrypt.hash(dto.password, 10);
+    const supplyCategories = dto.supplyCategories
+      ? await this.taxonomyService.resolveOrQueueTerms("MATERIAL_CATEGORY_ITEM", dto.supplyCategories, null)
+      : [];
 
     const user = await this.prisma.user.create({
       data: {
@@ -89,7 +94,7 @@ export class AuthService {
             companyName: dto.companyName,
             city: dto.city,
             district: dto.district,
-            supplyCategories: dto.supplyCategories ?? [],
+            supplyCategories,
             phone: dto.phone,
           },
         },
@@ -103,6 +108,11 @@ export class AuthService {
     await this.assertEmailAvailable(dto.email);
     await this.assertPhoneAvailable(dto.phone);
     const passwordHash = await bcrypt.hash(dto.password, 10);
+    const tradeCategories = await this.taxonomyService.resolveOrQueueTerms(
+      "TRADE_PROFESSION",
+      dto.tradeCategories,
+      null,
+    );
 
     const user = await this.prisma.user.create({
       data: {
@@ -114,7 +124,7 @@ export class AuthService {
             companyName: dto.companyName,
             city: dto.city,
             district: dto.district,
-            tradeCategories: dto.tradeCategories,
+            tradeCategories,
             description: dto.description,
             phone: dto.phone,
           },

@@ -7,9 +7,10 @@ import { AuthController } from "./auth.controller";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { ConsoleEmailService, EMAIL_SERVICE } from "./email.service";
 import { ResendEmailService } from "./resend-email.service";
+import { TaxonomyModule } from "../taxonomy/taxonomy.module";
 
 @Module({
-  imports: [PassportModule, JwtModule.register({})],
+  imports: [PassportModule, JwtModule.register({}), TaxonomyModule],
   controllers: [AuthController],
   providers: [
     AuthService,

@@ -1,10 +1,11 @@
-import { IsIn, IsInt, IsOptional, IsString, Min, MinLength } from "class-validator";
-import { EQUIPMENT_TYPE_VALUES, EquipmentListingType } from "@imeceburada/shared";
+import { IsIn, IsInt, IsOptional, IsString, Length, Min, MinLength } from "class-validator";
+import { EquipmentListingType } from "@imeceburada/shared";
 
 const EQUIPMENT_LISTING_TYPE_VALUES: EquipmentListingType[] = ["RENT", "SALE"];
 
 export class CreateEquipmentDto {
-  @IsIn(EQUIPMENT_TYPE_VALUES)
+  @IsString()
+  @Length(2, 60)
   equipmentType!: string;
 
   @IsOptional()

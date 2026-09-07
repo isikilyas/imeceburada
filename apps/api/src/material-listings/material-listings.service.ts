@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/commo
 import { unlink } from "fs/promises";
 import { join } from "path";
 import { PrismaService } from "../prisma/prisma.service";
+import { TaxonomyService } from "../taxonomy/taxonomy.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateMaterialListingDto } from "./dto/create-material-listing.dto";
 import { UpdateMaterialListingDto } from "./dto/update-material-listing.dto";
@@ -27,7 +28,10 @@ interface ListingWithSupplier {
 
 @Injectable()
 export class MaterialListingsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private taxonomyService: TaxonomyService,
+  ) {}
 
   private async getSupplierId(user: RequestUser): Promise<string> {
     const supplier = await this.prisma.supplierProfile.findUnique({ where: { userId: user.id } });
@@ -78,8 +82,9 @@ export class MaterialListingsService {
 
   async create(user: RequestUser, dto: CreateMaterialListingDto) {
     const supplierId = await this.getSupplierId(user);
+    const materialType = await this.taxonomyService.resolveOrQueueTerm("MATERIAL_TYPE", dto.materialType, user.id);
     const listing = await this.prisma.materialListing.create({
-      data: { ...dto, unit: getMaterialUnit(dto.materialType), supplierId },
+      data: { ...dto, materialType, unit: getMaterialUnit(materialType), supplierId },
       include: supplierInclude,
     });
     return this.toDto(listing);
@@ -91,9 +96,15 @@ export class MaterialListingsService {
     if (!listing) throw new NotFoundException("İlan bulunamadı");
     if (listing.supplierId !== supplierId) throw new ForbiddenException("Bu ilanı düzenleme yetkiniz yok");
 
+    const materialType = dto.materialType
+      ? await this.taxonomyService.resolveOrQueueTerm("MATERIAL_TYPE", dto.materialType, user.id)
+      : undefined;
     const updated = await this.prisma.materialListing.update({
       where: { id },
-      data: dto,
+      data: {
+        ...dto,
+        ...(materialType ? { materialType, unit: getMaterialUnit(materialType) } : {}),
+      },
       include: supplierInclude,
     });
     return this.toDto(updated);

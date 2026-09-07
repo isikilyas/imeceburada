@@ -102,6 +102,20 @@ enum MaterialListingStatus {
   INACTIVE
 }
 
+/// Akıllı doğrulama kapsamındaki, geçmişte kapalı liste olan alanlar — bkz. TaxonomyTerm.
+enum TaxonomyTermType {
+  TRADE_PROFESSION
+  MATERIAL_TYPE
+  MATERIAL_CATEGORY_ITEM
+  EQUIPMENT_TYPE
+}
+
+enum TaxonomyTermStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id           String   @id @default(uuid())
   email        String   @unique
@@ -123,6 +137,8 @@ model User {
   siteRequestsCreated      SiteRequest[]
   siteRequestResponses     SiteRequestResponse[]
   favorites                Favorite[]
+  submittedTaxonomyTerms   TaxonomyTerm[]            @relation("SubmittedTaxonomyTerms")
+  reviewedTaxonomyTerms    TaxonomyTerm[]             @relation("ReviewedTaxonomyTerms")
 
   @@map("users")
 }
@@ -475,5 +491,31 @@ model SiteRequestResponse {
 
   @@unique([siteRequestId, responderId])
   @@map("site_request_responses")
+}
+
+/// Kullanıcıların meslek/malzeme/ekipman türü alanlarına serbestçe girip
+/// kapalı listede olmayan yeni bir terim yazması durumunda oluşur (bkz. Akıllı
+/// Doğrulama özelliği). Admin onaylayana kadar PENDING kalır; APPROVED
+/// olduğunda /taxonomy/suggest sonuçlarına dahil edilir. Girişi yapan kullanıcının
+/// ilanı/başvurusu bu onay sürecini beklemeden, girdiği ham metinle hemen oluşturulur.
+model TaxonomyTerm {
+  id              String             @id @default(uuid())
+  type            TaxonomyTermType
+  value           String
+  normalizedValue String
+  label           String
+  status          TaxonomyTermStatus @default(PENDING)
+
+  submittedByUserId String?
+  submittedBy       User?   @relation("SubmittedTaxonomyTerms", fields: [submittedByUserId], references: [id], onDelete: SetNull)
+  reviewedByUserId  String?
+  reviewedBy        User?   @relation("ReviewedTaxonomyTerms", fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+  reviewedAt        DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@unique([type, normalizedValue])
+  @@index([type, status])
+  @@map("taxonomy_terms")
 }
 

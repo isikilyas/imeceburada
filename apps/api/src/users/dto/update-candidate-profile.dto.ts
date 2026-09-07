@@ -1,5 +1,5 @@
-import { IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Min } from "class-validator";
-import { AvailabilityStatus, TRADE_CATEGORY_VALUES, WORK_PREFERENCE_VALUES } from "@imeceburada/shared";
+import { IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Length, Min } from "class-validator";
+import { AvailabilityStatus, WORK_PREFERENCE_VALUES } from "@imeceburada/shared";
 
 const AVAILABILITY_STATUS_VALUES: AvailabilityStatus[] = ["AVAILABLE", "BUSY"];
 
@@ -36,7 +36,8 @@ export class UpdateCandidateProfileDto {
   workPreferences?: string[];
 
   @IsOptional()
-  @IsIn(TRADE_CATEGORY_VALUES)
+  @IsString()
+  @Length(2, 60)
   primaryTradeCategory?: string;
 
   @IsOptional()
