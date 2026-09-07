@@ -1,8 +1,10 @@
-import { IsEmail, IsString } from "class-validator";
+import { IsString, MinLength } from "class-validator";
 
 export class LoginDto {
-  @IsEmail()
-  email!: string;
+  /** E-posta ya da telefon numarası — "@" içeriyorsa e-posta, aksi halde telefon olarak aranır. */
+  @IsString()
+  @MinLength(3)
+  identifier!: string;
 
   @IsString()
   password!: string;

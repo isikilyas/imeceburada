@@ -11,7 +11,6 @@ import '../../widgets/province_district_picker.dart';
 import '../../widgets/trade_category_picker.dart';
 
 enum _Role { candidate, company, supplier, subcontractor }
-enum _Method { email, phone }
 
 const _roleLabelKeys = {
   _Role.candidate: 'auth.roleCandidate',
@@ -22,22 +21,17 @@ const _roleLabelKeys = {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   _Role _role = _Role.candidate;
-  _Method _method = _Method.email;
   String _city = turkishProvinces.first;
   String _district = '';
   List<String> _supplyCategories = [];
   List<String> _subcontractorTradeCategories = [tradeFields.first.branches.first.professions.first.value];
 
+  final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _verifyEmailController = TextEditingController(); // e-posta yöntemi seçildiğinde doğrulanan adres
-  final _codeController = TextEditingController();
-  final _emailController = TextEditingController(); // telefon yöntemi seçildiğinde formun geri kalanında istenir
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController(); // ad soyad ya da şirket/firma adı
   final _descriptionController = TextEditingController();
 
-  bool _codeSent = false;
-  bool _isSendingCode = false;
   bool _isSubmitting = false;
   String? _error;
 
@@ -45,40 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _role = role;
       _error = null;
-      _codeSent = false;
-      _codeController.clear();
     });
-  }
-
-  void _switchMethod(_Method method) {
-    setState(() {
-      _method = method;
-      _error = null;
-      _codeSent = false;
-      _codeController.clear();
-    });
-  }
-
-  Future<void> _sendCode() async {
-    setState(() {
-      _isSendingCode = true;
-      _error = null;
-    });
-    try {
-      final auth = context.read<AuthStore>();
-      if (_method == _Method.phone) {
-        await auth.requestRegistrationPhoneCode(_phoneController.text.trim());
-      } else {
-        await auth.requestRegistrationEmailCode(_verifyEmailController.text.trim());
-      }
-      setState(() => _codeSent = true);
-    } on ApiException catch (e) {
-      setState(() => _error = e.message);
-    } catch (_) {
-      setState(() => _error = context.read<LocaleStore>().t('auth.sendCodeFailedGeneric'));
-    } finally {
-      if (mounted) setState(() => _isSendingCode = false);
-    }
   }
 
   Future<void> _submit() async {
@@ -92,51 +53,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
     try {
       final auth = context.read<AuthStore>();
-      final finalEmail = _method == _Method.email ? _verifyEmailController.text.trim() : _emailController.text.trim();
-      final phone = _method == _Method.phone ? _phoneController.text.trim() : null;
-      final phoneCode = _method == _Method.phone ? _codeController.text.trim() : null;
-      final emailCode = _method == _Method.email ? _codeController.text.trim() : null;
+      final email = _emailController.text.trim();
+      final phone = _phoneController.text.trim();
       switch (_role) {
         case _Role.candidate:
           await auth.registerCandidate(
-            email: finalEmail,
+            email: email,
             password: _passwordController.text,
             fullName: _nameController.text.trim(),
             city: _city,
             district: _district,
             phone: phone,
-            phoneCode: phoneCode,
-            emailCode: emailCode,
           );
           break;
         case _Role.company:
           await auth.registerCompany(
-            email: finalEmail,
+            email: email,
             password: _passwordController.text,
             companyName: _nameController.text.trim(),
             city: _city,
             district: _district,
             phone: phone,
-            phoneCode: phoneCode,
-            emailCode: emailCode,
           );
           break;
         case _Role.supplier:
           await auth.registerSupplier(
-            email: finalEmail,
+            email: email,
             password: _passwordController.text,
             companyName: _nameController.text.trim(),
             city: _city,
             district: _district,
             supplyCategories: _supplyCategories,
             phone: phone,
-            phoneCode: phoneCode,
-            emailCode: emailCode,
           );
           break;
         case _Role.subcontractor:
           await auth.registerSubcontractor(
-            email: finalEmail,
+            email: email,
             password: _passwordController.text,
             companyName: _nameController.text.trim(),
             city: _city,
@@ -144,8 +97,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             tradeCategories: _subcontractorTradeCategories,
             description: _descriptionController.text.trim(),
             phone: phone,
-            phoneCode: phoneCode,
-            emailCode: emailCode,
           );
           break;
       }
@@ -183,149 +134,80 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 .toList(),
           ),
           const SizedBox(height: 16),
-          if (!_codeSent) ...[
-            Row(
-              children: [
-                Expanded(
-                  child: _MethodButton(
-                    label: t('auth.methodEmail'),
-                    selected: _method == _Method.email,
-                    onTap: () => _switchMethod(_Method.email),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _MethodButton(
-                    label: t('auth.methodPhone'),
-                    selected: _method == _Method.phone,
-                    onTap: () => _switchMethod(_Method.phone),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text(
-              _method == _Method.phone ? t('auth.phoneRequiredHint') : t('auth.emailRequiredHint'),
-              style: const TextStyle(color: AppColors.silver500, fontSize: 12),
-            ),
-            const SizedBox(height: 12),
-            if (_method == _Method.phone)
-              TextField(
-                controller: _phoneController,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(labelText: t('auth.phoneLabel')),
-              )
-            else
-              TextField(
-                controller: _verifyEmailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: t('auth.emailLabel')),
-              ),
-            if (_error != null) ...[
-              const SizedBox(height: 12),
-              Text(_error!, style: const TextStyle(color: AppColors.red400)),
-            ],
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _isSendingCode ? null : _sendCode,
-              child: Text(_isSendingCode ? t('auth.sendingCode') : t('auth.sendCodeButton')),
-            ),
-          ] else ...[
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.ink700),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _method == _Method.phone
-                        ? t('auth.phoneCodeSentHint', vars: {'phone': _phoneController.text.trim()})
-                        : t('auth.emailCodeSentHint', vars: {'email': _verifyEmailController.text.trim()}),
-                    style: const TextStyle(fontSize: 13),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: _codeController,
-                    keyboardType: TextInputType.number,
-                    maxLength: 6,
-                    decoration: InputDecoration(labelText: t('auth.phoneCodeLabel')),
-                  ),
-                  TextButton(
-                    onPressed: () => setState(() => _codeSent = false),
-                    child: Text(
-                      _method == _Method.phone ? t('auth.changePhoneLink') : t('auth.changeEmailLink'),
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            if (_role == _Role.supplier) ...[
-              Text(
-                t('auth.supplierInfoText'),
-                style: const TextStyle(color: AppColors.silver500, fontSize: 12),
-              ),
-              const SizedBox(height: 8),
-            ],
-            if (_role == _Role.subcontractor) ...[
-              Text(
-                t('auth.subcontractorInfoText'),
-                style: const TextStyle(color: AppColors.silver500, fontSize: 12),
-              ),
-              const SizedBox(height: 8),
-            ],
+          if (_role == _Role.candidate)
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(
-                labelText: _role == _Role.candidate ? t('auth.fullNameLabel') : t('auth.companyNameLabel'),
-              ),
-            ),
-            const SizedBox(height: 12),
-            if (_role == _Role.supplier)
-              MaterialCategoryMultiPicker(
-                values: _supplyCategories,
-                onChanged: (v) => setState(() => _supplyCategories = v),
-              ),
-            if (_role == _Role.subcontractor) ...[
-              TradeCategoryMultiPicker(
-                values: _subcontractorTradeCategories,
-                onChanged: (v) => setState(() => _subcontractorTradeCategories = v),
-              ),
-              TextField(
-                controller: _descriptionController,
-                maxLines: 2,
-                decoration: InputDecoration(labelText: t('auth.descriptionOptionalLabel')),
-              ),
-              const SizedBox(height: 12),
-            ],
-            ProvinceDistrictPicker(
-              city: _city,
-              district: _district,
-              onCityChanged: (v) => setState(() => _city = v),
-              onDistrictChanged: (v) => setState(() => _district = v),
-            ),
-            if (_method == _Method.phone)
-              TextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: t('auth.emailLabel')),
-              ),
-            const SizedBox(height: 12),
-            PasswordField(controller: _passwordController, labelText: t('auth.passwordMinLabel')),
-            if (_error != null) ...[
-              const SizedBox(height: 12),
-              Text(_error!, style: const TextStyle(color: AppColors.red400)),
-            ],
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _isSubmitting ? null : _submit,
-              child: Text(_isSubmitting ? t('auth.registerSubmitting') : t('auth.registerButton')),
+              decoration: InputDecoration(labelText: t('auth.fullNameLabel')),
+            )
+          else ...[
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(labelText: t('auth.companyNameLabel')),
             ),
           ],
+          const SizedBox(height: 12),
+          if (_role == _Role.supplier) ...[
+            Text(
+              t('auth.supplierInfoText'),
+              style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+            ),
+            const SizedBox(height: 8),
+            MaterialCategoryMultiPicker(
+              values: _supplyCategories,
+              onChanged: (v) => setState(() => _supplyCategories = v),
+            ),
+          ],
+          if (_role == _Role.subcontractor) ...[
+            Text(
+              t('auth.subcontractorInfoText'),
+              style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+            ),
+            const SizedBox(height: 8),
+            TradeCategoryMultiPicker(
+              values: _subcontractorTradeCategories,
+              onChanged: (v) => setState(() => _subcontractorTradeCategories = v),
+            ),
+            TextField(
+              controller: _descriptionController,
+              maxLines: 2,
+              decoration: InputDecoration(labelText: t('auth.descriptionOptionalLabel')),
+            ),
+            const SizedBox(height: 12),
+          ],
+          ProvinceDistrictPicker(
+            city: _city,
+            district: _district,
+            onCityChanged: (v) => setState(() => _city = v),
+            onDistrictChanged: (v) => setState(() => _district = v),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _emailController,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(labelText: t('auth.emailLabel')),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _phoneController,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(labelText: t('auth.phoneLabel')),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            t('auth.phoneMarketIntegrityHint'),
+            style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+          ),
+          const SizedBox(height: 12),
+          PasswordField(controller: _passwordController, labelText: t('auth.passwordMinLabel')),
+          if (_error != null) ...[
+            const SizedBox(height: 12),
+            Text(_error!, style: const TextStyle(color: AppColors.red400)),
+          ],
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _isSubmitting ? null : _submit,
+            child: Text(_isSubmitting ? t('auth.registerSubmitting') : t('auth.registerButton')),
+          ),
         ],
       ),
     );
@@ -368,42 +250,6 @@ class _RoleButton extends StatelessWidget {
               color: selected ? AppColors.ink950 : AppColors.silver400,
               fontWeight: FontWeight.w600,
               fontSize: 12,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _MethodButton extends StatelessWidget {
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  const _MethodButton({required this.label, required this.selected, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: selected ? AppColors.gold500 : AppColors.ink900,
-      borderRadius: BorderRadius.circular(8),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8),
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: selected ? AppColors.gold500 : AppColors.ink700),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              color: selected ? AppColors.ink950 : AppColors.silver400,
-              fontWeight: FontWeight.w600,
-              fontSize: 13,
             ),
           ),
         ),

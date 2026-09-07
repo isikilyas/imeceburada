@@ -19,23 +19,11 @@ export class RegisterCandidateDto {
   district?: string;
 
   /**
-   * Kimlik doğrulama iki yoldan biriyle yapılır: telefon (phone+phoneCode)
-   * ya da e-posta (emailCode) — ikisinden tam olarak biri dolu olmalı,
-   * bkz. AuthService.registerCandidate.
+   * Zorunlu — piyasa endeksine (ücret/fiyat) girilen verilerin doğruluğunu
+   * korumak için her telefon numarası tek bir hesaba bağlıdır. Ayrıca
+   * doğrulama kodu istenmez.
    */
-  @IsOptional()
   @IsString()
   @MinLength(10)
-  phone?: string;
-
-  @IsOptional()
-  @IsString()
-  @MinLength(6)
-  phoneCode?: string;
-
-  /** E-postaya gönderilen 6 haneli doğrulama kodu (telefon yerine bu kullanılabilir). */
-  @IsOptional()
-  @IsString()
-  @MinLength(6)
-  emailCode?: string;
+  phone!: string;
 }

@@ -123,49 +123,8 @@ model User {
   siteRequestsCreated      SiteRequest[]
   siteRequestResponses     SiteRequestResponse[]
   favorites                Favorite[]
-  phoneLoginCode           PhoneLoginCode?
 
   @@map("users")
-}
-
-/// Telefonla (SMS tek kullanımlık kod) giriş için geçici doğrulama kodu.
-/// Sadece profili phoneVerifiedAt ile doğrulanmış kullanıcılar için üretilir
-/// — bkz. AuthService.requestPhoneLogin. phone-verification modülündeki
-/// profil-bazlı doğrulama kodlarından bilerek ayrı tutuluyor, ikisi aynı anda
-/// kullanılırsa birbirini ezmesin diye.
-model PhoneLoginCode {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  codeHash  String
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  @@map("phone_login_codes")
-}
-
-/// Henüz hesabı olmayan bir kişinin kayıt sırasında telefonunu doğrulaması
-/// için geçici kod. Telefon (henüz kullanıcıya bağlı olmadığı için) burada
-/// birincil anahtar — bkz. AuthService.requestRegistrationPhoneCode /
-/// registerCandidate vb.
-model RegistrationPhoneCode {
-  phone     String   @id
-  codeHash  String
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  @@map("registration_phone_codes")
-}
-
-/// Kayıt sırasında e-posta ile doğrulama seçildiğinde kullanılan geçici kod
-/// — RegistrationPhoneCode'un e-posta karşılığı (bkz. AuthService.requestRegistrationEmailCode).
-model RegistrationEmailCode {
-  email     String   @id
-  codeHash  String
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  @@map("registration_email_codes")
 }
 
 model CandidateProfile {
@@ -401,8 +360,16 @@ model WageSubmission {
   submissionType  PriceSubmissionType @default(ACTUAL)
   submittedById   String
   submittedBy     User            @relation(fields: [submittedById], references: [id], onDelete: Cascade)
+  /// Gönderenin kayıt telefonu — piyasayı yanıltacak tekrar girişleri önlemek
+  /// için (phone, tradeCategory, city, experienceLevel, submissionMonth) eşsiz
+  /// olmalı. experienceLevel dahil çünkü aynı kişi/firma junior ve senior ücreti
+  /// ayrı ayrı bildirebilir — bu ayrı, geçerli veri noktalarıdır.
+  phone           String
+  /// "YYYY-MM" — gönderim anındaki ay, eşsizlik kısıtının ay bazlı çalışması için.
+  submissionMonth String
   createdAt       DateTime        @default(now())
 
+  @@unique([phone, tradeCategory, city, experienceLevel, submissionMonth])
   @@index([tradeCategory, city, createdAt])
   @@map("wage_submissions")
 }
@@ -417,8 +384,14 @@ model MaterialPriceSubmission {
   submissionType PriceSubmissionType @default(ACTUAL)
   submittedById String
   submittedBy   User     @relation(fields: [submittedById], references: [id], onDelete: Cascade)
+  /// Gönderenin kayıt telefonu — piyasayı yanıltacak tekrar girişleri önlemek
+  /// için (phone, materialType, city, submissionMonth) eşsiz olmalı.
+  phone         String
+  /// "YYYY-MM" — gönderim anındaki ay, eşsizlik kısıtının ay bazlı çalışması için.
+  submissionMonth String
   createdAt     DateTime @default(now())
 
+  @@unique([phone, materialType, city, submissionMonth])
   @@index([materialType, city, createdAt])
   @@map("material_price_submissions")
 }

@@ -142,9 +142,20 @@ async function main() {
       { tradeCategory: "ELEKTRIKCI", city: "Ankara", experienceLevel: "JUNIOR" as const, amount: 900, period: "DAILY" as const },
     ];
 
+    const submissionMonth = new Date().toISOString().slice(0, 7);
     for (const wage of sampleWages) {
-      await prisma.wageSubmission.create({
-        data: { ...wage, submittedById: candidate.id },
+      await prisma.wageSubmission.upsert({
+        where: {
+          phone_tradeCategory_city_experienceLevel_submissionMonth: {
+            phone: "+905559876543",
+            tradeCategory: wage.tradeCategory,
+            city: wage.city,
+            experienceLevel: wage.experienceLevel,
+            submissionMonth,
+          },
+        },
+        update: {},
+        create: { ...wage, submittedById: candidate.id, phone: "+905559876543", submissionMonth },
       });
     }
   }
@@ -360,8 +371,21 @@ async function main() {
       { tradeCategory: "BOYACI", city: "İstanbul", experienceLevel: "JUNIOR" as const, amount: 800, period: "DAILY" as const },
       { tradeCategory: "KAYNAKCI", city: "İzmir", experienceLevel: "SENIOR" as const, amount: 1900, period: "DAILY" as const },
     ];
+    const moreWagesMonth = new Date().toISOString().slice(0, 7);
     for (const wage of moreWages) {
-      await prisma.wageSubmission.create({ data: { ...wage, submittedById: candidate.id } });
+      await prisma.wageSubmission.upsert({
+        where: {
+          phone_tradeCategory_city_experienceLevel_submissionMonth: {
+            phone: "+905559876543",
+            tradeCategory: wage.tradeCategory,
+            city: wage.city,
+            experienceLevel: wage.experienceLevel,
+            submissionMonth: moreWagesMonth,
+          },
+        },
+        update: {},
+        create: { ...wage, submittedById: candidate.id, phone: "+905559876543", submissionMonth: moreWagesMonth },
+      });
     }
 
     const materialPrices = [
@@ -371,7 +395,18 @@ async function main() {
       { materialType: "TUGLA", unit: "ADET", city: "Antalya", amount: 6 },
     ];
     for (const mp of materialPrices) {
-      await prisma.materialPriceSubmission.create({ data: { ...mp, submittedById: candidate.id } });
+      await prisma.materialPriceSubmission.upsert({
+        where: {
+          phone_materialType_city_submissionMonth: {
+            phone: "+905559876543",
+            materialType: mp.materialType,
+            city: mp.city,
+            submissionMonth: moreWagesMonth,
+          },
+        },
+        update: {},
+        create: { ...mp, submittedById: candidate.id, phone: "+905559876543", submissionMonth: moreWagesMonth },
+      });
     }
   }
 
