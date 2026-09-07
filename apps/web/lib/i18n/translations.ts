@@ -63,7 +63,7 @@ const base = {
       pillarExperience: "Tecrübe",
       pillarTech: "Teknoloji",
       pillarFuture: "Gelecek",
-      ctaHeading: "İş Arayan Personel İçin Sonsuza Kadar Ücretsiz",
+      ctaHeading: "İş Arayanlara Ücretsiz",
       ctaDesc: "Profilini oluştur, ücret pusulanı gör, sana en uygun ilanları bul — hiçbir ücret ödemeden.",
       ctaButton: "Hemen Ücretsiz Kayıt Ol",
     },
