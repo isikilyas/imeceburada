@@ -1,10 +1,13 @@
-import { Controller, Get, Query, UseGuards } from "@nestjs/common";
+import { Controller, Get, Query } from "@nestjs/common";
 import { TaxonomyService } from "./taxonomy.service";
 import { SuggestTaxonomyQueryDto } from "./dto/suggest-taxonomy-query.dto";
 import { CompanyNameSuggestQueryDto } from "./dto/company-name-suggest-query.dto";
-import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 
-@UseGuards(JwtAuthGuard)
+/**
+ * Bilerek herkese açık (JWT gerekmez) — bu uçlar kayıt formunda (henüz token
+ * yokken) da, oturum açmış kullanıcıların ilan/gönderim formlarında da
+ * kullanılır. Salt okunur ve hassas veri döndürmez.
+ */
 @Controller("taxonomy")
 export class TaxonomyController {
   constructor(private taxonomyService: TaxonomyService) {}
