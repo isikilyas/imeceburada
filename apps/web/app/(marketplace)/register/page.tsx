@@ -13,6 +13,7 @@ import { MaterialCategoryMultiSelect } from "@/components/material-category-mult
 import { useLocale } from "@/lib/i18n/locale-context";
 
 type RegisterableRole = Extract<UserRole, "CANDIDATE" | "COMPANY" | "SUPPLIER" | "SUBCONTRACTOR">;
+type VerifyMethod = "email" | "phone";
 
 const ROLE_LABELS: Record<RegisterableRole, string> = {
   CANDIDATE: "İş Arayan Personel",
@@ -22,18 +23,26 @@ const ROLE_LABELS: Record<RegisterableRole, string> = {
 };
 
 export default function RegisterPage() {
-  const { registerCandidate, registerCompany, registerSupplier, registerSubcontractor, requestRegistrationPhoneCode } =
-    useAuth();
+  const {
+    registerCandidate,
+    registerCompany,
+    registerSupplier,
+    registerSubcontractor,
+    requestRegistrationPhoneCode,
+    requestRegistrationEmailCode,
+  } = useAuth();
   const { t } = useLocale();
   const router = useRouter();
   const [role, setRole] = useState<RegisterableRole>("CANDIDATE");
+  const [method, setMethod] = useState<VerifyMethod>("email");
 
   const [phone, setPhone] = useState("");
-  const [phoneCode, setPhoneCode] = useState("");
-  const [phoneCodeSent, setPhoneCodeSent] = useState(false);
+  const [verifyEmail, setVerifyEmail] = useState(""); // e-posta yöntemi seçildiğinde doğrulanan adres
+  const [code, setCode] = useState("");
+  const [codeSent, setCodeSent] = useState(false);
   const [isSendingCode, setIsSendingCode] = useState(false);
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(""); // telefon yöntemi seçildiğinde formun geri kalanında istenir
   const [password, setPassword] = useState("");
   const [city, setCity] = useState(TURKISH_PROVINCES[0]);
   const [district, setDistrict] = useState("");
@@ -52,8 +61,15 @@ export default function RegisterPage() {
   function switchRole(next: RegisterableRole) {
     setRole(next);
     setError(null);
-    setPhoneCodeSent(false);
-    setPhoneCode("");
+    setCodeSent(false);
+    setCode("");
+  }
+
+  function switchMethod(next: VerifyMethod) {
+    setMethod(next);
+    setError(null);
+    setCodeSent(false);
+    setCode("");
   }
 
   async function handleSendCode(e: FormEvent) {
@@ -61,8 +77,12 @@ export default function RegisterPage() {
     setError(null);
     setIsSendingCode(true);
     try {
-      await requestRegistrationPhoneCode(phone);
-      setPhoneCodeSent(true);
+      if (method === "phone") {
+        await requestRegistrationPhoneCode(phone);
+      } else {
+        await requestRegistrationEmailCode(verifyEmail);
+      }
+      setCodeSent(true);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("auth.sendCodeFailed"));
     } finally {
@@ -76,29 +96,38 @@ export default function RegisterPage() {
     setIsSubmitting(true);
     try {
       const districtValue = district || undefined;
+      const finalEmail = method === "email" ? verifyEmail : email;
+      const verification =
+        method === "phone" ? { phone, phoneCode: code } : { emailCode: code };
+
       if (role === "CANDIDATE") {
-        await registerCandidate({ email, password, fullName, city, district: districtValue, phone, phoneCode });
+        await registerCandidate({
+          email: finalEmail,
+          password,
+          fullName,
+          city,
+          district: districtValue,
+          ...verification,
+        });
       } else if (role === "COMPANY") {
         await registerCompany({
-          email,
+          email: finalEmail,
           password,
           companyName,
           city,
           district: districtValue,
           sector: sector || undefined,
-          phone,
-          phoneCode,
+          ...verification,
         });
       } else if (role === "SUPPLIER") {
         await registerSupplier({
-          email,
+          email: finalEmail,
           password,
           companyName,
           city,
           district: districtValue,
           supplyCategories: supplyCategories.length > 0 ? supplyCategories : undefined,
-          phone,
-          phoneCode,
+          ...verification,
         });
       } else {
         if (tradeCategories.length === 0) {
@@ -107,15 +136,14 @@ export default function RegisterPage() {
           return;
         }
         await registerSubcontractor({
-          email,
+          email: finalEmail,
           password,
           companyName,
           city,
           district: districtValue,
           tradeCategories,
           description: description || undefined,
-          phone,
-          phoneCode,
+          ...verification,
         });
       }
       router.push("/");
@@ -145,19 +173,56 @@ export default function RegisterPage() {
         ))}
       </div>
 
-      {!phoneCodeSent ? (
+      {!codeSent && (
+        <div className="mb-4 grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => switchMethod("email")}
+            className={`rounded-md px-2 py-2 text-sm font-medium ${
+              method === "email" ? "bg-gold-500 text-ink-950" : "border border-ink-700 text-silver-400"
+            }`}
+          >
+            {t("auth.methodEmail")}
+          </button>
+          <button
+            type="button"
+            onClick={() => switchMethod("phone")}
+            className={`rounded-md px-2 py-2 text-sm font-medium ${
+              method === "phone" ? "bg-gold-500 text-ink-950" : "border border-ink-700 text-silver-400"
+            }`}
+          >
+            {t("auth.methodPhone")}
+          </button>
+        </div>
+      )}
+
+      {!codeSent ? (
         <form onSubmit={handleSendCode} className="space-y-4">
-          <p className="text-xs text-silver-500">{t("auth.phoneRegisterHint")}</p>
-          <Field label={t("auth.phoneLabel")}>
-            <input
-              type="tel"
-              required
-              placeholder="05XX XXX XX XX"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className={inputClass}
-            />
-          </Field>
+          <p className="text-xs text-silver-500">
+            {method === "phone" ? t("auth.phoneRegisterHint") : t("auth.emailRegisterHint")}
+          </p>
+          {method === "phone" ? (
+            <Field label={t("auth.phoneLabel")}>
+              <input
+                type="tel"
+                required
+                placeholder="05XX XXX XX XX"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+          ) : (
+            <Field label="E-posta">
+              <input
+                type="email"
+                required
+                value={verifyEmail}
+                onChange={(e) => setVerifyEmail(e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+          )}
 
           {error && <p className="text-sm text-red-400">{error}</p>}
           <button
@@ -171,24 +236,28 @@ export default function RegisterPage() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="rounded-md border border-ink-700 bg-ink-900 p-3">
-            <p className="mb-2 text-sm text-silver-300">{t("auth.phoneCodeSentHint", { phone })}</p>
+            <p className="mb-2 text-sm text-silver-300">
+              {method === "phone"
+                ? t("auth.phoneCodeSentHint", { phone })
+                : t("auth.emailCodeSentHint", { email: verifyEmail })}
+            </p>
             <Field label={t("auth.phoneCodeLabel")}>
               <input
                 type="text"
                 inputMode="numeric"
                 required
                 maxLength={6}
-                value={phoneCode}
-                onChange={(e) => setPhoneCode(e.target.value)}
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
                 className={inputClass}
               />
             </Field>
             <button
               type="button"
-              onClick={() => setPhoneCodeSent(false)}
+              onClick={() => setCodeSent(false)}
               className="mt-2 text-xs text-silver-500 hover:underline"
             >
-              {t("auth.changePhone")}
+              {method === "phone" ? t("auth.changePhone") : t("auth.changeEmail")}
             </button>
           </div>
 
@@ -252,15 +321,17 @@ export default function RegisterPage() {
 
           <ProvinceDistrictSelect city={city} district={district} onCityChange={setCity} onDistrictChange={setDistrict} />
 
-          <Field label="E-posta">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={inputClass}
-            />
-          </Field>
+          {method === "phone" && (
+            <Field label="E-posta">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+          )}
           <Field label="Şifre (en az 8 karakter)">
             <PasswordInput required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
           </Field>

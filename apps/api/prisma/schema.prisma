@@ -157,6 +157,17 @@ model RegistrationPhoneCode {
   @@map("registration_phone_codes")
 }
 
+/// Kayıt sırasında e-posta ile doğrulama seçildiğinde kullanılan geçici kod
+/// — RegistrationPhoneCode'un e-posta karşılığı (bkz. AuthService.requestRegistrationEmailCode).
+model RegistrationEmailCode {
+  email     String   @id
+  codeHash  String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("registration_email_codes")
+}
+
 model CandidateProfile {
   id                  String   @id @default(uuid())
   userId              String   @unique

@@ -2,6 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 
 export interface EmailService {
   sendPasswordResetLink(email: string, resetUrl: string): Promise<void>;
+  sendVerificationCode(email: string, code: string): Promise<void>;
 }
 
 export const EMAIL_SERVICE = "EMAIL_SERVICE";
@@ -20,5 +21,9 @@ export class ConsoleEmailService implements EmailService {
     this.logger.warn(
       `[E-POSTA SAĞLAYICI YOK — geliştirme modu] ${email} adresine gönderilecek şifre sıfırlama linki: ${resetUrl}`,
     );
+  }
+
+  async sendVerificationCode(email: string, code: string): Promise<void> {
+    this.logger.warn(`[E-POSTA SAĞLAYICI YOK — geliştirme modu] ${email} adresine gönderilecek doğrulama kodu: ${code}`);
   }
 }
