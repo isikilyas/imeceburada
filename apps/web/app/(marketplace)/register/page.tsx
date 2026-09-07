@@ -10,6 +10,7 @@ import { Field, inputClass, PasswordInput } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-select";
 import { MaterialCategoryMultiSelect } from "@/components/material-category-multi-select";
+import { CompanyNameWarning } from "@/components/company-name-warning";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 type RegisterableRole = Extract<UserRole, "CANDIDATE" | "COMPANY" | "SUPPLIER" | "SUBCONTRACTOR">;
@@ -131,19 +132,23 @@ export default function RegisterPage() {
                 className={inputClass}
               />
             </Field>
+            <CompanyNameWarning name={companyName} />
             <Field label="Sektör (opsiyonel)">
               <input value={sector} onChange={(e) => setSector(e.target.value)} className={inputClass} />
             </Field>
           </>
         ) : (
-          <Field label="Firma Adı">
-            <input
-              required
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              className={inputClass}
-            />
-          </Field>
+          <>
+            <Field label="Firma Adı">
+              <input
+                required
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+            <CompanyNameWarning name={companyName} />
+          </>
         )}
 
         {role === "SUPPLIER" && (

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { EQUIPMENT_CATEGORIES } from "@imeceburada/shared";
 import { Field, selectClass } from "@/components/form";
+import { CustomTermInput } from "@/components/custom-term-input";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 interface EquipmentCategorySelectProps {
@@ -20,6 +21,7 @@ export function EquipmentCategorySelect({ value, onChange, allowEmpty = false }:
   const [categoryLabel, setCategoryLabel] = useState(
     findCategory(value)?.label ?? (allowEmpty ? "" : EQUIPMENT_CATEGORIES[0].label),
   );
+  const [showCustom, setShowCustom] = useState(false);
 
   useEffect(() => {
     const cat = findCategory(value);
@@ -57,6 +59,26 @@ export function EquipmentCategorySelect({ value, onChange, allowEmpty = false }:
           ))}
         </select>
       </Field>
+      <div>
+        <button
+          type="button"
+          onClick={() => setShowCustom((s) => !s)}
+          className="text-xs text-silver-500 hover:text-gold-400"
+        >
+          {showCustom ? "Listeden seç" : "Listede yok mu? Kendi terimini yaz"}
+        </button>
+        {showCustom && (
+          <div className="mt-2">
+            <CustomTermInput
+              type="EQUIPMENT_TYPE"
+              onAdd={(v) => {
+                onChange(v);
+                setShowCustom(false);
+              }}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

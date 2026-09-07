@@ -6,6 +6,7 @@ import '../../core/constants.dart';
 import '../../core/locale_store.dart';
 import '../../models/subcontractor.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/company_name_warning.dart';
 import '../../widgets/province_district_picker.dart';
 import '../../widgets/trade_category_picker.dart';
 import '../membership/membership_screen.dart';
@@ -130,8 +131,10 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
                     ),
                     TextField(
                       controller: _companyNameController,
+                      onChanged: (_) => setState(() {}),
                       decoration: InputDecoration(labelText: t('subcontractors.dashboard.companyNameLabel')),
                     ),
+                    CompanyNameWarning(name: _companyNameController.text),
                     const SizedBox(height: 12),
                     TradeCategoryMultiPicker(
                       values: _tradeCategories,

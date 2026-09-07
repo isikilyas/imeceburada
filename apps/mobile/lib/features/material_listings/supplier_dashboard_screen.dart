@@ -7,6 +7,7 @@ import '../../core/locale_store.dart';
 import '../../models/material_listing.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
+import '../../widgets/custom_term_field.dart';
 import '../../widgets/province_district_picker.dart';
 import '../membership/membership_screen.dart';
 
@@ -22,6 +23,7 @@ class _SupplierDashboardScreenState extends State<SupplierDashboardScreen> {
   List<MaterialListing> _listings = [];
 
   String _materialType = materialTypes.first.value;
+  bool _showCustomMaterialType = false;
   String _city = turkishProvinces.first;
   String _district = '';
   final _priceController = TextEditingController();
@@ -118,6 +120,24 @@ class _SupplierDashboardScreenState extends State<SupplierDashboardScreen> {
             options: materialTypes,
             onChanged: (v) => setState(() => _materialType = v),
           ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: () => setState(() => _showCustomMaterialType = !_showCustomMaterialType),
+              child: Text(
+                _showCustomMaterialType ? 'Listeden seç' : 'Listede yok mu? Kendi terimini yaz',
+                style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+              ),
+            ),
+          ),
+          if (_showCustomMaterialType)
+            CustomTermField(
+              taxonomyType: 'MATERIAL_TYPE',
+              onAdd: (v) => setState(() {
+                _materialType = v;
+                _showCustomMaterialType = false;
+              }),
+            ),
           ProvinceDistrictPicker(
             city: _city,
             district: _district,

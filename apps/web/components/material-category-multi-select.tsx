@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MATERIAL_CATEGORIES, MATERIAL_CATEGORY_ITEMS } from "@imeceburada/shared";
 import { Field, selectClass } from "@/components/form";
+import { CustomTermInput } from "@/components/custom-term-input";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 interface MaterialCategoryMultiSelectProps {
@@ -13,10 +14,16 @@ interface MaterialCategoryMultiSelectProps {
 export function MaterialCategoryMultiSelect({ values, onChange }: MaterialCategoryMultiSelectProps) {
   const { t } = useLocale();
   const [pending, setPending] = useState(MATERIAL_CATEGORIES[0].items[0].value);
+  const [showCustom, setShowCustom] = useState(false);
 
   function handleAdd() {
     if (values.includes(pending)) return;
     onChange([...values, pending]);
+  }
+
+  function handleAddCustom(value: string) {
+    if (!values.includes(value)) onChange([...values, value]);
+    setShowCustom(false);
   }
 
   function handleRemove(value: string) {
@@ -66,6 +73,20 @@ export function MaterialCategoryMultiSelect({ values, onChange }: MaterialCatego
       >
         {t("formComponents.materialCategory.addButton")}
       </button>
+      <div>
+        <button
+          type="button"
+          onClick={() => setShowCustom((s) => !s)}
+          className="text-xs text-silver-500 hover:text-gold-400"
+        >
+          {showCustom ? "Listeden seç" : "Listede yok mu? Kendi terimini yaz"}
+        </button>
+        {showCustom && (
+          <div className="mt-2">
+            <CustomTermInput type="MATERIAL_CATEGORY_ITEM" onAdd={handleAddCustom} />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

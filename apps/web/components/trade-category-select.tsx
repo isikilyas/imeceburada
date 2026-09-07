@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { TRADE_FIELDS } from "@imeceburada/shared";
 import { Field, selectClass } from "@/components/form";
+import { CustomTermInput } from "@/components/custom-term-input";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 interface TradeCategorySelectProps {
@@ -31,6 +32,7 @@ export function TradeCategorySelect({ value, onChange, allowEmpty = false }: Tra
   const [branchLabel, setBranchLabel] = useState(
     located?.branchLabel ?? (allowEmpty ? "" : TRADE_FIELDS[0].branches[0].label),
   );
+  const [showCustom, setShowCustom] = useState(false);
 
   useEffect(() => {
     const loc = findLocation(value);
@@ -110,6 +112,26 @@ export function TradeCategorySelect({ value, onChange, allowEmpty = false }: Tra
           ))}
         </select>
       </Field>
+      <div>
+        <button
+          type="button"
+          onClick={() => setShowCustom((s) => !s)}
+          className="text-xs text-silver-500 hover:text-gold-400"
+        >
+          {showCustom ? "Listeden seç" : "Listede yok mu? Kendi terimini yaz"}
+        </button>
+        {showCustom && (
+          <div className="mt-2">
+            <CustomTermInput
+              type="TRADE_PROFESSION"
+              onAdd={(v) => {
+                onChange(v);
+                setShowCustom(false);
+              }}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
