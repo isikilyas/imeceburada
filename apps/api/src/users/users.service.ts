@@ -3,6 +3,7 @@ import { unlink } from "fs/promises";
 import { join } from "path";
 import * as bcrypt from "bcrypt";
 import { PrismaService } from "../prisma/prisma.service";
+import { TaxonomyService } from "../taxonomy/taxonomy.service";
 import { RequestUser } from "../auth/types/request-user";
 import { UpdateCandidateProfileDto } from "./dto/update-candidate-profile.dto";
 import { UpdateCompanyProfileDto } from "./dto/update-company-profile.dto";
@@ -12,7 +13,10 @@ import { DeleteAccountDto } from "./dto/delete-account.dto";
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private taxonomyService: TaxonomyService,
+  ) {}
 
   async getMyProfile(user: RequestUser) {
     if (user.role === "CANDIDATE") {
@@ -40,7 +44,13 @@ export class UsersService {
 
   async updateCandidateProfile(user: RequestUser, dto: UpdateCandidateProfileDto) {
     if (user.role !== "CANDIDATE") throw new BadRequestException("Sadece adaylar profil güncelleyebilir");
-    return this.prisma.candidateProfile.update({ where: { userId: user.id }, data: dto });
+    const primaryTradeCategory = dto.primaryTradeCategory
+      ? await this.taxonomyService.resolveOrQueueTerm("TRADE_PROFESSION", dto.primaryTradeCategory, user.id)
+      : undefined;
+    return this.prisma.candidateProfile.update({
+      where: { userId: user.id },
+      data: { ...dto, ...(primaryTradeCategory ? { primaryTradeCategory } : {}) },
+    });
   }
 
   async updateCompanyProfile(user: RequestUser, dto: UpdateCompanyProfileDto) {
@@ -50,12 +60,24 @@ export class UsersService {
 
   async updateSubcontractorProfile(user: RequestUser, dto: UpdateSubcontractorProfileDto) {
     if (user.role !== "SUBCONTRACTOR") throw new BadRequestException("Sadece taşeron firmalar profil güncelleyebilir");
-    return this.prisma.subcontractorProfile.update({ where: { userId: user.id }, data: dto });
+    const tradeCategories = dto.tradeCategories
+      ? await this.taxonomyService.resolveOrQueueTerms("TRADE_PROFESSION", dto.tradeCategories, user.id)
+      : undefined;
+    return this.prisma.subcontractorProfile.update({
+      where: { userId: user.id },
+      data: { ...dto, ...(tradeCategories ? { tradeCategories } : {}) },
+    });
   }
 
   async updateSupplierProfile(user: RequestUser, dto: UpdateSupplierProfileDto) {
     if (user.role !== "SUPPLIER") throw new BadRequestException("Sadece yapı tedarik firmaları profil güncelleyebilir");
-    return this.prisma.supplierProfile.update({ where: { userId: user.id }, data: dto });
+    const supplyCategories = dto.supplyCategories
+      ? await this.taxonomyService.resolveOrQueueTerms("MATERIAL_CATEGORY_ITEM", dto.supplyCategories, user.id)
+      : undefined;
+    return this.prisma.supplierProfile.update({
+      where: { userId: user.id },
+      data: { ...dto, ...(supplyCategories ? { supplyCategories } : {}) },
+    });
   }
 
   async setCandidatePhoto(user: RequestUser, filename: string) {

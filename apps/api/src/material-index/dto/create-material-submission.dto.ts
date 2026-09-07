@@ -1,10 +1,11 @@
-import { IsIn, IsInt, IsOptional, IsString, Min } from "class-validator";
-import { MATERIAL_TYPE_VALUES, PriceSubmissionType } from "@imeceburada/shared";
+import { IsIn, IsInt, IsOptional, IsString, Length, Min } from "class-validator";
+import { PriceSubmissionType } from "@imeceburada/shared";
 
 const PRICE_SUBMISSION_TYPE_VALUES: PriceSubmissionType[] = ["ACTUAL", "OFFER"];
 
 export class CreateMaterialSubmissionDto {
-  @IsIn(MATERIAL_TYPE_VALUES)
+  @IsString()
+  @Length(2, 60)
   materialType!: string;
 
   @IsString()

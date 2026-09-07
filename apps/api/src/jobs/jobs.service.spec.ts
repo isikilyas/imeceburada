@@ -1,7 +1,7 @@
 import { JobsService } from "./jobs.service";
 
 describe("JobsService.toDto", () => {
-  const service = new JobsService({} as never, {} as never);
+  const service = new JobsService({} as never, {} as never, {} as never);
 
   const baseJob = {
     id: "job-1",

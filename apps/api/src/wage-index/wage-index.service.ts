@@ -1,6 +1,7 @@
 import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
+import { TaxonomyService } from "../taxonomy/taxonomy.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateWageSubmissionDto } from "./dto/create-wage-submission.dto";
 import { WageIndexQueryDto } from "./dto/wage-index-query.dto";
@@ -60,7 +61,10 @@ function combineEmployerAndJobseeker(employerAverage: number | null, jobseekerAv
 
 @Injectable()
 export class WageIndexService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private taxonomyService: TaxonomyService,
+  ) {}
 
   private async getSubmitterPhone(user: RequestUser): Promise<string> {
     const profile =
@@ -82,9 +86,14 @@ export class WageIndexService {
   async submit(user: RequestUser, dto: CreateWageSubmissionDto) {
     const phone = await this.getSubmitterPhone(user);
     const submissionMonth = new Date().toISOString().slice(0, 7); // "YYYY-MM"
+    const tradeCategory = await this.taxonomyService.resolveOrQueueTerm(
+      "TRADE_PROFESSION",
+      dto.tradeCategory,
+      user.id,
+    );
     try {
       const submission = await this.prisma.wageSubmission.create({
-        data: { ...dto, submittedById: user.id, phone, submissionMonth },
+        data: { ...dto, tradeCategory, submittedById: user.id, phone, submissionMonth },
       });
       return { success: true, id: submission.id };
     } catch (err) {

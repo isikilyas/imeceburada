@@ -1,5 +1,4 @@
-import { ArrayMinSize, IsArray, IsBoolean, IsIn, IsOptional, IsString } from "class-validator";
-import { TRADE_CATEGORY_VALUES } from "@imeceburada/shared";
+import { ArrayMinSize, IsArray, IsBoolean, IsOptional, IsString, Length } from "class-validator";
 
 export class UpdateSubcontractorProfileDto {
   @IsOptional()
@@ -17,7 +16,8 @@ export class UpdateSubcontractorProfileDto {
   @IsOptional()
   @IsArray()
   @ArrayMinSize(1)
-  @IsIn(TRADE_CATEGORY_VALUES, { each: true })
+  @IsString({ each: true })
+  @Length(2, 60, { each: true })
   tradeCategories?: string[];
 
   @IsOptional()

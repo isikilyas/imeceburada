@@ -6,10 +6,11 @@ import {
   IsLongitude,
   IsOptional,
   IsString,
+  Length,
   Min,
   MinLength,
 } from "class-validator";
-import { EQUIPMENT_TYPE_VALUES, SiteRequestType, TRADE_CATEGORY_VALUES } from "@imeceburada/shared";
+import { SiteRequestType } from "@imeceburada/shared";
 
 const SITE_REQUEST_TYPE_VALUES: SiteRequestType[] = ["WORKER", "EQUIPMENT"];
 
@@ -18,11 +19,13 @@ export class CreateSiteRequestDto {
   requestType!: SiteRequestType;
 
   @IsOptional()
-  @IsIn(TRADE_CATEGORY_VALUES)
+  @IsString()
+  @Length(2, 60)
   tradeCategory?: string;
 
   @IsOptional()
-  @IsIn(EQUIPMENT_TYPE_VALUES)
+  @IsString()
+  @Length(2, 60)
   equipmentType?: string;
 
   @IsString()

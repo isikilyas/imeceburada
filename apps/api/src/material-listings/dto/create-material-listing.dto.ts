@@ -1,8 +1,8 @@
-import { IsIn, IsInt, IsOptional, IsString, Min, MinLength } from "class-validator";
-import { MATERIAL_TYPE_VALUES } from "@imeceburada/shared";
+import { IsInt, IsOptional, IsString, Length, Min, MinLength } from "class-validator";
 
 export class CreateMaterialListingDto {
-  @IsIn(MATERIAL_TYPE_VALUES)
+  @IsString()
+  @Length(2, 60)
   materialType!: string;
 
   @IsString()

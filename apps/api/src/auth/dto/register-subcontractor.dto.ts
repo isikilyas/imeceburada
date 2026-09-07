@@ -1,5 +1,4 @@
-import { ArrayMinSize, IsArray, IsEmail, IsIn, IsOptional, IsString, MinLength } from "class-validator";
-import { TRADE_CATEGORY_VALUES } from "@imeceburada/shared";
+import { ArrayMinSize, IsArray, IsEmail, IsOptional, IsString, Length, MinLength } from "class-validator";
 
 export class RegisterSubcontractorDto {
   @IsEmail()
@@ -21,7 +20,8 @@ export class RegisterSubcontractorDto {
 
   @IsArray()
   @ArrayMinSize(1)
-  @IsIn(TRADE_CATEGORY_VALUES, { each: true })
+  @IsString({ each: true })
+  @Length(2, 60, { each: true })
   tradeCategories!: string[];
 
   @IsOptional()

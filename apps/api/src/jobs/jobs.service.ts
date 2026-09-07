@@ -1,6 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { UsersService } from "../users/users.service";
+import { TaxonomyService } from "../taxonomy/taxonomy.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateJobDto } from "./dto/create-job.dto";
 import { UpdateJobDto } from "./dto/update-job.dto";
@@ -11,6 +12,7 @@ export class JobsService {
   constructor(
     private prisma: PrismaService,
     private usersService: UsersService,
+    private taxonomyService: TaxonomyService,
   ) {}
 
   async search(query: SearchJobsDto) {
@@ -66,8 +68,13 @@ export class JobsService {
 
   async create(user: RequestUser, dto: CreateJobDto) {
     const companyId = await this.usersService.getCompanyProfileIdForUser(user.id);
+    const tradeCategory = await this.taxonomyService.resolveOrQueueTerm(
+      "TRADE_PROFESSION",
+      dto.tradeCategory,
+      user.id,
+    );
     const job = await this.prisma.jobPosting.create({
-      data: { ...dto, companyId },
+      data: { ...dto, tradeCategory, companyId },
       include: { company: true },
     });
     return this.toDto(job);
@@ -79,9 +86,12 @@ export class JobsService {
     if (!job) throw new NotFoundException("İlan bulunamadı");
     if (job.companyId !== companyId) throw new ForbiddenException("Bu ilanı düzenleme yetkiniz yok");
 
+    const tradeCategory = dto.tradeCategory
+      ? await this.taxonomyService.resolveOrQueueTerm("TRADE_PROFESSION", dto.tradeCategory, user.id)
+      : undefined;
     const updated = await this.prisma.jobPosting.update({
       where: { id },
-      data: dto,
+      data: { ...dto, ...(tradeCategory ? { tradeCategory } : {}) },
       include: { company: true },
     });
     return this.toDto(updated);

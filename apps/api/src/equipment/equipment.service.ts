@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/commo
 import { unlink } from "fs/promises";
 import { join } from "path";
 import { PrismaService } from "../prisma/prisma.service";
+import { TaxonomyService } from "../taxonomy/taxonomy.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateEquipmentDto } from "./dto/create-equipment.dto";
 import { UpdateEquipmentDto } from "./dto/update-equipment.dto";
@@ -34,7 +35,10 @@ interface EquipmentWithOwner {
 
 @Injectable()
 export class EquipmentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private taxonomyService: TaxonomyService,
+  ) {}
 
   async search(query: SearchEquipmentDto) {
     const page = query.page ?? 1;
@@ -78,8 +82,13 @@ export class EquipmentService {
   }
 
   async create(user: RequestUser, dto: CreateEquipmentDto) {
+    const equipmentType = await this.taxonomyService.resolveOrQueueTerm(
+      "EQUIPMENT_TYPE",
+      dto.equipmentType,
+      user.id,
+    );
     const listing = await this.prisma.equipmentListing.create({
-      data: { ...dto, ownerId: user.id },
+      data: { ...dto, equipmentType, ownerId: user.id },
       include: ownerInclude,
     });
     return this.toDto(listing);
@@ -90,9 +99,12 @@ export class EquipmentService {
     if (!listing) throw new NotFoundException("İlan bulunamadı");
     if (listing.ownerId !== user.id) throw new ForbiddenException("Bu ilanı düzenleme yetkiniz yok");
 
+    const equipmentType = dto.equipmentType
+      ? await this.taxonomyService.resolveOrQueueTerm("EQUIPMENT_TYPE", dto.equipmentType, user.id)
+      : undefined;
     const updated = await this.prisma.equipmentListing.update({
       where: { id },
-      data: dto,
+      data: { ...dto, ...(equipmentType ? { equipmentType } : {}) },
       include: ownerInclude,
     });
     return this.toDto(updated);

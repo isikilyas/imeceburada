@@ -1,6 +1,7 @@
 import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
+import { TaxonomyService } from "../taxonomy/taxonomy.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateMaterialSubmissionDto } from "./dto/create-material-submission.dto";
 import { MaterialIndexQueryDto } from "./dto/material-index-query.dto";
@@ -24,7 +25,10 @@ function mapExpectation(average: number | null, sampleSize: number) {
 
 @Injectable()
 export class MaterialIndexService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private taxonomyService: TaxonomyService,
+  ) {}
 
   private async getSubmitterPhone(user: RequestUser): Promise<string> {
     const profile =
@@ -46,9 +50,10 @@ export class MaterialIndexService {
   async submit(user: RequestUser, dto: CreateMaterialSubmissionDto) {
     const phone = await this.getSubmitterPhone(user);
     const submissionMonth = new Date().toISOString().slice(0, 7); // "YYYY-MM"
+    const materialType = await this.taxonomyService.resolveOrQueueTerm("MATERIAL_TYPE", dto.materialType, user.id);
     try {
       const submission = await this.prisma.materialPriceSubmission.create({
-        data: { ...dto, unit: getMaterialUnit(dto.materialType), submittedById: user.id, phone, submissionMonth },
+        data: { ...dto, materialType, unit: getMaterialUnit(materialType), submittedById: user.id, phone, submissionMonth },
       });
       return { success: true, id: submission.id };
     } catch (err) {

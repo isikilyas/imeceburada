@@ -1,5 +1,4 @@
-import { IsArray, IsIn, IsOptional, IsString } from "class-validator";
-import { MATERIAL_CATEGORY_ITEM_VALUES } from "@imeceburada/shared";
+import { IsArray, IsOptional, IsString, Length } from "class-validator";
 
 export class UpdateSupplierProfileDto {
   @IsOptional()
@@ -16,6 +15,7 @@ export class UpdateSupplierProfileDto {
 
   @IsOptional()
   @IsArray()
-  @IsIn(MATERIAL_CATEGORY_ITEM_VALUES, { each: true })
+  @IsString({ each: true })
+  @Length(2, 60, { each: true })
   supplyCategories?: string[];
 }

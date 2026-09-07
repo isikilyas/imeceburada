@@ -18,6 +18,7 @@ import { CandidatesModule } from "./candidates/candidates.module";
 import { MaterialListingsModule } from "./material-listings/material-listings.module";
 import { SubcontractorsModule } from "./subcontractors/subcontractors.module";
 import { FavoritesModule } from "./favorites/favorites.module";
+import { TaxonomyModule } from "./taxonomy/taxonomy.module";
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { FavoritesModule } from "./favorites/favorites.module";
     MaterialListingsModule,
     SubcontractorsModule,
     FavoritesModule,
+    TaxonomyModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

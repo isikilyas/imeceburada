@@ -1,5 +1,6 @@
 import { ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
+import { TaxonomyService } from "../taxonomy/taxonomy.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateSiteRequestDto } from "./dto/create-site-request.dto";
 import { UpdateSiteRequestDto } from "./dto/update-site-request.dto";
@@ -37,7 +38,10 @@ interface SiteRequestWithCreator {
 
 @Injectable()
 export class SiteRequestsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private taxonomyService: TaxonomyService,
+  ) {}
 
   async search(query: SearchSiteRequestsDto) {
     const where = {
@@ -70,9 +74,17 @@ export class SiteRequestsService {
   }
 
   async create(user: RequestUser, dto: CreateSiteRequestDto) {
+    const tradeCategory = dto.tradeCategory
+      ? await this.taxonomyService.resolveOrQueueTerm("TRADE_PROFESSION", dto.tradeCategory, user.id)
+      : undefined;
+    const equipmentType = dto.equipmentType
+      ? await this.taxonomyService.resolveOrQueueTerm("EQUIPMENT_TYPE", dto.equipmentType, user.id)
+      : undefined;
     const request = await this.prisma.siteRequest.create({
       data: {
         ...dto,
+        ...(tradeCategory ? { tradeCategory } : {}),
+        ...(equipmentType ? { equipmentType } : {}),
         neededBy: dto.neededBy ? new Date(dto.neededBy) : null,
         createdById: user.id,
       },
