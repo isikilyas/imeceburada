@@ -4,6 +4,7 @@ import '../core/constants.dart';
 import '../core/locale_store.dart';
 import '../theme/app_theme.dart';
 import 'app_dropdown.dart';
+import 'custom_term_field.dart';
 
 TradeField? _fieldOf(String professionValue) {
   for (final field in tradeFields) {
@@ -37,6 +38,7 @@ class TradeCategoryPicker extends StatefulWidget {
 class _TradeCategoryPickerState extends State<TradeCategoryPicker> {
   late String _fieldLabel;
   late String _branchLabel;
+  bool _showCustom = false;
 
   @override
   void initState() {
@@ -105,6 +107,24 @@ class _TradeCategoryPickerState extends State<TradeCategoryPicker> {
           options: branch.professions,
           onChanged: widget.onChanged,
         ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton(
+            onPressed: () => setState(() => _showCustom = !_showCustom),
+            child: Text(
+              _showCustom ? 'Listeden seç' : 'Listede yok mu? Kendi terimini yaz',
+              style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+            ),
+          ),
+        ),
+        if (_showCustom)
+          CustomTermField(
+            taxonomyType: 'TRADE_PROFESSION',
+            onAdd: (v) {
+              widget.onChanged(v);
+              setState(() => _showCustom = false);
+            },
+          ),
       ],
     );
   }

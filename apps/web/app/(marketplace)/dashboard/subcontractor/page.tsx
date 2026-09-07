@@ -14,6 +14,7 @@ import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-sele
 import { VerificationStatusCard } from "@/components/verification-status-card";
 import { BetaBanner } from "@/components/beta-banner";
 import { FormSkeleton } from "@/components/form-skeleton";
+import { CompanyNameWarning } from "@/components/company-name-warning";
 
 function ProfileEditor() {
   const { authFetch } = useAuth();
@@ -88,6 +89,7 @@ function ProfileEditor() {
       <Field label={t("dashboard.subcontractor.companyNameLabel")}>
         <input value={companyName} onChange={(e) => setCompanyName(e.target.value)} className={inputClass} />
       </Field>
+      <CompanyNameWarning name={companyName} />
       <TradeCategoryMultiSelect values={tradeCategories} onChange={setTradeCategories} />
       <ProvinceDistrictSelect
         city={city}

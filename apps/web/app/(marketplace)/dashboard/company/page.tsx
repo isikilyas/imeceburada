@@ -24,6 +24,7 @@ import { TradeCategorySelect } from "@/components/trade-category-select";
 import { VerificationStatusCard } from "@/components/verification-status-card";
 import { BetaBanner } from "@/components/beta-banner";
 import { FormSkeleton } from "@/components/form-skeleton";
+import { CompanyNameWarning } from "@/components/company-name-warning";
 
 function ProfileEditor() {
   const { authFetch } = useAuth();
@@ -81,6 +82,7 @@ function ProfileEditor() {
         <Field label={t("dashboard.company.companyNameLabel")}>
           <input value={companyName} onChange={(e) => setCompanyName(e.target.value)} className={inputClass} />
         </Field>
+        <CompanyNameWarning name={companyName} />
         <Field label={t("dashboard.company.sectorLabel")}>
           <input value={sector} onChange={(e) => setSector(e.target.value)} className={inputClass} />
         </Field>

@@ -5,6 +5,7 @@ import '../../core/auth_store.dart';
 import '../../core/constants.dart';
 import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/company_name_warning.dart';
 import '../../widgets/material_category_picker.dart';
 import '../../widgets/password_field.dart';
 import '../../widgets/province_district_picker.dart';
@@ -142,8 +143,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           else ...[
             TextField(
               controller: _nameController,
+              onChanged: (_) => setState(() {}),
               decoration: InputDecoration(labelText: t('auth.companyNameLabel')),
             ),
+            CompanyNameWarning(name: _nameController.text),
           ],
           const SizedBox(height: 12),
           if (_role == _Role.supplier) ...[

@@ -17,6 +17,8 @@ import { ApiError } from "@/lib/api-client";
 import { Field, inputClass, selectClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { MaterialCategoryMultiSelect } from "@/components/material-category-multi-select";
+import { CustomTermInput } from "@/components/custom-term-input";
+import { CompanyNameWarning } from "@/components/company-name-warning";
 import { VerificationStatusCard } from "@/components/verification-status-card";
 import { ListingPhotoUploader } from "@/components/listing-photo-uploader";
 import { BetaBanner } from "@/components/beta-banner";
@@ -78,6 +80,7 @@ function ProfileEditor() {
       <Field label={t("dashboard.supplier.companyNameLabel")}>
         <input value={companyName} onChange={(e) => setCompanyName(e.target.value)} className={inputClass} />
       </Field>
+      <CompanyNameWarning name={companyName} />
       <ProvinceDistrictSelect
         city={city}
         district={district}
@@ -121,6 +124,7 @@ export default function SupplierDashboardPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCustomMaterialType, setShowCustomMaterialType] = useState(false);
 
   async function handleCreate(e: FormEvent) {
     e.preventDefault();
@@ -218,6 +222,26 @@ export default function SupplierDashboardPage() {
                 ))}
               </select>
             </Field>
+            <div>
+              <button
+                type="button"
+                onClick={() => setShowCustomMaterialType((s) => !s)}
+                className="text-xs text-silver-500 hover:text-gold-400"
+              >
+                {showCustomMaterialType ? "Listeden seç" : "Listede yok mu? Kendi terimini yaz"}
+              </button>
+              {showCustomMaterialType && (
+                <div className="mt-2">
+                  <CustomTermInput
+                    type="MATERIAL_TYPE"
+                    onAdd={(v) => {
+                      setForm({ ...form, materialType: v });
+                      setShowCustomMaterialType(false);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
             <ProvinceDistrictSelect
               city={form.city}
               district={form.district ?? ""}

@@ -4,6 +4,7 @@ import '../core/constants.dart';
 import '../core/locale_store.dart';
 import '../theme/app_theme.dart';
 import 'app_dropdown.dart';
+import 'custom_term_field.dart';
 
 /// Yapı Tedarik firmaları için çoklu ürün/hizmet kategorisi seçimi —
 /// web'deki MaterialCategoryMultiSelect ile aynı: kategori+ürün seç, ekle,
@@ -21,6 +22,7 @@ class MaterialCategoryMultiPicker extends StatefulWidget {
 class _MaterialCategoryMultiPickerState extends State<MaterialCategoryMultiPicker> {
   late String _categoryLabel = materialCategories.first.label;
   late String _pendingItem = materialCategories.first.items.first.value;
+  bool _showCustom = false;
 
   MaterialCategory get _category =>
       materialCategories.firstWhere((c) => c.label == _categoryLabel, orElse: () => materialCategories.first);
@@ -28,6 +30,11 @@ class _MaterialCategoryMultiPickerState extends State<MaterialCategoryMultiPicke
   void _add() {
     if (widget.values.contains(_pendingItem)) return;
     widget.onChanged([...widget.values, _pendingItem]);
+  }
+
+  void _addCustom(String value) {
+    if (!widget.values.contains(value)) widget.onChanged([...widget.values, value]);
+    setState(() => _showCustom = false);
   }
 
   void _remove(String value) {
@@ -81,6 +88,17 @@ class _MaterialCategoryMultiPickerState extends State<MaterialCategoryMultiPicke
           width: double.infinity,
           child: OutlinedButton(onPressed: _add, child: Text(t('widgets.materialCategory.addButton'))),
         ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton(
+            onPressed: () => setState(() => _showCustom = !_showCustom),
+            child: Text(
+              _showCustom ? 'Listeden seç' : 'Listede yok mu? Kendi terimini yaz',
+              style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+            ),
+          ),
+        ),
+        if (_showCustom) CustomTermField(taxonomyType: 'MATERIAL_CATEGORY_ITEM', onAdd: _addCustom),
         const SizedBox(height: 14),
       ],
     );

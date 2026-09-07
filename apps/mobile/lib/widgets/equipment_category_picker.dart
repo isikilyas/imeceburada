@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/constants.dart';
 import '../core/locale_store.dart';
+import '../theme/app_theme.dart';
 import 'app_dropdown.dart';
+import 'custom_term_field.dart';
 
 EquipmentCategory? _categoryOf(String itemValue) {
   for (final category in equipmentCategories) {
@@ -24,6 +26,7 @@ class EquipmentCategoryPicker extends StatefulWidget {
 
 class _EquipmentCategoryPickerState extends State<EquipmentCategoryPicker> {
   late String _categoryLabel = _categoryOf(widget.value)?.label ?? equipmentCategories.first.label;
+  bool _showCustom = false;
 
   @override
   void didUpdateWidget(covariant EquipmentCategoryPicker oldWidget) {
@@ -60,6 +63,24 @@ class _EquipmentCategoryPickerState extends State<EquipmentCategoryPicker> {
           options: category.items,
           onChanged: widget.onChanged,
         ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton(
+            onPressed: () => setState(() => _showCustom = !_showCustom),
+            child: Text(
+              _showCustom ? 'Listeden seç' : 'Listede yok mu? Kendi terimini yaz',
+              style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+            ),
+          ),
+        ),
+        if (_showCustom)
+          CustomTermField(
+            taxonomyType: 'EQUIPMENT_TYPE',
+            onAdd: (v) {
+              widget.onChanged(v);
+              setState(() => _showCustom = false);
+            },
+          ),
       ],
     );
   }
