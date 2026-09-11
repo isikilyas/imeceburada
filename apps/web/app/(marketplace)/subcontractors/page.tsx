@@ -30,15 +30,13 @@ export default function SubcontractorDirectoryPage() {
 
   if (authLoading) return <ListSkeleton count={4} columns={2} />;
   if (user?.role !== "COMPANY") {
-    return <p className="text-silver-500">Taşeron firma dizini yalnızca firma hesapları içindir.</p>;
+    return <p className="text-silver-500">{t("pages.subcontractorsCompanyOnly")}</p>;
   }
 
   return (
     <div>
       <h1 className="mb-6 text-2xl font-semibold text-silver-300">{t("pages.subcontractorsHeading")}</h1>
-      <p className="mb-6 text-sm text-silver-500">
-        Faturalı iş yapan taşeron firmaları meslek ve bölgeye göre bul, doğrudan iletişime geç.
-      </p>
+      <p className="mb-6 text-sm text-silver-500">{t("pages.subcontractorsIntro")}</p>
 
       <div className="mb-6 space-y-3">
         <TradeCategorySelect value={tradeCategory} onChange={setTradeCategory} allowEmpty />
@@ -55,10 +53,10 @@ export default function SubcontractorDirectoryPage() {
       {isLoading && <ListSkeleton count={4} columns={2} />}
       {error && (
         <p className="text-sm text-red-400">
-          {(error as Error).message ?? "Bu sayfayı görmek için aktif üyeliğin olmalı."}
+          {(error as Error).message ?? t("common.membershipRequiredError")}
         </p>
       )}
-      {!isLoading && data?.items.length === 0 && <p className="text-silver-500">Sonuç bulunamadı.</p>}
+      {!isLoading && data?.items.length === 0 && <p className="text-silver-500">{t("common.noResults")}</p>}
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {data?.items.map((s) => (
