@@ -145,6 +145,7 @@ export default function SupplierDashboardPage() {
   }
 
   async function handleDeactivate(id: string) {
+    if (!window.confirm(t("dashboard.supplier.deactivateConfirm"))) return;
     await authFetch(`/material-listings/${id}`, { method: "DELETE" });
     queryClient.invalidateQueries({ queryKey: ["my-material-listings"] });
   }

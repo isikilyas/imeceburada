@@ -40,7 +40,15 @@ export default function FavoritesPage() {
   });
 
   if (authLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
-  if (!user) return <p className="text-silver-500">{t("favorites.loginRequired")}</p>;
+  if (!user)
+    return (
+      <p className="text-silver-500">
+        {t("favorites.loginRequired")}{" "}
+        <Link href="/login" className="text-gold-400 hover:underline">
+          {t("auth.loginButton")}
+        </Link>
+      </p>
+    );
 
   const jobs = jobQueries.map((q) => q.data).filter((j): j is JobPostingDto => !!j);
   const equipment = equipmentQueries.map((q) => q.data).filter((e): e is EquipmentListingDto => !!e);

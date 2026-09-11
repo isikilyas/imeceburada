@@ -150,6 +150,7 @@ export default function CompanyDashboardPage() {
   }
 
   async function handleClose(jobId: string) {
+    if (!window.confirm(t("dashboard.company.closeConfirm"))) return;
     await authFetch(`/jobs/${jobId}`, { method: "DELETE" });
     queryClient.invalidateQueries({ queryKey: ["my-jobs"] });
   }

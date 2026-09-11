@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { JobPostingDto, TRADE_CATEGORIES } from "@imeceburada/shared";
@@ -102,7 +103,20 @@ export function JobDetailClient() {
       <p className="mt-6 whitespace-pre-wrap text-silver-300">{job.description}</p>
 
       <div className="mt-8">
-        {!authLoading && !user && <p className="text-sm text-silver-500">Başvurmak için giriş yapmalısın.</p>}
+        {!authLoading && !user && (
+          <p className="text-sm text-silver-500">
+            Başvurmak için{" "}
+            <Link href="/login" className="text-gold-400 hover:underline">
+              giriş yapmalısın
+            </Link>
+            .
+          </p>
+        )}
+        {!authLoading && user && user.role !== "CANDIDATE" && (
+          <p className="text-sm text-silver-500">
+            İş ilanlarına yalnızca İş Arayan Personel hesapları başvurabilir.
+          </p>
+        )}
         {user?.role === "CANDIDATE" && applyState !== "done" && (
           <button
             onClick={handleApply}

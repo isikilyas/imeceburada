@@ -10,6 +10,7 @@ export const siteRadarDict: Record<Locale, Record<string, any>> = {
       statusClosed: "Kapalı",
       responseCount: "Yanıtlar ({{count}})",
       close: "Kapat",
+      closeConfirm: "Bu çağrıyı kapatmak istediğine emin misin?",
     },
     new: {
       locationRequired: "Lütfen haritadan şantiye konumunu işaretle",
@@ -64,6 +65,7 @@ export const siteRadarDict: Record<Locale, Record<string, any>> = {
       statusClosed: "Closed",
       responseCount: "Responses ({{count}})",
       close: "Close",
+      closeConfirm: "Are you sure you want to close this request?",
     },
     new: {
       locationRequired: "Please mark the site location on the map",
@@ -118,6 +120,7 @@ export const siteRadarDict: Record<Locale, Record<string, any>> = {
       statusClosed: "Geschlossen",
       responseCount: "Antworten ({{count}})",
       close: "Schließen",
+      closeConfirm: "Möchtest du diese Anfrage wirklich schließen?",
     },
     new: {
       locationRequired: "Bitte markiere den Standort der Baustelle auf der Karte",
@@ -172,6 +175,7 @@ export const siteRadarDict: Record<Locale, Record<string, any>> = {
       statusClosed: "Закрыта",
       responseCount: "Отклики ({{count}})",
       close: "Закрыть",
+      closeConfirm: "Вы уверены, что хотите закрыть эту заявку?",
     },
     new: {
       locationRequired: "Пожалуйста, отметьте местоположение объекта на карте",
@@ -226,6 +230,7 @@ export const siteRadarDict: Record<Locale, Record<string, any>> = {
       statusClosed: "مغلق",
       responseCount: "الردود ({{count}})",
       close: "إغلاق",
+      closeConfirm: "هل أنت متأكد أنك تريد إغلاق هذا الطلب؟",
     },
     new: {
       locationRequired: "يرجى تحديد موقع الموقع على الخريطة",
@@ -280,6 +285,7 @@ export const siteRadarDict: Record<Locale, Record<string, any>> = {
       statusClosed: "Cerrada",
       responseCount: "Respuestas ({{count}})",
       close: "Cerrar",
+      closeConfirm: "¿Seguro que quieres cerrar esta solicitud?",
     },
     new: {
       locationRequired: "Por favor, marca la ubicación de la obra en el mapa",
@@ -334,6 +340,7 @@ export const siteRadarDict: Record<Locale, Record<string, any>> = {
       statusClosed: "Fermée",
       responseCount: "Réponses ({{count}})",
       close: "Fermer",
+      closeConfirm: "Voulez-vous vraiment fermer cette demande ?",
     },
     new: {
       locationRequired: "Veuillez indiquer l'emplacement du chantier sur la carte",

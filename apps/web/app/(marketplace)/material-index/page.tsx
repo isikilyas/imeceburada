@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import {
   CreateMaterialPriceSubmissionInput,
@@ -88,8 +89,11 @@ export default function MaterialIndexPage() {
         {authLoading && <p className="text-silver-500">Yükleniyor...</p>}
         {!authLoading && !user && (
           <p className="text-sm text-silver-500">
-            Malzeme fiyat endeksini görüntülemek için giriş yapmalısın. İş arayan personel için üyelik tamamen
-            ücretsizdir.
+            Malzeme fiyat endeksini görüntülemek için{" "}
+            <Link href="/login" className="text-gold-400 hover:underline">
+              giriş yapmalısın
+            </Link>
+            . İş arayan personel için üyelik tamamen ücretsizdir.
           </p>
         )}
         {user && isLoading && <p className="text-silver-500">Yükleniyor...</p>}
