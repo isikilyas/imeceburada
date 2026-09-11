@@ -71,7 +71,7 @@ export function EquipmentDetailClient() {
           </h1>
         </div>
         <WhatsAppShareButton
-          text={`🏗️ ${label} — ${listing.city}\nİmece Burada'da incele:`}
+          text={`🏗️ ${label} — ${listing.city}\n${t("common.whatsappShareSuffix")}`}
           className="shrink-0 inline-flex items-center gap-1.5 rounded-md border border-ink-700 px-3 py-1.5 text-sm text-silver-300 transition hover:border-green-500 hover:text-green-400"
         />
       </div>

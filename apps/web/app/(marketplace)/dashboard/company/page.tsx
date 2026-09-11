@@ -168,7 +168,12 @@ export default function CompanyDashboardPage() {
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
       <section>
-        <h2 className="mb-4 text-xl font-semibold text-silver-300">{t("common.myListings")}</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-silver-300">{t("common.myListings")}</h2>
+          <Link href="/membership" className="text-sm text-gold-400 hover:underline">
+            {t("dashboard.company.membershipStatusLink")}
+          </Link>
+        </div>
         <div className="space-y-3">
           {jobs?.length === 0 && <p className="text-silver-500">{t("dashboard.company.noJobs")}</p>}
           {jobs?.map((job) => (

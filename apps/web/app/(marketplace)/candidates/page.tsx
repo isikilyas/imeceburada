@@ -31,7 +31,7 @@ export default function CandidateDirectoryPage() {
 
   if (authLoading) return <ListSkeleton count={4} columns={2} />;
   if (user?.role !== "COMPANY") {
-    return <p className="text-silver-500">Usta dizini yalnızca firma hesapları içindir.</p>;
+    return <p className="text-silver-500">{t("pages.candidatesCompanyOnly")}</p>;
   }
 
   return (
@@ -53,10 +53,10 @@ export default function CandidateDirectoryPage() {
       {isLoading && <ListSkeleton count={4} columns={2} />}
       {error && (
         <p className="text-sm text-red-400">
-          {(error as Error).message ?? "Bu sayfayı görmek için aktif üyeliğin olmalı."}
+          {(error as Error).message ?? t("common.membershipRequiredError")}
         </p>
       )}
-      {!isLoading && data?.items.length === 0 && <p className="text-silver-500">Sonuç bulunamadı.</p>}
+      {!isLoading && data?.items.length === 0 && <p className="text-silver-500">{t("common.noResults")}</p>}
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {data?.items.map((c) => (
@@ -77,12 +77,15 @@ export default function CandidateDirectoryPage() {
                     : "bg-ink-800 text-silver-500"
                 }`}
               >
-                {c.availabilityStatus === "AVAILABLE" ? "🟢 Müsait" : "🔴 Çalışıyor"}
+                {c.availabilityStatus === "AVAILABLE"
+                  ? `🟢 ${t("enums.availabilityStatus.AVAILABLE")}`
+                  : `🔴 ${t("enums.availabilityStatus.BUSY")}`}
               </span>
             </div>
             <p className="text-sm text-silver-500">
               {c.city}
-              {c.district ? ` / ${c.district}` : ""} · {c.experienceYears} yıl deneyim
+              {c.district ? ` / ${c.district}` : ""} ·{" "}
+              {t("pages.candidatesExperienceYears", { count: c.experienceYears })}
             </p>
             <p className="mt-2 text-xs text-gold-400">
               {TRADE_CATEGORIES.find((t) => t.value === c.primaryTradeCategory)?.label ?? c.primaryTradeCategory}

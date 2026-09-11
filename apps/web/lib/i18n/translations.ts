@@ -73,6 +73,8 @@ const base = {
       newListing: "Yeni İlan",
       myListings: "İlanlarım",
       betaBanner: "imeceburada.com lansmanına özel: tüm kurumsal özellikler geçici süreyle ücretsizdir!",
+      membershipRequiredError: "Bu sayfayı görmek için aktif üyeliğin olmalı.",
+      whatsappShareSuffix: "İmece Burada'da incele:",
     },
     pages: {
       jobsHeading: "İş İlanları",
@@ -88,6 +90,10 @@ const base = {
       registerHeading: "Kayıt Ol",
       forgotPasswordHeading: "Şifremi Unuttum",
       weatherHeading: "Şantiye Hava Durumu",
+      candidatesCompanyOnly: "Usta dizini yalnızca firma hesapları içindir.",
+      subcontractorsCompanyOnly: "Taşeron firma dizini yalnızca firma hesapları içindir.",
+      subcontractorsIntro: "Faturalı iş yapan taşeron firmaları meslek ve bölgeye göre bul, doğrudan iletişime geç.",
+      candidatesExperienceYears: "{{count}} yıl deneyim",
     },
     auth: {
       hidePassword: "Şifreyi gizle",
@@ -123,6 +129,10 @@ const base = {
       equipmentListingType: {
         RENT: "Kiralık",
         SALE: "Satılık",
+      },
+      availabilityStatus: {
+        AVAILABLE: "Müsait",
+        BUSY: "Çalışıyor",
       },
       listingIntent: {
         PERSONNEL: "Personel Arıyorum",
@@ -244,6 +254,8 @@ const base = {
       newListing: "New Listing",
       myListings: "My Listings",
       betaBanner: "Special for the imeceburada.com launch: all corporate features are free for a limited time!",
+      membershipRequiredError: "You need an active membership to view this page.",
+      whatsappShareSuffix: "Check it out on İmece Burada:",
     },
     pages: {
       jobsHeading: "Job Listings",
@@ -259,6 +271,10 @@ const base = {
       registerHeading: "Sign Up",
       forgotPasswordHeading: "Forgot Password",
       weatherHeading: "Site Weather",
+      candidatesCompanyOnly: "The tradesperson directory is only for company accounts.",
+      subcontractorsCompanyOnly: "The subcontractor directory is only for company accounts.",
+      subcontractorsIntro: "Find invoiced subcontractor firms by trade and region, and contact them directly.",
+      candidatesExperienceYears: "{{count}} years of experience",
     },
     auth: {
       hidePassword: "Hide password",
@@ -294,6 +310,10 @@ const base = {
       equipmentListingType: {
         RENT: "For Rent",
         SALE: "For Sale",
+      },
+      availabilityStatus: {
+        AVAILABLE: "Available",
+        BUSY: "Working",
       },
       listingIntent: {
         PERSONNEL: "Looking for Personnel",
@@ -416,6 +436,8 @@ const base = {
       newListing: "Neue Anzeige",
       myListings: "Meine Anzeigen",
       betaBanner: "Zum Start von imeceburada.com: Alle Unternehmensfunktionen sind vorübergehend kostenlos!",
+      membershipRequiredError: "Du benötigst eine aktive Mitgliedschaft, um diese Seite zu sehen.",
+      whatsappShareSuffix: "Sieh es dir auf İmece Burada an:",
     },
     pages: {
       jobsHeading: "Stellenanzeigen",
@@ -431,6 +453,10 @@ const base = {
       registerHeading: "Registrieren",
       forgotPasswordHeading: "Passwort vergessen",
       weatherHeading: "Wetter auf der Baustelle",
+      candidatesCompanyOnly: "Das Facharbeiter-Verzeichnis ist nur für Unternehmenskonten.",
+      subcontractorsCompanyOnly: "Das Subunternehmer-Verzeichnis ist nur für Unternehmenskonten.",
+      subcontractorsIntro: "Finde rechnungsfähige Subunternehmerfirmen nach Gewerk und Region und nimm direkt Kontakt auf.",
+      candidatesExperienceYears: "{{count}} Jahre Erfahrung",
     },
     auth: {
       hidePassword: "Passwort ausblenden",
@@ -466,6 +492,10 @@ const base = {
       equipmentListingType: {
         RENT: "Zu vermieten",
         SALE: "Zu verkaufen",
+      },
+      availabilityStatus: {
+        AVAILABLE: "Verfügbar",
+        BUSY: "Beschäftigt",
       },
       listingIntent: {
         PERSONNEL: "Suche Personal",
@@ -587,6 +617,8 @@ const base = {
       newListing: "Новое объявление",
       myListings: "Мои объявления",
       betaBanner: "Специально к запуску imeceburada.com: все корпоративные функции временно бесплатны!",
+      membershipRequiredError: "Чтобы просмотреть эту страницу, у вас должно быть активное членство.",
+      whatsappShareSuffix: "Посмотри на İmece Burada:",
     },
     pages: {
       jobsHeading: "Вакансии",
@@ -602,6 +634,10 @@ const base = {
       registerHeading: "Регистрация",
       forgotPasswordHeading: "Забыли пароль",
       weatherHeading: "Погода на объекте",
+      candidatesCompanyOnly: "Каталог мастеров доступен только для аккаунтов компаний.",
+      subcontractorsCompanyOnly: "Каталог субподрядчиков доступен только для аккаунтов компаний.",
+      subcontractorsIntro: "Находите субподрядные фирмы, работающие по счетам, по специализации и региону, и связывайтесь напрямую.",
+      candidatesExperienceYears: "Опыт: {{count}} г.",
     },
     auth: {
       hidePassword: "Скрыть пароль",
@@ -637,6 +673,10 @@ const base = {
       equipmentListingType: {
         RENT: "В аренду",
         SALE: "На продажу",
+      },
+      availabilityStatus: {
+        AVAILABLE: "Свободен",
+        BUSY: "Занят",
       },
       listingIntent: {
         PERSONNEL: "Ищу персонал",
@@ -757,6 +797,8 @@ const base = {
       newListing: "إعلان جديد",
       myListings: "إعلاناتي",
       betaBanner: "بمناسبة إطلاق imeceburada.com: جميع الميزات المؤسسية مجانية مؤقتًا!",
+      membershipRequiredError: "يجب أن تمتلك عضوية نشطة لعرض هذه الصفحة.",
+      whatsappShareSuffix: "شاهده على İmece Burada:",
     },
     pages: {
       jobsHeading: "إعلانات الوظائف",
@@ -772,6 +814,10 @@ const base = {
       registerHeading: "إنشاء حساب",
       forgotPasswordHeading: "نسيت كلمة المرور",
       weatherHeading: "طقس الموقع",
+      candidatesCompanyOnly: "دليل الحرفيين مخصص لحسابات الشركات فقط.",
+      subcontractorsCompanyOnly: "دليل المقاولين من الباطن مخصص لحسابات الشركات فقط.",
+      subcontractorsIntro: "ابحث عن شركات المقاولين من الباطن العاملة بالفاتورة حسب المهنة والمنطقة، وتواصل معهم مباشرة.",
+      candidatesExperienceYears: "{{count}} سنة خبرة",
     },
     auth: {
       hidePassword: "إخفاء كلمة المرور",
@@ -807,6 +853,10 @@ const base = {
       equipmentListingType: {
         RENT: "للإيجار",
         SALE: "للبيع",
+      },
+      availabilityStatus: {
+        AVAILABLE: "متاح",
+        BUSY: "يعمل حاليًا",
       },
       listingIntent: {
         PERSONNEL: "أبحث عن عمالة",
@@ -929,6 +979,8 @@ const base = {
       newListing: "Nuevo Anuncio",
       myListings: "Mis Anuncios",
       betaBanner: "Especial por el lanzamiento de imeceburada.com: ¡todas las funciones corporativas son gratis por tiempo limitado!",
+      membershipRequiredError: "Necesitas una membresía activa para ver esta página.",
+      whatsappShareSuffix: "Míralo en İmece Burada:",
     },
     pages: {
       jobsHeading: "Anuncios de Empleo",
@@ -944,6 +996,10 @@ const base = {
       registerHeading: "Registrarse",
       forgotPasswordHeading: "Olvidé mi Contraseña",
       weatherHeading: "Clima en la Obra",
+      candidatesCompanyOnly: "El directorio de maestros es solo para cuentas de empresa.",
+      subcontractorsCompanyOnly: "El directorio de subcontratistas es solo para cuentas de empresa.",
+      subcontractorsIntro: "Encuentra empresas subcontratistas que facturan por oficio y región, y contáctalas directamente.",
+      candidatesExperienceYears: "{{count}} años de experiencia",
     },
     auth: {
       hidePassword: "Ocultar contraseña",
@@ -979,6 +1035,10 @@ const base = {
       equipmentListingType: {
         RENT: "En Alquiler",
         SALE: "En Venta",
+      },
+      availabilityStatus: {
+        AVAILABLE: "Disponible",
+        BUSY: "Trabajando",
       },
       listingIntent: {
         PERSONNEL: "Busco Personal",
@@ -1101,6 +1161,8 @@ const base = {
       newListing: "Nouvelle Annonce",
       myListings: "Mes Annonces",
       betaBanner: "Spécial lancement d'imeceburada.com : toutes les fonctionnalités professionnelles sont gratuites pour une durée limitée !",
+      membershipRequiredError: "Tu dois avoir un abonnement actif pour voir cette page.",
+      whatsappShareSuffix: "Découvre-le sur İmece Burada :",
     },
     pages: {
       jobsHeading: "Offres d'Emploi",
@@ -1116,6 +1178,10 @@ const base = {
       registerHeading: "S'inscrire",
       forgotPasswordHeading: "Mot de Passe Oublié",
       weatherHeading: "Météo du Chantier",
+      candidatesCompanyOnly: "L'annuaire des artisans est réservé aux comptes entreprise.",
+      subcontractorsCompanyOnly: "L'annuaire des sous-traitants est réservé aux comptes entreprise.",
+      subcontractorsIntro: "Trouve des entreprises sous-traitantes facturées par métier et région, et contacte-les directement.",
+      candidatesExperienceYears: "{{count}} ans d'expérience",
     },
     auth: {
       hidePassword: "Masquer le mot de passe",
@@ -1151,6 +1217,10 @@ const base = {
       equipmentListingType: {
         RENT: "À Louer",
         SALE: "À Vendre",
+      },
+      availabilityStatus: {
+        AVAILABLE: "Disponible",
+        BUSY: "En activité",
       },
       listingIntent: {
         PERSONNEL: "Je Cherche du Personnel",
