@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 import { EQUIPMENT_TYPES, EquipmentListingDto } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ListingPhotoUploader } from "@/components/listing-photo-uploader";
@@ -22,12 +23,21 @@ export default function MyEquipmentPage() {
   });
 
   async function handleDeactivate(id: string) {
+    if (!window.confirm(t("listingDetail.equipment.deactivateConfirm"))) return;
     await authFetch(`/equipment/${id}`, { method: "DELETE" });
     queryClient.invalidateQueries({ queryKey: ["my-equipment"] });
   }
 
   if (authLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
-  if (!user) return <p className="text-silver-500">{t("listingDetail.equipment.mustLoginToView")}</p>;
+  if (!user)
+    return (
+      <p className="text-silver-500">
+        {t("listingDetail.equipment.mustLoginToView")}{" "}
+        <Link href="/login" className="text-gold-400 hover:underline">
+          {t("auth.loginButton")}
+        </Link>
+      </p>
+    );
 
   return (
     <div>

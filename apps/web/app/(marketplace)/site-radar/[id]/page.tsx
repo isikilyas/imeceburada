@@ -95,7 +95,14 @@ export default function SiteRequestDetailPage() {
         </div>
       ) : (
         <div className="mt-8">
-          {!authLoading && !user && <p className="text-sm text-silver-500">{t("siteRadar.detail.loginRequired")}</p>}
+          {!authLoading && !user && (
+            <p className="text-sm text-silver-500">
+              {t("siteRadar.detail.loginRequired")}{" "}
+              <Link href="/login" className="text-gold-400 hover:underline">
+                {t("auth.loginButton")}
+              </Link>
+            </p>
+          )}
           {user && status !== "done" && (
             <div className="space-y-3">
               <textarea

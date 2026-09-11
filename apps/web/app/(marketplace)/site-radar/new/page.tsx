@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   CreateSiteRequestInput,
@@ -67,7 +68,15 @@ export default function NewSiteRequestPage() {
   }
 
   if (authLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
-  if (!user) return <p className="text-silver-500">{t("siteRadar.new.loginRequired")}</p>;
+  if (!user)
+    return (
+      <p className="text-silver-500">
+        {t("siteRadar.new.loginRequired")}{" "}
+        <Link href="/login" className="text-gold-400 hover:underline">
+          {t("auth.loginButton")}
+        </Link>
+      </p>
+    );
 
   return (
     <div className="mx-auto max-w-2xl">

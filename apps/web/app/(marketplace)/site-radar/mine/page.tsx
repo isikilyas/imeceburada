@@ -18,12 +18,21 @@ export default function MySiteRequestsPage() {
   });
 
   async function handleClose(id: string) {
+    if (!window.confirm(t("siteRadar.mine.closeConfirm"))) return;
     await authFetch(`/site-requests/${id}`, { method: "PATCH", body: JSON.stringify({ status: "CLOSED" }) });
     queryClient.invalidateQueries({ queryKey: ["my-site-requests"] });
   }
 
   if (authLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
-  if (!user) return <p className="text-silver-500">{t("siteRadar.mine.loginRequired")}</p>;
+  if (!user)
+    return (
+      <p className="text-silver-500">
+        {t("siteRadar.mine.loginRequired")}{" "}
+        <Link href="/login" className="text-gold-400 hover:underline">
+          {t("auth.loginButton")}
+        </Link>
+      </p>
+    );
 
   return (
     <div>
