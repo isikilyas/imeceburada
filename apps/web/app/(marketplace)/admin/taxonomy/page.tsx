@@ -78,44 +78,34 @@ export default function AdminTaxonomyPage() {
         grouped.map((group) => (
           <section key={group.type} className="space-y-3">
             <h2 className="text-lg font-medium text-silver-300">{TYPE_LABELS[group.type]}</h2>
-            <div className="overflow-x-auto rounded-md border border-ink-700">
-              <table className="w-full text-left text-sm">
-                <thead className="bg-ink-900 text-silver-400">
-                  <tr>
-                    <th className="px-4 py-2">Terim</th>
-                    <th className="px-4 py-2">Gönderilme Tarihi</th>
-                    <th className="px-4 py-2"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {group.items.map((term) => (
-                    <tr key={term.id} className="border-t border-ink-800">
-                      <td className="px-4 py-2 text-silver-200">{term.label}</td>
-                      <td className="px-4 py-2 text-silver-500">
-                        {new Date(term.createdAt).toLocaleDateString("tr-TR")}
-                      </td>
-                      <td className="px-4 py-2 text-right">
-                        <div className="flex justify-end gap-2">
-                          <button
-                            onClick={() => handleApprove(term.id)}
-                            disabled={busyId === term.id}
-                            className="rounded-md bg-gold-500 px-3 py-1.5 text-xs font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60"
-                          >
-                            Onayla
-                          </button>
-                          <button
-                            onClick={() => handleReject(term.id)}
-                            disabled={busyId === term.id}
-                            className="rounded-md border border-ink-700 px-3 py-1.5 text-xs font-medium text-silver-300 hover:border-red-400 hover:text-red-400 disabled:opacity-60"
-                          >
-                            Reddet
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="space-y-3">
+              {group.items.map((term) => (
+                <div
+                  key={term.id}
+                  className="flex items-center justify-between gap-4 rounded-lg border border-ink-800 bg-ink-900 p-4"
+                >
+                  <div>
+                    <p className="font-medium text-silver-200">{term.label}</p>
+                    <p className="text-xs text-silver-500">{new Date(term.createdAt).toLocaleDateString("tr-TR")}</p>
+                  </div>
+                  <div className="flex shrink-0 gap-2">
+                    <button
+                      onClick={() => handleApprove(term.id)}
+                      disabled={busyId === term.id}
+                      className="rounded-md bg-gold-500 px-3 py-1.5 text-xs font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60"
+                    >
+                      Onayla
+                    </button>
+                    <button
+                      onClick={() => handleReject(term.id)}
+                      disabled={busyId === term.id}
+                      className="rounded-md border border-ink-700 px-3 py-1.5 text-xs font-medium text-silver-300 hover:border-red-400 hover:text-red-400 disabled:opacity-60"
+                    >
+                      Reddet
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
         ))

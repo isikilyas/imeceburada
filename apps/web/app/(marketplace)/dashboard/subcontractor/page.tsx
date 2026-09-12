@@ -2,12 +2,12 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { SubcontractorProfileDto, TRADE_FIELDS, TURKISH_PROVINCES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { useProfileSave } from "@/lib/use-profile-save";
 import { DeleteAccountSection } from "@/components/delete-account-section";
-import { ApiError } from "@/lib/api-client";
 import { Field, inputClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-select";
@@ -19,11 +19,13 @@ import { CompanyNameWarning } from "@/components/company-name-warning";
 function ProfileEditor() {
   const { authFetch } = useAuth();
   const { t } = useLocale();
-  const queryClient = useQueryClient();
   const { data: profile, isLoading } = useQuery({
     queryKey: ["my-subcontractor-profile"],
     queryFn: () => authFetch<SubcontractorProfileDto>("/users/me/profile"),
   });
+  const { status, error, save, setError } = useProfileSave("/users/me/profile/subcontractor", [
+    "my-subcontractor-profile",
+  ]);
 
   const [companyName, setCompanyName] = useState("");
   const [city, setCity] = useState(TURKISH_PROVINCES[0]);
@@ -33,8 +35,6 @@ function ProfileEditor() {
   ]);
   const [description, setDescription] = useState("");
   const [isPublic, setIsPublic] = useState(true);
-  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!profile) return;
@@ -52,26 +52,7 @@ function ProfileEditor() {
       setError(t("dashboard.subcontractor.minCategoryError"));
       return;
     }
-    setStatus("saving");
-    setError(null);
-    try {
-      await authFetch("/users/me/profile/subcontractor", {
-        method: "PATCH",
-        body: JSON.stringify({
-          companyName,
-          city,
-          district: district || undefined,
-          tradeCategories,
-          description,
-          isPublic,
-        }),
-      });
-      queryClient.invalidateQueries({ queryKey: ["my-subcontractor-profile"] });
-      setStatus("saved");
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : t("dashboard.form.saveFailed"));
-      setStatus("error");
-    }
+    await save({ companyName, city, district: district || undefined, tradeCategories, description, isPublic });
   }
 
   if (isLoading) return <FormSkeleton rows={5} />;

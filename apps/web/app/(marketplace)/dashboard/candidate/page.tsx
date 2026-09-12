@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import {
   ApplicationDto,
@@ -13,8 +13,8 @@ import {
 } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { useProfileSave } from "@/lib/use-profile-save";
 import { DeleteAccountSection } from "@/components/delete-account-section";
-import { ApiError } from "@/lib/api-client";
 import { Field, inputClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
@@ -26,11 +26,11 @@ import { ListSkeleton } from "@/components/list-skeleton";
 function ProfileEditor() {
   const { authFetch } = useAuth();
   const { t } = useLocale();
-  const queryClient = useQueryClient();
   const { data: profile, isLoading } = useQuery({
     queryKey: ["my-candidate-profile"],
     queryFn: () => authFetch<CandidateProfileDto & { role: string }>("/users/me/profile"),
   });
+  const { status, error, save } = useProfileSave("/users/me/profile/candidate", ["my-candidate-profile"]);
 
   const [fullName, setFullName] = useState("");
   const [city, setCity] = useState(TURKISH_PROVINCES[0]);
@@ -44,8 +44,6 @@ function ProfileEditor() {
   const [isPublic, setIsPublic] = useState(false);
   const [photoVisible, setPhotoVisible] = useState(true);
   const [availabilityStatus, setAvailabilityStatus] = useState<AvailabilityStatus>("AVAILABLE");
-  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!profile) return;
@@ -63,30 +61,18 @@ function ProfileEditor() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setStatus("saving");
-    setError(null);
-    try {
-      await authFetch("/users/me/profile/candidate", {
-        method: "PATCH",
-        body: JSON.stringify({
-          fullName,
-          city,
-          district: district || undefined,
-          experienceYears,
-          primaryTradeCategory,
-          phone,
-          workPreferences,
-          isPublic,
-          photoVisible,
-          availabilityStatus,
-        }),
-      });
-      queryClient.invalidateQueries({ queryKey: ["my-candidate-profile"] });
-      setStatus("saved");
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : t("dashboard.form.saveFailed"));
-      setStatus("error");
-    }
+    await save({
+      fullName,
+      city,
+      district: district || undefined,
+      experienceYears,
+      primaryTradeCategory,
+      phone,
+      workPreferences,
+      isPublic,
+      photoVisible,
+      availabilityStatus,
+    });
   }
 
   if (isLoading) return <FormSkeleton rows={5} />;
