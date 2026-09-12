@@ -168,6 +168,7 @@ model CandidateProfile {
   applications Application[]
 
   @@index([isPublic, primaryTradeCategory, city, district])
+  @@index([phone])
   @@map("candidate_profiles")
 }
 
@@ -200,6 +201,7 @@ model CompanyProfile {
   jobPostings   JobPosting[]
   subscriptions MembershipSubscription[]
 
+  @@index([phone])
   @@map("company_profiles")
 }
 
@@ -235,6 +237,7 @@ model SupplierProfile {
   materialListings MaterialListing[]
   subscriptions    MembershipSubscription[]
 
+  @@index([phone])
   @@map("supplier_profiles")
 }
 
@@ -273,6 +276,7 @@ model SubcontractorProfile {
   subscriptions MembershipSubscription[]
 
   @@index([isPublic, city, district])
+  @@index([phone])
   @@map("subcontractor_profiles")
 }
 

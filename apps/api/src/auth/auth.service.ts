@@ -232,22 +232,14 @@ export class AuthService {
   private async findUserIdentityByPhone(
     phone: string,
   ): Promise<{ id: string; email: string; role: UserRole } | null> {
-    const candidate = await this.prisma.candidateProfile.findFirst({ where: { phone }, include: { user: true } });
-    if (candidate) return candidate.user as { id: string; email: string; role: UserRole };
-
-    const company = await this.prisma.companyProfile.findFirst({ where: { phone }, include: { user: true } });
-    if (company) return company.user as { id: string; email: string; role: UserRole };
-
-    const supplier = await this.prisma.supplierProfile.findFirst({ where: { phone }, include: { user: true } });
-    if (supplier) return supplier.user as { id: string; email: string; role: UserRole };
-
-    const subcontractor = await this.prisma.subcontractorProfile.findFirst({
-      where: { phone },
-      include: { user: true },
-    });
-    if (subcontractor) return subcontractor.user as { id: string; email: string; role: UserRole };
-
-    return null;
+    const [candidate, company, supplier, subcontractor] = await Promise.all([
+      this.prisma.candidateProfile.findFirst({ where: { phone }, include: { user: true } }),
+      this.prisma.companyProfile.findFirst({ where: { phone }, include: { user: true } }),
+      this.prisma.supplierProfile.findFirst({ where: { phone }, include: { user: true } }),
+      this.prisma.subcontractorProfile.findFirst({ where: { phone }, include: { user: true } }),
+    ]);
+    const match = candidate ?? company ?? supplier ?? subcontractor;
+    return (match?.user as { id: string; email: string; role: UserRole } | undefined) ?? null;
   }
 
   private signTokens(userId: string): AuthTokens {
