@@ -6,6 +6,7 @@ import '../../core/locale_store.dart';
 import '../../core/phone.dart';
 import '../../models/equipment_listing.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/favorite_toggle_button.dart';
 import '../../widgets/whatsapp_contact_button.dart';
 import '../../widgets/whatsapp_share_button.dart';
 
@@ -52,13 +53,15 @@ class _EquipmentDetailScreenState extends State<EquipmentDetailScreen> {
       appBar: AppBar(
         title: Text(t('equipment.detail.title')),
         actions: [
-          if (listing != null)
+          if (listing != null) ...[
+            FavoriteToggleButton(listingType: 'EQUIPMENT', listingId: listing.id),
             WhatsAppShareButton(
               text: t('equipment.detail.shareText', vars: {
                 'label': equipmentTypes.labelFor(listing.equipmentType),
                 'city': listing.city,
               }),
             ),
+          ],
         ],
       ),
       body: _isLoading

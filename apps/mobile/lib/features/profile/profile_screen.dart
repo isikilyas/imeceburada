@@ -14,6 +14,7 @@ import '../membership/membership_screen.dart';
 import '../subcontractors/subcontractor_dashboard_screen.dart';
 import '../subcontractors/subcontractor_directory_screen.dart';
 import '../equipment/equipment_mine_screen.dart';
+import '../favorites/favorites_screen.dart';
 import '../../widgets/language_switcher.dart';
 import '../../widgets/password_field.dart';
 import '../../core/api_client.dart';
@@ -132,6 +133,12 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const EquipmentMineScreen())),
                 child: Text(t('profile.myEquipmentListingsButton')),
+              ),
+              const SizedBox(height: 12),
+              OutlinedButton(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const FavoritesScreen())),
+                child: Text(t('favorites.title')),
               ),
               const SizedBox(height: 16),
               Text(

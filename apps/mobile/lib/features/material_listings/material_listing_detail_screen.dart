@@ -6,6 +6,7 @@ import '../../core/locale_store.dart';
 import '../../core/phone.dart';
 import '../../models/material_listing.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/favorite_toggle_button.dart';
 import '../../widgets/whatsapp_contact_button.dart';
 import '../../widgets/whatsapp_share_button.dart';
 
@@ -52,13 +53,15 @@ class _MaterialListingDetailScreenState extends State<MaterialListingDetailScree
       appBar: AppBar(
         title: Text(t('materialListings.detail.title')),
         actions: [
-          if (listing != null)
+          if (listing != null) ...[
+            FavoriteToggleButton(listingType: 'MATERIAL_LISTING', listingId: listing.id),
             WhatsAppShareButton(
               text: t('materialListings.detail.shareText', vars: {
                 'label': materialTypes.labelFor(listing.materialType),
                 'city': listing.city,
               }),
             ),
+          ],
         ],
       ),
       body: _isLoading

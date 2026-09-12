@@ -9,6 +9,7 @@ import '../../widgets/app_dropdown.dart';
 import '../../widgets/province_district_picker.dart';
 import '../equipment/equipment_list_screen.dart';
 import '../material_listings/material_listings_screen.dart';
+import '../search/search_screen.dart';
 import 'job_detail_screen.dart';
 
 class JobsListScreen extends StatefulWidget {
@@ -64,6 +65,13 @@ class _JobsListScreenState extends State<JobsListScreen> {
       appBar: AppBar(
         title: Text(t('jobs.list.title')),
         actions: [
+          IconButton(
+            tooltip: t('search.title'),
+            icon: const Icon(Icons.search),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const SearchScreen()),
+            ),
+          ),
           IconButton(
             tooltip: t('jobs.list.equipmentTooltip'),
             icon: const Icon(Icons.construction_outlined),

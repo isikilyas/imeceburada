@@ -9,6 +9,7 @@ import '../../core/locale_store.dart';
 import '../../models/site_request.dart';
 import '../../theme/app_theme.dart';
 import '../auth/login_screen.dart';
+import '../../widgets/favorite_toggle_button.dart';
 import '../../widgets/whatsapp_share_button.dart';
 
 class SiteRequestDetailScreen extends StatefulWidget {
@@ -90,10 +91,12 @@ class _SiteRequestDetailScreenState extends State<SiteRequestDetailScreen> {
       appBar: AppBar(
         title: Text(t('siteRadar.detail.title')),
         actions: [
-          if (request != null)
+          if (request != null) ...[
+            FavoriteToggleButton(listingType: 'SITE_REQUEST', listingId: request.id),
             WhatsAppShareButton(
               text: t('siteRadar.detail.shareText', vars: {'title': request.title, 'city': request.city}),
             ),
+          ],
         ],
       ),
       body: _isLoading
