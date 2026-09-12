@@ -7,6 +7,7 @@ import '../../core/locale_store.dart';
 import '../../models/job.dart';
 import '../../theme/app_theme.dart';
 import '../auth/login_screen.dart';
+import '../../widgets/favorite_toggle_button.dart';
 import '../../widgets/whatsapp_share_button.dart';
 
 class JobDetailScreen extends StatefulWidget {
@@ -85,7 +86,8 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
       appBar: AppBar(
         title: Text(t('jobs.detail.title')),
         actions: [
-          if (job != null)
+          if (job != null) ...[
+            FavoriteToggleButton(listingType: 'JOB', listingId: job.id),
             WhatsAppShareButton(
               text: t('jobs.detail.shareText', vars: {
                 'title': job.title,
@@ -93,6 +95,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                 'city': job.city,
               }),
             ),
+          ],
         ],
       ),
       body: _isLoading

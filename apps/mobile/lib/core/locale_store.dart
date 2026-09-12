@@ -4,12 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'i18n/dictionaries/auth.dart';
 import 'i18n/dictionaries/candidates.dart';
 import 'i18n/dictionaries/equipment.dart';
+import 'i18n/dictionaries/favorites.dart';
 import 'i18n/dictionaries/home.dart';
 import 'i18n/dictionaries/jobs.dart';
 import 'i18n/dictionaries/market_index.dart';
 import 'i18n/dictionaries/material_listings.dart';
 import 'i18n/dictionaries/membership.dart';
 import 'i18n/dictionaries/profile.dart';
+import 'i18n/dictionaries/search.dart';
 import 'i18n/dictionaries/site_radar.dart';
 import 'i18n/dictionaries/subcontractors.dart';
 import 'i18n/dictionaries/weather.dart';
@@ -73,12 +75,14 @@ Map<String, Map<String, String>> _mergeDicts() {
     authDict,
     candidatesDict,
     equipmentDict,
+    favoritesDict,
     homeDict,
     jobsDict,
     marketIndexDict,
     materialListingsDict,
     membershipDict,
     profileDict,
+    searchDict,
     siteRadarDict,
     subcontractorsDict,
     weatherDict,
