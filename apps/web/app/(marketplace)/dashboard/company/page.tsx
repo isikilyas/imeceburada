@@ -16,6 +16,7 @@ import {
 } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { useProfileSave } from "@/lib/use-profile-save";
 import { DeleteAccountSection } from "@/components/delete-account-section";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass, selectClass } from "@/components/form";
@@ -29,18 +30,16 @@ import { CompanyNameWarning } from "@/components/company-name-warning";
 function ProfileEditor() {
   const { authFetch } = useAuth();
   const { t } = useLocale();
-  const queryClient = useQueryClient();
   const { data: profile, isLoading } = useQuery({
     queryKey: ["my-company-profile"],
     queryFn: () => authFetch<CompanyProfileDto>("/users/me/profile"),
   });
+  const { status, error, save } = useProfileSave("/users/me/profile/company", ["my-company-profile"]);
 
   const [companyName, setCompanyName] = useState("");
   const [sector, setSector] = useState("");
   const [city, setCity] = useState(TURKISH_PROVINCES[0]);
   const [district, setDistrict] = useState("");
-  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!profile) return;
@@ -52,19 +51,7 @@ function ProfileEditor() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setStatus("saving");
-    setError(null);
-    try {
-      await authFetch("/users/me/profile/company", {
-        method: "PATCH",
-        body: JSON.stringify({ companyName, sector: sector || undefined, city, district: district || undefined }),
-      });
-      queryClient.invalidateQueries({ queryKey: ["my-company-profile"] });
-      setStatus("saved");
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : t("dashboard.form.saveFailed"));
-      setStatus("error");
-    }
+    await save({ companyName, sector: sector || undefined, city, district: district || undefined });
   }
 
   if (isLoading) return <FormSkeleton rows={5} />;

@@ -12,6 +12,7 @@ import {
 } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { useProfileSave } from "@/lib/use-profile-save";
 import { DeleteAccountSection } from "@/components/delete-account-section";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass, selectClass } from "@/components/form";
@@ -27,18 +28,16 @@ import { FormSkeleton } from "@/components/form-skeleton";
 function ProfileEditor() {
   const { authFetch } = useAuth();
   const { t } = useLocale();
-  const queryClient = useQueryClient();
   const { data: profile, isLoading } = useQuery({
     queryKey: ["my-supplier-profile"],
     queryFn: () => authFetch<SupplierProfileDto>("/users/me/profile"),
   });
+  const { status, error, save } = useProfileSave("/users/me/profile/supplier", ["my-supplier-profile"]);
 
   const [companyName, setCompanyName] = useState("");
   const [city, setCity] = useState(TURKISH_PROVINCES[0]);
   const [district, setDistrict] = useState("");
   const [supplyCategories, setSupplyCategories] = useState<string[]>([]);
-  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!profile) return;
@@ -50,19 +49,7 @@ function ProfileEditor() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setStatus("saving");
-    setError(null);
-    try {
-      await authFetch("/users/me/profile/supplier", {
-        method: "PATCH",
-        body: JSON.stringify({ companyName, city, district: district || undefined, supplyCategories }),
-      });
-      queryClient.invalidateQueries({ queryKey: ["my-supplier-profile"] });
-      setStatus("saved");
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : t("dashboard.form.saveFailed"));
-      setStatus("error");
-    }
+    await save({ companyName, city, district: district || undefined, supplyCategories });
   }
 
   if (isLoading) return <FormSkeleton rows={5} />;
