@@ -10,6 +10,7 @@ import { UpdateCompanyProfileDto } from "./dto/update-company-profile.dto";
 import { UpdateSubcontractorProfileDto } from "./dto/update-subcontractor-profile.dto";
 import { UpdateSupplierProfileDto } from "./dto/update-supplier-profile.dto";
 import { DeleteAccountDto } from "./dto/delete-account.dto";
+import { ChangePasswordDto } from "./dto/change-password.dto";
 
 @Injectable()
 export class UsersService {
@@ -19,27 +20,44 @@ export class UsersService {
   ) {}
 
   async getMyProfile(user: RequestUser) {
+    const dbUser = await this.prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) throw new NotFoundException("Kullanıcı bulunamadı");
+    const account = { email: dbUser.email, accountCreatedAt: dbUser.createdAt };
+
     if (user.role === "CANDIDATE") {
       const profile = await this.prisma.candidateProfile.findUnique({ where: { userId: user.id } });
       if (!profile) throw new NotFoundException("Aday profili bulunamadı");
-      return { role: "CANDIDATE", ...profile };
+      return { role: "CANDIDATE", ...account, ...profile };
     }
     if (user.role === "COMPANY") {
       const profile = await this.prisma.companyProfile.findUnique({ where: { userId: user.id } });
       if (!profile) throw new NotFoundException("Şirket profili bulunamadı");
-      return { role: "COMPANY", ...profile };
+      return { role: "COMPANY", ...account, ...profile };
     }
     if (user.role === "SUBCONTRACTOR") {
       const profile = await this.prisma.subcontractorProfile.findUnique({ where: { userId: user.id } });
       if (!profile) throw new NotFoundException("Taşeron profili bulunamadı");
-      return { role: "SUBCONTRACTOR", ...profile };
+      return { role: "SUBCONTRACTOR", ...account, ...profile };
     }
     if (user.role === "SUPPLIER") {
       const profile = await this.prisma.supplierProfile.findUnique({ where: { userId: user.id } });
       if (!profile) throw new NotFoundException("Yapı Tedarik profili bulunamadı");
-      return { role: "SUPPLIER", ...profile };
+      return { role: "SUPPLIER", ...account, ...profile };
     }
     throw new BadRequestException("Bu rol için profil bulunmuyor");
+  }
+
+  /** Oturum açıkken şifre değiştirme — mevcut şifre doğrulanır, yeni şifre hash'lenip kaydedilir. */
+  async changePassword(user: RequestUser, dto: ChangePasswordDto): Promise<{ success: true }> {
+    const dbUser = await this.prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) throw new NotFoundException("Kullanıcı bulunamadı");
+
+    const passwordMatches = await bcrypt.compare(dto.currentPassword, dbUser.passwordHash);
+    if (!passwordMatches) throw new UnauthorizedException("Mevcut şifre hatalı");
+
+    const passwordHash = await bcrypt.hash(dto.newPassword, 10);
+    await this.prisma.user.update({ where: { id: user.id }, data: { passwordHash } });
+    return { success: true };
   }
 
   async updateCandidateProfile(user: RequestUser, dto: UpdateCandidateProfileDto) {

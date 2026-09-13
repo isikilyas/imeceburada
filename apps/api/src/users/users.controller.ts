@@ -10,6 +10,7 @@ import { UpdateCompanyProfileDto } from "./dto/update-company-profile.dto";
 import { UpdateSubcontractorProfileDto } from "./dto/update-subcontractor-profile.dto";
 import { UpdateSupplierProfileDto } from "./dto/update-supplier-profile.dto";
 import { DeleteAccountDto } from "./dto/delete-account.dto";
+import { ChangePasswordDto } from "./dto/change-password.dto";
 import { photoUploadOptions, finalizeUploadedImage } from "../common/photo-upload.util";
 
 @UseGuards(JwtAuthGuard)
@@ -52,6 +53,12 @@ export class UsersController {
   @Delete("candidate-photo")
   removeCandidatePhoto(@CurrentUser() user: RequestUser) {
     return this.usersService.removeCandidatePhoto(user);
+  }
+
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Patch("password")
+  changePassword(@CurrentUser() user: RequestUser, @Body() dto: ChangePasswordDto) {
+    return this.usersService.changePassword(user, dto);
   }
 
   @Throttle({ default: { limit: 5, ttl: 60_000 } })

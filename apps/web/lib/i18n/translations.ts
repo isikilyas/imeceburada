@@ -6,6 +6,7 @@ import { miscDict } from "./dictionaries/misc";
 import { siteRadarDict, subcontractorDetailDict, favoritesDict, searchDict } from "./dictionaries/siteRadarAndMisc";
 import { formComponentsDict } from "./dictionaries/formComponents";
 import { componentsDict } from "./dictionaries/components";
+import { accountPanelDict } from "./dictionaries/account-panel";
 
 const base = {
   tr: {
@@ -19,6 +20,7 @@ const base = {
       membership: "Üyelik",
       favorites: "Favorilerim",
       account: "Hesabım",
+      accountPanel: "Profil Ayarları",
       dashboard: "Panelim",
       logout: "Çıkış Yap",
       login: "Giriş Yap",
@@ -200,6 +202,7 @@ const base = {
       membership: "Membership",
       favorites: "Favorites",
       account: "My Account",
+      accountPanel: "Profile Settings",
       dashboard: "My Dashboard",
       logout: "Log Out",
       login: "Log In",
@@ -381,6 +384,7 @@ const base = {
       membership: "Mitgliedschaft",
       favorites: "Favoriten",
       account: "Mein Konto",
+      accountPanel: "Profileinstellungen",
       dashboard: "Mein Dashboard",
       logout: "Abmelden",
       login: "Anmelden",
@@ -563,6 +567,7 @@ const base = {
       membership: "Членство",
       favorites: "Избранное",
       account: "Мой аккаунт",
+      accountPanel: "Настройки профиля",
       dashboard: "Личный кабинет",
       logout: "Выйти",
       login: "Войти",
@@ -744,6 +749,7 @@ const base = {
       membership: "العضوية",
       favorites: "المفضلة",
       account: "حسابي",
+      accountPanel: "إعدادات الملف الشخصي",
       dashboard: "لوحتي",
       logout: "تسجيل الخروج",
       login: "تسجيل الدخول",
@@ -924,6 +930,7 @@ const base = {
       membership: "Membresía",
       favorites: "Favoritos",
       account: "Mi Cuenta",
+      accountPanel: "Configuración del Perfil",
       dashboard: "Mi Panel",
       logout: "Cerrar Sesión",
       login: "Iniciar Sesión",
@@ -1106,6 +1113,7 @@ const base = {
       membership: "Adhésion",
       favorites: "Favoris",
       account: "Mon Compte",
+      accountPanel: "Paramètres du Profil",
       dashboard: "Mon Tableau de Bord",
       logout: "Se Déconnecter",
       login: "Se Connecter",
@@ -1291,6 +1299,7 @@ function mergeLocale<L extends keyof typeof base>(locale: L) {
     search: searchDict[locale],
     formComponents: formComponentsDict[locale],
     components: componentsDict[locale],
+    accountPanel: accountPanelDict[locale],
   };
 }
 

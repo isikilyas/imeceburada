@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Length, Min } from "class-validator";
+import { IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Length, Min, MaxLength } from "class-validator";
 import { AvailabilityStatus, WORK_PREFERENCE_VALUES } from "@imeceburada/shared";
 
 const AVAILABILITY_STATUS_VALUES: AvailabilityStatus[] = ["AVAILABLE", "BUSY"];
@@ -23,6 +23,16 @@ export class UpdateCandidateProfileDto {
   @IsOptional()
   @IsString()
   district?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  address?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(1000)
+  bio?: string;
 
   @IsOptional()
   @IsInt()

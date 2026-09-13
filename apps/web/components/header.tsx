@@ -20,9 +20,7 @@ export function Header() {
         ? "/dashboard/candidate"
         : user?.role === "SUPPLIER"
           ? "/dashboard/supplier"
-          : user?.role === "SUBCONTRACTOR"
-            ? "/dashboard/subcontractor"
-            : null;
+          : null;
 
   const linkClass = "whitespace-nowrap hover:text-gold-400";
   const [accountOpen, setAccountOpen] = useState(false);
@@ -46,6 +44,7 @@ export function Header() {
 
   const accountLinks: { href: string; label: string }[] = user
     ? [
+        { href: "/account", label: t("nav.accountPanel") },
         ...(user.role === "COMPANY" ? [{ href: "/candidates", label: t("nav.candidates") }] : []),
         ...(user.role === "COMPANY" ? [{ href: "/subcontractors", label: t("nav.subcontractors") }] : []),
         ...(user.role === "COMPANY" || user.role === "SUPPLIER" || user.role === "SUBCONTRACTOR"
