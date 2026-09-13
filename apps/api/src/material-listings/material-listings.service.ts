@@ -44,6 +44,7 @@ export class MaterialListingsService {
     const pageSize = query.pageSize ?? 20;
     const where = {
       status: "AVAILABLE" as const,
+      supplier: { user: { deactivatedAt: null } },
       ...(query.materialType ? { materialType: query.materialType } : {}),
       ...(query.city ? { city: query.city } : {}),
       ...(query.district ? { district: query.district } : {}),
@@ -65,8 +66,11 @@ export class MaterialListingsService {
   }
 
   async findOne(id: string) {
-    const listing = await this.prisma.materialListing.findUnique({ where: { id }, include: supplierInclude });
-    if (!listing) throw new NotFoundException("İlan bulunamadı");
+    const listing = await this.prisma.materialListing.findUnique({
+      where: { id },
+      include: { supplier: { include: { user: true } } },
+    });
+    if (!listing || listing.supplier.user.deactivatedAt) throw new NotFoundException("İlan bulunamadı");
     return this.toDto(listing);
   }
 

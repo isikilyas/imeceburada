@@ -12,6 +12,7 @@ export class CandidatesService {
     const pageSize = query.pageSize ?? 20;
     const where = {
       isPublic: true,
+      user: { deactivatedAt: null },
       ...(query.tradeCategory ? { primaryTradeCategory: query.tradeCategory } : {}),
       ...(query.city ? { city: query.city } : {}),
       ...(query.district ? { district: query.district } : {}),
@@ -47,8 +48,13 @@ export class CandidatesService {
   }
 
   async findOne(id: string) {
-    const candidate = await this.prisma.candidateProfile.findUnique({ where: { id } });
-    if (!candidate || !candidate.isPublic) throw new NotFoundException("Aday bulunamadı");
+    const candidate = await this.prisma.candidateProfile.findUnique({
+      where: { id },
+      include: { user: true },
+    });
+    if (!candidate || !candidate.isPublic || candidate.user.deactivatedAt) {
+      throw new NotFoundException("Aday bulunamadı");
+    }
 
     return {
       id: candidate.id,

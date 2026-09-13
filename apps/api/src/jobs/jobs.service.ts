@@ -21,6 +21,7 @@ export class JobsService {
 
     const where = {
       status: "ACTIVE" as const,
+      company: { user: { deactivatedAt: null } },
       ...(query.listingType ? { listingType: query.listingType } : {}),
       ...(query.tradeCategory ? { tradeCategory: query.tradeCategory } : {}),
       ...(query.city ? { city: query.city } : {}),
@@ -51,8 +52,11 @@ export class JobsService {
   }
 
   async findOne(id: string) {
-    const job = await this.prisma.jobPosting.findUnique({ where: { id }, include: { company: true } });
-    if (!job) throw new NotFoundException("İlan bulunamadı");
+    const job = await this.prisma.jobPosting.findUnique({
+      where: { id },
+      include: { company: { include: { user: true } } },
+    });
+    if (!job || job.company.user.deactivatedAt) throw new NotFoundException("İlan bulunamadı");
     return this.toDto(job);
   }
 

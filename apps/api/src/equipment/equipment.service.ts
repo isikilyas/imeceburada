@@ -28,6 +28,7 @@ interface EquipmentWithOwner {
   status: string;
   createdAt: Date;
   owner: {
+    deactivatedAt: Date | null;
     candidateProfile: { fullName: string; phone: string | null; phoneVisible: boolean } | null;
     companyProfile: {
       companyName: string;
@@ -50,6 +51,7 @@ export class EquipmentService {
     const pageSize = query.pageSize ?? 20;
     const where = {
       status: "AVAILABLE" as const,
+      owner: { deactivatedAt: null },
       ...(query.equipmentType ? { equipmentType: query.equipmentType } : {}),
       ...(query.city ? { city: query.city } : {}),
       ...(query.district ? { district: query.district } : {}),
@@ -73,7 +75,7 @@ export class EquipmentService {
 
   async findOne(id: string) {
     const listing = await this.prisma.equipmentListing.findUnique({ where: { id }, include: ownerInclude });
-    if (!listing) throw new NotFoundException("İlan bulunamadı");
+    if (!listing || listing.owner.deactivatedAt) throw new NotFoundException("İlan bulunamadı");
     return this.toDto(listing);
   }
 

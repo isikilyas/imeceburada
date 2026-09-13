@@ -153,6 +153,10 @@ export class AuthService {
     const passwordMatches = await bcrypt.compare(dto.password, user.passwordHash);
     if (!passwordMatches) throw new UnauthorizedException("Bilgiler hatalı");
 
+    if (user.deactivatedAt) {
+      await this.prisma.user.update({ where: { id: user.id }, data: { deactivatedAt: null } });
+    }
+
     return this.buildAuthResponse(user.id, user.email, user.role as UserRole);
   }
 

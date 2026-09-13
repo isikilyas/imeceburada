@@ -1,22 +1,30 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { unlink } from "fs/promises";
 import { join } from "path";
 import * as bcrypt from "bcrypt";
+import { randomInt } from "crypto";
 import { PrismaService } from "../prisma/prisma.service";
 import { TaxonomyService } from "../taxonomy/taxonomy.service";
 import { RequestUser } from "../auth/types/request-user";
+import { EMAIL_SERVICE, EmailService } from "../email/email.service";
 import { UpdateCandidateProfileDto } from "./dto/update-candidate-profile.dto";
 import { UpdateCompanyProfileDto } from "./dto/update-company-profile.dto";
 import { UpdateSubcontractorProfileDto } from "./dto/update-subcontractor-profile.dto";
 import { UpdateSupplierProfileDto } from "./dto/update-supplier-profile.dto";
 import { DeleteAccountDto } from "./dto/delete-account.dto";
+import { DeactivateAccountDto } from "./dto/deactivate-account.dto";
 import { ChangePasswordDto } from "./dto/change-password.dto";
+import { RequestEmailChangeDto } from "./dto/request-email-change.dto";
+import { ConfirmEmailChangeDto } from "./dto/confirm-email-change.dto";
+
+const EMAIL_CHANGE_CODE_EXPIRY_MINUTES = 10;
 
 @Injectable()
 export class UsersService {
   constructor(
     private prisma: PrismaService,
     private taxonomyService: TaxonomyService,
+    @Inject(EMAIL_SERVICE) private emailService: EmailService,
   ) {}
 
   async getMyProfile(user: RequestUser) {
@@ -57,6 +65,69 @@ export class UsersService {
 
     const passwordHash = await bcrypt.hash(dto.newPassword, 10);
     await this.prisma.user.update({ where: { id: user.id }, data: { passwordHash } });
+    return { success: true };
+  }
+
+  /**
+   * Hesabı geçici olarak dondurur — kalıcı silmeden farklı olarak geri
+   * alınabilir. Dondurulmuş hesaplar JwtStrategy tarafından reddedilir ve
+   * tüm dizin/ilan listelerinden gizlenir; bir sonraki başarılı girişte
+   * (AuthService.login) otomatik olarak yeniden aktifleşir.
+   */
+  async deactivateAccount(user: RequestUser, dto: DeactivateAccountDto): Promise<{ success: true }> {
+    const dbUser = await this.prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) throw new NotFoundException("Kullanıcı bulunamadı");
+
+    const passwordMatches = await bcrypt.compare(dto.password, dbUser.passwordHash);
+    if (!passwordMatches) throw new UnauthorizedException("Şifre hatalı");
+
+    await this.prisma.user.update({ where: { id: user.id }, data: { deactivatedAt: new Date() } });
+    return { success: true };
+  }
+
+  /** E-posta değiştirmenin ilk adımı — yeni adrese doğrulama kodu gönderir, hesabın e-postası henüz değişmez. */
+  async requestEmailChange(user: RequestUser, dto: RequestEmailChangeDto): Promise<{ success: true }> {
+    const dbUser = await this.prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) throw new NotFoundException("Kullanıcı bulunamadı");
+
+    const passwordMatches = await bcrypt.compare(dto.password, dbUser.passwordHash);
+    if (!passwordMatches) throw new UnauthorizedException("Şifre hatalı");
+
+    const existing = await this.prisma.user.findUnique({ where: { email: dto.newEmail } });
+    if (existing) throw new ConflictException("Bu e-posta zaten kayıtlı");
+
+    const code = randomInt(100000, 1000000).toString();
+    const expiresAt = new Date(Date.now() + EMAIL_CHANGE_CODE_EXPIRY_MINUTES * 60 * 1000);
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { pendingEmail: dto.newEmail, emailChangeCode: code, emailChangeExpiresAt: expiresAt },
+    });
+    await this.emailService.sendVerificationCode(dto.newEmail, code);
+    return { success: true };
+  }
+
+  /** E-posta değiştirmenin ikinci adımı — kod doğrulanınca hesabın e-postası gerçekten değişir. */
+  async confirmEmailChange(user: RequestUser, dto: ConfirmEmailChangeDto): Promise<{ success: true }> {
+    const dbUser = await this.prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) throw new NotFoundException("Kullanıcı bulunamadı");
+
+    if (
+      !dbUser.pendingEmail ||
+      !dbUser.emailChangeCode ||
+      !dbUser.emailChangeExpiresAt ||
+      dbUser.emailChangeExpiresAt < new Date()
+    ) {
+      throw new BadRequestException("Kod süresi dolmuş, yeniden gönder");
+    }
+    if (dbUser.emailChangeCode !== dto.code) throw new BadRequestException("Kod hatalı");
+
+    const stillAvailable = await this.prisma.user.findUnique({ where: { email: dbUser.pendingEmail } });
+    if (stillAvailable) throw new ConflictException("Bu e-posta zaten kayıtlı");
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { email: dbUser.pendingEmail, pendingEmail: null, emailChangeCode: null, emailChangeExpiresAt: null },
+    });
     return { success: true };
   }
 

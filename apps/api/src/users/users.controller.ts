@@ -10,7 +10,10 @@ import { UpdateCompanyProfileDto } from "./dto/update-company-profile.dto";
 import { UpdateSubcontractorProfileDto } from "./dto/update-subcontractor-profile.dto";
 import { UpdateSupplierProfileDto } from "./dto/update-supplier-profile.dto";
 import { DeleteAccountDto } from "./dto/delete-account.dto";
+import { DeactivateAccountDto } from "./dto/deactivate-account.dto";
 import { ChangePasswordDto } from "./dto/change-password.dto";
+import { RequestEmailChangeDto } from "./dto/request-email-change.dto";
+import { ConfirmEmailChangeDto } from "./dto/confirm-email-change.dto";
 import { photoUploadOptions, finalizeUploadedImage } from "../common/photo-upload.util";
 
 @UseGuards(JwtAuthGuard)
@@ -59,6 +62,24 @@ export class UsersController {
   @Patch("password")
   changePassword(@CurrentUser() user: RequestUser, @Body() dto: ChangePasswordDto) {
     return this.usersService.changePassword(user, dto);
+  }
+
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post("email/request-change")
+  requestEmailChange(@CurrentUser() user: RequestUser, @Body() dto: RequestEmailChangeDto) {
+    return this.usersService.requestEmailChange(user, dto);
+  }
+
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post("email/confirm-change")
+  confirmEmailChange(@CurrentUser() user: RequestUser, @Body() dto: ConfirmEmailChangeDto) {
+    return this.usersService.confirmEmailChange(user, dto);
+  }
+
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post("deactivate")
+  deactivateAccount(@CurrentUser() user: RequestUser, @Body() dto: DeactivateAccountDto) {
+    return this.usersService.deactivateAccount(user, dto);
   }
 
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
