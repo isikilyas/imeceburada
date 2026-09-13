@@ -45,6 +45,12 @@ export function Header() {
   const accountLinks: { href: string; label: string }[] = user
     ? [
         { href: "/account", label: t("nav.accountPanel") },
+        ...(user.role === "ADMIN"
+          ? [
+              { href: "/admin/users", label: "Kullanıcılar (Yönetici)" },
+              { href: "/admin/taxonomy", label: "Taksonomi (Yönetici)" },
+            ]
+          : []),
         ...(user.role === "COMPANY" ? [{ href: "/candidates", label: t("nav.candidates") }] : []),
         ...(user.role === "COMPANY" ? [{ href: "/subcontractors", label: t("nav.subcontractors") }] : []),
         ...(user.role === "COMPANY" || user.role === "SUPPLIER" || user.role === "SUBCONTRACTOR"
