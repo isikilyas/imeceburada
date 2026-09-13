@@ -23,3 +23,4 @@ export * from "./types/material-listing";
 export * from "./types/subcontractor-directory";
 export * from "./types/subcontractor-profile";
 export * from "./types/supplier-profile";
+export * from "./types/address";

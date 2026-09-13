@@ -19,6 +19,7 @@ import { MaterialListingsModule } from "./material-listings/material-listings.mo
 import { SubcontractorsModule } from "./subcontractors/subcontractors.module";
 import { FavoritesModule } from "./favorites/favorites.module";
 import { TaxonomyModule } from "./taxonomy/taxonomy.module";
+import { AddressesModule } from "./addresses/addresses.module";
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { TaxonomyModule } from "./taxonomy/taxonomy.module";
     SubcontractorsModule,
     FavoritesModule,
     TaxonomyModule,
+    AddressesModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

@@ -32,10 +32,11 @@ import { ChangeEmailForm } from "@/components/change-email-form";
 import { LogoutAllDevicesButton } from "@/components/logout-all-devices-button";
 import { UsernameField } from "@/components/username-field";
 import { AccountInfoCard } from "@/components/account-info-card";
+import { AddressBook } from "@/components/address-book";
 import { TabNav } from "@/components/tab-nav";
 import { FormSkeleton } from "@/components/form-skeleton";
 
-type Tab = "profile" | "corporate" | "privacy" | "security" | "membership" | "activity";
+type Tab = "profile" | "corporate" | "addresses" | "privacy" | "security" | "membership" | "activity";
 
 interface AccountFields {
   role: string;
@@ -135,6 +136,7 @@ function CandidateAccountPanel() {
 
   const tabs = [
     { id: "profile", label: t("accountPanel.tabs.profile") },
+    { id: "addresses", label: t("accountPanel.tabs.addresses") },
     { id: "privacy", label: t("accountPanel.tabs.privacy") },
     { id: "security", label: t("accountPanel.tabs.security") },
     { id: "activity", label: t("accountPanel.tabs.activity") },
@@ -289,6 +291,8 @@ function CandidateAccountPanel() {
         </form>
       )}
 
+      {tab === "addresses" && <AddressBook />}
+
       {tab === "security" && (
         <div className="space-y-4">
           <ChangePasswordForm />
@@ -384,6 +388,7 @@ function CompanyAccountPanel() {
   const tabs = [
     { id: "profile", label: t("accountPanel.tabs.profile") },
     { id: "corporate", label: t("accountPanel.tabs.corporate") },
+    { id: "addresses", label: t("accountPanel.tabs.addresses") },
     { id: "privacy", label: t("accountPanel.tabs.privacy") },
     { id: "security", label: t("accountPanel.tabs.security") },
     { id: "membership", label: t("accountPanel.tabs.membership") },
@@ -484,6 +489,8 @@ function CompanyAccountPanel() {
           </button>
         </form>
       )}
+
+      {tab === "addresses" && <AddressBook />}
 
       {tab === "security" && (
         <div className="space-y-4">
@@ -588,6 +595,7 @@ function SupplierAccountPanel() {
   const tabs = [
     { id: "profile", label: t("accountPanel.tabs.profile") },
     { id: "corporate", label: t("accountPanel.tabs.corporate") },
+    { id: "addresses", label: t("accountPanel.tabs.addresses") },
     { id: "privacy", label: t("accountPanel.tabs.privacy") },
     { id: "security", label: t("accountPanel.tabs.security") },
     { id: "membership", label: t("accountPanel.tabs.membership") },
@@ -686,6 +694,8 @@ function SupplierAccountPanel() {
           </button>
         </form>
       )}
+
+      {tab === "addresses" && <AddressBook />}
 
       {tab === "security" && (
         <div className="space-y-4">
@@ -802,6 +812,7 @@ function SubcontractorAccountPanel() {
   const tabs = [
     { id: "profile", label: t("accountPanel.tabs.profile") },
     { id: "corporate", label: t("accountPanel.tabs.corporate") },
+    { id: "addresses", label: t("accountPanel.tabs.addresses") },
     { id: "privacy", label: t("accountPanel.tabs.privacy") },
     { id: "security", label: t("accountPanel.tabs.security") },
     { id: "membership", label: t("accountPanel.tabs.membership") },
@@ -912,6 +923,8 @@ function SubcontractorAccountPanel() {
           </button>
         </form>
       )}
+
+      {tab === "addresses" && <AddressBook />}
 
       {tab === "security" && (
         <div className="space-y-4">
