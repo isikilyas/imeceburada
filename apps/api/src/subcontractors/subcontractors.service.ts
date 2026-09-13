@@ -12,6 +12,7 @@ export class SubcontractorsService {
     const pageSize = query.pageSize ?? 20;
     const where = {
       isPublic: true,
+      user: { deactivatedAt: null },
       ...(query.tradeCategory ? { tradeCategories: { has: query.tradeCategory } } : {}),
       ...(query.city ? { city: query.city } : {}),
       ...(query.district ? { district: query.district } : {}),
@@ -43,8 +44,13 @@ export class SubcontractorsService {
   }
 
   async findOne(id: string) {
-    const subcontractor = await this.prisma.subcontractorProfile.findUnique({ where: { id } });
-    if (!subcontractor || !subcontractor.isPublic) throw new NotFoundException("Taşeron bulunamadı");
+    const subcontractor = await this.prisma.subcontractorProfile.findUnique({
+      where: { id },
+      include: { user: true },
+    });
+    if (!subcontractor || !subcontractor.isPublic || subcontractor.user.deactivatedAt) {
+      throw new NotFoundException("Taşeron bulunamadı");
+    }
 
     return {
       id: subcontractor.id,

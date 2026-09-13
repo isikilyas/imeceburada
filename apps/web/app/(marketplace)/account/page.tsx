@@ -25,7 +25,9 @@ import { CandidatePhotoUploader } from "@/components/candidate-photo-uploader";
 import { CompanyNameWarning } from "@/components/company-name-warning";
 import { VerificationStatusCard } from "@/components/verification-status-card";
 import { DeleteAccountSection } from "@/components/delete-account-section";
+import { DeactivateAccountSection } from "@/components/deactivate-account-section";
 import { ChangePasswordForm } from "@/components/change-password-form";
+import { ChangeEmailForm } from "@/components/change-email-form";
 import { AccountInfoCard } from "@/components/account-info-card";
 import { TabNav } from "@/components/tab-nav";
 import { FormSkeleton } from "@/components/form-skeleton";
@@ -260,6 +262,8 @@ function CandidateAccountPanel() {
       {tab === "security" && (
         <div className="space-y-4">
           <ChangePasswordForm />
+          <ChangeEmailForm />
+          <DeactivateAccountSection />
           <DeleteAccountSection />
         </div>
       )}
@@ -434,6 +438,8 @@ function CompanyAccountPanel() {
       {tab === "security" && (
         <div className="space-y-4">
           <ChangePasswordForm />
+          <ChangeEmailForm />
+          <DeactivateAccountSection />
           <DeleteAccountSection />
         </div>
       )}
@@ -614,6 +620,8 @@ function SupplierAccountPanel() {
       {tab === "security" && (
         <div className="space-y-4">
           <ChangePasswordForm />
+          <ChangeEmailForm />
+          <DeactivateAccountSection />
           <DeleteAccountSection />
         </div>
       )}
@@ -818,6 +826,8 @@ function SubcontractorAccountPanel() {
       {tab === "security" && (
         <div className="space-y-4">
           <ChangePasswordForm />
+          <ChangeEmailForm />
+          <DeactivateAccountSection />
           <DeleteAccountSection />
         </div>
       )}

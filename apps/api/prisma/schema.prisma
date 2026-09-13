@@ -127,6 +127,18 @@ model User {
   passwordResetTokenHash    String?
   passwordResetExpiresAt    DateTime?
 
+  /// Kullanıcının kendi isteğiyle hesabını geçici olarak dondurması —
+  /// dolu olduğu sürece giriş dışındaki tüm oturumlu istekler reddedilir ve
+  /// hesap tüm dizin/ilan listelerinden gizlenir; bir sonraki başarılı
+  /// girişte otomatik olarak temizlenir (hesap yeniden aktifleşir).
+  deactivatedAt DateTime?
+
+  /// Oturum açıkken e-posta değiştirme akışı — yeni adrese doğrulama kodu
+  /// gönderilir, kod onaylanana kadar `email` değişmez.
+  pendingEmail          String?
+  emailChangeCode       String?
+  emailChangeExpiresAt  DateTime?
+
   candidateProfile         CandidateProfile?
   companyProfile           CompanyProfile?
   supplierProfile          SupplierProfile?
