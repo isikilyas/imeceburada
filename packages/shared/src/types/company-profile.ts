@@ -14,6 +14,8 @@ export interface CompanyProfileDto {
   taxNumber?: string | null;
   mersisNumber?: string | null;
   website?: string | null;
+  companyEmail?: string | null;
+  logoUrl?: string | null;
   membershipStatus: string;
   membershipExpiresAt?: string | null;
 }
@@ -30,5 +32,6 @@ export interface UpdateCompanyProfileInput {
   taxNumber?: string;
   mersisNumber?: string;
   website?: string;
+  companyEmail?: string;
   phoneVisible?: boolean;
 }

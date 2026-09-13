@@ -30,7 +30,13 @@ export class UsersService {
   async getMyProfile(user: RequestUser) {
     const dbUser = await this.prisma.user.findUnique({ where: { id: user.id } });
     if (!dbUser) throw new NotFoundException("Kullanıcı bulunamadı");
-    const account = { email: dbUser.email, accountCreatedAt: dbUser.createdAt };
+    const account = {
+      email: dbUser.email,
+      username: dbUser.username,
+      accountCreatedAt: dbUser.createdAt,
+      lastLoginAt: dbUser.lastLoginAt,
+      pendingEmail: dbUser.pendingEmail,
+    };
 
     if (user.role === "CANDIDATE") {
       const profile = await this.prisma.candidateProfile.findUnique({ where: { userId: user.id } });
@@ -65,6 +71,26 @@ export class UsersService {
 
     const passwordHash = await bcrypt.hash(dto.newPassword, 10);
     await this.prisma.user.update({ where: { id: user.id }, data: { passwordHash } });
+    return { success: true };
+  }
+
+  /** İsteğe bağlı, herkese açık olmayan görünen kullanıcı adı — girişte kullanılmaz. */
+  async updateUsername(user: RequestUser, username: string | null): Promise<{ success: true }> {
+    if (username) {
+      const existing = await this.prisma.user.findUnique({ where: { username } });
+      if (existing && existing.id !== user.id) throw new ConflictException("Bu kullanıcı adı zaten alınmış");
+    }
+    await this.prisma.user.update({ where: { id: user.id }, data: { username } });
+    return { success: true };
+  }
+
+  /**
+   * "Tüm cihazlardan çıkış yap" — stateless JWT'ler tek tek iptal edilemediği
+   * için tokenVersion'ı artırarak daha önce dağıtılmış TÜM access/refresh
+   * token'ları (mevcut oturum dahil) geçersiz kılar.
+   */
+  async logoutAllDevices(user: RequestUser): Promise<{ success: true }> {
+    await this.prisma.user.update({ where: { id: user.id }, data: { tokenVersion: { increment: 1 } } });
     return { success: true };
   }
 
@@ -191,6 +217,48 @@ export class UsersService {
       await unlink(join(process.cwd(), profile.photoUrl)).catch(() => undefined);
     }
     return this.prisma.candidateProfile.update({ where: { userId: user.id }, data: { photoUrl: null } });
+  }
+
+  private async findCorporateLogoUrl(user: RequestUser): Promise<string | null> {
+    if (user.role === "COMPANY") {
+      const profile = await this.prisma.companyProfile.findUnique({ where: { userId: user.id } });
+      if (!profile) throw new NotFoundException("Firma profili bulunamadı");
+      return profile.logoUrl;
+    }
+    if (user.role === "SUPPLIER") {
+      const profile = await this.prisma.supplierProfile.findUnique({ where: { userId: user.id } });
+      if (!profile) throw new NotFoundException("Firma profili bulunamadı");
+      return profile.logoUrl;
+    }
+    if (user.role === "SUBCONTRACTOR") {
+      const profile = await this.prisma.subcontractorProfile.findUnique({ where: { userId: user.id } });
+      if (!profile) throw new NotFoundException("Firma profili bulunamadı");
+      return profile.logoUrl;
+    }
+    throw new BadRequestException("Sadece firma, tedarikçi veya taşeron hesapları logo yükleyebilir");
+  }
+
+  private updateCorporateLogoUrl(user: RequestUser, logoUrl: string | null) {
+    if (user.role === "COMPANY") return this.prisma.companyProfile.update({ where: { userId: user.id }, data: { logoUrl } });
+    if (user.role === "SUPPLIER") return this.prisma.supplierProfile.update({ where: { userId: user.id }, data: { logoUrl } });
+    return this.prisma.subcontractorProfile.update({ where: { userId: user.id }, data: { logoUrl } });
+  }
+
+  async setCompanyLogo(user: RequestUser, filename: string) {
+    const existingLogoUrl = await this.findCorporateLogoUrl(user);
+    if (existingLogoUrl) {
+      await unlink(join(process.cwd(), existingLogoUrl)).catch(() => undefined);
+    }
+    const logoUrl = `/uploads/company-logos/${filename}`;
+    return this.updateCorporateLogoUrl(user, logoUrl);
+  }
+
+  async removeCompanyLogo(user: RequestUser) {
+    const existingLogoUrl = await this.findCorporateLogoUrl(user);
+    if (existingLogoUrl) {
+      await unlink(join(process.cwd(), existingLogoUrl)).catch(() => undefined);
+    }
+    return this.updateCorporateLogoUrl(user, null);
   }
 
   async getCompanyProfileIdForUser(userId: string): Promise<string> {

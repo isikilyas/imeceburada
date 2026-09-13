@@ -119,10 +119,18 @@ enum TaxonomyTermStatus {
 model User {
   id           String   @id @default(uuid())
   email        String   @unique
+  username     String?  @unique
   passwordHash String
   role         UserRole
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  lastLoginAt  DateTime?
+
+  /// Girişte imzalanan JWT'lere gömülür — "tüm cihazlardan çıkış yap"
+  /// tetiklendiğinde bir artırılır, bu da daha önce dağıtılmış tüm
+  /// access/refresh token'ları (stateless oldukları için tek tek iptal
+  /// edilemedikleri halde) geçersiz kılar.
+  tokenVersion Int      @default(0)
 
   passwordResetTokenHash    String?
   passwordResetExpiresAt    DateTime?
@@ -208,6 +216,9 @@ model CompanyProfile {
   taxNumber            String?
   mersisNumber         String?
   website              String?
+  /// Hesabın giriş e-postasından bağımsız, isteğe bağlı firma iletişim e-postası.
+  companyEmail         String?
+  logoUrl              String?
 
   phone                       String?
   /// Telefon numarasının başka kullanıcılara gösterilip gösterilmeyeceği —
@@ -254,6 +265,9 @@ model SupplierProfile {
   taxNumber            String?
   mersisNumber         String?
   website              String?
+  /// Hesabın giriş e-postasından bağımsız, isteğe bağlı firma iletişim e-postası.
+  companyEmail         String?
+  logoUrl              String?
   supplyCategories String[]
 
   phone                      String?
@@ -303,6 +317,9 @@ model SubcontractorProfile {
   taxNumber             String?
   mersisNumber          String?
   website               String?
+  /// Hesabın giriş e-postasından bağımsız, isteğe bağlı firma iletişim e-postası.
+  companyEmail          String?
+  logoUrl               String?
   isPublic              Boolean  @default(true)
 
   phone                      String?

@@ -14,6 +14,8 @@ export interface SubcontractorProfileDto {
   taxNumber?: string | null;
   mersisNumber?: string | null;
   website?: string | null;
+  companyEmail?: string | null;
+  logoUrl?: string | null;
   isPublic: boolean;
   membershipStatus: string;
   membershipExpiresAt?: string | null;
@@ -31,6 +33,7 @@ export interface UpdateSubcontractorProfileInput {
   taxNumber?: string;
   mersisNumber?: string;
   website?: string;
+  companyEmail?: string;
   isPublic?: boolean;
   phoneVisible?: boolean;
 }
