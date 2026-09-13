@@ -159,6 +159,7 @@ model User {
   favorites                Favorite[]
   submittedTaxonomyTerms   TaxonomyTerm[]            @relation("SubmittedTaxonomyTerms")
   reviewedTaxonomyTerms    TaxonomyTerm[]             @relation("ReviewedTaxonomyTerms")
+  addresses                Address[]
 
   @@map("users")
 }
@@ -503,6 +504,27 @@ model Favorite {
   @@unique([userId, listingType, listingId])
   @@index([userId])
   @@map("favorites")
+}
+
+/// Kullanıcının Hesabım panelindeki adres defteri — hesap düzeyinde, tek
+/// bir profile bağlı değil (ev/iş/firma/fatura gibi birden fazla adres
+/// eklenebilir), aralarından biri varsayılan olarak işaretlenebilir.
+model Address {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Kullanıcının kendi seçtiği serbest metin etiket — örn. "Ev", "İş", "Firma", "Fatura Adresi".
+  label     String
+  city      String
+  district  String?
+  /// Açık adres metni.
+  line      String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("addresses")
 }
 
 model EquipmentListing {
