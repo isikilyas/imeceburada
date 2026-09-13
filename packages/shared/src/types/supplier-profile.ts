@@ -13,6 +13,8 @@ export interface SupplierProfileDto {
   taxNumber?: string | null;
   mersisNumber?: string | null;
   website?: string | null;
+  companyEmail?: string | null;
+  logoUrl?: string | null;
   supplyCategories: string[];
   membershipStatus: string;
   membershipExpiresAt?: string | null;
@@ -29,6 +31,7 @@ export interface UpdateSupplierProfileInput {
   taxNumber?: string;
   mersisNumber?: string;
   website?: string;
+  companyEmail?: string;
   supplyCategories?: string[];
   phoneVisible?: boolean;
 }

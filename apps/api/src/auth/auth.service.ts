@@ -48,7 +48,7 @@ export class AuthService {
       },
     });
 
-    return this.buildAuthResponse(user.id, user.email, user.role as UserRole);
+    return this.buildAuthResponse(user.id, user.email, user.role as UserRole, user.tokenVersion);
   }
 
   async registerCompany(dto: RegisterCompanyDto): Promise<AuthResponse> {
@@ -73,7 +73,7 @@ export class AuthService {
       },
     });
 
-    return this.buildAuthResponse(user.id, user.email, user.role as UserRole);
+    return this.buildAuthResponse(user.id, user.email, user.role as UserRole, user.tokenVersion);
   }
 
   async registerSupplier(dto: RegisterSupplierDto): Promise<AuthResponse> {
@@ -101,7 +101,7 @@ export class AuthService {
       },
     });
 
-    return this.buildAuthResponse(user.id, user.email, user.role as UserRole);
+    return this.buildAuthResponse(user.id, user.email, user.role as UserRole, user.tokenVersion);
   }
 
   async registerSubcontractor(dto: RegisterSubcontractorDto): Promise<AuthResponse> {
@@ -132,7 +132,7 @@ export class AuthService {
       },
     });
 
-    return this.buildAuthResponse(user.id, user.email, user.role as UserRole);
+    return this.buildAuthResponse(user.id, user.email, user.role as UserRole, user.tokenVersion);
   }
 
   /**
@@ -153,21 +153,24 @@ export class AuthService {
     const passwordMatches = await bcrypt.compare(dto.password, user.passwordHash);
     if (!passwordMatches) throw new UnauthorizedException("Bilgiler hatalı");
 
-    if (user.deactivatedAt) {
-      await this.prisma.user.update({ where: { id: user.id }, data: { deactivatedAt: null } });
-    }
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { lastLoginAt: new Date(), ...(user.deactivatedAt ? { deactivatedAt: null } : {}) },
+    });
 
-    return this.buildAuthResponse(user.id, user.email, user.role as UserRole);
+    return this.buildAuthResponse(user.id, user.email, user.role as UserRole, user.tokenVersion);
   }
 
   async refresh(refreshToken: string): Promise<AuthTokens> {
     try {
-      const payload = await this.jwtService.verifyAsync<{ sub: string }>(refreshToken, {
+      const payload = await this.jwtService.verifyAsync<{ sub: string; tokenVersion: number }>(refreshToken, {
         secret: this.config.get<string>("JWT_REFRESH_SECRET"),
       });
       const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
-      if (!user) throw new UnauthorizedException();
-      return this.signTokens(user.id);
+      if (!user || user.deactivatedAt || user.tokenVersion !== payload.tokenVersion) {
+        throw new UnauthorizedException();
+      }
+      return this.signTokens(user.id, user.tokenVersion);
     } catch {
       throw new UnauthorizedException("Geçersiz veya süresi dolmuş refresh token");
     }
@@ -246,16 +249,16 @@ export class AuthService {
     return (match?.user as { id: string; email: string; role: UserRole } | undefined) ?? null;
   }
 
-  private signTokens(userId: string): AuthTokens {
+  private signTokens(userId: string, tokenVersion: number): AuthTokens {
     const accessToken = this.jwtService.sign(
-      { sub: userId },
+      { sub: userId, tokenVersion },
       {
         secret: this.config.get<string>("JWT_ACCESS_SECRET"),
         expiresIn: this.config.get<string>("JWT_ACCESS_EXPIRES_IN") ?? "15m",
       },
     );
     const refreshToken = this.jwtService.sign(
-      { sub: userId },
+      { sub: userId, tokenVersion },
       {
         secret: this.config.get<string>("JWT_REFRESH_SECRET"),
         expiresIn: this.config.get<string>("JWT_REFRESH_EXPIRES_IN") ?? "7d",
@@ -264,8 +267,8 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  private buildAuthResponse(id: string, email: string, role: UserRole): AuthResponse {
-    const tokens = this.signTokens(id);
+  private buildAuthResponse(id: string, email: string, role: UserRole, tokenVersion: number): AuthResponse {
+    const tokens = this.signTokens(id, tokenVersion);
     return { ...tokens, user: { id, email, role } };
   }
 }

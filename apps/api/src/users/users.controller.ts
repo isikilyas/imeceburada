@@ -14,6 +14,7 @@ import { DeactivateAccountDto } from "./dto/deactivate-account.dto";
 import { ChangePasswordDto } from "./dto/change-password.dto";
 import { RequestEmailChangeDto } from "./dto/request-email-change.dto";
 import { ConfirmEmailChangeDto } from "./dto/confirm-email-change.dto";
+import { UpdateUsernameDto } from "./dto/update-username.dto";
 import { photoUploadOptions, finalizeUploadedImage } from "../common/photo-upload.util";
 
 @UseGuards(JwtAuthGuard)
@@ -58,6 +59,23 @@ export class UsersController {
     return this.usersService.removeCandidatePhoto(user);
   }
 
+  @Post("company-logo")
+  @UseInterceptors(FileInterceptor("logo", photoUploadOptions("company-logos")))
+  uploadCompanyLogo(@CurrentUser() user: RequestUser, @UploadedFile() file: Express.Multer.File) {
+    if (!file) throw new BadRequestException("Dosya bulunamadı");
+    return this.usersService.setCompanyLogo(user, finalizeUploadedImage(file));
+  }
+
+  @Delete("company-logo")
+  removeCompanyLogo(@CurrentUser() user: RequestUser) {
+    return this.usersService.removeCompanyLogo(user);
+  }
+
+  @Patch("username")
+  updateUsername(@CurrentUser() user: RequestUser, @Body() dto: UpdateUsernameDto) {
+    return this.usersService.updateUsername(user, dto.username ?? null);
+  }
+
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @Patch("password")
   changePassword(@CurrentUser() user: RequestUser, @Body() dto: ChangePasswordDto) {
@@ -74,6 +92,12 @@ export class UsersController {
   @Post("email/confirm-change")
   confirmEmailChange(@CurrentUser() user: RequestUser, @Body() dto: ConfirmEmailChangeDto) {
     return this.usersService.confirmEmailChange(user, dto);
+  }
+
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post("logout-all")
+  logoutAllDevices(@CurrentUser() user: RequestUser) {
+    return this.usersService.logoutAllDevices(user);
   }
 
   @Throttle({ default: { limit: 5, ttl: 60_000 } })

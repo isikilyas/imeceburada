@@ -1,4 +1,4 @@
-import { ArrayMinSize, IsArray, IsBoolean, IsOptional, IsString, Length, MaxLength } from "class-validator";
+import { ArrayMinSize, IsArray, IsBoolean, IsEmail, IsOptional, IsString, Length, MaxLength } from "class-validator";
 
 export class UpdateSubcontractorProfileDto {
   @IsOptional()
@@ -52,6 +52,10 @@ export class UpdateSubcontractorProfileDto {
   @IsOptional()
   @IsString()
   website?: string;
+
+  @IsOptional()
+  @IsEmail()
+  companyEmail?: string;
 
   @IsOptional()
   @IsBoolean()

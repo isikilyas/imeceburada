@@ -22,17 +22,29 @@ import { TradeCategorySelect } from "@/components/trade-category-select";
 import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-select";
 import { MaterialCategoryMultiSelect } from "@/components/material-category-multi-select";
 import { CandidatePhotoUploader } from "@/components/candidate-photo-uploader";
+import { CompanyLogoUploader } from "@/components/company-logo-uploader";
 import { CompanyNameWarning } from "@/components/company-name-warning";
 import { VerificationStatusCard } from "@/components/verification-status-card";
 import { DeleteAccountSection } from "@/components/delete-account-section";
 import { DeactivateAccountSection } from "@/components/deactivate-account-section";
 import { ChangePasswordForm } from "@/components/change-password-form";
 import { ChangeEmailForm } from "@/components/change-email-form";
+import { LogoutAllDevicesButton } from "@/components/logout-all-devices-button";
+import { UsernameField } from "@/components/username-field";
 import { AccountInfoCard } from "@/components/account-info-card";
 import { TabNav } from "@/components/tab-nav";
 import { FormSkeleton } from "@/components/form-skeleton";
 
 type Tab = "profile" | "corporate" | "privacy" | "security" | "membership" | "activity";
+
+interface AccountFields {
+  role: string;
+  email: string;
+  username?: string | null;
+  accountCreatedAt: string;
+  lastLoginAt?: string | null;
+  pendingEmail?: string | null;
+}
 
 function ActivityCard({ title, hint, href }: { title: string; hint: string; href: string }) {
   const { t } = useLocale();
@@ -53,7 +65,7 @@ function CandidateAccountPanel() {
   const { authFetch } = useAuth();
   const { data: profile, isLoading } = useQuery({
     queryKey: ["my-candidate-profile"],
-    queryFn: () => authFetch<CandidateProfileDto & { role: string; email: string; accountCreatedAt: string }>(
+    queryFn: () => authFetch<CandidateProfileDto & AccountFields>(
       "/users/me/profile",
     ),
   });
@@ -70,6 +82,7 @@ function CandidateAccountPanel() {
     TRADE_FIELDS[0].branches[0].professions[0].value,
   );
   const [phone, setPhone] = useState("");
+  const [skillsText, setSkillsText] = useState("");
   const [workPreferences, setWorkPreferences] = useState<string[]>([]);
   const [isPublic, setIsPublic] = useState(false);
   const [photoVisible, setPhotoVisible] = useState(true);
@@ -86,6 +99,7 @@ function CandidateAccountPanel() {
     setExperienceYears(profile.experienceYears);
     setPrimaryTradeCategory(profile.primaryTradeCategory ?? TRADE_FIELDS[0].branches[0].professions[0].value);
     setPhone(profile.phone ?? "");
+    setSkillsText(profile.skills.join(", "));
     setWorkPreferences(profile.workPreferences);
     setIsPublic(profile.isPublic);
     setPhotoVisible(profile.photoVisible);
@@ -95,6 +109,10 @@ function CandidateAccountPanel() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    const skills = skillsText
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
     await save({
       fullName,
       city,
@@ -104,6 +122,7 @@ function CandidateAccountPanel() {
       experienceYears,
       primaryTradeCategory,
       phone,
+      skills,
       workPreferences,
       isPublic,
       photoVisible,
@@ -123,7 +142,13 @@ function CandidateAccountPanel() {
 
   return (
     <div className="space-y-6">
-      <AccountInfoCard email={profile.email} accountCreatedAt={profile.accountCreatedAt} isCorporate={false} />
+      <AccountInfoCard
+        email={profile.email}
+        accountCreatedAt={profile.accountCreatedAt}
+        lastLoginAt={profile.lastLoginAt}
+        pendingEmail={profile.pendingEmail}
+        isCorporate={false}
+      />
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
       {(tab === "profile" || tab === "privacy") && (
@@ -131,6 +156,7 @@ function CandidateAccountPanel() {
           {tab === "profile" && (
             <>
               <CandidatePhotoUploader photoUrl={profile.photoUrl} />
+              <UsernameField value={profile.username} queryKey="my-candidate-profile" />
               <Field label={t("dashboard.candidate.fullNameLabel")}>
                 <input value={fullName} onChange={(e) => setFullName(e.target.value)} className={inputClass} />
               </Field>
@@ -171,6 +197,10 @@ function CandidateAccountPanel() {
                   className={inputClass}
                 />
               </Field>
+              <Field label={t("accountPanel.skillsLabel")}>
+                <input value={skillsText} onChange={(e) => setSkillsText(e.target.value)} className={inputClass} />
+              </Field>
+              <p className="-mt-2 text-xs text-silver-500">{t("accountPanel.skillsHint")}</p>
 
               <div>
                 <p className="mb-2 text-sm text-silver-300">{t("dashboard.candidate.workPreferencesLabel")}</p>
@@ -263,6 +293,7 @@ function CandidateAccountPanel() {
         <div className="space-y-4">
           <ChangePasswordForm />
           <ChangeEmailForm />
+          <LogoutAllDevicesButton />
           <DeactivateAccountSection />
           <DeleteAccountSection />
         </div>
@@ -291,7 +322,7 @@ function CompanyAccountPanel() {
   const { authFetch } = useAuth();
   const { data: profile, isLoading } = useQuery({
     queryKey: ["my-company-profile"],
-    queryFn: () => authFetch<CompanyProfileDto & { role: string; email: string; accountCreatedAt: string }>(
+    queryFn: () => authFetch<CompanyProfileDto & AccountFields>(
       "/users/me/profile",
     ),
   });
@@ -309,6 +340,7 @@ function CompanyAccountPanel() {
   const [taxNumber, setTaxNumber] = useState("");
   const [mersisNumber, setMersisNumber] = useState("");
   const [website, setWebsite] = useState("");
+  const [companyEmail, setCompanyEmail] = useState("");
   const [phoneVisible, setPhoneVisible] = useState(false);
 
   useEffect(() => {
@@ -324,6 +356,7 @@ function CompanyAccountPanel() {
     setTaxNumber(profile.taxNumber ?? "");
     setMersisNumber(profile.mersisNumber ?? "");
     setWebsite(profile.website ?? "");
+    setCompanyEmail(profile.companyEmail ?? "");
     setPhoneVisible(profile.phoneVisible);
   }, [profile]);
 
@@ -341,6 +374,7 @@ function CompanyAccountPanel() {
       taxNumber: taxNumber || undefined,
       mersisNumber: mersisNumber || undefined,
       website: website || undefined,
+      companyEmail: companyEmail || undefined,
       phoneVisible,
     });
   }
@@ -358,13 +392,21 @@ function CompanyAccountPanel() {
 
   return (
     <div className="space-y-6">
-      <AccountInfoCard email={profile.email} accountCreatedAt={profile.accountCreatedAt} isCorporate />
+      <AccountInfoCard
+        email={profile.email}
+        accountCreatedAt={profile.accountCreatedAt}
+        lastLoginAt={profile.lastLoginAt}
+        pendingEmail={profile.pendingEmail}
+        isCorporate
+      />
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
       {(tab === "profile" || tab === "corporate" || tab === "privacy") && (
         <form onSubmit={handleSubmit} className="space-y-4">
           {tab === "profile" && (
             <>
+              <CompanyLogoUploader logoUrl={profile.logoUrl} queryKey="my-company-profile" />
+              <UsernameField value={profile.username} queryKey="my-company-profile" />
               <Field label={t("dashboard.company.companyNameLabel")}>
                 <input value={companyName} onChange={(e) => setCompanyName(e.target.value)} className={inputClass} />
               </Field>
@@ -410,6 +452,14 @@ function CompanyAccountPanel() {
               <Field label={t("accountPanel.corporate.websiteLabel")}>
                 <input value={website} onChange={(e) => setWebsite(e.target.value)} className={inputClass} />
               </Field>
+              <Field label={t("accountPanel.corporate.companyEmailLabel")}>
+                <input
+                  type="email"
+                  value={companyEmail}
+                  onChange={(e) => setCompanyEmail(e.target.value)}
+                  className={inputClass}
+                />
+              </Field>
             </>
           )}
 
@@ -439,6 +489,7 @@ function CompanyAccountPanel() {
         <div className="space-y-4">
           <ChangePasswordForm />
           <ChangeEmailForm />
+          <LogoutAllDevicesButton />
           <DeactivateAccountSection />
           <DeleteAccountSection />
         </div>
@@ -475,7 +526,7 @@ function SupplierAccountPanel() {
   const { authFetch } = useAuth();
   const { data: profile, isLoading } = useQuery({
     queryKey: ["my-supplier-profile"],
-    queryFn: () => authFetch<SupplierProfileDto & { role: string; email: string; accountCreatedAt: string }>(
+    queryFn: () => authFetch<SupplierProfileDto & AccountFields>(
       "/users/me/profile",
     ),
   });
@@ -492,6 +543,7 @@ function SupplierAccountPanel() {
   const [taxNumber, setTaxNumber] = useState("");
   const [mersisNumber, setMersisNumber] = useState("");
   const [website, setWebsite] = useState("");
+  const [companyEmail, setCompanyEmail] = useState("");
   const [supplyCategories, setSupplyCategories] = useState<string[]>([]);
   const [phoneVisible, setPhoneVisible] = useState(false);
 
@@ -507,6 +559,7 @@ function SupplierAccountPanel() {
     setTaxNumber(profile.taxNumber ?? "");
     setMersisNumber(profile.mersisNumber ?? "");
     setWebsite(profile.website ?? "");
+    setCompanyEmail(profile.companyEmail ?? "");
     setSupplyCategories(profile.supplyCategories);
     setPhoneVisible(profile.phoneVisible);
   }, [profile]);
@@ -524,6 +577,7 @@ function SupplierAccountPanel() {
       taxNumber: taxNumber || undefined,
       mersisNumber: mersisNumber || undefined,
       website: website || undefined,
+      companyEmail: companyEmail || undefined,
       supplyCategories,
       phoneVisible,
     });
@@ -542,13 +596,21 @@ function SupplierAccountPanel() {
 
   return (
     <div className="space-y-6">
-      <AccountInfoCard email={profile.email} accountCreatedAt={profile.accountCreatedAt} isCorporate />
+      <AccountInfoCard
+        email={profile.email}
+        accountCreatedAt={profile.accountCreatedAt}
+        lastLoginAt={profile.lastLoginAt}
+        pendingEmail={profile.pendingEmail}
+        isCorporate
+      />
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
       {(tab === "profile" || tab === "corporate" || tab === "privacy") && (
         <form onSubmit={handleSubmit} className="space-y-4">
           {tab === "profile" && (
             <>
+              <CompanyLogoUploader logoUrl={profile.logoUrl} queryKey="my-supplier-profile" />
+              <UsernameField value={profile.username} queryKey="my-supplier-profile" />
               <Field label={t("dashboard.supplier.companyNameLabel")}>
                 <input value={companyName} onChange={(e) => setCompanyName(e.target.value)} className={inputClass} />
               </Field>
@@ -592,6 +654,14 @@ function SupplierAccountPanel() {
               <Field label={t("accountPanel.corporate.websiteLabel")}>
                 <input value={website} onChange={(e) => setWebsite(e.target.value)} className={inputClass} />
               </Field>
+              <Field label={t("accountPanel.corporate.companyEmailLabel")}>
+                <input
+                  type="email"
+                  value={companyEmail}
+                  onChange={(e) => setCompanyEmail(e.target.value)}
+                  className={inputClass}
+                />
+              </Field>
             </>
           )}
 
@@ -621,6 +691,7 @@ function SupplierAccountPanel() {
         <div className="space-y-4">
           <ChangePasswordForm />
           <ChangeEmailForm />
+          <LogoutAllDevicesButton />
           <DeactivateAccountSection />
           <DeleteAccountSection />
         </div>
@@ -658,7 +729,7 @@ function SubcontractorAccountPanel() {
   const { data: profile, isLoading } = useQuery({
     queryKey: ["my-subcontractor-profile"],
     queryFn: () =>
-      authFetch<SubcontractorProfileDto & { role: string; email: string; accountCreatedAt: string }>(
+      authFetch<SubcontractorProfileDto & AccountFields>(
         "/users/me/profile",
       ),
   });
@@ -680,6 +751,7 @@ function SubcontractorAccountPanel() {
   const [taxNumber, setTaxNumber] = useState("");
   const [mersisNumber, setMersisNumber] = useState("");
   const [website, setWebsite] = useState("");
+  const [companyEmail, setCompanyEmail] = useState("");
   const [isPublic, setIsPublic] = useState(true);
   const [phoneVisible, setPhoneVisible] = useState(false);
 
@@ -696,6 +768,7 @@ function SubcontractorAccountPanel() {
     setTaxNumber(profile.taxNumber ?? "");
     setMersisNumber(profile.mersisNumber ?? "");
     setWebsite(profile.website ?? "");
+    setCompanyEmail(profile.companyEmail ?? "");
     setIsPublic(profile.isPublic);
     setPhoneVisible(profile.phoneVisible);
   }, [profile]);
@@ -718,6 +791,7 @@ function SubcontractorAccountPanel() {
       taxNumber: taxNumber || undefined,
       mersisNumber: mersisNumber || undefined,
       website: website || undefined,
+      companyEmail: companyEmail || undefined,
       isPublic,
       phoneVisible,
     });
@@ -736,13 +810,21 @@ function SubcontractorAccountPanel() {
 
   return (
     <div className="space-y-6">
-      <AccountInfoCard email={profile.email} accountCreatedAt={profile.accountCreatedAt} isCorporate />
+      <AccountInfoCard
+        email={profile.email}
+        accountCreatedAt={profile.accountCreatedAt}
+        lastLoginAt={profile.lastLoginAt}
+        pendingEmail={profile.pendingEmail}
+        isCorporate
+      />
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
       {(tab === "profile" || tab === "corporate" || tab === "privacy") && (
         <form onSubmit={handleSubmit} className="space-y-4">
           {tab === "profile" && (
             <>
+              <CompanyLogoUploader logoUrl={profile.logoUrl} queryKey="my-subcontractor-profile" />
+              <UsernameField value={profile.username} queryKey="my-subcontractor-profile" />
               <Field label={t("dashboard.subcontractor.companyNameLabel")}>
                 <input value={companyName} onChange={(e) => setCompanyName(e.target.value)} className={inputClass} />
               </Field>
@@ -792,6 +874,14 @@ function SubcontractorAccountPanel() {
               <Field label={t("accountPanel.corporate.websiteLabel")}>
                 <input value={website} onChange={(e) => setWebsite(e.target.value)} className={inputClass} />
               </Field>
+              <Field label={t("accountPanel.corporate.companyEmailLabel")}>
+                <input
+                  type="email"
+                  value={companyEmail}
+                  onChange={(e) => setCompanyEmail(e.target.value)}
+                  className={inputClass}
+                />
+              </Field>
             </>
           )}
 
@@ -827,6 +917,7 @@ function SubcontractorAccountPanel() {
         <div className="space-y-4">
           <ChangePasswordForm />
           <ChangeEmailForm />
+          <LogoutAllDevicesButton />
           <DeactivateAccountSection />
           <DeleteAccountSection />
         </div>
