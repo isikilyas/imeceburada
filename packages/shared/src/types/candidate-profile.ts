@@ -7,6 +7,8 @@ export interface CandidateProfileDto {
   phoneVisible: boolean;
   city: string;
   district?: string | null;
+  address?: string | null;
+  bio?: string | null;
   experienceYears: number;
   skills: string[];
   workPreferences: string[];
@@ -23,6 +25,8 @@ export interface UpdateCandidateProfileInput {
   phoneVisible?: boolean;
   city?: string;
   district?: string;
+  address?: string;
+  bio?: string;
   experienceYears?: number;
   skills?: string[];
   workPreferences?: string[];

@@ -157,6 +157,11 @@ model CandidateProfile {
   phoneVerificationExpiresAt  DateTime?
   city                String
   district            String?
+  /// Açık adres — sadece kullanıcının kendi Hesabım panelinde görünür,
+  /// hiçbir dizin/ilan yanıtında başka kullanıcılara gösterilmez.
+  address             String?
+  /// Hakkımda / kısa biyografi.
+  bio                 String?
   experienceYears     Int      @default(0)
   skills              String[] @default([])
   workPreferences     String[] @default([])
@@ -183,6 +188,14 @@ model CompanyProfile {
   sector      String?
   city        String
   district    String?
+  /// Açık adres — sadece kullanıcının kendi Hesabım panelinde görünür.
+  address     String?
+  description String?
+  authorizedPersonName String?
+  taxOffice            String?
+  taxNumber            String?
+  mersisNumber         String?
+  website              String?
 
   phone                       String?
   /// Telefon numarasının başka kullanıcılara gösterilip gösterilmeyeceği —
@@ -221,6 +234,14 @@ model SupplierProfile {
   companyName String
   city        String
   district    String?
+  /// Açık adres — sadece kullanıcının kendi Hesabım panelinde görünür.
+  address     String?
+  description String?
+  authorizedPersonName String?
+  taxOffice            String?
+  taxNumber            String?
+  mersisNumber         String?
+  website              String?
   supplyCategories String[]
 
   phone                      String?
@@ -261,8 +282,15 @@ model SubcontractorProfile {
   companyName           String
   city                  String
   district              String?
+  /// Açık adres — sadece kullanıcının kendi Hesabım panelinde görünür.
+  address               String?
   tradeCategories       String[]
   description           String?
+  authorizedPersonName  String?
+  taxOffice             String?
+  taxNumber             String?
+  mersisNumber          String?
+  website               String?
   isPublic              Boolean  @default(true)
 
   phone                      String?

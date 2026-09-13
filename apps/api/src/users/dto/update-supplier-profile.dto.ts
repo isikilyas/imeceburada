@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsOptional, IsString, Length } from "class-validator";
+import { IsArray, IsBoolean, IsOptional, IsString, Length, MaxLength } from "class-validator";
 
 export class UpdateSupplierProfileDto {
   @IsOptional()
@@ -16,6 +16,36 @@ export class UpdateSupplierProfileDto {
   @IsOptional()
   @IsString()
   district?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  address?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(1000)
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  authorizedPersonName?: string;
+
+  @IsOptional()
+  @IsString()
+  taxOffice?: string;
+
+  @IsOptional()
+  @IsString()
+  taxNumber?: string;
+
+  @IsOptional()
+  @IsString()
+  mersisNumber?: string;
+
+  @IsOptional()
+  @IsString()
+  website?: string;
 
   @IsOptional()
   @IsArray()

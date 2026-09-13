@@ -1,10 +1,9 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  CompanyProfileDto,
   CreateJobInput,
   EMPLOYMENT_TYPES,
   EmploymentType,
@@ -16,90 +15,12 @@ import {
 } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
-import { useProfileSave } from "@/lib/use-profile-save";
-import { DeleteAccountSection } from "@/components/delete-account-section";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass, selectClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
-import { VerificationStatusCard } from "@/components/verification-status-card";
 import { BetaBanner } from "@/components/beta-banner";
 import { FormSkeleton } from "@/components/form-skeleton";
-import { CompanyNameWarning } from "@/components/company-name-warning";
-
-function ProfileEditor() {
-  const { authFetch } = useAuth();
-  const { t } = useLocale();
-  const { data: profile, isLoading } = useQuery({
-    queryKey: ["my-company-profile"],
-    queryFn: () => authFetch<CompanyProfileDto>("/users/me/profile"),
-  });
-  const { status, error, save } = useProfileSave("/users/me/profile/company", ["my-company-profile"]);
-
-  const [companyName, setCompanyName] = useState("");
-  const [sector, setSector] = useState("");
-  const [city, setCity] = useState(TURKISH_PROVINCES[0]);
-  const [district, setDistrict] = useState("");
-  const [phoneVisible, setPhoneVisible] = useState(false);
-
-  useEffect(() => {
-    if (!profile) return;
-    setCompanyName(profile.companyName);
-    setSector(profile.sector ?? "");
-    setCity(profile.city);
-    setDistrict(profile.district ?? "");
-    setPhoneVisible(profile.phoneVisible);
-  }, [profile]);
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    await save({ companyName, sector: sector || undefined, city, district: district || undefined, phoneVisible });
-  }
-
-  if (isLoading) return <FormSkeleton rows={5} />;
-
-  return (
-    <div className="space-y-6">
-      {profile && (
-        <VerificationStatusCard
-          phoneVerified={!!profile.phoneVerifiedAt}
-          membershipStatus={profile.membershipStatus}
-          membershipExpiresAt={profile.membershipExpiresAt}
-        />
-      )}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Field label={t("dashboard.company.companyNameLabel")}>
-          <input value={companyName} onChange={(e) => setCompanyName(e.target.value)} className={inputClass} />
-        </Field>
-        <CompanyNameWarning name={companyName} />
-        <Field label={t("dashboard.company.sectorLabel")}>
-          <input value={sector} onChange={(e) => setSector(e.target.value)} className={inputClass} />
-        </Field>
-        <ProvinceDistrictSelect
-          city={city}
-          district={district}
-          onCityChange={setCity}
-          onDistrictChange={setDistrict}
-          allowEmptyDistrict
-        />
-        <label className="flex items-center gap-2 text-sm text-silver-300">
-          <input type="checkbox" checked={phoneVisible} onChange={(e) => setPhoneVisible(e.target.checked)} />
-          {t("dashboard.company.phoneVisibleLabel")}
-        </label>
-        <p className="text-xs text-silver-500">{t("dashboard.company.phoneVisibleHint")}</p>
-        {error && <p className="text-sm text-red-400">{error}</p>}
-        {status === "saved" && <p className="text-sm text-green-400">{t("dashboard.form.saved")}</p>}
-        <button
-          type="submit"
-          disabled={status === "saving"}
-          className="w-full rounded-md bg-gold-500 py-2.5 font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60"
-        >
-          {status === "saving" ? t("dashboard.form.saving") : t("dashboard.form.save")}
-        </button>
-      </form>
-    </div>
-  );
-}
 
 export default function CompanyDashboardPage() {
   const { user, isLoading: authLoading, authFetch } = useAuth();
@@ -157,7 +78,12 @@ export default function CompanyDashboardPage() {
       <BetaBanner />
       <section>
         <h1 className="mb-4 text-2xl font-semibold text-silver-300">{t("dashboard.company.profileHeading")}</h1>
-        <ProfileEditor />
+        <Link
+          href="/account"
+          className="block rounded-lg border border-ink-800 bg-ink-900 p-4 text-sm text-gold-400 hover:border-gold-500"
+        >
+          {t("accountPanel.goToAccountLink")}
+        </Link>
       </section>
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
@@ -297,8 +223,6 @@ export default function CompanyDashboardPage() {
         </form>
       </section>
       </div>
-
-      <DeleteAccountSection />
     </div>
   );
 }
