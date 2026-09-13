@@ -29,6 +29,24 @@ export interface InitiateCheckoutInput {
   plan: MembershipPlan;
 }
 
+/** Bir kullanıcının geçmiş üyelik/ödeme kaydı — Hesabım panelindeki "Faturalarım" listesinde gösterilir. */
+export interface MembershipHistoryEntry {
+  id: string;
+  plan: MembershipPlan;
+  /** Ödeme anındaki plan adı/fiyat metninin anlık görüntüsü — ileride fiyat değişse bile geçmiş kayıt değişmez. */
+  planLabel: string | null;
+  planPriceLabel: string | null;
+  status: MembershipStatus;
+  billingContactName: string | null;
+  billingCity: string | null;
+  billingAddress: string | null;
+  billingZipCode: string | null;
+  startedAt: string | null;
+  currentPeriodEnd: string | null;
+  canceledAt: string | null;
+  createdAt: string;
+}
+
 export interface InitiateCheckoutResponse {
   checkoutFormContent: string;
   token: string;
