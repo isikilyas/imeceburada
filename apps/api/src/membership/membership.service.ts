@@ -5,7 +5,12 @@ import { PrismaService } from "../prisma/prisma.service";
 import { IyzicoService } from "../iyzico/iyzico.service";
 import { RequestUser } from "../auth/types/request-user";
 import { InitiateCheckoutDto } from "./dto/initiate-checkout.dto";
-import { CompanyMembershipDto, InitiateCheckoutResponse, MEMBERSHIP_PLANS } from "@imeceburada/shared";
+import {
+  CompanyMembershipDto,
+  InitiateCheckoutResponse,
+  MEMBERSHIP_PLANS,
+  MembershipHistoryEntry,
+} from "@imeceburada/shared";
 import { isBetaFreeAccess } from "./beta.util";
 
 interface PayingProfile {
@@ -98,6 +103,31 @@ export class MembershipService {
     };
   }
 
+  /** Fatura/ödeme geçmişi — kullanıcının bugüne kadarki tüm üyelik kayıtları (bekleyen/başarısız denemeler dahil), en yeniden eskiye. */
+  async getMyHistory(user: RequestUser): Promise<MembershipHistoryEntry[]> {
+    const profile = await this.findProfile(user);
+    const subscriptions = await this.prisma.membershipSubscription.findMany({
+      where: this.subscriptionOwnerWhere(user.role as PayingRole, profile.id),
+      orderBy: { createdAt: "desc" },
+    });
+
+    return subscriptions.map((s) => ({
+      id: s.id,
+      plan: s.plan,
+      planLabel: s.planLabel,
+      planPriceLabel: s.planPriceLabel,
+      status: s.status,
+      billingContactName: s.billingContactName,
+      billingCity: s.billingCity,
+      billingAddress: s.billingAddress,
+      billingZipCode: s.billingZipCode,
+      startedAt: s.startedAt?.toISOString() ?? null,
+      currentPeriodEnd: s.currentPeriodEnd?.toISOString() ?? null,
+      canceledAt: s.canceledAt?.toISOString() ?? null,
+      createdAt: s.createdAt.toISOString(),
+    }));
+  }
+
   async initiateCheckout(user: RequestUser, dto: InitiateCheckoutDto): Promise<InitiateCheckoutResponse> {
     const profile = await this.findProfile(user);
     const email = (await this.prisma.user.findUnique({ where: { id: profile.userId } }))?.email;
@@ -120,12 +150,21 @@ export class MembershipService {
       );
     }
 
+    const planInfo = MEMBERSHIP_PLANS.find((p) => p.plan === dto.plan);
+
     const subscription = await this.prisma.membershipSubscription.create({
       data: {
         ...this.subscriptionOwnerCreateData(user.role as PayingRole, profile.id),
         plan: dto.plan,
         status: "PENDING",
         iyzicoPricingPlanReferenceCode: pricingPlanReferenceCode,
+        planLabel: planInfo?.label,
+        planPriceLabel: planInfo?.priceLabel,
+        identityNumber: dto.identityNumber,
+        billingContactName: dto.billingContactName,
+        billingCity: dto.billingCity,
+        billingAddress: dto.billingAddress,
+        billingZipCode: dto.billingZipCode,
       },
     });
 

@@ -33,6 +33,7 @@ import { LogoutAllDevicesButton } from "@/components/logout-all-devices-button";
 import { UsernameField } from "@/components/username-field";
 import { AccountInfoCard } from "@/components/account-info-card";
 import { AddressBook } from "@/components/address-book";
+import { MembershipHistoryList } from "@/components/membership-history-list";
 import { TabNav } from "@/components/tab-nav";
 import { FormSkeleton } from "@/components/form-skeleton";
 
@@ -503,11 +504,14 @@ function CompanyAccountPanel() {
       )}
 
       {tab === "membership" && (
-        <VerificationStatusCard
-          phoneVerified={!!profile.phoneVerifiedAt}
-          membershipStatus={profile.membershipStatus}
-          membershipExpiresAt={profile.membershipExpiresAt}
-        />
+        <div className="space-y-4">
+          <VerificationStatusCard
+            phoneVerified={!!profile.phoneVerifiedAt}
+            membershipStatus={profile.membershipStatus}
+            membershipExpiresAt={profile.membershipExpiresAt}
+          />
+          <MembershipHistoryList />
+        </div>
       )}
 
       {tab === "activity" && (
@@ -708,11 +712,14 @@ function SupplierAccountPanel() {
       )}
 
       {tab === "membership" && (
-        <VerificationStatusCard
-          phoneVerified={!!profile.phoneVerifiedAt}
-          membershipStatus={profile.membershipStatus}
-          membershipExpiresAt={profile.membershipExpiresAt}
-        />
+        <div className="space-y-4">
+          <VerificationStatusCard
+            phoneVerified={!!profile.phoneVerifiedAt}
+            membershipStatus={profile.membershipStatus}
+            membershipExpiresAt={profile.membershipExpiresAt}
+          />
+          <MembershipHistoryList />
+        </div>
       )}
 
       {tab === "activity" && (
@@ -937,11 +944,14 @@ function SubcontractorAccountPanel() {
       )}
 
       {tab === "membership" && (
-        <VerificationStatusCard
-          phoneVerified={!!profile.phoneVerifiedAt}
-          membershipStatus={profile.membershipStatus}
-          membershipExpiresAt={profile.membershipExpiresAt}
-        />
+        <div className="space-y-4">
+          <VerificationStatusCard
+            phoneVerified={!!profile.phoneVerifiedAt}
+            membershipStatus={profile.membershipStatus}
+            membershipExpiresAt={profile.membershipExpiresAt}
+          />
+          <MembershipHistoryList />
+        </div>
       )}
 
       {tab === "activity" && (

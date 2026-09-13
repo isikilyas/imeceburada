@@ -25,6 +25,13 @@ export class MembershipController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles("COMPANY", "SUPPLIER", "SUBCONTRACTOR")
+  @Get("history")
+  getMyHistory(@CurrentUser() user: RequestUser) {
+    return this.membershipService.getMyHistory(user);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("COMPANY", "SUPPLIER", "SUBCONTRACTOR")
   @Post("checkout")
   initiateCheckout(@CurrentUser() user: RequestUser, @Body() dto: InitiateCheckoutDto) {
     return this.membershipService.initiateCheckout(user, dto);

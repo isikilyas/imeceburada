@@ -386,6 +386,20 @@ model MembershipSubscription {
   iyzicoSubscriptionReferenceCode String?
   checkoutToken                   String?
 
+  /// Ödeme anındaki plan etiketi/fiyat metninin anlık görüntüsü — ileride
+  /// MEMBERSHIP_PLANS içindeki fiyatlar değişse bile geçmiş kayıt o anki
+  /// hâliyle kalır.
+  planLabel      String?
+  planPriceLabel String?
+
+  /// initiateCheckout sırasında iyzico'ya gönderilen ama daha önce hiçbir
+  /// yerde saklanmayan fatura bilgileri — "Faturalarım" geçmişinde gösterilir.
+  identityNumber     String?
+  billingContactName String?
+  billingCity        String?
+  billingAddress     String?
+  billingZipCode     String?
+
   startedAt        DateTime?
   currentPeriodEnd DateTime?
   canceledAt       DateTime?
