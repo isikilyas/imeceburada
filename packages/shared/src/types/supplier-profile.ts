@@ -2,6 +2,7 @@ export interface SupplierProfileDto {
   id: string;
   companyName: string;
   phone?: string | null;
+  phoneVisible: boolean;
   phoneVerifiedAt?: string | null;
   city: string;
   district?: string | null;
@@ -15,4 +16,5 @@ export interface UpdateSupplierProfileInput {
   city?: string;
   district?: string;
   supplyCategories?: string[];
+  phoneVisible?: boolean;
 }

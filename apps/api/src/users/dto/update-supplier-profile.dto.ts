@@ -1,9 +1,13 @@
-import { IsArray, IsOptional, IsString, Length } from "class-validator";
+import { IsArray, IsBoolean, IsOptional, IsString, Length } from "class-validator";
 
 export class UpdateSupplierProfileDto {
   @IsOptional()
   @IsString()
   companyName?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  phoneVisible?: boolean;
 
   @IsOptional()
   @IsString()

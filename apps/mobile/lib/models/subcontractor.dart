@@ -58,6 +58,7 @@ class SubcontractorProfile {
   final List<String> tradeCategories;
   final String? description;
   final bool isPublic;
+  final bool phoneVisible;
   final String membershipStatus;
 
   const SubcontractorProfile({
@@ -69,6 +70,7 @@ class SubcontractorProfile {
     required this.tradeCategories,
     this.description,
     required this.isPublic,
+    this.phoneVisible = false,
     required this.membershipStatus,
   });
 
@@ -81,6 +83,7 @@ class SubcontractorProfile {
         tradeCategories: (json['tradeCategories'] as List?)?.map((e) => e as String).toList() ?? [],
         description: json['description'] as String?,
         isPublic: json['isPublic'] as bool? ?? true,
+        phoneVisible: json['phoneVisible'] as bool? ?? false,
         membershipStatus: json['membershipStatus'] as String? ?? 'NONE',
       );
 }

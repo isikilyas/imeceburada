@@ -44,6 +44,10 @@ const Map<String, Map<String, String>> profileDict = {
         '"Şu an çalışıyorum" seçersen dizindeki WhatsApp ile iletişim butonun geçici olarak kapanır.',
     'profile.candidateProfile.publicListingLabel':
         'Profilimi firmaların arayabileceği usta dizininde göster',
+    'profile.candidateProfile.phoneVisibleLabel':
+        'Telefon numaramı dizindeki profilimde göster',
+    'profile.candidateProfile.phoneVisibleHint':
+        'Kapatırsan telefon numaran kaydedilmiş kalır ama başka kullanıcılara gösterilmez; açarsan aktif üyeliği olan firmalar seninle iletişime geçebilir.',
     'profile.candidateProfile.saved': 'Kaydedildi!',
     'profile.candidateProfile.saving': 'Kaydediliyor...',
     'profile.candidateProfile.saveButton': 'Kaydet',
@@ -92,6 +96,10 @@ const Map<String, Map<String, String>> profileDict = {
         'If you select "Currently working", your WhatsApp contact button in the directory will be temporarily hidden.',
     'profile.candidateProfile.publicListingLabel':
         'Show my profile in the worker directory companies can search',
+    'profile.candidateProfile.phoneVisibleLabel':
+        'Show my phone number on my profile in the directory',
+    'profile.candidateProfile.phoneVisibleHint':
+        "If disabled, your phone number stays saved but isn't shown to other users; if enabled, companies with an active membership can see it to reach you.",
     'profile.candidateProfile.saved': 'Saved!',
     'profile.candidateProfile.saving': 'Saving...',
     'profile.candidateProfile.saveButton': 'Save',
@@ -141,6 +149,10 @@ const Map<String, Map<String, String>> profileDict = {
         'Wenn du "Aktuell beschäftigt" wählst, wird dein WhatsApp-Kontaktbutton im Verzeichnis vorübergehend ausgeblendet.',
     'profile.candidateProfile.publicListingLabel':
         'Mein Profil im von Unternehmen durchsuchbaren Facharbeiterverzeichnis anzeigen',
+    'profile.candidateProfile.phoneVisibleLabel':
+        'Meine Telefonnummer in meinem Profil im Verzeichnis anzeigen',
+    'profile.candidateProfile.phoneVisibleHint':
+        'Wenn deaktiviert, bleibt deine Telefonnummer gespeichert, wird aber anderen Nutzern nicht angezeigt; wenn aktiviert, können Firmen mit aktiver Mitgliedschaft dich darüber erreichen.',
     'profile.candidateProfile.saved': 'Gespeichert!',
     'profile.candidateProfile.saving': 'Wird gespeichert...',
     'profile.candidateProfile.saveButton': 'Speichern',
@@ -190,6 +202,10 @@ const Map<String, Map<String, String>> profileDict = {
         'Если вы выберете «Сейчас занят», кнопка связи через WhatsApp в каталоге будет временно скрыта.',
     'profile.candidateProfile.publicListingLabel':
         'Показывать мой профиль в каталоге мастеров, доступном для поиска компаниями',
+    'profile.candidateProfile.phoneVisibleLabel':
+        'Показывать мой номер телефона в профиле в каталоге',
+    'profile.candidateProfile.phoneVisibleHint':
+        'Если отключить, номер телефона останется сохранённым, но не будет виден другим пользователям; если включить, компании с активным членством смогут его увидеть, чтобы связаться с вами.',
     'profile.candidateProfile.saved': 'Сохранено!',
     'profile.candidateProfile.saving': 'Сохранение...',
     'profile.candidateProfile.saveButton': 'Сохранить',
@@ -238,6 +254,10 @@ const Map<String, Map<String, String>> profileDict = {
         'إذا اخترت "مشغول حاليًا"، سيتم إخفاء زر التواصل عبر واتساب في الدليل مؤقتًا.',
     'profile.candidateProfile.publicListingLabel':
         'إظهار ملفي في دليل الحرفيين الذي يمكن للشركات البحث فيه',
+    'profile.candidateProfile.phoneVisibleLabel':
+        'إظهار رقم هاتفي في ملفي الشخصي بالدليل',
+    'profile.candidateProfile.phoneVisibleHint':
+        'عند التعطيل، يبقى رقم هاتفك محفوظًا لكنه لا يظهر لباقي المستخدمين؛ وعند التفعيل، يمكن للشركات ذات العضوية النشطة رؤيته للتواصل معك.',
     'profile.candidateProfile.saved': 'تم الحفظ!',
     'profile.candidateProfile.saving': 'جارٍ الحفظ...',
     'profile.candidateProfile.saveButton': 'حفظ',
@@ -287,6 +307,10 @@ const Map<String, Map<String, String>> profileDict = {
         'Si seleccionas "Trabajando actualmente", tu botón de contacto de WhatsApp en el directorio se ocultará temporalmente.',
     'profile.candidateProfile.publicListingLabel':
         'Mostrar mi perfil en el directorio de oficiales que las empresas pueden buscar',
+    'profile.candidateProfile.phoneVisibleLabel':
+        'Mostrar mi número de teléfono en mi perfil del directorio',
+    'profile.candidateProfile.phoneVisibleHint':
+        'Si lo desactivas, tu número de teléfono seguirá guardado pero no se mostrará a otros usuarios; si lo activas, las empresas con membresía activa podrán verlo para contactarte.',
     'profile.candidateProfile.saved': '¡Guardado!',
     'profile.candidateProfile.saving': 'Guardando...',
     'profile.candidateProfile.saveButton': 'Guardar',
@@ -335,6 +359,10 @@ const Map<String, Map<String, String>> profileDict = {
         'Si tu sélectionnes « Actuellement en poste », ton bouton de contact WhatsApp dans le répertoire sera temporairement masqué.',
     'profile.candidateProfile.publicListingLabel':
         'Afficher mon profil dans le répertoire des ouvriers consultable par les entreprises',
+    'profile.candidateProfile.phoneVisibleLabel':
+        'Afficher mon numéro de téléphone sur mon profil dans le répertoire',
+    'profile.candidateProfile.phoneVisibleHint':
+        "Si désactivé, votre numéro de téléphone reste enregistré mais n'est pas affiché aux autres utilisateurs ; si activé, les entreprises disposant d'un abonnement actif pourront le voir pour vous contacter.",
     'profile.candidateProfile.saved': 'Enregistré !',
     'profile.candidateProfile.saving': 'Enregistrement...',
     'profile.candidateProfile.saveButton': 'Enregistrer',

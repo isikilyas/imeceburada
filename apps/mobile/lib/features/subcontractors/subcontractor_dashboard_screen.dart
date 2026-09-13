@@ -28,6 +28,7 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
   String _district = '';
   List<String> _tradeCategories = [tradeFields.first.branches.first.professions.first.value];
   bool _isPublic = true;
+  bool _phoneVisible = false;
 
   bool _isSaving = false;
   String? _saveError;
@@ -61,6 +62,7 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
         _tradeCategories = profile.tradeCategories.isNotEmpty ? profile.tradeCategories : _tradeCategories;
         _descriptionController.text = profile.description ?? '';
         _isPublic = profile.isPublic;
+        _phoneVisible = profile.phoneVisible;
       });
     } on ApiException catch (e) {
       setState(() => _loadError = e.message);
@@ -90,6 +92,7 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
         'tradeCategories': _tradeCategories,
         'description': _descriptionController.text.trim(),
         'isPublic': _isPublic,
+        'phoneVisible': _phoneVisible,
       });
       setState(() => _saved = true);
     } on ApiException catch (e) {
@@ -159,6 +162,21 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
                       title: Text(
                         t('subcontractors.dashboard.publicToggleLabel'),
                         style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: AppColors.gold500,
+                    ),
+                    CheckboxListTile(
+                      value: _phoneVisible,
+                      onChanged: (v) => setState(() => _phoneVisible = v ?? false),
+                      title: Text(
+                        t('subcontractors.dashboard.phoneVisibleLabel'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      subtitle: Text(
+                        t('subcontractors.dashboard.phoneVisibleHint'),
+                        style: const TextStyle(color: AppColors.silver500, fontSize: 12),
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
                       contentPadding: EdgeInsets.zero,

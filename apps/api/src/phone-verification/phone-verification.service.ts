@@ -2,7 +2,7 @@ import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundEx
 import { randomInt } from "crypto";
 import { PrismaService } from "../prisma/prisma.service";
 import { RequestUser } from "../auth/types/request-user";
-import { SMS_SERVICE, SmsService } from "./sms.service";
+import { EMAIL_SERVICE, EmailService } from "../email/email.service";
 
 const CODE_EXPIRY_MINUTES = 10;
 
@@ -12,11 +12,18 @@ interface VerifiablePhoneProfile {
   phoneVerificationExpiresAt: Date | null;
 }
 
+/**
+ * Netgsm gibi bir SMS sağlayıcısı için vergi numarası/kurumsal hesap şartı
+ * olduğundan, doğrulama kodu telefona SMS ile değil, hesabın kayıtlı
+ * e-postasına gönderilir — "doğrulanmış" rozetinin anlamı buna göre "hesap
+ * e-postası onaylı" olarak değişir, telefon numarasının kendisi hâlâ
+ * kaydedilir ama doğrulanmadan (üyelik sırasında olduğu gibi) kullanılabilir.
+ */
 @Injectable()
 export class PhoneVerificationService {
   constructor(
     private prisma: PrismaService,
-    @Inject(SMS_SERVICE) private smsService: SmsService,
+    @Inject(EMAIL_SERVICE) private emailService: EmailService,
   ) {}
 
   private async findProfile(user: RequestUser): Promise<VerifiablePhoneProfile> {
@@ -57,7 +64,7 @@ export class PhoneVerificationService {
       phoneVerifiedAt: null,
     });
 
-    await this.smsService.sendVerificationCode(phone, code);
+    await this.emailService.sendVerificationCode(user.email, code);
     return { success: true };
   }
 

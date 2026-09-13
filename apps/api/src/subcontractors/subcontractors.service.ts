@@ -53,7 +53,7 @@ export class SubcontractorsService {
       district: subcontractor.district,
       tradeCategories: subcontractor.tradeCategories,
       description: subcontractor.description,
-      phone: subcontractor.phone,
+      phone: subcontractor.phoneVisible ? subcontractor.phone : null,
     };
   }
 }

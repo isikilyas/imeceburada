@@ -2,6 +2,7 @@ export interface SubcontractorProfileDto {
   id: string;
   companyName: string;
   phone?: string | null;
+  phoneVisible: boolean;
   phoneVerifiedAt?: string | null;
   city: string;
   district?: string | null;
@@ -19,4 +20,5 @@ export interface UpdateSubcontractorProfileInput {
   tradeCategories?: string[];
   description?: string;
   isPublic?: boolean;
+  phoneVisible?: boolean;
 }

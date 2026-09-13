@@ -56,8 +56,8 @@ function PhoneVerification({ onVerified }: { onVerified: () => void }) {
     <div className="rounded-lg border border-ink-800 bg-ink-900 p-6">
       <h2 className="mb-2 text-lg font-semibold text-silver-300">Telefon Doğrulama</h2>
       <p className="mb-4 text-sm text-silver-500">
-        Üyelik için önce telefon numaranı doğrulaman gerekiyor. (Şu an bir SMS sağlayıcısı bağlı değil —
-        geliştirme modunda kod sunucu loguna yazılır; sana test için ayrıca göstereceğiz.)
+        Üyelik için önce telefon numaranı doğrulaman gerekiyor. Doğrulama kodu SMS ile değil, hesabının kayıtlı
+        e-posta adresine gönderilir.
       </p>
       {step === "phone" ? (
         <form onSubmit={sendCode} className="space-y-3">

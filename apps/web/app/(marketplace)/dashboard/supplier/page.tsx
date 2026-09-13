@@ -38,6 +38,7 @@ function ProfileEditor() {
   const [city, setCity] = useState(TURKISH_PROVINCES[0]);
   const [district, setDistrict] = useState("");
   const [supplyCategories, setSupplyCategories] = useState<string[]>([]);
+  const [phoneVisible, setPhoneVisible] = useState(false);
 
   useEffect(() => {
     if (!profile) return;
@@ -45,11 +46,12 @@ function ProfileEditor() {
     setCity(profile.city);
     setDistrict(profile.district ?? "");
     setSupplyCategories(profile.supplyCategories);
+    setPhoneVisible(profile.phoneVisible);
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    await save({ companyName, city, district: district || undefined, supplyCategories });
+    await save({ companyName, city, district: district || undefined, supplyCategories, phoneVisible });
   }
 
   if (isLoading) return <FormSkeleton rows={5} />;
@@ -76,6 +78,12 @@ function ProfileEditor() {
         allowEmptyDistrict
       />
       <MaterialCategoryMultiSelect values={supplyCategories} onChange={setSupplyCategories} />
+
+      <label className="flex items-center gap-2 text-sm text-silver-300">
+        <input type="checkbox" checked={phoneVisible} onChange={(e) => setPhoneVisible(e.target.checked)} />
+        {t("dashboard.supplier.phoneVisibleLabel")}
+      </label>
+      <p className="text-xs text-silver-500">{t("dashboard.supplier.phoneVisibleHint")}</p>
 
       {error && <p className="text-sm text-red-400">{error}</p>}
       {status === "saved" && <p className="text-sm text-green-400">{t("dashboard.form.saved")}</p>}

@@ -43,6 +43,7 @@ function ProfileEditor() {
   const [workPreferences, setWorkPreferences] = useState<string[]>([]);
   const [isPublic, setIsPublic] = useState(false);
   const [photoVisible, setPhotoVisible] = useState(true);
+  const [phoneVisible, setPhoneVisible] = useState(false);
   const [availabilityStatus, setAvailabilityStatus] = useState<AvailabilityStatus>("AVAILABLE");
 
   useEffect(() => {
@@ -56,6 +57,7 @@ function ProfileEditor() {
     setWorkPreferences(profile.workPreferences);
     setIsPublic(profile.isPublic);
     setPhotoVisible(profile.photoVisible);
+    setPhoneVisible(profile.phoneVisible);
     setAvailabilityStatus(profile.availabilityStatus);
   }, [profile]);
 
@@ -71,6 +73,7 @@ function ProfileEditor() {
       workPreferences,
       isPublic,
       photoVisible,
+      phoneVisible,
       availabilityStatus,
     });
   }
@@ -171,6 +174,12 @@ function ProfileEditor() {
         {t("dashboard.candidate.photoVisibleLabel")}
       </label>
       <p className="text-xs text-silver-500">{t("dashboard.candidate.photoVisibleHint")}</p>
+
+      <label className="flex items-center gap-2 text-sm text-silver-300">
+        <input type="checkbox" checked={phoneVisible} onChange={(e) => setPhoneVisible(e.target.checked)} />
+        {t("dashboard.candidate.phoneVisibleLabel")}
+      </label>
+      <p className="text-xs text-silver-500">{t("dashboard.candidate.phoneVisibleHint")}</p>
 
       {error && <p className="text-sm text-red-400">{error}</p>}
       {status === "saved" && <p className="text-sm text-green-400">{t("dashboard.form.saved")}</p>}
