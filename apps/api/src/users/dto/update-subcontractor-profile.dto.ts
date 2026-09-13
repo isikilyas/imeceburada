@@ -6,6 +6,10 @@ export class UpdateSubcontractorProfileDto {
   companyName?: string;
 
   @IsOptional()
+  @IsBoolean()
+  phoneVisible?: boolean;
+
+  @IsOptional()
   @IsString()
   city?: string;
 

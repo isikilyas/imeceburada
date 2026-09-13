@@ -28,8 +28,13 @@ interface EquipmentWithOwner {
   status: string;
   createdAt: Date;
   owner: {
-    candidateProfile: { fullName: string; phone: string | null } | null;
-    companyProfile: { companyName: string; phone: string | null; phoneVerifiedAt: Date | null } | null;
+    candidateProfile: { fullName: string; phone: string | null; phoneVisible: boolean } | null;
+    companyProfile: {
+      companyName: string;
+      phone: string | null;
+      phoneVisible: boolean;
+      phoneVerifiedAt: Date | null;
+    } | null;
   };
 }
 
@@ -152,7 +157,11 @@ export class EquipmentService {
     id: listing.id,
     ownerId: listing.ownerId,
     ownerName: listing.owner.companyProfile?.companyName ?? listing.owner.candidateProfile?.fullName ?? "Kullanıcı",
-    ownerPhone: listing.owner.companyProfile?.phone ?? listing.owner.candidateProfile?.phone ?? null,
+    ownerPhone: listing.owner.companyProfile?.phoneVisible
+      ? listing.owner.companyProfile.phone
+      : listing.owner.candidateProfile?.phoneVisible
+        ? listing.owner.candidateProfile.phone
+        : null,
     ownerVerified: !!listing.owner.companyProfile?.phoneVerifiedAt,
     equipmentType: listing.equipmentType,
     capacity: listing.capacity,

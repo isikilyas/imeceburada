@@ -9,6 +9,10 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.dashboard.descriptionLabel': 'Açıklama',
     'subcontractors.dashboard.publicToggleLabel':
         'Profilimi firmaların arayabileceği taşeron firma dizininde göster',
+    'subcontractors.dashboard.phoneVisibleLabel':
+        'Telefon numaramı dizindeki profilimde göster',
+    'subcontractors.dashboard.phoneVisibleHint':
+        'Kapatırsan telefon numaran kaydedilmiş kalır ama başka kullanıcılara gösterilmez; açarsan sana ulaşmak isteyenler numarayı görebilir.',
     'subcontractors.dashboard.saved': 'Kaydedildi!',
     'subcontractors.dashboard.saving': 'Kaydediliyor...',
     'subcontractors.dashboard.save': 'Kaydet',
@@ -36,6 +40,10 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.dashboard.descriptionLabel': 'Description',
     'subcontractors.dashboard.publicToggleLabel':
         'Show my profile in the subcontractor directory companies can search',
+    'subcontractors.dashboard.phoneVisibleLabel':
+        'Show my phone number on my profile in the directory',
+    'subcontractors.dashboard.phoneVisibleHint':
+        "If disabled, your phone number stays saved but isn't shown to other users; if enabled, anyone trying to reach you can see it.",
     'subcontractors.dashboard.saved': 'Saved!',
     'subcontractors.dashboard.saving': 'Saving...',
     'subcontractors.dashboard.save': 'Save',
@@ -63,6 +71,10 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.dashboard.descriptionLabel': 'Beschreibung',
     'subcontractors.dashboard.publicToggleLabel':
         'Mein Profil im Subunternehmer-Verzeichnis anzeigen, das Firmen durchsuchen können',
+    'subcontractors.dashboard.phoneVisibleLabel':
+        'Meine Telefonnummer in meinem Profil im Verzeichnis anzeigen',
+    'subcontractors.dashboard.phoneVisibleHint':
+        'Wenn deaktiviert, bleibt deine Telefonnummer gespeichert, wird aber anderen Nutzern nicht angezeigt; wenn aktiviert, kann jeder, der dich erreichen möchte, sie sehen.',
     'subcontractors.dashboard.saved': 'Gespeichert!',
     'subcontractors.dashboard.saving': 'Wird gespeichert...',
     'subcontractors.dashboard.save': 'Speichern',
@@ -90,6 +102,10 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.dashboard.descriptionLabel': 'Описание',
     'subcontractors.dashboard.publicToggleLabel':
         'Показывать мой профиль в каталоге субподрядчиков, доступном для поиска компаниями',
+    'subcontractors.dashboard.phoneVisibleLabel':
+        'Показывать мой номер телефона в профиле в каталоге',
+    'subcontractors.dashboard.phoneVisibleHint':
+        'Если отключить, номер телефона останется сохранённым, но не будет виден другим пользователям; если включить, его увидит любой, кто попытается с вами связаться.',
     'subcontractors.dashboard.saved': 'Сохранено!',
     'subcontractors.dashboard.saving': 'Сохранение...',
     'subcontractors.dashboard.save': 'Сохранить',
@@ -118,6 +134,10 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.dashboard.descriptionLabel': 'الوصف',
     'subcontractors.dashboard.publicToggleLabel':
         'إظهار ملفي في دليل المقاولين من الباطن الذي يمكن للشركات البحث فيه',
+    'subcontractors.dashboard.phoneVisibleLabel':
+        'إظهار رقم هاتفي في ملفي الشخصي بالدليل',
+    'subcontractors.dashboard.phoneVisibleHint':
+        'عند التعطيل، يبقى رقم هاتفك محفوظًا لكنه لا يظهر لباقي المستخدمين؛ وعند التفعيل، يمكن لأي شخص يحاول التواصل معك رؤيته.',
     'subcontractors.dashboard.saved': 'تم الحفظ!',
     'subcontractors.dashboard.saving': 'جارٍ الحفظ...',
     'subcontractors.dashboard.save': 'حفظ',
@@ -145,6 +165,10 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.dashboard.descriptionLabel': 'Descripción',
     'subcontractors.dashboard.publicToggleLabel':
         'Mostrar mi perfil en el directorio de subcontratistas que las empresas pueden buscar',
+    'subcontractors.dashboard.phoneVisibleLabel':
+        'Mostrar mi número de teléfono en mi perfil del directorio',
+    'subcontractors.dashboard.phoneVisibleHint':
+        'Si lo desactivas, tu número de teléfono seguirá guardado pero no se mostrará a otros usuarios; si lo activas, cualquiera que quiera contactarte podrá verlo.',
     'subcontractors.dashboard.saved': '¡Guardado!',
     'subcontractors.dashboard.saving': 'Guardando...',
     'subcontractors.dashboard.save': 'Guardar',
@@ -172,6 +196,10 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.dashboard.descriptionLabel': 'Description',
     'subcontractors.dashboard.publicToggleLabel':
         "Afficher mon profil dans l'annuaire des sous-traitants consultable par les entreprises",
+    'subcontractors.dashboard.phoneVisibleLabel':
+        "Afficher mon numéro de téléphone sur mon profil dans l'annuaire",
+    'subcontractors.dashboard.phoneVisibleHint':
+        "Si désactivé, votre numéro de téléphone reste enregistré mais n'est pas affiché aux autres utilisateurs ; si activé, toute personne cherchant à vous contacter pourra le voir.",
     'subcontractors.dashboard.saved': 'Enregistré !',
     'subcontractors.dashboard.saving': 'Enregistrement en cours...',
     'subcontractors.dashboard.save': 'Enregistrer',

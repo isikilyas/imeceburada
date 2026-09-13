@@ -28,6 +28,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   final _phoneController = TextEditingController();
   List<String> _workPreferences = [];
   bool _isPublic = false;
+  bool _phoneVisible = false;
   String _availabilityStatus = 'AVAILABLE';
 
   bool _isSaving = false;
@@ -63,6 +64,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
         _phoneController.text = profile.phone ?? '';
         _workPreferences = profile.workPreferences;
         _isPublic = profile.isPublic;
+        _phoneVisible = profile.phoneVisible;
         _availabilityStatus = profile.availabilityStatus;
       });
     } on ApiException catch (e) {
@@ -91,6 +93,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
         'phone': _phoneController.text.trim(),
         'workPreferences': _workPreferences,
         'isPublic': _isPublic,
+        'phoneVisible': _phoneVisible,
         'availabilityStatus': _availabilityStatus,
       });
       setState(() => _saved = true);
@@ -185,6 +188,21 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                       title: Text(
                         t('profile.candidateProfile.publicListingLabel'),
                         style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: AppColors.gold500,
+                    ),
+                    CheckboxListTile(
+                      value: _phoneVisible,
+                      onChanged: (v) => setState(() => _phoneVisible = v ?? false),
+                      title: Text(
+                        t('profile.candidateProfile.phoneVisibleLabel'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      subtitle: Text(
+                        t('profile.candidateProfile.phoneVisibleHint'),
+                        style: const TextStyle(color: AppColors.silver500, fontSize: 12),
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
                       contentPadding: EdgeInsets.zero,

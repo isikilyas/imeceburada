@@ -1,31 +1,16 @@
 import { Module } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { PassportModule } from "@nestjs/passport";
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 import { JwtStrategy } from "./strategies/jwt.strategy";
-import { ConsoleEmailService, EMAIL_SERVICE } from "./email.service";
-import { ResendEmailService } from "./resend-email.service";
 import { TaxonomyModule } from "../taxonomy/taxonomy.module";
+import { EmailModule } from "../email/email.module";
 
 @Module({
-  imports: [PassportModule, JwtModule.register({}), TaxonomyModule],
+  imports: [PassportModule, JwtModule.register({}), TaxonomyModule, EmailModule],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    JwtStrategy,
-    ResendEmailService,
-    {
-      // RESEND_API_KEY tanımlıysa gerçek e-posta gönderilir; yerel geliştirmede
-      // olduğu gibi tanımlı değilse linki sadece loglayan sürüme düşer.
-      provide: EMAIL_SERVICE,
-      useFactory: (config: ConfigService, resendService: ResendEmailService, consoleService: ConsoleEmailService) =>
-        config.get<string>("RESEND_API_KEY") ? resendService : consoleService,
-      inject: [ConfigService, ResendEmailService, ConsoleEmailService],
-    },
-    ConsoleEmailService,
-  ],
+  providers: [AuthService, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

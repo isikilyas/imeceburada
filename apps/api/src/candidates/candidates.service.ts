@@ -60,7 +60,7 @@ export class CandidatesService {
       skills: candidate.skills,
       workPreferences: candidate.workPreferences,
       availabilityStatus: candidate.availabilityStatus,
-      phone: candidate.phone,
+      phone: candidate.phoneVisible ? candidate.phone : null,
       photoUrl: candidate.photoVisible ? candidate.photoUrl : null,
     };
   }

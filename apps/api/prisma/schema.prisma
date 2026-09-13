@@ -149,6 +149,9 @@ model CandidateProfile {
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   fullName            String
   phone               String?
+  /// Telefon numarasının başka kullanıcılara (ilan detayı, dizin) gösterilip
+  /// gösterilmeyeceği — varsayılan kapalı, kullanıcı kendi rızasıyla açar.
+  phoneVisible        Boolean  @default(false)
   phoneVerifiedAt             DateTime?
   phoneVerificationCode       String?
   phoneVerificationExpiresAt  DateTime?
@@ -182,6 +185,9 @@ model CompanyProfile {
   district    String?
 
   phone                       String?
+  /// Telefon numarasının başka kullanıcılara gösterilip gösterilmeyeceği —
+  /// varsayılan kapalı, kullanıcı kendi rızasıyla açar.
+  phoneVisible                Boolean   @default(false)
   phoneVerifiedAt             DateTime?
   phoneVerificationCode       String?
   phoneVerificationExpiresAt  DateTime?
@@ -218,6 +224,9 @@ model SupplierProfile {
   supplyCategories String[]
 
   phone                      String?
+  /// Telefon numarasının başka kullanıcılara gösterilip gösterilmeyeceği —
+  /// varsayılan kapalı, kullanıcı kendi rızasıyla açar.
+  phoneVisible               Boolean   @default(false)
   phoneVerifiedAt            DateTime?
   phoneVerificationCode      String?
   phoneVerificationExpiresAt DateTime?
@@ -257,6 +266,9 @@ model SubcontractorProfile {
   isPublic              Boolean  @default(true)
 
   phone                      String?
+  /// Telefon numarasının başka kullanıcılara gösterilip gösterilmeyeceği —
+  /// varsayılan kapalı, kullanıcı kendi rızasıyla açar.
+  phoneVisible               Boolean   @default(false)
   phoneVerifiedAt            DateTime?
   phoneVerificationCode      String?
   phoneVerificationExpiresAt DateTime?

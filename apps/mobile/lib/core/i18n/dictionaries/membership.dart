@@ -10,7 +10,8 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.activeStatus': 'Üyeliğin aktif ✓',
     'membership.expiresAt': 'Bitiş tarihi: {{date}}',
     'membership.phoneVerificationTitle': 'Telefon Doğrulama',
-    'membership.phoneVerificationPrompt': 'Üyelik için önce telefon numaranı doğrulaman gerekiyor.',
+    'membership.phoneVerificationPrompt':
+        'Üyelik için önce telefon numaranı doğrulaman gerekiyor. Doğrulama kodu SMS ile değil, hesabının kayıtlı e-posta adresine gönderilir.',
     'membership.phoneLabel': 'Telefon (+90...)',
     'membership.sendingCode': 'Gönderiliyor...',
     'membership.sendCodeButton': 'Kod Gönder',
@@ -40,7 +41,8 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.activeStatus': 'Your membership is active ✓',
     'membership.expiresAt': 'Expires on: {{date}}',
     'membership.phoneVerificationTitle': 'Phone Verification',
-    'membership.phoneVerificationPrompt': 'You need to verify your phone number before activating membership.',
+    'membership.phoneVerificationPrompt':
+        'You need to verify your phone number before activating membership. The verification code is sent to your account email, not by SMS.',
     'membership.phoneLabel': 'Phone (+90...)',
     'membership.sendingCode': 'Sending...',
     'membership.sendCodeButton': 'Send Code',
@@ -71,7 +73,7 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.expiresAt': 'Ablaufdatum: {{date}}',
     'membership.phoneVerificationTitle': 'Telefonverifizierung',
     'membership.phoneVerificationPrompt':
-        'Du musst zuerst deine Telefonnummer verifizieren, um die Mitgliedschaft zu aktivieren.',
+        'Du musst zuerst deine Telefonnummer verifizieren, um die Mitgliedschaft zu aktivieren. Der Bestätigungscode wird an deine E-Mail-Adresse gesendet, nicht per SMS.',
     'membership.phoneLabel': 'Telefon (+90...)',
     'membership.sendingCode': 'Wird gesendet...',
     'membership.sendCodeButton': 'Code senden',
@@ -101,7 +103,8 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.activeStatus': 'Ваше членство активно ✓',
     'membership.expiresAt': 'Дата окончания: {{date}}',
     'membership.phoneVerificationTitle': 'Подтверждение телефона',
-    'membership.phoneVerificationPrompt': 'Перед оформлением членства необходимо подтвердить номер телефона.',
+    'membership.phoneVerificationPrompt':
+        'Перед оформлением членства необходимо подтвердить номер телефона. Код подтверждения отправляется на почту вашего аккаунта, а не по SMS.',
     'membership.phoneLabel': 'Телефон (+90...)',
     'membership.sendingCode': 'Отправка...',
     'membership.sendCodeButton': 'Отправить код',
@@ -131,7 +134,8 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.activeStatus': 'عضويتك نشطة ✓',
     'membership.expiresAt': 'تاريخ الانتهاء: {{date}}',
     'membership.phoneVerificationTitle': 'التحقق من رقم الهاتف',
-    'membership.phoneVerificationPrompt': 'يجب عليك التحقق من رقم هاتفك قبل تفعيل العضوية.',
+    'membership.phoneVerificationPrompt':
+        'يجب عليك التحقق من رقم هاتفك قبل تفعيل العضوية. يتم إرسال رمز التحقق إلى بريدك الإلكتروني المسجَّل، وليس عبر الرسائل النصية.',
     'membership.phoneLabel': 'الهاتف (+90...)',
     'membership.sendingCode': 'جارٍ الإرسال...',
     'membership.sendCodeButton': 'إرسال الرمز',
@@ -161,7 +165,8 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.activeStatus': 'Tu membresía está activa ✓',
     'membership.expiresAt': 'Fecha de vencimiento: {{date}}',
     'membership.phoneVerificationTitle': 'Verificación telefónica',
-    'membership.phoneVerificationPrompt': 'Debes verificar tu número de teléfono antes de activar la membresía.',
+    'membership.phoneVerificationPrompt':
+        'Debes verificar tu número de teléfono antes de activar la membresía. El código de verificación se envía a tu correo electrónico, no por SMS.',
     'membership.phoneLabel': 'Teléfono (+90...)',
     'membership.sendingCode': 'Enviando...',
     'membership.sendCodeButton': 'Enviar código',
@@ -192,7 +197,7 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.expiresAt': "Date d'expiration : {{date}}",
     'membership.phoneVerificationTitle': 'Vérification du téléphone',
     'membership.phoneVerificationPrompt':
-        "Vous devez vérifier votre numéro de téléphone avant d'activer l'abonnement.",
+        "Vous devez vérifier votre numéro de téléphone avant d'activer l'abonnement. Le code de vérification est envoyé à l'adresse e-mail de votre compte, pas par SMS.",
     'membership.phoneLabel': 'Téléphone (+90...)',
     'membership.sendingCode': 'Envoi en cours...',
     'membership.sendCodeButton': 'Envoyer le code',

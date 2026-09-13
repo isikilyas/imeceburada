@@ -5,7 +5,7 @@ import { EmailService } from "./email.service";
 
 /**
  * Resend (https://resend.com) üzerinden gerçek e-posta gönderen implementasyon.
- * RESEND_API_KEY ortam değişkeni tanımlıysa auth.module.ts bunu, tanımlı
+ * RESEND_API_KEY ortam değişkeni tanımlıysa email.module.ts bunu, tanımlı
  * değilse (yerel geliştirme gibi) ConsoleEmailService'i devreye alır.
  */
 @Injectable()
@@ -15,7 +15,7 @@ export class ResendEmailService implements EmailService {
   // `new Resend()` throws immediately if no API key is passed, which would
   // crash the whole app at boot since Nest eagerly instantiates every
   // provider — this class is registered regardless of whether a key is
-  // configured (see auth.module.ts), so the client is built lazily on first
+  // configured (see email.module.ts), so the client is built lazily on first
   // actual send instead of in the constructor.
   private client: Resend | null = null;
 
@@ -60,9 +60,9 @@ export class ResendEmailService implements EmailService {
       subject: "İmece Burada — Doğrulama kodun",
       html: `
         <p>Merhaba,</p>
-        <p>İmece Burada'ya kayıt olmak için doğrulama kodun:</p>
+        <p>İmece Burada hesabın için doğrulama kodun:</p>
         <p style="font-size: 24px; font-weight: bold; letter-spacing: 4px;">${code}</p>
-        <p>Bu kaydı sen başlatmadıysan bu e-postayı görmezden gelebilirsin.</p>
+        <p>Bu isteği sen yapmadıysan bu e-postayı görmezden gelebilirsin.</p>
       `,
     });
     if (error) {

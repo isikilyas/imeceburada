@@ -33,6 +33,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       photoVisibleLabel: "Fotoğrafımı usta dizinindeki profilimde göster",
       photoVisibleHint:
         "Kapatırsan fotoğrafın yüklü kalır ama dizinde ve profil detayında gösterilmez.",
+      phoneVisibleLabel: "Telefon numaramı usta dizinindeki profilimde göster",
+      phoneVisibleHint:
+        "Kapatırsan telefon numaran kaydedilmiş kalır ama başka kullanıcılara gösterilmez; açarsan aktif üyeliği olan firmalar seninle iletişime geçebilir.",
       roleGuard: "Bu sayfa sadece iş arayan personel hesapları içindir.",
       applicationsHeading: "Başvurularım",
       noApplications: "Henüz başvurun yok.",
@@ -42,6 +45,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Firma Adı",
       sectorLabel: "Sektör (opsiyonel)",
+      phoneVisibleLabel: "Telefon numaramı dizindeki profilimde göster",
+      phoneVisibleHint:
+        "Kapatırsan telefon numaran kaydedilmiş kalır ama başka kullanıcılara gösterilmez; açarsan sana ulaşmak isteyenler numarayı görebilir.",
       roleGuard: "Bu sayfa sadece firma hesapları içindir.",
       profileHeading: "Firma Profilim",
       membershipStatusLink: "Üyelik Durumu",
@@ -74,6 +80,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       publicLabel: "Profilimi firmaların arayabileceği taşeron firma dizininde göster",
       publicHint:
         "Açarsan, firma adı, şehir, meslek, açıklama ve telefon numaran aktif üyeliği olan firmalara görünür olur.",
+      phoneVisibleLabel: "Telefon numaramı dizindeki profilimde göster",
+      phoneVisibleHint:
+        "Kapatırsan telefon numaran kaydedilmiş kalır ama başka kullanıcılara gösterilmez; açarsan sana ulaşmak isteyenler numarayı görebilir.",
       roleGuard: "Bu sayfa sadece taşeron firma hesapları içindir.",
       profileHeading: "Taşeron Firma Profilim",
       membershipStatusLink: "Üyelik Durumu",
@@ -82,6 +91,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     },
     supplier: {
       companyNameLabel: "Firma Adı",
+      phoneVisibleLabel: "Telefon numaramı dizindeki profilimde göster",
+      phoneVisibleHint:
+        "Kapatırsan telefon numaran kaydedilmiş kalır ama başka kullanıcılara gösterilmez; açarsan sana ulaşmak isteyenler numarayı görebilir.",
       roleGuard: "Bu sayfa sadece yapı tedarik hesapları içindir.",
       profileHeading: "Firma Profilim",
       membershipStatusLink: "Üyelik Durumu",
@@ -129,6 +141,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       photoVisibleLabel: "Show my photo on my profile in the worker directory",
       photoVisibleHint:
         "If disabled, your photo stays uploaded but won't be shown in the directory or on your profile detail.",
+      phoneVisibleLabel: "Show my phone number on my profile in the worker directory",
+      phoneVisibleHint:
+        "If disabled, your phone number stays saved but isn't shown to other users; if enabled, companies with an active membership can see it to reach you.",
       roleGuard: "This page is only for job-seeking candidate accounts.",
       applicationsHeading: "My Applications",
       noApplications: "You haven't applied to anything yet.",
@@ -138,6 +153,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Company Name",
       sectorLabel: "Sector (optional)",
+      phoneVisibleLabel: "Show my phone number on my profile in the directory",
+      phoneVisibleHint:
+        "If disabled, your phone number stays saved but isn't shown to other users; if enabled, anyone trying to reach you can see it.",
       roleGuard: "This page is only for company accounts.",
       profileHeading: "My Company Profile",
       membershipStatusLink: "Membership Status",
@@ -170,6 +188,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       publicLabel: "Show my profile in the subcontractor directory companies can search",
       publicHint:
         "If enabled, your company name, city, trade, description, and phone number become visible to companies with an active membership.",
+      phoneVisibleLabel: "Show my phone number on my profile in the directory",
+      phoneVisibleHint:
+        "If disabled, your phone number stays saved but isn't shown to other users; if enabled, anyone trying to reach you can see it.",
       roleGuard: "This page is only for subcontractor company accounts.",
       profileHeading: "My Subcontractor Company Profile",
       membershipStatusLink: "Membership Status",
@@ -178,6 +199,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     },
     supplier: {
       companyNameLabel: "Company Name",
+      phoneVisibleLabel: "Show my phone number on my profile in the directory",
+      phoneVisibleHint:
+        "If disabled, your phone number stays saved but isn't shown to other users; if enabled, anyone trying to reach you can see it.",
       roleGuard: "This page is only for building supplier accounts.",
       profileHeading: "My Company Profile",
       membershipStatusLink: "Membership Status",
@@ -225,6 +249,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       photoVisibleLabel: "Mein Foto in meinem Profil im Fachkräfteverzeichnis anzeigen",
       photoVisibleHint:
         "Wenn deaktiviert, bleibt dein Foto hochgeladen, wird aber im Verzeichnis und in der Profildetailansicht nicht angezeigt.",
+      phoneVisibleLabel: "Meine Telefonnummer in meinem Profil im Verzeichnis anzeigen",
+      phoneVisibleHint:
+        "Wenn deaktiviert, bleibt deine Telefonnummer gespeichert, wird aber anderen Nutzern nicht angezeigt; wenn aktiviert, können Firmen mit aktiver Mitgliedschaft dich darüber erreichen.",
       roleGuard: "Diese Seite ist nur für Konten von Arbeitssuchenden.",
       applicationsHeading: "Meine Bewerbungen",
       noApplications: "Du hast dich noch nicht beworben.",
@@ -234,6 +261,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Firmenname",
       sectorLabel: "Branche (optional)",
+      phoneVisibleLabel: "Meine Telefonnummer in meinem Profil im Verzeichnis anzeigen",
+      phoneVisibleHint:
+        "Wenn deaktiviert, bleibt deine Telefonnummer gespeichert, wird aber anderen Nutzern nicht angezeigt; wenn aktiviert, kann jeder, der dich erreichen möchte, sie sehen.",
       roleGuard: "Diese Seite ist nur für Firmenkonten.",
       profileHeading: "Mein Firmenprofil",
       membershipStatusLink: "Mitgliedschaftsstatus",
@@ -266,6 +296,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       publicLabel: "Mein Profil im durchsuchbaren Subunternehmerverzeichnis für Firmen anzeigen",
       publicHint:
         "Wenn aktiviert, werden Firmenname, Stadt, Gewerk, Beschreibung und Telefonnummer für Firmen mit aktiver Mitgliedschaft sichtbar.",
+      phoneVisibleLabel: "Meine Telefonnummer in meinem Profil im Verzeichnis anzeigen",
+      phoneVisibleHint:
+        "Wenn deaktiviert, bleibt deine Telefonnummer gespeichert, wird aber anderen Nutzern nicht angezeigt; wenn aktiviert, kann jeder, der dich erreichen möchte, sie sehen.",
       roleGuard: "Diese Seite ist nur für Subunternehmer-Firmenkonten.",
       profileHeading: "Mein Subunternehmer-Firmenprofil",
       membershipStatusLink: "Mitgliedschaftsstatus",
@@ -274,6 +307,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     },
     supplier: {
       companyNameLabel: "Firmenname",
+      phoneVisibleLabel: "Meine Telefonnummer in meinem Profil im Verzeichnis anzeigen",
+      phoneVisibleHint:
+        "Wenn deaktiviert, bleibt deine Telefonnummer gespeichert, wird aber anderen Nutzern nicht angezeigt; wenn aktiviert, kann jeder, der dich erreichen möchte, sie sehen.",
       roleGuard: "Diese Seite ist nur für Baustofflieferanten-Konten.",
       profileHeading: "Mein Firmenprofil",
       membershipStatusLink: "Mitgliedschaftsstatus",
@@ -321,6 +357,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       photoVisibleLabel: "Показывать мою фотографию в профиле в каталоге специалистов",
       photoVisibleHint:
         "Если отключить, фото останется загруженным, но не будет отображаться в каталоге и в деталях профиля.",
+      phoneVisibleLabel: "Показывать мой номер телефона в профиле в каталоге",
+      phoneVisibleHint:
+        "Если отключить, номер телефона останется сохранённым, но не будет виден другим пользователям; если включить, компании с активным членством смогут его увидеть, чтобы связаться с вами.",
       roleGuard: "Эта страница только для аккаунтов соискателей.",
       applicationsHeading: "Мои заявки",
       noApplications: "У вас пока нет заявок.",
@@ -330,6 +369,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Название компании",
       sectorLabel: "Сфера деятельности (опционально)",
+      phoneVisibleLabel: "Показывать мой номер телефона в профиле в каталоге",
+      phoneVisibleHint:
+        "Если отключить, номер телефона останется сохранённым, но не будет виден другим пользователям; если включить, его увидит любой, кто попытается с вами связаться.",
       roleGuard: "Эта страница только для аккаунтов компаний.",
       profileHeading: "Профиль моей компании",
       membershipStatusLink: "Статус членства",
@@ -362,6 +404,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       publicLabel: "Показывать мой профиль в каталоге субподрядчиков, доступном для поиска компаниями",
       publicHint:
         "При включении название компании, город, специальность, описание и номер телефона станут видны компаниям с активным членством.",
+      phoneVisibleLabel: "Показывать мой номер телефона в профиле в каталоге",
+      phoneVisibleHint:
+        "Если отключить, номер телефона останется сохранённым, но не будет виден другим пользователям; если включить, его увидит любой, кто попытается с вами связаться.",
       roleGuard: "Эта страница только для аккаунтов компаний-субподрядчиков.",
       profileHeading: "Профиль моей субподрядной компании",
       membershipStatusLink: "Статус членства",
@@ -370,6 +415,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     },
     supplier: {
       companyNameLabel: "Название компании",
+      phoneVisibleLabel: "Показывать мой номер телефона в профиле в каталоге",
+      phoneVisibleHint:
+        "Если отключить, номер телефона останется сохранённым, но не будет виден другим пользователям; если включить, его увидит любой, кто попытается с вами связаться.",
       roleGuard: "Эта страница только для аккаунтов поставщиков материалов.",
       profileHeading: "Профиль моей компании",
       membershipStatusLink: "Статус членства",
@@ -417,6 +465,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       photoVisibleLabel: "إظهار صورتي في ملفي الشخصي بدليل الحرفيين",
       photoVisibleHint:
         "عند التعطيل، تبقى صورتك مرفوعة لكنها لن تظهر في الدليل ولا في تفاصيل الملف الشخصي.",
+      phoneVisibleLabel: "إظهار رقم هاتفي في ملفي الشخصي بالدليل",
+      phoneVisibleHint:
+        "عند التعطيل، يبقى رقم هاتفك محفوظًا لكنه لا يظهر لباقي المستخدمين؛ وعند التفعيل، يمكن للشركات ذات العضوية النشطة رؤيته للتواصل معك.",
       roleGuard: "هذه الصفحة مخصصة فقط لحسابات الباحثين عن عمل.",
       applicationsHeading: "طلباتي",
       noApplications: "لم تتقدم بأي طلب بعد.",
@@ -426,6 +477,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "اسم الشركة",
       sectorLabel: "القطاع (اختياري)",
+      phoneVisibleLabel: "إظهار رقم هاتفي في ملفي الشخصي بالدليل",
+      phoneVisibleHint:
+        "عند التعطيل، يبقى رقم هاتفك محفوظًا لكنه لا يظهر لباقي المستخدمين؛ وعند التفعيل، يمكن لأي شخص يحاول التواصل معك رؤيته.",
       roleGuard: "هذه الصفحة مخصصة فقط لحسابات الشركات.",
       profileHeading: "ملف شركتي",
       membershipStatusLink: "حالة العضوية",
@@ -458,6 +512,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       publicLabel: "إظهار ملفي في دليل المقاولين من الباطن الذي يمكن للشركات البحث فيه",
       publicHint:
         "عند التفعيل، سيصبح اسم الشركة والمدينة والمهنة والوصف ورقم الهاتف مرئيًا للشركات ذات العضوية النشطة.",
+      phoneVisibleLabel: "إظهار رقم هاتفي في ملفي الشخصي بالدليل",
+      phoneVisibleHint:
+        "عند التعطيل، يبقى رقم هاتفك محفوظًا لكنه لا يظهر لباقي المستخدمين؛ وعند التفعيل، يمكن لأي شخص يحاول التواصل معك رؤيته.",
       roleGuard: "هذه الصفحة مخصصة فقط لحسابات شركات المقاولين من الباطن.",
       profileHeading: "ملف شركة المقاولات من الباطن الخاصة بي",
       membershipStatusLink: "حالة العضوية",
@@ -466,6 +523,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     },
     supplier: {
       companyNameLabel: "اسم الشركة",
+      phoneVisibleLabel: "إظهار رقم هاتفي في ملفي الشخصي بالدليل",
+      phoneVisibleHint:
+        "عند التعطيل، يبقى رقم هاتفك محفوظًا لكنه لا يظهر لباقي المستخدمين؛ وعند التفعيل، يمكن لأي شخص يحاول التواصل معك رؤيته.",
       roleGuard: "هذه الصفحة مخصصة فقط لحسابات موردي مواد البناء.",
       profileHeading: "ملف شركتي",
       membershipStatusLink: "حالة العضوية",
@@ -513,6 +573,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       photoVisibleLabel: "Mostrar mi foto en mi perfil del directorio de trabajadores",
       photoVisibleHint:
         "Si lo desactivas, tu foto seguirá subida pero no se mostrará en el directorio ni en el detalle de tu perfil.",
+      phoneVisibleLabel: "Mostrar mi número de teléfono en mi perfil del directorio",
+      phoneVisibleHint:
+        "Si lo desactivas, tu número de teléfono seguirá guardado pero no se mostrará a otros usuarios; si lo activas, las empresas con membresía activa podrán verlo para contactarte.",
       roleGuard: "Esta página es solo para cuentas de candidatos que buscan empleo.",
       applicationsHeading: "Mis postulaciones",
       noApplications: "Aún no te has postulado a nada.",
@@ -522,6 +585,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Nombre de la empresa",
       sectorLabel: "Sector (opcional)",
+      phoneVisibleLabel: "Mostrar mi número de teléfono en mi perfil del directorio",
+      phoneVisibleHint:
+        "Si lo desactivas, tu número de teléfono seguirá guardado pero no se mostrará a otros usuarios; si lo activas, cualquiera que quiera contactarte podrá verlo.",
       roleGuard: "Esta página es solo para cuentas de empresas.",
       profileHeading: "Perfil de mi empresa",
       membershipStatusLink: "Estado de membresía",
@@ -554,6 +620,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       publicLabel: "Mostrar mi perfil en el directorio de subcontratistas donde las empresas pueden buscar",
       publicHint:
         "Si lo activas, el nombre de la empresa, ciudad, oficio, descripción y número de teléfono serán visibles para las empresas con membresía activa.",
+      phoneVisibleLabel: "Mostrar mi número de teléfono en mi perfil del directorio",
+      phoneVisibleHint:
+        "Si lo desactivas, tu número de teléfono seguirá guardado pero no se mostrará a otros usuarios; si lo activas, cualquiera que quiera contactarte podrá verlo.",
       roleGuard: "Esta página es solo para cuentas de empresas subcontratistas.",
       profileHeading: "Perfil de mi empresa subcontratista",
       membershipStatusLink: "Estado de membresía",
@@ -562,6 +631,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     },
     supplier: {
       companyNameLabel: "Nombre de la empresa",
+      phoneVisibleLabel: "Mostrar mi número de teléfono en mi perfil del directorio",
+      phoneVisibleHint:
+        "Si lo desactivas, tu número de teléfono seguirá guardado pero no se mostrará a otros usuarios; si lo activas, cualquiera que quiera contactarte podrá verlo.",
       roleGuard: "Esta página es solo para cuentas de proveedores de materiales de construcción.",
       profileHeading: "Perfil de mi empresa",
       membershipStatusLink: "Estado de membresía",
@@ -609,6 +681,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       photoVisibleLabel: "Afficher ma photo sur mon profil dans l'annuaire des professionnels",
       photoVisibleHint:
         "Si désactivé, votre photo reste téléchargée mais ne sera affichée ni dans l'annuaire ni dans le détail du profil.",
+      phoneVisibleLabel: "Afficher mon numéro de téléphone sur mon profil dans l'annuaire",
+      phoneVisibleHint:
+        "Si désactivé, votre numéro de téléphone reste enregistré mais n'est pas affiché aux autres utilisateurs ; si activé, les entreprises disposant d'un abonnement actif pourront le voir pour vous contacter.",
       roleGuard: "Cette page est réservée aux comptes de candidats en recherche d'emploi.",
       applicationsHeading: "Mes candidatures",
       noApplications: "Vous n'avez encore postulé à aucune offre.",
@@ -618,6 +693,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Nom de l'entreprise",
       sectorLabel: "Secteur (facultatif)",
+      phoneVisibleLabel: "Afficher mon numéro de téléphone sur mon profil dans l'annuaire",
+      phoneVisibleHint:
+        "Si désactivé, votre numéro de téléphone reste enregistré mais n'est pas affiché aux autres utilisateurs ; si activé, toute personne cherchant à vous contacter pourra le voir.",
       roleGuard: "Cette page est réservée aux comptes d'entreprises.",
       profileHeading: "Profil de mon entreprise",
       membershipStatusLink: "Statut de l'abonnement",
@@ -650,6 +728,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       publicLabel: "Afficher mon profil dans l'annuaire des sous-traitants consultable par les entreprises",
       publicHint:
         "Si activé, le nom de l'entreprise, la ville, le métier, la description et le numéro de téléphone seront visibles par les entreprises disposant d'un abonnement actif.",
+      phoneVisibleLabel: "Afficher mon numéro de téléphone sur mon profil dans l'annuaire",
+      phoneVisibleHint:
+        "Si désactivé, votre numéro de téléphone reste enregistré mais n'est pas affiché aux autres utilisateurs ; si activé, toute personne cherchant à vous contacter pourra le voir.",
       roleGuard: "Cette page est réservée aux comptes d'entreprises sous-traitantes.",
       profileHeading: "Profil de mon entreprise sous-traitante",
       membershipStatusLink: "Statut de l'abonnement",
@@ -658,6 +739,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     },
     supplier: {
       companyNameLabel: "Nom de l'entreprise",
+      phoneVisibleLabel: "Afficher mon numéro de téléphone sur mon profil dans l'annuaire",
+      phoneVisibleHint:
+        "Si désactivé, votre numéro de téléphone reste enregistré mais n'est pas affiché aux autres utilisateurs ; si activé, toute personne cherchant à vous contacter pourra le voir.",
       roleGuard: "Cette page est réservée aux comptes de fournisseurs de matériaux de construction.",
       profileHeading: "Profil de mon entreprise",
       membershipStatusLink: "Statut de l'abonnement",

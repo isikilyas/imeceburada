@@ -3,6 +3,7 @@ export interface CompanyProfileDto {
   companyName: string;
   sector?: string | null;
   phone?: string | null;
+  phoneVisible: boolean;
   phoneVerifiedAt?: string | null;
   city: string;
   district?: string | null;
@@ -15,4 +16,5 @@ export interface UpdateCompanyProfileInput {
   sector?: string;
   city?: string;
   district?: string;
+  phoneVisible?: boolean;
 }

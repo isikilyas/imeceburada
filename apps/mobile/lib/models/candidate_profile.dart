@@ -9,6 +9,7 @@ class CandidateProfile {
   final List<String> workPreferences;
   final String? primaryTradeCategory;
   final bool isPublic;
+  final bool phoneVisible;
   final String availabilityStatus;
 
   const CandidateProfile({
@@ -22,6 +23,7 @@ class CandidateProfile {
     required this.workPreferences,
     this.primaryTradeCategory,
     required this.isPublic,
+    this.phoneVisible = false,
     this.availabilityStatus = 'AVAILABLE',
   });
 
@@ -36,6 +38,7 @@ class CandidateProfile {
         workPreferences: (json['workPreferences'] as List?)?.map((e) => e as String).toList() ?? [],
         primaryTradeCategory: json['primaryTradeCategory'] as String?,
         isPublic: json['isPublic'] as bool? ?? false,
+        phoneVisible: json['phoneVisible'] as bool? ?? false,
         availabilityStatus: json['availabilityStatus'] as String? ?? 'AVAILABLE',
       );
 }

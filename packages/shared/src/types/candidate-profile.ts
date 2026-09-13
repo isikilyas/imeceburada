@@ -4,6 +4,7 @@ export interface CandidateProfileDto {
   id: string;
   fullName: string;
   phone?: string | null;
+  phoneVisible: boolean;
   city: string;
   district?: string | null;
   experienceYears: number;
@@ -19,6 +20,7 @@ export interface CandidateProfileDto {
 export interface UpdateCandidateProfileInput {
   fullName?: string;
   phone?: string;
+  phoneVisible?: boolean;
   city?: string;
   district?: string;
   experienceYears?: number;

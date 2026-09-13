@@ -35,6 +35,7 @@ function ProfileEditor() {
   ]);
   const [description, setDescription] = useState("");
   const [isPublic, setIsPublic] = useState(true);
+  const [phoneVisible, setPhoneVisible] = useState(false);
 
   useEffect(() => {
     if (!profile) return;
@@ -44,6 +45,7 @@ function ProfileEditor() {
     setTradeCategories(profile.tradeCategories);
     setDescription(profile.description ?? "");
     setIsPublic(profile.isPublic);
+    setPhoneVisible(profile.phoneVisible);
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -52,7 +54,15 @@ function ProfileEditor() {
       setError(t("dashboard.subcontractor.minCategoryError"));
       return;
     }
-    await save({ companyName, city, district: district || undefined, tradeCategories, description, isPublic });
+    await save({
+      companyName,
+      city,
+      district: district || undefined,
+      tradeCategories,
+      description,
+      isPublic,
+      phoneVisible,
+    });
   }
 
   if (isLoading) return <FormSkeleton rows={5} />;
@@ -94,6 +104,12 @@ function ProfileEditor() {
         {t("dashboard.subcontractor.publicLabel")}
       </label>
       <p className="text-xs text-silver-500">{t("dashboard.subcontractor.publicHint")}</p>
+
+      <label className="flex items-center gap-2 text-sm text-silver-300">
+        <input type="checkbox" checked={phoneVisible} onChange={(e) => setPhoneVisible(e.target.checked)} />
+        {t("dashboard.subcontractor.phoneVisibleLabel")}
+      </label>
+      <p className="text-xs text-silver-500">{t("dashboard.subcontractor.phoneVisibleHint")}</p>
 
       {error && <p className="text-sm text-red-400">{error}</p>}
       {status === "saved" && <p className="text-sm text-green-400">{t("dashboard.form.saved")}</p>}
