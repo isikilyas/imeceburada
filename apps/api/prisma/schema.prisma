@@ -161,6 +161,8 @@ model User {
   reviewedTaxonomyTerms    TaxonomyTerm[]             @relation("ReviewedTaxonomyTerms")
   addresses                Address[]
   sentMessages             Message[]
+  authoredReviews          Review[]                  @relation("AuthoredReviews")
+  receivedReviews          Review[]                  @relation("ReceivedReviews")
 
   @@map("users")
 }
@@ -457,9 +459,33 @@ model Application {
   updatedAt   DateTime          @updatedAt
 
   conversation Conversation?
+  reviews      Review[]
 
   @@unique([jobId, candidateId])
   @@map("applications")
+}
+
+/// Bir başvuru KABUL EDİLDİKTEN sonra (yani gerçekten bir çalışma ilişkisi
+/// kurulduktan sonra) taraflar birbirine karşılıklı yıldız + yorum
+/// bırakabilir — her taraf bir başvuru için en fazla bir yorum yazabilir.
+/// Sistemde "iş tamamlandı" diye ayrı bir durum olmadığı için ACCEPTED en
+/// yakın gerçek sinyal olarak kullanılır.
+model Review {
+  id            String      @id @default(uuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  authorId      String
+  author        User        @relation("AuthoredReviews", fields: [authorId], references: [id], onDelete: Cascade)
+  targetUserId  String
+  targetUser    User        @relation("ReceivedReviews", fields: [targetUserId], references: [id], onDelete: Cascade)
+  /// 1-5 arası yıldız.
+  rating        Int
+  comment       String?
+  createdAt     DateTime    @default(now())
+
+  @@unique([applicationId, authorId])
+  @@index([targetUserId])
+  @@map("reviews")
 }
 
 /// Bir iş başvurusuna bağlı 1'e-1 mesajlaşma dizisi — açık bir forum/genel

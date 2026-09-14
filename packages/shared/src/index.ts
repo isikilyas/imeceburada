@@ -25,3 +25,4 @@ export * from "./types/subcontractor-profile";
 export * from "./types/supplier-profile";
 export * from "./types/address";
 export * from "./types/message";
+export * from "./types/review";

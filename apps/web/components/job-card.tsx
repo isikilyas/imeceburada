@@ -4,6 +4,7 @@ import Link from "next/link";
 import { JobPostingDto, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { FavoriteButton } from "@/components/favorite-button";
 import { VerifiedBadge } from "@/components/verified-badge";
+import { StarRating } from "@/components/star-rating";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 function tradeLabel(value: string) {
@@ -31,6 +32,7 @@ export function JobCard({ job }: { job: JobPostingDto }) {
             {job.companyName}
             {job.companyVerified && <VerifiedBadge />}
           </p>
+          <StarRating averageRating={job.averageRating} reviewCount={job.reviewCount} />
           <p className="mt-1 text-xs text-silver-400">{t(`enums.listingIntent.${job.listingType}`)}</p>
         </div>
         <div className="flex shrink-0 items-center gap-1">

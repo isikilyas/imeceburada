@@ -21,6 +21,7 @@ import { FavoritesModule } from "./favorites/favorites.module";
 import { TaxonomyModule } from "./taxonomy/taxonomy.module";
 import { AddressesModule } from "./addresses/addresses.module";
 import { MessagesModule } from "./messages/messages.module";
+import { ReviewsModule } from "./reviews/reviews.module";
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { MessagesModule } from "./messages/messages.module";
     TaxonomyModule,
     AddressesModule,
     MessagesModule,
+    ReviewsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

@@ -8,6 +8,7 @@ import { useLocale } from "@/lib/i18n/locale-context";
 import { maskPhone } from "@/lib/phone";
 import { WhatsAppContactButton } from "@/components/whatsapp-contact-button";
 import { Avatar } from "@/components/avatar";
+import { StarRating } from "@/components/star-rating";
 import { DetailSkeleton } from "@/components/detail-skeleton";
 
 export default function CandidateDetailPage() {
@@ -49,6 +50,9 @@ export default function CandidateDetailPage() {
         {candidate.city}
         {candidate.district ? ` / ${candidate.district}` : ""} · {candidate.experienceYears} yıl deneyim
       </p>
+      <div className="mt-2">
+        <StarRating averageRating={candidate.averageRating} reviewCount={candidate.reviewCount} size="md" />
+      </div>
       <span className="mt-3 inline-block rounded-full bg-ink-800 px-3 py-1 text-xs text-gold-400">{tradeLabel}</span>
 
       {candidate.skills.length > 0 && (

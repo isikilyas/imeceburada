@@ -50,6 +50,22 @@ export class ApplicationsService {
     return this.toDto(application);
   }
 
+  /** Tek bir başvuru — sadece o başvurunun adayı ya da ilanı açan firma görebilir (mesajlaşma/yorum sayfaları için). */
+  async findOne(user: RequestUser, id: string) {
+    const application = await this.prisma.application.findUnique({
+      where: { id },
+      include: { job: true, candidate: true },
+    });
+    if (!application) throw new NotFoundException("Başvuru bulunamadı");
+
+    const isCandidate = application.candidate.userId === user.id;
+    const isCompany =
+      user.role === "COMPANY" && application.job.companyId === (await this.usersService.getCompanyProfileIdForUser(user.id));
+    if (!isCandidate && !isCompany) throw new ForbiddenException("Bu başvuruya erişemezsiniz");
+
+    return this.toDto(application);
+  }
+
   async findMine(user: RequestUser) {
     const candidateId = await this.usersService.getCandidateProfileIdForUser(user.id);
     const applications = await this.prisma.application.findMany({

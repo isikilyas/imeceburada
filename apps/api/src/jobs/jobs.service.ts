@@ -48,7 +48,16 @@ export class JobsService {
       this.prisma.jobPosting.count({ where }),
     ]);
 
-    return { items: items.map(this.toDto), total, page, pageSize };
+    const reviewByUserId = await this.getReviewSummariesByUserId(items.map((i) => i.company.userId));
+    return {
+      items: items.map((item) => ({
+        ...this.toDto(item),
+        ...(reviewByUserId.get(item.company.userId) ?? { averageRating: null, reviewCount: 0 }),
+      })),
+      total,
+      page,
+      pageSize,
+    };
   }
 
   async findOne(id: string) {
@@ -57,7 +66,29 @@ export class JobsService {
       include: { company: { include: { user: true } } },
     });
     if (!job || job.company.user.deactivatedAt) throw new NotFoundException("İlan bulunamadı");
-    return this.toDto(job);
+
+    const reviewAggregate = await this.prisma.review.aggregate({
+      where: { targetUserId: job.company.userId },
+      _avg: { rating: true },
+      _count: true,
+    });
+    return { ...this.toDto(job), averageRating: reviewAggregate._avg.rating, reviewCount: reviewAggregate._count };
+  }
+
+  /** Birden fazla firma için tek sorguda ortalama puan/yorum sayısı — arama sonuçlarında N+1 sorgu yapmamak için. */
+  private async getReviewSummariesByUserId(
+    userIds: string[],
+  ): Promise<Map<string, { averageRating: number | null; reviewCount: number }>> {
+    const uniqueUserIds = [...new Set(userIds)];
+    if (uniqueUserIds.length === 0) return new Map();
+
+    const groups = await this.prisma.review.groupBy({
+      by: ["targetUserId"],
+      where: { targetUserId: { in: uniqueUserIds } },
+      _avg: { rating: true },
+      _count: true,
+    });
+    return new Map(groups.map((g) => [g.targetUserId, { averageRating: g._avg.rating, reviewCount: g._count }]));
   }
 
   async findMine(user: RequestUser) {
