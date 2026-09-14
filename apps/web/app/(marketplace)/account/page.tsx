@@ -329,6 +329,7 @@ function CandidateAccountPanel() {
             hint={t("accountPanel.activity.applicationsHint")}
             href="/dashboard/candidate"
           />
+          <ActivityCard title={t("nav.messages")} hint={t("messages.hint")} href="/messages" />
           <ActivityCard
             title={t("accountPanel.activity.favoritesCard")}
             hint={t("accountPanel.activity.favoritesHint")}
@@ -557,6 +558,7 @@ function CompanyAccountPanel() {
             hint={t("accountPanel.activity.listingsHint")}
             href="/dashboard/company"
           />
+          <ActivityCard title={t("nav.messages")} hint={t("messages.hint")} href="/messages" />
           <ActivityCard
             title={t("accountPanel.activity.favoritesCard")}
             hint={t("accountPanel.activity.favoritesHint")}

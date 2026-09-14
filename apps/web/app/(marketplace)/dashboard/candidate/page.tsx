@@ -54,14 +54,18 @@ export default function CandidateDashboardPage() {
 
           <div className="space-y-3">
             {applications?.map((app) => (
-              <Link
+              <div
                 key={app.id}
-                href={`/jobs/${app.jobId}`}
-                className="flex items-center justify-between rounded-lg border border-ink-800 bg-ink-900 p-4 hover:border-gold-500"
+                className="flex items-center justify-between gap-3 rounded-lg border border-ink-800 bg-ink-900 p-4 hover:border-gold-500"
               >
-                <p className="font-medium text-silver-200">{app.jobTitle}</p>
-                <span className="text-sm text-silver-500">{t(`dashboard.applicationStatus.${app.status}`)}</span>
-              </Link>
+                <Link href={`/jobs/${app.jobId}`} className="min-w-0 flex-1">
+                  <p className="truncate font-medium text-silver-200">{app.jobTitle}</p>
+                  <span className="text-sm text-silver-500">{t(`dashboard.applicationStatus.${app.status}`)}</span>
+                </Link>
+                <Link href={`/messages/${app.id}`} className="shrink-0 text-sm text-gold-400 hover:underline">
+                  {t("nav.messages")}
+                </Link>
+              </div>
             ))}
           </div>
         </section>

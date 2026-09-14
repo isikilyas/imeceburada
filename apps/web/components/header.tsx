@@ -56,6 +56,9 @@ export function Header() {
         ...(user.role === "COMPANY" || user.role === "SUPPLIER" || user.role === "SUBCONTRACTOR"
           ? [{ href: "/membership", label: t("nav.membership") }]
           : []),
+        ...(user.role === "CANDIDATE" || user.role === "COMPANY"
+          ? [{ href: "/messages", label: t("nav.messages") }]
+          : []),
         ...(dashboardHref ? [{ href: dashboardHref, label: t("nav.dashboard") }] : []),
         { href: "/favorites", label: t("nav.favorites") },
       ]
