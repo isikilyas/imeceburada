@@ -37,7 +37,7 @@ import { MembershipHistoryList } from "@/components/membership-history-list";
 import { TabNav } from "@/components/tab-nav";
 import { FormSkeleton } from "@/components/form-skeleton";
 
-type Tab = "profile" | "corporate" | "addresses" | "privacy" | "security" | "membership" | "activity";
+type Tab = "profile" | "corporate" | "addresses" | "privacy" | "notifications" | "security" | "membership" | "activity";
 
 interface AccountFields {
   role: string;
@@ -90,6 +90,7 @@ function CandidateAccountPanel() {
   const [photoVisible, setPhotoVisible] = useState(true);
   const [phoneVisible, setPhoneVisible] = useState(false);
   const [availabilityStatus, setAvailabilityStatus] = useState<AvailabilityStatus>("AVAILABLE");
+  const [notifyByEmail, setNotifyByEmail] = useState(true);
 
   useEffect(() => {
     if (!profile) return;
@@ -107,6 +108,7 @@ function CandidateAccountPanel() {
     setPhotoVisible(profile.photoVisible);
     setPhoneVisible(profile.phoneVisible);
     setAvailabilityStatus(profile.availabilityStatus);
+    setNotifyByEmail(profile.notifyByEmail);
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -130,6 +132,7 @@ function CandidateAccountPanel() {
       photoVisible,
       phoneVisible,
       availabilityStatus,
+      notifyByEmail,
     });
   }
 
@@ -139,6 +142,7 @@ function CandidateAccountPanel() {
     { id: "profile", label: t("accountPanel.tabs.profile") },
     { id: "addresses", label: t("accountPanel.tabs.addresses") },
     { id: "privacy", label: t("accountPanel.tabs.privacy") },
+    { id: "notifications", label: t("accountPanel.tabs.notifications") },
     { id: "security", label: t("accountPanel.tabs.security") },
     { id: "activity", label: t("accountPanel.tabs.activity") },
   ];
@@ -154,7 +158,7 @@ function CandidateAccountPanel() {
       />
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
-      {(tab === "profile" || tab === "privacy") && (
+      {(tab === "profile" || tab === "privacy" || tab === "notifications") && (
         <form onSubmit={handleSubmit} className="space-y-4">
           {tab === "profile" && (
             <>
@@ -280,6 +284,20 @@ function CandidateAccountPanel() {
             </>
           )}
 
+          {tab === "notifications" && (
+            <>
+              <label className="flex items-center gap-2 text-sm text-silver-300">
+                <input
+                  type="checkbox"
+                  checked={notifyByEmail}
+                  onChange={(e) => setNotifyByEmail(e.target.checked)}
+                />
+                {t("accountPanel.notifications.applicationStatusLabel")}
+              </label>
+              <p className="text-xs text-silver-500">{t("accountPanel.notifications.applicationStatusHint")}</p>
+            </>
+          )}
+
           {error && <p className="text-sm text-red-400">{error}</p>}
           {status === "saved" && <p className="text-sm text-green-400">{t("dashboard.form.saved")}</p>}
           <button
@@ -347,6 +365,7 @@ function CompanyAccountPanel() {
   const [website, setWebsite] = useState("");
   const [companyEmail, setCompanyEmail] = useState("");
   const [phoneVisible, setPhoneVisible] = useState(false);
+  const [notifyByEmail, setNotifyByEmail] = useState(true);
 
   useEffect(() => {
     if (!profile) return;
@@ -363,6 +382,7 @@ function CompanyAccountPanel() {
     setWebsite(profile.website ?? "");
     setCompanyEmail(profile.companyEmail ?? "");
     setPhoneVisible(profile.phoneVisible);
+    setNotifyByEmail(profile.notifyByEmail);
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -381,6 +401,7 @@ function CompanyAccountPanel() {
       website: website || undefined,
       companyEmail: companyEmail || undefined,
       phoneVisible,
+      notifyByEmail,
     });
   }
 
@@ -391,6 +412,7 @@ function CompanyAccountPanel() {
     { id: "corporate", label: t("accountPanel.tabs.corporate") },
     { id: "addresses", label: t("accountPanel.tabs.addresses") },
     { id: "privacy", label: t("accountPanel.tabs.privacy") },
+    { id: "notifications", label: t("accountPanel.tabs.notifications") },
     { id: "security", label: t("accountPanel.tabs.security") },
     { id: "membership", label: t("accountPanel.tabs.membership") },
     { id: "activity", label: t("accountPanel.tabs.activity") },
@@ -407,7 +429,7 @@ function CompanyAccountPanel() {
       />
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
-      {(tab === "profile" || tab === "corporate" || tab === "privacy") && (
+      {(tab === "profile" || tab === "corporate" || tab === "privacy" || tab === "notifications") && (
         <form onSubmit={handleSubmit} className="space-y-4">
           {tab === "profile" && (
             <>
@@ -476,6 +498,20 @@ function CompanyAccountPanel() {
                 {t("dashboard.company.phoneVisibleLabel")}
               </label>
               <p className="text-xs text-silver-500">{t("dashboard.company.phoneVisibleHint")}</p>
+            </>
+          )}
+
+          {tab === "notifications" && (
+            <>
+              <label className="flex items-center gap-2 text-sm text-silver-300">
+                <input
+                  type="checkbox"
+                  checked={notifyByEmail}
+                  onChange={(e) => setNotifyByEmail(e.target.checked)}
+                />
+                {t("accountPanel.notifications.newApplicationLabel")}
+              </label>
+              <p className="text-xs text-silver-500">{t("accountPanel.notifications.newApplicationHint")}</p>
             </>
           )}
 

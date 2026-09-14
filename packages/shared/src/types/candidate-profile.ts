@@ -17,6 +17,7 @@ export interface CandidateProfileDto {
   photoUrl?: string | null;
   photoVisible: boolean;
   availabilityStatus: AvailabilityStatus;
+  notifyByEmail: boolean;
 }
 
 export interface UpdateCandidateProfileInput {
@@ -34,4 +35,5 @@ export interface UpdateCandidateProfileInput {
   isPublic?: boolean;
   photoVisible?: boolean;
   availabilityStatus?: AvailabilityStatus;
+  notifyByEmail?: boolean;
 }

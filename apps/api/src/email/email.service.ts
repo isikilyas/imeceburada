@@ -3,6 +3,8 @@ import { Injectable, Logger } from "@nestjs/common";
 export interface EmailService {
   sendPasswordResetLink(email: string, resetUrl: string): Promise<void>;
   sendVerificationCode(email: string, code: string): Promise<void>;
+  sendNewApplicationNotification(email: string, jobTitle: string, candidateName: string): Promise<void>;
+  sendApplicationStatusNotification(email: string, jobTitle: string, statusLabel: string): Promise<void>;
 }
 
 export const EMAIL_SERVICE = "EMAIL_SERVICE";
@@ -25,5 +27,17 @@ export class ConsoleEmailService implements EmailService {
 
   async sendVerificationCode(email: string, code: string): Promise<void> {
     this.logger.warn(`[E-POSTA SAĞLAYICI YOK — geliştirme modu] ${email} adresine gönderilecek doğrulama kodu: ${code}`);
+  }
+
+  async sendNewApplicationNotification(email: string, jobTitle: string, candidateName: string): Promise<void> {
+    this.logger.warn(
+      `[E-POSTA SAĞLAYICI YOK — geliştirme modu] ${email} adresine bildirim: "${jobTitle}" ilanına ${candidateName} başvurdu.`,
+    );
+  }
+
+  async sendApplicationStatusNotification(email: string, jobTitle: string, statusLabel: string): Promise<void> {
+    this.logger.warn(
+      `[E-POSTA SAĞLAYICI YOK — geliştirme modu] ${email} adresine bildirim: "${jobTitle}" başvurunun durumu "${statusLabel}" oldu.`,
+    );
   }
 }
