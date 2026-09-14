@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApplicationDto, ApplicationStatus } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
@@ -41,7 +42,13 @@ export default function JobApplicationsPage() {
               <p className="font-medium text-silver-200">{app.candidateName}</p>
               <p className="text-xs text-silver-500">{t(`dashboard.applicationStatus.${app.status}`)}</p>
             </div>
-            <div className="flex gap-2 text-sm">
+            <div className="flex flex-wrap gap-2 text-sm">
+              <Link
+                href={`/messages/${app.id}`}
+                className="rounded-md border border-ink-700 px-3 py-1 text-gold-400 hover:border-gold-500"
+              >
+                {t("nav.messages")}
+              </Link>
               <button
                 onClick={() => updateStatus(app.id, "REVIEWED")}
                 className="rounded-md border border-ink-700 px-3 py-1 text-silver-300 hover:border-gold-500"

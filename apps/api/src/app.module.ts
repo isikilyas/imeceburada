@@ -20,6 +20,7 @@ import { SubcontractorsModule } from "./subcontractors/subcontractors.module";
 import { FavoritesModule } from "./favorites/favorites.module";
 import { TaxonomyModule } from "./taxonomy/taxonomy.module";
 import { AddressesModule } from "./addresses/addresses.module";
+import { MessagesModule } from "./messages/messages.module";
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { AddressesModule } from "./addresses/addresses.module";
     FavoritesModule,
     TaxonomyModule,
     AddressesModule,
+    MessagesModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

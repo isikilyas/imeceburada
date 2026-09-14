@@ -7,6 +7,7 @@ import { siteRadarDict, subcontractorDetailDict, favoritesDict, searchDict } fro
 import { formComponentsDict } from "./dictionaries/formComponents";
 import { componentsDict } from "./dictionaries/components";
 import { accountPanelDict } from "./dictionaries/account-panel";
+import { messagesDict } from "./dictionaries/messages";
 
 const base = {
   tr: {
@@ -19,6 +20,7 @@ const base = {
       subcontractors: "Taşeron Dizini",
       membership: "Üyelik",
       favorites: "Favorilerim",
+      messages: "Mesajlarım",
       account: "Hesabım",
       accountPanel: "Profil Ayarları",
       dashboard: "Panelim",
@@ -201,6 +203,7 @@ const base = {
       subcontractors: "Subcontractor Directory",
       membership: "Membership",
       favorites: "Favorites",
+      messages: "My Messages",
       account: "My Account",
       accountPanel: "Profile Settings",
       dashboard: "My Dashboard",
@@ -383,6 +386,7 @@ const base = {
       subcontractors: "Subunternehmerverzeichnis",
       membership: "Mitgliedschaft",
       favorites: "Favoriten",
+      messages: "Meine Nachrichten",
       account: "Mein Konto",
       accountPanel: "Profileinstellungen",
       dashboard: "Mein Dashboard",
@@ -566,6 +570,7 @@ const base = {
       subcontractors: "Каталог субподрядчиков",
       membership: "Членство",
       favorites: "Избранное",
+      messages: "Мои сообщения",
       account: "Мой аккаунт",
       accountPanel: "Настройки профиля",
       dashboard: "Личный кабинет",
@@ -748,6 +753,7 @@ const base = {
       subcontractors: "دليل المقاولين من الباطن",
       membership: "العضوية",
       favorites: "المفضلة",
+      messages: "رسائلي",
       account: "حسابي",
       accountPanel: "إعدادات الملف الشخصي",
       dashboard: "لوحتي",
@@ -929,6 +935,7 @@ const base = {
       subcontractors: "Directorio de Subcontratistas",
       membership: "Membresía",
       favorites: "Favoritos",
+      messages: "Mis Mensajes",
       account: "Mi Cuenta",
       accountPanel: "Configuración del Perfil",
       dashboard: "Mi Panel",
@@ -1112,6 +1119,7 @@ const base = {
       subcontractors: "Répertoire des Sous-traitants",
       membership: "Adhésion",
       favorites: "Favoris",
+      messages: "Mes Messages",
       account: "Mon Compte",
       accountPanel: "Paramètres du Profil",
       dashboard: "Mon Tableau de Bord",
@@ -1300,6 +1308,7 @@ function mergeLocale<L extends keyof typeof base>(locale: L) {
     formComponents: formComponentsDict[locale],
     components: componentsDict[locale],
     accountPanel: accountPanelDict[locale],
+    messages: messagesDict[locale],
   };
 }
 

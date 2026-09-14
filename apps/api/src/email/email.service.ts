@@ -5,6 +5,7 @@ export interface EmailService {
   sendVerificationCode(email: string, code: string): Promise<void>;
   sendNewApplicationNotification(email: string, jobTitle: string, candidateName: string): Promise<void>;
   sendApplicationStatusNotification(email: string, jobTitle: string, statusLabel: string): Promise<void>;
+  sendNewMessageNotification(email: string, jobTitle: string): Promise<void>;
 }
 
 export const EMAIL_SERVICE = "EMAIL_SERVICE";
@@ -38,6 +39,12 @@ export class ConsoleEmailService implements EmailService {
   async sendApplicationStatusNotification(email: string, jobTitle: string, statusLabel: string): Promise<void> {
     this.logger.warn(
       `[E-POSTA SAĞLAYICI YOK — geliştirme modu] ${email} adresine bildirim: "${jobTitle}" başvurunun durumu "${statusLabel}" oldu.`,
+    );
+  }
+
+  async sendNewMessageNotification(email: string, jobTitle: string): Promise<void> {
+    this.logger.warn(
+      `[E-POSTA SAĞLAYICI YOK — geliştirme modu] ${email} adresine bildirim: "${jobTitle}" başvurusunda yeni bir mesaj var.`,
     );
   }
 }

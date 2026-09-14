@@ -160,6 +160,7 @@ model User {
   submittedTaxonomyTerms   TaxonomyTerm[]            @relation("SubmittedTaxonomyTerms")
   reviewedTaxonomyTerms    TaxonomyTerm[]             @relation("ReviewedTaxonomyTerms")
   addresses                Address[]
+  sentMessages             Message[]
 
   @@map("users")
 }
@@ -196,7 +197,8 @@ model CandidateProfile {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  applications Application[]
+  applications  Application[]
+  conversations Conversation[]
 
   @@index([isPublic, primaryTradeCategory, city, district])
   @@index([phone])
@@ -247,6 +249,7 @@ model CompanyProfile {
 
   jobPostings   JobPosting[]
   subscriptions MembershipSubscription[]
+  conversations Conversation[]
 
   @@index([phone])
   @@map("company_profiles")
@@ -453,8 +456,48 @@ model Application {
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
 
+  conversation Conversation?
+
   @@unique([jobId, candidateId])
   @@map("applications")
+}
+
+/// Bir iş başvurusuna bağlı 1'e-1 mesajlaşma dizisi — açık bir forum/genel
+/// mesajlaşma değil, sadece o başvurunun adayı ile ilanı açan firma arasında.
+/// Telefon numarası paylaşımına (kendi rızası olmadan aranamama ilkesine)
+/// alternatif/tamamlayıcı bir iletişim kanalıdır. İlk mesaj gönderildiğinde
+/// gerektiğinde otomatik oluşturulur, ayrı bir "sohbet başlat" adımı yoktur.
+model Conversation {
+  id            String   @id @default(uuid())
+  applicationId String   @unique
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  /// Sorgu kolaylığı için Application üzerinden değil doğrudan tutulur.
+  candidateId   String
+  candidate     CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  companyId     String
+  company       CompanyProfile @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  messages Message[]
+
+  @@index([candidateId])
+  @@index([companyId])
+  @@map("conversations")
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  body           String
+  readAt         DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+  @@map("messages")
 }
 
 model WageSubmission {

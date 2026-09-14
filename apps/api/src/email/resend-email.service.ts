@@ -108,4 +108,20 @@ export class ResendEmailService implements EmailService {
       this.logger.error(`Resend üzerinden başvuru durumu bildirimi gönderilemedi (${email}): ${JSON.stringify(error)}`);
     }
   }
+
+  async sendNewMessageNotification(email: string, jobTitle: string): Promise<void> {
+    const { error } = await this.getClient().emails.send({
+      from: this.fromAddress,
+      to: email,
+      subject: `İmece Burada — "${jobTitle}" başvurusunda yeni mesaj`,
+      html: `
+        <p>Merhaba,</p>
+        <p><strong>${jobTitle}</strong> başvurusuyla ilgili yeni bir mesajın var.</p>
+        <p>Okumak ve cevaplamak için İmece Burada panelindeki mesajlarım sayfasına gidebilirsin.</p>
+      `,
+    });
+    if (error) {
+      this.logger.error(`Resend üzerinden mesaj bildirimi gönderilemedi (${email}): ${JSON.stringify(error)}`);
+    }
+  }
 }
