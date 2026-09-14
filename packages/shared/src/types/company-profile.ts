@@ -18,6 +18,7 @@ export interface CompanyProfileDto {
   logoUrl?: string | null;
   membershipStatus: string;
   membershipExpiresAt?: string | null;
+  notifyByEmail: boolean;
 }
 
 export interface UpdateCompanyProfileInput {
@@ -34,4 +35,5 @@ export interface UpdateCompanyProfileInput {
   website?: string;
   companyEmail?: string;
   phoneVisible?: boolean;
+  notifyByEmail?: boolean;
 }

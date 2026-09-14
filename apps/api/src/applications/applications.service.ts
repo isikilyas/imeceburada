@@ -1,21 +1,34 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, ForbiddenException, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { ApplicationStatus } from "@imeceburada/shared";
 import { PrismaService } from "../prisma/prisma.service";
 import { UsersService } from "../users/users.service";
 import { RequestUser } from "../auth/types/request-user";
+import { EMAIL_SERVICE, EmailService } from "../email/email.service";
 import { CreateApplicationDto } from "./dto/create-application.dto";
 import { UpdateApplicationStatusDto } from "./dto/update-application-status.dto";
+
+const STATUS_LABELS: Record<ApplicationStatus, string> = {
+  PENDING: "Beklemede",
+  REVIEWED: "İncelendi",
+  ACCEPTED: "Kabul Edildi",
+  REJECTED: "Reddedildi",
+};
 
 @Injectable()
 export class ApplicationsService {
   constructor(
     private prisma: PrismaService,
     private usersService: UsersService,
+    @Inject(EMAIL_SERVICE) private emailService: EmailService,
   ) {}
 
   async create(user: RequestUser, dto: CreateApplicationDto) {
     const candidateId = await this.usersService.getCandidateProfileIdForUser(user.id);
 
-    const job = await this.prisma.jobPosting.findUnique({ where: { id: dto.jobId } });
+    const job = await this.prisma.jobPosting.findUnique({
+      where: { id: dto.jobId },
+      include: { company: { include: { user: true } } },
+    });
     if (!job || job.status !== "ACTIVE") throw new NotFoundException("İlan bulunamadı veya kapalı");
 
     const existing = await this.prisma.application.findUnique({
@@ -27,6 +40,13 @@ export class ApplicationsService {
       data: { jobId: dto.jobId, candidateId, message: dto.message },
       include: { job: true, candidate: true },
     });
+
+    if (job.company.notifyByEmail) {
+      await this.emailService
+        .sendNewApplicationNotification(job.company.user.email, job.title, application.candidate.fullName)
+        .catch(() => undefined);
+    }
+
     return this.toDto(application);
   }
 
@@ -58,7 +78,7 @@ export class ApplicationsService {
     const companyId = await this.usersService.getCompanyProfileIdForUser(user.id);
     const application = await this.prisma.application.findUnique({
       where: { id },
-      include: { job: true },
+      include: { job: true, candidate: { include: { user: true } } },
     });
     if (!application) throw new NotFoundException("Başvuru bulunamadı");
     if (application.job.companyId !== companyId) throw new ForbiddenException("Bu başvuruyu güncelleme yetkiniz yok");
@@ -68,6 +88,13 @@ export class ApplicationsService {
       data: { status: dto.status },
       include: { job: true, candidate: true },
     });
+
+    if (application.candidate.notifyByEmail) {
+      await this.emailService
+        .sendApplicationStatusNotification(application.candidate.user.email, application.job.title, STATUS_LABELS[dto.status])
+        .catch(() => undefined);
+    }
+
     return this.toDto(updated);
   }
 

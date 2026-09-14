@@ -191,6 +191,8 @@ model CandidateProfile {
   photoUrl            String?
   photoVisible        Boolean  @default(true)
   availabilityStatus  AvailabilityStatus @default(AVAILABLE)
+  /// Başvuru durumu değiştiğinde e-posta bildirimi alınsın mı — Hesabım > Bildirimler'den yönetilir.
+  notifyByEmail       Boolean  @default(true)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
@@ -237,6 +239,8 @@ model CompanyProfile {
   /// En son (aktif ya da geçmiş) planın önbelleği — abonelik geçmişi için
   /// hâlâ MembershipSubscription sorgulanır, bu sadece hızlı gösterim içindir.
   currentPlan         MembershipPlan?
+  /// İlanına yeni bir başvuru geldiğinde e-posta bildirimi alınsın mı — Hesabım > Bildirimler'den yönetilir.
+  notifyByEmail       Boolean          @default(true)
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

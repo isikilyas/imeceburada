@@ -54,4 +54,8 @@ export class UpdateCompanyProfileDto {
   @IsOptional()
   @IsEmail()
   companyEmail?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  notifyByEmail?: boolean;
 }

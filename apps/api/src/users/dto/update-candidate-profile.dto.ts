@@ -65,4 +65,8 @@ export class UpdateCandidateProfileDto {
   @IsOptional()
   @IsIn(AVAILABILITY_STATUS_VALUES)
   availabilityStatus?: AvailabilityStatus;
+
+  @IsOptional()
+  @IsBoolean()
+  notifyByEmail?: boolean;
 }

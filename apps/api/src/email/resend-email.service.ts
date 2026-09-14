@@ -70,4 +70,42 @@ export class ResendEmailService implements EmailService {
       throw new Error("Doğrulama kodu gönderilemedi");
     }
   }
+
+  /**
+   * Bildirim e-postaları — şifre sıfırlama/doğrulama kodunun aksine kullanıcının
+   * o an beklediği bir sonuç değil, gönderim başarısız olursa çağıran işlemi
+   * (başvuru oluşturma, durum güncelleme) bloke etmemesi için hata fırlatmaz,
+   * sadece loglar.
+   */
+  async sendNewApplicationNotification(email: string, jobTitle: string, candidateName: string): Promise<void> {
+    const { error } = await this.getClient().emails.send({
+      from: this.fromAddress,
+      to: email,
+      subject: `İmece Burada — "${jobTitle}" ilanına yeni başvuru`,
+      html: `
+        <p>Merhaba,</p>
+        <p><strong>${candidateName}</strong>, <strong>${jobTitle}</strong> ilanınıza başvurdu.</p>
+        <p>Başvuruyu incelemek için İmece Burada panelindeki ilanlarım sayfasına gidebilirsin.</p>
+      `,
+    });
+    if (error) {
+      this.logger.error(`Resend üzerinden başvuru bildirimi gönderilemedi (${email}): ${JSON.stringify(error)}`);
+    }
+  }
+
+  async sendApplicationStatusNotification(email: string, jobTitle: string, statusLabel: string): Promise<void> {
+    const { error } = await this.getClient().emails.send({
+      from: this.fromAddress,
+      to: email,
+      subject: `İmece Burada — "${jobTitle}" başvurunun durumu güncellendi`,
+      html: `
+        <p>Merhaba,</p>
+        <p><strong>${jobTitle}</strong> ilanına yaptığın başvurunun durumu: <strong>${statusLabel}</strong>.</p>
+        <p>Detayları İmece Burada panelindeki başvurularım sayfasından görebilirsin.</p>
+      `,
+    });
+    if (error) {
+      this.logger.error(`Resend üzerinden başvuru durumu bildirimi gönderilemedi (${email}): ${JSON.stringify(error)}`);
+    }
+  }
 }
