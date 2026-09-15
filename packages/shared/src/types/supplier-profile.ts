@@ -19,6 +19,7 @@ export interface SupplierProfileDto {
   membershipStatus: string;
   membershipExpiresAt?: string | null;
   hasActivityCertificate: boolean;
+  serviceRadiusKm?: number | null;
 }
 
 export interface UpdateSupplierProfileInput {
@@ -36,4 +37,5 @@ export interface UpdateSupplierProfileInput {
   supplyCategories?: string[];
   phoneVisible?: boolean;
   hasActivityCertificate?: boolean;
+  serviceRadiusKm?: number;
 }

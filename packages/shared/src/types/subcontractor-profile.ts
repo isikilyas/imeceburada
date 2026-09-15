@@ -20,6 +20,7 @@ export interface SubcontractorProfileDto {
   membershipStatus: string;
   membershipExpiresAt?: string | null;
   hasActivityCertificate: boolean;
+  serviceRadiusKm?: number | null;
 }
 
 export interface UpdateSubcontractorProfileInput {
@@ -38,4 +39,5 @@ export interface UpdateSubcontractorProfileInput {
   isPublic?: boolean;
   phoneVisible?: boolean;
   hasActivityCertificate?: boolean;
+  serviceRadiusKm?: number;
 }

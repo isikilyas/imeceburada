@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsDateString, IsIn, IsInt, IsOptional, IsString, Length, Min, MaxLength } from "class-validator";
+import { IsArray, IsBoolean, IsDateString, IsIn, IsInt, IsOptional, IsString, Length, Max, Min, MaxLength } from "class-validator";
 import { AvailabilityStatus, WORK_PREFERENCE_VALUES } from "@imeceburada/shared";
 
 const AVAILABILITY_STATUS_VALUES: AvailabilityStatus[] = ["AVAILABLE", "BUSY"];
@@ -85,4 +85,10 @@ export class UpdateCandidateProfileDto {
   @IsOptional()
   @IsBoolean()
   hasOshCert?: boolean;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(1000)
+  serviceRadiusKm?: number;
 }

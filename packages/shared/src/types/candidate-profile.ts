@@ -23,6 +23,7 @@ export interface CandidateProfileDto {
   hasProfessionalQualificationCert: boolean;
   hasMasterCraftsmanCert: boolean;
   hasOshCert: boolean;
+  serviceRadiusKm?: number | null;
 }
 
 export interface UpdateCandidateProfileInput {
@@ -45,4 +46,5 @@ export interface UpdateCandidateProfileInput {
   hasProfessionalQualificationCert?: boolean;
   hasMasterCraftsmanCert?: boolean;
   hasOshCert?: boolean;
+  serviceRadiusKm?: number;
 }
