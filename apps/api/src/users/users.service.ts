@@ -61,7 +61,7 @@ export class UsersService {
     }
     if (user.role === "ADMIN") {
       // Yöneticinin adaya/şirkete özel bir profil kaydı yok — sadece hesap bilgileri döner.
-      return { role: "ADMIN", ...account, title: dbUser.title };
+      return { role: "ADMIN", ...account, title: dbUser.title, phone: dbUser.phone };
     }
     throw new BadRequestException("Bu rol için profil bulunmuyor");
   }
@@ -180,7 +180,7 @@ export class UsersService {
 
   async updateAdminProfile(user: RequestUser, dto: UpdateAdminProfileDto) {
     if (user.role !== "ADMIN") throw new BadRequestException("Sadece yöneticiler bu profili güncelleyebilir");
-    return this.prisma.user.update({ where: { id: user.id }, data: dto, select: { title: true } });
+    return this.prisma.user.update({ where: { id: user.id }, data: dto, select: { title: true, phone: true } });
   }
 
   async updateSubcontractorProfile(user: RequestUser, dto: UpdateSubcontractorProfileDto) {
