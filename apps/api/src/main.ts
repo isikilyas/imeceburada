@@ -5,6 +5,7 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import helmet from "helmet";
+import type { Request, Response, NextFunction } from "express";
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
@@ -24,6 +25,16 @@ async function bootstrap() {
   );
 
   app.useStaticAssets(join(process.cwd(), "uploads"), { prefix: "/uploads" });
+
+  // Tüm /api yanıtları kullanıcıya özel olabilir (JWT ile yetkilendirilmiş); tarayıcının
+  // paylaşılan HTTP önbelleğinin bunları URL bazında (Authorization'dan bağımsız) saklayıp
+  // farklı bir kullanıcıya sunmasını engelle. /uploads statik dosyaları bundan etkilenmez.
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    if (req.path.startsWith("/api")) {
+      res.setHeader("Cache-Control", "no-store");
+    }
+    next();
+  });
 
   const webBaseUrl = config.get<string>("WEB_BASE_URL") ?? "http://localhost:3000";
   const extraOrigins = (config.get<string>("CORS_ORIGINS") ?? "")
