@@ -61,7 +61,7 @@ export class UsersService {
     }
     if (user.role === "ADMIN") {
       // Yöneticinin adaya/şirkete özel bir profil kaydı yok — sadece hesap bilgileri döner.
-      return { role: "ADMIN", ...account, title: dbUser.title, phone: dbUser.phone };
+      return { role: "ADMIN", ...account, title: dbUser.title, phone: dbUser.phone, photoUrl: dbUser.photoUrl };
     }
     throw new BadRequestException("Bu rol için profil bulunmuyor");
   }
@@ -216,6 +216,30 @@ export class UsersService {
 
     const photoUrl = `/uploads/candidates/${filename}`;
     return this.prisma.candidateProfile.update({ where: { userId: user.id }, data: { photoUrl } });
+  }
+
+  async setAdminPhoto(user: RequestUser, filename: string) {
+    if (user.role !== "ADMIN") throw new BadRequestException("Sadece yöneticiler fotoğraf yükleyebilir");
+    const dbUser = await this.prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) throw new NotFoundException("Kullanıcı bulunamadı");
+
+    if (dbUser.photoUrl) {
+      await unlink(join(process.cwd(), dbUser.photoUrl)).catch(() => undefined);
+    }
+
+    const photoUrl = `/uploads/admins/${filename}`;
+    return this.prisma.user.update({ where: { id: user.id }, data: { photoUrl }, select: { photoUrl: true } });
+  }
+
+  async removeAdminPhoto(user: RequestUser) {
+    if (user.role !== "ADMIN") throw new BadRequestException("Sadece yöneticiler fotoğraf kaldırabilir");
+    const dbUser = await this.prisma.user.findUnique({ where: { id: user.id } });
+    if (!dbUser) throw new NotFoundException("Kullanıcı bulunamadı");
+
+    if (dbUser.photoUrl) {
+      await unlink(join(process.cwd(), dbUser.photoUrl)).catch(() => undefined);
+    }
+    return this.prisma.user.update({ where: { id: user.id }, data: { photoUrl: null }, select: { photoUrl: true } });
   }
 
   async removeCandidatePhoto(user: RequestUser) {

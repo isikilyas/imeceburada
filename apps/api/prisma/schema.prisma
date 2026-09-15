@@ -130,6 +130,7 @@ model User {
   /// unvan/meslek ve telefon bilgisi zaten kendi profil modellerinde ayrıca tutuluyor.
   title        String?
   phone        String?
+  photoUrl     String?
 
   /// Girişte imzalanan JWT'lere gömülür — "tüm cihazlardan çıkış yap"
   /// tetiklendiğinde bir artırılır, bu da daha önce dağıtılmış tüm

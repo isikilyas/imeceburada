@@ -23,6 +23,7 @@ import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-sele
 import { MaterialCategoryMultiSelect } from "@/components/material-category-multi-select";
 import { CandidatePhotoUploader } from "@/components/candidate-photo-uploader";
 import { CompanyLogoUploader } from "@/components/company-logo-uploader";
+import { AdminPhotoUploader } from "@/components/admin-photo-uploader";
 import { CompanyNameWarning } from "@/components/company-name-warning";
 import { VerificationStatusCard } from "@/components/verification-status-card";
 import { DeleteAccountSection } from "@/components/delete-account-section";
@@ -50,6 +51,7 @@ interface AccountFields {
   pendingEmail?: string | null;
   title?: string | null;
   phone?: string | null;
+  photoUrl?: string | null;
 }
 
 function ActivityCard({ title, hint, href }: { title: string; hint: string; href: string }) {
@@ -1058,6 +1060,7 @@ function AdminAccountPanel() {
         isCorporate={false}
       />
       <form onSubmit={handleSubmit} className={`${cardClass} space-y-4`}>
+        <AdminPhotoUploader photoUrl={profile.photoUrl} />
         <Field label={t("accountPanel.admin.titleLabel")}>
           <input value={title} onChange={(e) => setTitle(e.target.value)} className={inputClass} />
         </Field>
