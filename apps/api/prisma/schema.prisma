@@ -127,8 +127,9 @@ model User {
   lastLoginAt  DateTime?
 
   /// Şu an sadece ADMIN hesap panelinde kullanılıyor — diğer roller için
-  /// unvan/meslek bilgisi zaten kendi profil modellerinde ayrıca tutuluyor.
+  /// unvan/meslek ve telefon bilgisi zaten kendi profil modellerinde ayrıca tutuluyor.
   title        String?
+  phone        String?
 
   /// Girişte imzalanan JWT'lere gömülür — "tüm cihazlardan çıkış yap"
   /// tetiklendiğinde bir artırılır, bu da daha önce dağıtılmış tüm

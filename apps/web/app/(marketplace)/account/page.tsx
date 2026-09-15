@@ -47,6 +47,7 @@ interface AccountFields {
   lastLoginAt?: string | null;
   pendingEmail?: string | null;
   title?: string | null;
+  phone?: string | null;
 }
 
 function ActivityCard({ title, hint, href }: { title: string; hint: string; href: string }) {
@@ -1015,15 +1016,17 @@ function AdminAccountPanel() {
   });
   const { status, error, save } = useProfileSave("/users/me/profile/admin", ["my-admin-profile"]);
   const [title, setTitle] = useState("");
+  const [phone, setPhone] = useState("");
 
   useEffect(() => {
     if (!profile) return;
     setTitle(profile.title ?? "");
+    setPhone(profile.phone ?? "");
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    await save({ title: title || undefined });
+    await save({ title: title || undefined, phone: phone || undefined });
   }
 
   if (isLoading || !profile) return <FormSkeleton rows={5} />;
@@ -1040,6 +1043,14 @@ function AdminAccountPanel() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <Field label={t("accountPanel.admin.titleLabel")}>
           <input value={title} onChange={(e) => setTitle(e.target.value)} className={inputClass} />
+        </Field>
+        <Field label={t("dashboard.candidate.phoneLabel")}>
+          <input
+            placeholder="+905551234567"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className={inputClass}
+          />
         </Field>
         {error && <p className="text-sm text-red-400">{error}</p>}
         {status === "saved" && <p className="text-sm text-green-400">{t("dashboard.form.saved")}</p>}
