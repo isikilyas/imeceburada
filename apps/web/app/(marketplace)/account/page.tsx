@@ -1005,6 +1005,34 @@ function SubcontractorAccountPanel() {
   );
 }
 
+function AdminAccountPanel() {
+  const { t } = useLocale();
+  const { authFetch } = useAuth();
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["my-admin-profile"],
+    queryFn: () => authFetch<AccountFields>("/users/me/profile"),
+  });
+
+  if (isLoading || !profile) return <FormSkeleton rows={5} />;
+
+  return (
+    <div className="space-y-6">
+      <AccountInfoCard
+        email={profile.email}
+        accountCreatedAt={profile.accountCreatedAt}
+        lastLoginAt={profile.lastLoginAt}
+        pendingEmail={profile.pendingEmail}
+        isCorporate={false}
+      />
+      <div className="space-y-4">
+        <ChangePasswordForm />
+        <ChangeEmailForm />
+        <LogoutAllDevicesButton />
+      </div>
+    </div>
+  );
+}
+
 export default function AccountPage() {
   const { user, isLoading: authLoading } = useAuth();
   const { t } = useLocale();
@@ -1019,6 +1047,7 @@ export default function AccountPage() {
       {user.role === "COMPANY" && <CompanyAccountPanel />}
       {user.role === "SUPPLIER" && <SupplierAccountPanel />}
       {user.role === "SUBCONTRACTOR" && <SubcontractorAccountPanel />}
+      {user.role === "ADMIN" && <AdminAccountPanel />}
     </div>
   );
 }
