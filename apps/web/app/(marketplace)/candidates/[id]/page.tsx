@@ -5,8 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { CandidateDirectoryDetailDto, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
-import { maskPhone } from "@/lib/phone";
 import { WhatsAppContactButton } from "@/components/whatsapp-contact-button";
+import { PhoneCallButton } from "@/components/phone-call-button";
 import { Avatar } from "@/components/avatar";
 import { StarRating } from "@/components/star-rating";
 import { DetailSkeleton } from "@/components/detail-skeleton";
@@ -51,7 +51,26 @@ export default function CandidateDetailPage() {
           {new Date(candidate.availableFrom).toLocaleDateString("tr-TR")} tarihinden itibaren müsait olacak
         </p>
       )}
-      <p className="mt-1 text-silver-500">
+
+      {candidate.phone && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          <PhoneCallButton
+            phone={candidate.phone}
+            disabled={!isAvailable}
+            disabledLabel="Şu an iş aramıyor"
+            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-md bg-gold-500 px-4 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-400 sm:flex-none"
+          />
+          <WhatsAppContactButton
+            phone={candidate.phone}
+            message={`Merhaba, platformunuzdaki ${tradeLabel} profilinizi gördüm. Görüşmek isterseniz müsait misiniz?`}
+            disabled={!isAvailable}
+            disabledLabel="Şu an iş aramıyor"
+            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-md bg-green-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-green-500 sm:flex-none"
+          />
+        </div>
+      )}
+
+      <p className="mt-3 text-silver-500">
         {candidate.city}
         {candidate.district ? ` / ${candidate.district}` : ""} · {candidate.experienceYears} yıl deneyim
       </p>
@@ -79,21 +98,6 @@ export default function CandidateDetailPage() {
                 {t(`enums.workPreference.${v}`)}
               </span>
             ))}
-          </div>
-        </div>
-      )}
-
-      {candidate.phone && (
-        <div className="mt-8 rounded-lg border border-gold-500/40 bg-ink-900 p-4">
-          <p className="text-sm text-silver-500">İletişim</p>
-          <p className="mt-1 text-lg font-medium text-gold-400">{maskPhone(candidate.phone)}</p>
-          <div className="mt-3">
-            <WhatsAppContactButton
-              phone={candidate.phone}
-              message={`Merhaba, platformunuzdaki ${tradeLabel} profilinizi gördüm. Görüşmek isterseniz müsait misiniz?`}
-              disabled={!isAvailable}
-              disabledLabel="Şu an iş aramıyor"
-            />
           </div>
         </div>
       )}

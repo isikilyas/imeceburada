@@ -7,8 +7,8 @@ import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { WhatsAppShareButton } from "@/components/whatsapp-share-button";
 import { WhatsAppContactButton } from "@/components/whatsapp-contact-button";
+import { PhoneCallButton } from "@/components/phone-call-button";
 import { DetailSkeleton } from "@/components/detail-skeleton";
-import { maskPhone } from "@/lib/phone";
 
 export default function SubcontractorDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -37,6 +37,21 @@ export default function SubcontractorDetailPage() {
         {subcontractor.city}
         {subcontractor.district ? ` / ${subcontractor.district}` : ""}
       </p>
+
+      {subcontractor.phone && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          <PhoneCallButton
+            phone={subcontractor.phone}
+            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-md bg-gold-500 px-4 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-400 sm:flex-none"
+          />
+          <WhatsAppContactButton
+            phone={subcontractor.phone}
+            message={t("subcontractorDetail.contactMessage", { name: subcontractor.companyName })}
+            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-md bg-green-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-green-500 sm:flex-none"
+          />
+        </div>
+      )}
+
       <div className="mt-3 flex flex-wrap gap-2">
         {subcontractor.tradeCategories.map((v) => (
           <span key={v} className="inline-block rounded-full bg-ink-800 px-3 py-1 text-xs text-gold-400">
@@ -47,19 +62,6 @@ export default function SubcontractorDetailPage() {
 
       {subcontractor.description && (
         <p className="mt-4 text-sm text-silver-400">{subcontractor.description}</p>
-      )}
-
-      {subcontractor.phone && (
-        <div className="mt-8 rounded-lg border border-gold-500/40 bg-ink-900 p-4">
-          <p className="text-sm text-silver-500">{t("subcontractorDetail.contactLabel")}</p>
-          <p className="mt-1 text-lg font-medium text-gold-400">{maskPhone(subcontractor.phone)}</p>
-          <div className="mt-3">
-            <WhatsAppContactButton
-              phone={subcontractor.phone}
-              message={t("subcontractorDetail.contactMessage", { name: subcontractor.companyName })}
-            />
-          </div>
-        </div>
       )}
     </div>
   );
