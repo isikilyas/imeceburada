@@ -126,6 +126,10 @@ model User {
   updatedAt    DateTime @updatedAt
   lastLoginAt  DateTime?
 
+  /// Şu an sadece ADMIN hesap panelinde kullanılıyor — diğer roller için
+  /// unvan/meslek bilgisi zaten kendi profil modellerinde ayrıca tutuluyor.
+  title        String?
+
   /// Girişte imzalanan JWT'lere gömülür — "tüm cihazlardan çıkış yap"
   /// tetiklendiğinde bir artırılır, bu da daha önce dağıtılmış tüm
   /// access/refresh token'ları (stateless oldukları için tek tek iptal

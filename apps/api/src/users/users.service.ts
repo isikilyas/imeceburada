@@ -9,6 +9,7 @@ import { RequestUser } from "../auth/types/request-user";
 import { EMAIL_SERVICE, EmailService } from "../email/email.service";
 import { UpdateCandidateProfileDto } from "./dto/update-candidate-profile.dto";
 import { UpdateCompanyProfileDto } from "./dto/update-company-profile.dto";
+import { UpdateAdminProfileDto } from "./dto/update-admin-profile.dto";
 import { UpdateSubcontractorProfileDto } from "./dto/update-subcontractor-profile.dto";
 import { UpdateSupplierProfileDto } from "./dto/update-supplier-profile.dto";
 import { DeleteAccountDto } from "./dto/delete-account.dto";
@@ -60,7 +61,7 @@ export class UsersService {
     }
     if (user.role === "ADMIN") {
       // Yöneticinin adaya/şirkete özel bir profil kaydı yok — sadece hesap bilgileri döner.
-      return { role: "ADMIN", ...account };
+      return { role: "ADMIN", ...account, title: dbUser.title };
     }
     throw new BadRequestException("Bu rol için profil bulunmuyor");
   }
@@ -175,6 +176,11 @@ export class UsersService {
   async updateCompanyProfile(user: RequestUser, dto: UpdateCompanyProfileDto) {
     if (user.role !== "COMPANY") throw new BadRequestException("Sadece şirketler profil güncelleyebilir");
     return this.prisma.companyProfile.update({ where: { userId: user.id }, data: dto });
+  }
+
+  async updateAdminProfile(user: RequestUser, dto: UpdateAdminProfileDto) {
+    if (user.role !== "ADMIN") throw new BadRequestException("Sadece yöneticiler bu profili güncelleyebilir");
+    return this.prisma.user.update({ where: { id: user.id }, data: dto, select: { title: true } });
   }
 
   async updateSubcontractorProfile(user: RequestUser, dto: UpdateSubcontractorProfileDto) {

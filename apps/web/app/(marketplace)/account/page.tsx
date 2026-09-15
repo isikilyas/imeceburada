@@ -46,6 +46,7 @@ interface AccountFields {
   accountCreatedAt: string;
   lastLoginAt?: string | null;
   pendingEmail?: string | null;
+  title?: string | null;
 }
 
 function ActivityCard({ title, hint, href }: { title: string; hint: string; href: string }) {
@@ -1012,6 +1013,18 @@ function AdminAccountPanel() {
     queryKey: ["my-admin-profile"],
     queryFn: () => authFetch<AccountFields>("/users/me/profile"),
   });
+  const { status, error, save } = useProfileSave("/users/me/profile/admin", ["my-admin-profile"]);
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    if (!profile) return;
+    setTitle(profile.title ?? "");
+  }, [profile]);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    await save({ title: title || undefined });
+  }
 
   if (isLoading || !profile) return <FormSkeleton rows={5} />;
 
@@ -1024,6 +1037,20 @@ function AdminAccountPanel() {
         pendingEmail={profile.pendingEmail}
         isCorporate={false}
       />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Field label={t("accountPanel.admin.titleLabel")}>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} className={inputClass} />
+        </Field>
+        {error && <p className="text-sm text-red-400">{error}</p>}
+        {status === "saved" && <p className="text-sm text-green-400">{t("dashboard.form.saved")}</p>}
+        <button
+          type="submit"
+          disabled={status === "saving"}
+          className="w-full rounded-md bg-gold-500 py-2.5 font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60 sm:w-auto sm:px-8"
+        >
+          {status === "saving" ? t("dashboard.form.saving") : t("dashboard.form.save")}
+        </button>
+      </form>
       <div className="space-y-4">
         <ChangePasswordForm />
         <ChangeEmailForm />
