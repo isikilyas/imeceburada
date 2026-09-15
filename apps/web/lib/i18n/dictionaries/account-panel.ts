@@ -18,6 +18,8 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Uzmanlık Alanı",
     skillsHint: "Virgülle ayırarak yaz, ör. sıva, kalıp, demir bağlama",
     availableFromLabel: "Ne zaman müsait olacaksınız?",
+    serviceRadiusLabel: "Hizmet Verilen Km Yarıçapı",
+    serviceRadiusHint: "İsteğe bağlı, bilgi amaçlıdır — arama/eşleştirmede kullanılmaz.",
     certs: {
       heading: "Belge ve Yeterlilikler",
       professionalQualification: "Mesleki Yeterlilik Belgesi",
@@ -150,6 +152,8 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Areas of Expertise",
     skillsHint: "Separate with commas, e.g. plastering, formwork, rebar tying",
     availableFromLabel: "When will you be available?",
+    serviceRadiusLabel: "Service Radius (km)",
+    serviceRadiusHint: "Optional, informational only — not used in search/matching.",
     certs: {
       heading: "Documents & Qualifications",
       professionalQualification: "Professional Qualification Certificate",
@@ -282,6 +286,8 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Fachgebiete",
     skillsHint: "Durch Kommas trennen, z. B. Putz, Schalung, Bewehrung binden",
     availableFromLabel: "Ab wann sind Sie verfügbar?",
+    serviceRadiusLabel: "Einsatzradius (km)",
+    serviceRadiusHint: "Optional, nur informativ — wird nicht für Suche/Matching verwendet.",
     certs: {
       heading: "Dokumente & Qualifikationen",
       professionalQualification: "Berufsqualifikationsnachweis",
@@ -414,6 +420,8 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Специализация",
     skillsHint: "Через запятую, напр. штукатурка, опалубка, вязка арматуры",
     availableFromLabel: "С какой даты вы будете доступны?",
+    serviceRadiusLabel: "Радиус обслуживания (км)",
+    serviceRadiusHint: "Необязательно, только для информации — не используется в поиске/подборе.",
     certs: {
       heading: "Документы и квалификация",
       professionalQualification: "Свидетельство о профессиональной квалификации",
@@ -546,6 +554,8 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "مجالات الخبرة",
     skillsHint: "افصل بينها بفواصل، مثل: محارة، شدة، ربط حديد",
     availableFromLabel: "متى ستكون متاحًا؟",
+    serviceRadiusLabel: "نطاق الخدمة (كم)",
+    serviceRadiusHint: "اختياري وللعلم فقط — لا يُستخدم في البحث أو المطابقة.",
     certs: {
       heading: "المستندات والمؤهلات",
       professionalQualification: "شهادة الكفاءة المهنية",
@@ -678,6 +688,8 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Áreas de Especialización",
     skillsHint: "Separa con comas, ej. enlucido, encofrado, atado de hierro",
     availableFromLabel: "¿A partir de cuándo estarás disponible?",
+    serviceRadiusLabel: "Radio de Servicio (km)",
+    serviceRadiusHint: "Opcional, solo informativo — no se usa en la búsqueda/emparejamiento.",
     certs: {
       heading: "Documentos y Cualificaciones",
       professionalQualification: "Certificado de Cualificación Profesional",
@@ -810,6 +822,8 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Domaines d'Expertise",
     skillsHint: "Sépare par des virgules, ex. enduit, coffrage, ferraillage",
     availableFromLabel: "À partir de quand serez-vous disponible ?",
+    serviceRadiusLabel: "Rayon de Service (km)",
+    serviceRadiusHint: "Facultatif, à titre informatif uniquement — non utilisé dans la recherche/le rapprochement.",
     certs: {
       heading: "Documents et Qualifications",
       professionalQualification: "Certificat de Qualification Professionnelle",

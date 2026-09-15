@@ -101,6 +101,7 @@ function CandidateAccountPanel() {
   const [hasProfessionalQualificationCert, setHasProfessionalQualificationCert] = useState(false);
   const [hasMasterCraftsmanCert, setHasMasterCraftsmanCert] = useState(false);
   const [hasOshCert, setHasOshCert] = useState(false);
+  const [serviceRadiusKm, setServiceRadiusKm] = useState("");
 
   useEffect(() => {
     if (!profile) return;
@@ -123,6 +124,7 @@ function CandidateAccountPanel() {
     setHasProfessionalQualificationCert(profile.hasProfessionalQualificationCert);
     setHasMasterCraftsmanCert(profile.hasMasterCraftsmanCert);
     setHasOshCert(profile.hasOshCert);
+    setServiceRadiusKm(profile.serviceRadiusKm != null ? String(profile.serviceRadiusKm) : "");
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -151,6 +153,7 @@ function CandidateAccountPanel() {
       hasProfessionalQualificationCert,
       hasMasterCraftsmanCert,
       hasOshCert,
+      serviceRadiusKm: serviceRadiusKm ? Number(serviceRadiusKm) : undefined,
     });
   }
 
@@ -193,6 +196,18 @@ function CandidateAccountPanel() {
                 onDistrictChange={setDistrict}
                 allowEmptyDistrict
               />
+              <Field label={t("accountPanel.serviceRadiusLabel")}>
+                <input
+                  type="number"
+                  min={0}
+                  max={1000}
+                  placeholder="50"
+                  value={serviceRadiusKm}
+                  onChange={(e) => setServiceRadiusKm(e.target.value)}
+                  className={inputClass}
+                />
+              </Field>
+              <p className="-mt-2 text-xs text-silver-500">{t("accountPanel.serviceRadiusHint")}</p>
               <Field label={t("accountPanel.addressLabel")}>
                 <input value={address} onChange={(e) => setAddress(e.target.value)} className={inputClass} />
               </Field>
@@ -664,6 +679,7 @@ function SupplierAccountPanel() {
   const [supplyCategories, setSupplyCategories] = useState<string[]>([]);
   const [phoneVisible, setPhoneVisible] = useState(false);
   const [hasActivityCertificate, setHasActivityCertificate] = useState(false);
+  const [serviceRadiusKm, setServiceRadiusKm] = useState("");
 
   useEffect(() => {
     if (!profile) return;
@@ -681,6 +697,7 @@ function SupplierAccountPanel() {
     setSupplyCategories(profile.supplyCategories);
     setPhoneVisible(profile.phoneVisible);
     setHasActivityCertificate(profile.hasActivityCertificate);
+    setServiceRadiusKm(profile.serviceRadiusKm != null ? String(profile.serviceRadiusKm) : "");
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -700,6 +717,7 @@ function SupplierAccountPanel() {
       supplyCategories,
       phoneVisible,
       hasActivityCertificate,
+      serviceRadiusKm: serviceRadiusKm ? Number(serviceRadiusKm) : undefined,
     });
   }
 
@@ -743,6 +761,18 @@ function SupplierAccountPanel() {
                 onDistrictChange={setDistrict}
                 allowEmptyDistrict
               />
+              <Field label={t("accountPanel.serviceRadiusLabel")}>
+                <input
+                  type="number"
+                  min={0}
+                  max={1000}
+                  placeholder="50"
+                  value={serviceRadiusKm}
+                  onChange={(e) => setServiceRadiusKm(e.target.value)}
+                  className={inputClass}
+                />
+              </Field>
+              <p className="-mt-2 text-xs text-silver-500">{t("accountPanel.serviceRadiusHint")}</p>
               <MaterialCategoryMultiSelect values={supplyCategories} onChange={setSupplyCategories} />
             </>
           )}
@@ -889,6 +919,7 @@ function SubcontractorAccountPanel() {
   const [isPublic, setIsPublic] = useState(true);
   const [phoneVisible, setPhoneVisible] = useState(false);
   const [hasActivityCertificate, setHasActivityCertificate] = useState(false);
+  const [serviceRadiusKm, setServiceRadiusKm] = useState("");
 
   useEffect(() => {
     if (!profile) return;
@@ -907,6 +938,7 @@ function SubcontractorAccountPanel() {
     setIsPublic(profile.isPublic);
     setPhoneVisible(profile.phoneVisible);
     setHasActivityCertificate(profile.hasActivityCertificate);
+    setServiceRadiusKm(profile.serviceRadiusKm != null ? String(profile.serviceRadiusKm) : "");
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -928,6 +960,7 @@ function SubcontractorAccountPanel() {
       mersisNumber: mersisNumber || undefined,
       website: website || undefined,
       companyEmail: companyEmail || undefined,
+      serviceRadiusKm: serviceRadiusKm ? Number(serviceRadiusKm) : undefined,
       isPublic,
       phoneVisible,
       hasActivityCertificate,
@@ -975,6 +1008,18 @@ function SubcontractorAccountPanel() {
                 onDistrictChange={setDistrict}
                 allowEmptyDistrict
               />
+              <Field label={t("accountPanel.serviceRadiusLabel")}>
+                <input
+                  type="number"
+                  min={0}
+                  max={1000}
+                  placeholder="50"
+                  value={serviceRadiusKm}
+                  onChange={(e) => setServiceRadiusKm(e.target.value)}
+                  className={inputClass}
+                />
+              </Field>
+              <p className="-mt-2 text-xs text-silver-500">{t("accountPanel.serviceRadiusHint")}</p>
             </>
           )}
 

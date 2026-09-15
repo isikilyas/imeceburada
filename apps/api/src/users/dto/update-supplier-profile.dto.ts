@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsEmail, IsOptional, IsString, Length, MaxLength } from "class-validator";
+import { IsArray, IsBoolean, IsEmail, IsInt, IsOptional, IsString, Length, Max, MaxLength, Min } from "class-validator";
 
 export class UpdateSupplierProfileDto {
   @IsOptional()
@@ -60,4 +60,10 @@ export class UpdateSupplierProfileDto {
   @IsOptional()
   @IsBoolean()
   hasActivityCertificate?: boolean;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(1000)
+  serviceRadiusKm?: number;
 }
