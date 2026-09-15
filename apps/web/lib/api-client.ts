@@ -19,6 +19,10 @@ export async function apiFetch<T>(
   const isFormData = typeof FormData !== "undefined" && rest.body instanceof FormData;
   const res = await fetch(`${API_URL}${path}`, {
     ...rest,
+    // API yanıtları (özellikle /users/me/profile gibi kullanıcıya özel veriler) Cache-Control
+    // göndermiyor; tarayıcının HTTP önbelleği aynı URL için farklı Authorization ile gelen
+    // isteklerde önceki kullanıcının yanıtını sunabiliyordu. Ağ katımında önbelleği tamamen kapat.
+    cache: "no-store",
     headers: {
       // FormData uploads need the browser to set Content-Type itself (with the multipart boundary).
       ...(isFormData ? {} : { "Content-Type": "application/json" }),
