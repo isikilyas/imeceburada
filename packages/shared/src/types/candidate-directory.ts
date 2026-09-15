@@ -17,6 +17,8 @@ export interface CandidateDirectoryDetailDto extends CandidateDirectoryEntryDto 
   phone?: string | null;
   averageRating?: number | null;
   reviewCount?: number;
+  /** Sadece availabilityStatus BUSY iken anlamlı. */
+  availableFrom?: string | null;
 }
 
 export interface CandidateDirectorySearchQuery {

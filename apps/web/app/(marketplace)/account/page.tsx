@@ -94,6 +94,7 @@ function CandidateAccountPanel() {
   const [photoVisible, setPhotoVisible] = useState(true);
   const [phoneVisible, setPhoneVisible] = useState(false);
   const [availabilityStatus, setAvailabilityStatus] = useState<AvailabilityStatus>("AVAILABLE");
+  const [availableFrom, setAvailableFrom] = useState("");
   const [notifyByEmail, setNotifyByEmail] = useState(true);
 
   useEffect(() => {
@@ -112,6 +113,7 @@ function CandidateAccountPanel() {
     setPhotoVisible(profile.photoVisible);
     setPhoneVisible(profile.phoneVisible);
     setAvailabilityStatus(profile.availabilityStatus);
+    setAvailableFrom(profile.availableFrom ? profile.availableFrom.slice(0, 10) : "");
     setNotifyByEmail(profile.notifyByEmail);
   }, [profile]);
 
@@ -136,6 +138,7 @@ function CandidateAccountPanel() {
       photoVisible,
       phoneVisible,
       availabilityStatus,
+      availableFrom: availabilityStatus === "BUSY" && availableFrom ? availableFrom : undefined,
       notifyByEmail,
     });
   }
@@ -262,6 +265,18 @@ function CandidateAccountPanel() {
                   </button>
                 </div>
                 <p className="mt-1 text-xs text-silver-500">{t("dashboard.candidate.busyHint")}</p>
+                {availabilityStatus === "BUSY" && (
+                  <div className="mt-3">
+                    <Field label={t("accountPanel.availableFromLabel")}>
+                      <input
+                        type="date"
+                        value={availableFrom}
+                        onChange={(e) => setAvailableFrom(e.target.value)}
+                        className={inputClass}
+                      />
+                    </Field>
+                  </div>
+                )}
               </div>
             </>
           )}

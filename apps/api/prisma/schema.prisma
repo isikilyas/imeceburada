@@ -199,6 +199,8 @@ model CandidateProfile {
   photoUrl            String?
   photoVisible        Boolean  @default(true)
   availabilityStatus  AvailabilityStatus @default(AVAILABLE)
+  /// Sadece availabilityStatus BUSY iken anlamlı — hangi tarihten itibaren müsait olunacağı.
+  availableFrom       DateTime?
   /// Başvuru durumu değiştiğinde e-posta bildirimi alınsın mı — Hesabım > Bildirimler'den yönetilir.
   notifyByEmail       Boolean  @default(true)
   createdAt           DateTime @default(now())
