@@ -120,6 +120,9 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
       newApplicationLabel: "Yeni başvuru geldiğinde e-posta gönder",
       newApplicationHint: "İlanlarından birine yeni bir başvuru geldiğinde e-posta ile haberdar olursun.",
     },
+    admin: {
+      titleLabel: "Ünvan",
+    },
   },
   en: {
     title: "My Account",
@@ -239,6 +242,9 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
       applicationStatusHint: "Get notified by email when a job application you submitted is reviewed, accepted, or rejected.",
       newApplicationLabel: "Email me when I get a new application",
       newApplicationHint: "Get notified by email when someone applies to one of your job listings.",
+    },
+    admin: {
+      titleLabel: "Title",
     },
   },
   de: {
@@ -360,6 +366,9 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
       newApplicationLabel: "Per E-Mail benachrichtigen bei neuer Bewerbung",
       newApplicationHint: "Du wirst per E-Mail benachrichtigt, wenn sich jemand auf eine deiner Stellenanzeigen bewirbt.",
     },
+    admin: {
+      titleLabel: "Titel",
+    },
   },
   ru: {
     title: "Мой аккаунт",
@@ -479,6 +488,9 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
       applicationStatusHint: "Вы получите уведомление по эл. почте, когда статус вашей заявки на вакансию изменится (рассмотрена/принята/отклонена).",
       newApplicationLabel: "Уведомлять по эл. почте о новой заявке",
       newApplicationHint: "Вы получите уведомление по эл. почте, когда кто-то откликнется на одну из ваших вакансий.",
+    },
+    admin: {
+      titleLabel: "Должность",
     },
   },
   ar: {
@@ -600,6 +612,9 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
       newApplicationLabel: "أرسل بريدًا إلكترونيًا عند وصول طلب جديد",
       newApplicationHint: "ستصلك رسالة إلكترونية عندما يتقدّم أحدهم لأحد إعلاناتك الوظيفية.",
     },
+    admin: {
+      titleLabel: "المسمى الوظيفي",
+    },
   },
   es: {
     title: "Mi Cuenta",
@@ -720,6 +735,9 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
       newApplicationLabel: "Enviarme un correo cuando reciba una nueva postulación",
       newApplicationHint: "Recibirás un correo cuando alguien se postule a uno de tus anuncios de empleo.",
     },
+    admin: {
+      titleLabel: "Cargo",
+    },
   },
   fr: {
     title: "Mon Compte",
@@ -839,6 +857,9 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
       applicationStatusHint: "Tu recevras un e-mail quand une candidature que tu as envoyée est examinée, acceptée ou refusée.",
       newApplicationLabel: "M'envoyer un e-mail à chaque nouvelle candidature",
       newApplicationHint: "Tu recevras un e-mail quand quelqu'un postule à l'une de tes annonces d'emploi.",
+    },
+    admin: {
+      titleLabel: "Titre",
     },
   },
 };

@@ -9,6 +9,7 @@ import { UpdateCandidateProfileDto } from "./dto/update-candidate-profile.dto";
 import { UpdateCompanyProfileDto } from "./dto/update-company-profile.dto";
 import { UpdateSubcontractorProfileDto } from "./dto/update-subcontractor-profile.dto";
 import { UpdateSupplierProfileDto } from "./dto/update-supplier-profile.dto";
+import { UpdateAdminProfileDto } from "./dto/update-admin-profile.dto";
 import { DeleteAccountDto } from "./dto/delete-account.dto";
 import { DeactivateAccountDto } from "./dto/deactivate-account.dto";
 import { ChangePasswordDto } from "./dto/change-password.dto";
@@ -45,6 +46,11 @@ export class UsersController {
   @Patch("profile/supplier")
   updateSupplierProfile(@CurrentUser() user: RequestUser, @Body() dto: UpdateSupplierProfileDto) {
     return this.usersService.updateSupplierProfile(user, dto);
+  }
+
+  @Patch("profile/admin")
+  updateAdminProfile(@CurrentUser() user: RequestUser, @Body() dto: UpdateAdminProfileDto) {
+    return this.usersService.updateAdminProfile(user, dto);
   }
 
   @Post("candidate-photo")
