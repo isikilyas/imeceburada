@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState, ReactNode } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   AuthResponse,
   AuthTokens,
@@ -49,6 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<StoredAuth | null>(null);
   const [storageMode, setStorageMode] = useState<StorageMode>("local");
   const [isLoading, setIsLoading] = useState(true);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const fromLocal = window.localStorage.getItem(STORAGE_KEY);
@@ -88,9 +90,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const applyAuthResponse = useCallback(
     (res: AuthResponse, keepSignedIn: boolean) => {
+      // Önceki oturumdan kalan (farklı kullanıcıya ait) önbelleklenmiş verilerin
+      // yeni girişte kısa süreliğine gösterilmesini önler.
+      queryClient.clear();
       persist({ user: res.user, accessToken: res.accessToken, refreshToken: res.refreshToken }, keepSignedIn);
     },
-    [persist],
+    [persist, queryClient],
   );
 
   const login = useCallback(
@@ -152,7 +157,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.localStorage.removeItem(STORAGE_KEY);
     window.sessionStorage.removeItem(STORAGE_KEY);
     setState(null);
-  }, []);
+    queryClient.clear();
+  }, [queryClient]);
 
   const authFetch = useCallback(
     async <T,>(path: string, options: RequestInit = {}): Promise<T> => {
