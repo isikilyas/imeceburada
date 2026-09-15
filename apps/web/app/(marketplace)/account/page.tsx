@@ -98,6 +98,9 @@ function CandidateAccountPanel() {
   const [availabilityStatus, setAvailabilityStatus] = useState<AvailabilityStatus>("AVAILABLE");
   const [availableFrom, setAvailableFrom] = useState("");
   const [notifyByEmail, setNotifyByEmail] = useState(true);
+  const [hasProfessionalQualificationCert, setHasProfessionalQualificationCert] = useState(false);
+  const [hasMasterCraftsmanCert, setHasMasterCraftsmanCert] = useState(false);
+  const [hasOshCert, setHasOshCert] = useState(false);
 
   useEffect(() => {
     if (!profile) return;
@@ -117,6 +120,9 @@ function CandidateAccountPanel() {
     setAvailabilityStatus(profile.availabilityStatus);
     setAvailableFrom(profile.availableFrom ? profile.availableFrom.slice(0, 10) : "");
     setNotifyByEmail(profile.notifyByEmail);
+    setHasProfessionalQualificationCert(profile.hasProfessionalQualificationCert);
+    setHasMasterCraftsmanCert(profile.hasMasterCraftsmanCert);
+    setHasOshCert(profile.hasOshCert);
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -142,6 +148,9 @@ function CandidateAccountPanel() {
       availabilityStatus,
       availableFrom: availabilityStatus === "BUSY" && availableFrom ? availableFrom : undefined,
       notifyByEmail,
+      hasProfessionalQualificationCert,
+      hasMasterCraftsmanCert,
+      hasOshCert,
     });
   }
 
@@ -280,6 +289,33 @@ function CandidateAccountPanel() {
                   </div>
                 )}
               </div>
+
+              <div>
+                <p className="mb-2 text-sm text-silver-300">{t("accountPanel.certs.heading")}</p>
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 text-sm text-silver-400">
+                    <input
+                      type="checkbox"
+                      checked={hasProfessionalQualificationCert}
+                      onChange={(e) => setHasProfessionalQualificationCert(e.target.checked)}
+                    />
+                    {t("accountPanel.certs.professionalQualification")}
+                  </label>
+                  <label className="flex items-center gap-2 text-sm text-silver-400">
+                    <input
+                      type="checkbox"
+                      checked={hasMasterCraftsmanCert}
+                      onChange={(e) => setHasMasterCraftsmanCert(e.target.checked)}
+                    />
+                    {t("accountPanel.certs.masterCraftsman")}
+                  </label>
+                  <label className="flex items-center gap-2 text-sm text-silver-400">
+                    <input type="checkbox" checked={hasOshCert} onChange={(e) => setHasOshCert(e.target.checked)} />
+                    {t("accountPanel.certs.osh")}
+                  </label>
+                </div>
+                <p className="mt-1.5 text-xs text-silver-500">{t("accountPanel.certs.hint")}</p>
+              </div>
             </>
           )}
 
@@ -388,6 +424,7 @@ function CompanyAccountPanel() {
   const [companyEmail, setCompanyEmail] = useState("");
   const [phoneVisible, setPhoneVisible] = useState(false);
   const [notifyByEmail, setNotifyByEmail] = useState(true);
+  const [hasActivityCertificate, setHasActivityCertificate] = useState(false);
 
   useEffect(() => {
     if (!profile) return;
@@ -405,6 +442,7 @@ function CompanyAccountPanel() {
     setCompanyEmail(profile.companyEmail ?? "");
     setPhoneVisible(profile.phoneVisible);
     setNotifyByEmail(profile.notifyByEmail);
+    setHasActivityCertificate(profile.hasActivityCertificate);
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -424,6 +462,7 @@ function CompanyAccountPanel() {
       companyEmail: companyEmail || undefined,
       phoneVisible,
       notifyByEmail,
+      hasActivityCertificate,
     });
   }
 
@@ -510,6 +549,14 @@ function CompanyAccountPanel() {
                   className={inputClass}
                 />
               </Field>
+              <label className="flex items-center gap-2 text-sm text-silver-400">
+                <input
+                  type="checkbox"
+                  checked={hasActivityCertificate}
+                  onChange={(e) => setHasActivityCertificate(e.target.checked)}
+                />
+                {t("accountPanel.certs.activityCertificate")}
+              </label>
             </>
           )}
 
@@ -616,6 +663,7 @@ function SupplierAccountPanel() {
   const [companyEmail, setCompanyEmail] = useState("");
   const [supplyCategories, setSupplyCategories] = useState<string[]>([]);
   const [phoneVisible, setPhoneVisible] = useState(false);
+  const [hasActivityCertificate, setHasActivityCertificate] = useState(false);
 
   useEffect(() => {
     if (!profile) return;
@@ -632,6 +680,7 @@ function SupplierAccountPanel() {
     setCompanyEmail(profile.companyEmail ?? "");
     setSupplyCategories(profile.supplyCategories);
     setPhoneVisible(profile.phoneVisible);
+    setHasActivityCertificate(profile.hasActivityCertificate);
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -650,6 +699,7 @@ function SupplierAccountPanel() {
       companyEmail: companyEmail || undefined,
       supplyCategories,
       phoneVisible,
+      hasActivityCertificate,
     });
   }
 
@@ -733,6 +783,14 @@ function SupplierAccountPanel() {
                   className={inputClass}
                 />
               </Field>
+              <label className="flex items-center gap-2 text-sm text-silver-400">
+                <input
+                  type="checkbox"
+                  checked={hasActivityCertificate}
+                  onChange={(e) => setHasActivityCertificate(e.target.checked)}
+                />
+                {t("accountPanel.certs.activityCertificate")}
+              </label>
             </>
           )}
 
@@ -830,6 +888,7 @@ function SubcontractorAccountPanel() {
   const [companyEmail, setCompanyEmail] = useState("");
   const [isPublic, setIsPublic] = useState(true);
   const [phoneVisible, setPhoneVisible] = useState(false);
+  const [hasActivityCertificate, setHasActivityCertificate] = useState(false);
 
   useEffect(() => {
     if (!profile) return;
@@ -847,6 +906,7 @@ function SubcontractorAccountPanel() {
     setCompanyEmail(profile.companyEmail ?? "");
     setIsPublic(profile.isPublic);
     setPhoneVisible(profile.phoneVisible);
+    setHasActivityCertificate(profile.hasActivityCertificate);
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -870,6 +930,7 @@ function SubcontractorAccountPanel() {
       companyEmail: companyEmail || undefined,
       isPublic,
       phoneVisible,
+      hasActivityCertificate,
     });
   }
 
@@ -959,6 +1020,14 @@ function SubcontractorAccountPanel() {
                   className={inputClass}
                 />
               </Field>
+              <label className="flex items-center gap-2 text-sm text-silver-400">
+                <input
+                  type="checkbox"
+                  checked={hasActivityCertificate}
+                  onChange={(e) => setHasActivityCertificate(e.target.checked)}
+                />
+                {t("accountPanel.certs.activityCertificate")}
+              </label>
             </>
           )}
 

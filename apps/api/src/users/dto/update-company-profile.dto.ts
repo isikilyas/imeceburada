@@ -58,4 +58,8 @@ export class UpdateCompanyProfileDto {
   @IsOptional()
   @IsBoolean()
   notifyByEmail?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  hasActivityCertificate?: boolean;
 }

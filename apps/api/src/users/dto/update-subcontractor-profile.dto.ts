@@ -60,4 +60,8 @@ export class UpdateSubcontractorProfileDto {
   @IsOptional()
   @IsBoolean()
   isPublic?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  hasActivityCertificate?: boolean;
 }

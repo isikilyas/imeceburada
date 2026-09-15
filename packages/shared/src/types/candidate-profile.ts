@@ -20,6 +20,9 @@ export interface CandidateProfileDto {
   /** Sadece BUSY durumundayken anlamlı — hangi tarihten itibaren müsait olunacağı. */
   availableFrom?: string | null;
   notifyByEmail: boolean;
+  hasProfessionalQualificationCert: boolean;
+  hasMasterCraftsmanCert: boolean;
+  hasOshCert: boolean;
 }
 
 export interface UpdateCandidateProfileInput {
@@ -39,4 +42,7 @@ export interface UpdateCandidateProfileInput {
   availabilityStatus?: AvailabilityStatus;
   availableFrom?: string;
   notifyByEmail?: boolean;
+  hasProfessionalQualificationCert?: boolean;
+  hasMasterCraftsmanCert?: boolean;
+  hasOshCert?: boolean;
 }

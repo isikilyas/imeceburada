@@ -202,6 +202,10 @@ model CandidateProfile {
   availabilityStatus  AvailabilityStatus @default(AVAILABLE)
   /// Sadece availabilityStatus BUSY iken anlamlı — hangi tarihten itibaren müsait olunacağı.
   availableFrom       DateTime?
+  /// Belge ve Yeterlilikler — kullanıcının kendi beyanı, belge yüklemesi/doğrulaması yok.
+  hasProfessionalQualificationCert Boolean @default(false)
+  hasMasterCraftsmanCert           Boolean @default(false)
+  hasOshCert                       Boolean @default(false)
   /// Başvuru durumu değiştiğinde e-posta bildirimi alınsın mı — Hesabım > Bildirimler'den yönetilir.
   notifyByEmail       Boolean  @default(true)
   createdAt           DateTime @default(now())
@@ -253,6 +257,8 @@ model CompanyProfile {
   currentPlan         MembershipPlan?
   /// İlanına yeni bir başvuru geldiğinde e-posta bildirimi alınsın mı — Hesabım > Bildirimler'den yönetilir.
   notifyByEmail       Boolean          @default(true)
+  /// Belge ve Yeterlilikler — kullanıcının kendi beyanı, belge yüklemesi/doğrulaması yok.
+  hasActivityCertificate Boolean @default(false)
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -304,6 +310,8 @@ model SupplierProfile {
   /// En son (aktif ya da geçmiş) planın önbelleği — abonelik geçmişi için
   /// hâlâ MembershipSubscription sorgulanır, bu sadece hızlı gösterim içindir.
   currentPlan         MembershipPlan?
+  /// Belge ve Yeterlilikler — kullanıcının kendi beyanı, belge yüklemesi/doğrulaması yok.
+  hasActivityCertificate Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -356,6 +364,8 @@ model SubcontractorProfile {
   /// En son (aktif ya da geçmiş) planın önbelleği — abonelik geçmişi için
   /// hâlâ MembershipSubscription sorgulanır, bu sadece hızlı gösterim içindir.
   currentPlan         MembershipPlan?
+  /// Belge ve Yeterlilikler — kullanıcının kendi beyanı, belge yüklemesi/doğrulaması yok.
+  hasActivityCertificate Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

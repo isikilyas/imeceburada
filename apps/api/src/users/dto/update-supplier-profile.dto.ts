@@ -56,4 +56,8 @@ export class UpdateSupplierProfileDto {
   @IsString({ each: true })
   @Length(2, 60, { each: true })
   supplyCategories?: string[];
+
+  @IsOptional()
+  @IsBoolean()
+  hasActivityCertificate?: boolean;
 }
