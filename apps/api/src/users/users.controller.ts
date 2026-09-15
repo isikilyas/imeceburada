@@ -77,6 +77,18 @@ export class UsersController {
     return this.usersService.removeCompanyLogo(user);
   }
 
+  @Post("admin-photo")
+  @UseInterceptors(FileInterceptor("photo", photoUploadOptions("admins")))
+  uploadAdminPhoto(@CurrentUser() user: RequestUser, @UploadedFile() file: Express.Multer.File) {
+    if (!file) throw new BadRequestException("Dosya bulunamadı");
+    return this.usersService.setAdminPhoto(user, finalizeUploadedImage(file));
+  }
+
+  @Delete("admin-photo")
+  removeAdminPhoto(@CurrentUser() user: RequestUser) {
+    return this.usersService.removeAdminPhoto(user);
+  }
+
   @Patch("username")
   updateUsername(@CurrentUser() user: RequestUser, @Body() dto: UpdateUsernameDto) {
     return this.usersService.updateUsername(user, dto.username ?? null);
