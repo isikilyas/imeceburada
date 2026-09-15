@@ -17,6 +17,7 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     bioLabel: "Hakkımda",
     skillsLabel: "Uzmanlık Alanı",
     skillsHint: "Virgülle ayırarak yaz, ör. sıva, kalıp, demir bağlama",
+    availableFromLabel: "Ne zaman müsait olacaksınız?",
     tabs: {
       profile: "Profilim",
       corporate: "Kurumsal Bilgiler",
@@ -140,6 +141,7 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     bioLabel: "About Me",
     skillsLabel: "Areas of Expertise",
     skillsHint: "Separate with commas, e.g. plastering, formwork, rebar tying",
+    availableFromLabel: "When will you be available?",
     tabs: {
       profile: "My Profile",
       corporate: "Corporate Info",
@@ -263,6 +265,7 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     bioLabel: "Über mich",
     skillsLabel: "Fachgebiete",
     skillsHint: "Durch Kommas trennen, z. B. Putz, Schalung, Bewehrung binden",
+    availableFromLabel: "Ab wann sind Sie verfügbar?",
     tabs: {
       profile: "Mein Profil",
       corporate: "Unternehmensdaten",
@@ -386,6 +389,7 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     bioLabel: "О себе",
     skillsLabel: "Специализация",
     skillsHint: "Через запятую, напр. штукатурка, опалубка, вязка арматуры",
+    availableFromLabel: "С какой даты вы будете доступны?",
     tabs: {
       profile: "Мой профиль",
       corporate: "Данные компании",
@@ -509,6 +513,7 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     bioLabel: "نبذة عني",
     skillsLabel: "مجالات الخبرة",
     skillsHint: "افصل بينها بفواصل، مثل: محارة، شدة، ربط حديد",
+    availableFromLabel: "متى ستكون متاحًا؟",
     tabs: {
       profile: "ملفي الشخصي",
       corporate: "بيانات الشركة",
@@ -632,6 +637,7 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     bioLabel: "Sobre mí",
     skillsLabel: "Áreas de Especialización",
     skillsHint: "Separa con comas, ej. enlucido, encofrado, atado de hierro",
+    availableFromLabel: "¿A partir de cuándo estarás disponible?",
     tabs: {
       profile: "Mi Perfil",
       corporate: "Datos de la Empresa",
@@ -755,6 +761,7 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     bioLabel: "À propos de moi",
     skillsLabel: "Domaines d'Expertise",
     skillsHint: "Sépare par des virgules, ex. enduit, coffrage, ferraillage",
+    availableFromLabel: "À partir de quand serez-vous disponible ?",
     tabs: {
       profile: "Mon Profil",
       corporate: "Infos de l'Entreprise",

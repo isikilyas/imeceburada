@@ -72,6 +72,7 @@ export class CandidatesService {
       skills: candidate.skills,
       workPreferences: candidate.workPreferences,
       availabilityStatus: candidate.availabilityStatus,
+      availableFrom: candidate.availabilityStatus === "BUSY" ? candidate.availableFrom : null,
       phone: candidate.phoneVisible ? candidate.phone : null,
       photoUrl: candidate.photoVisible ? candidate.photoUrl : null,
       averageRating: reviewAggregate._avg.rating,

@@ -17,6 +17,8 @@ export interface CandidateProfileDto {
   photoUrl?: string | null;
   photoVisible: boolean;
   availabilityStatus: AvailabilityStatus;
+  /** Sadece BUSY durumundayken anlamlı — hangi tarihten itibaren müsait olunacağı. */
+  availableFrom?: string | null;
   notifyByEmail: boolean;
 }
 
@@ -35,5 +37,6 @@ export interface UpdateCandidateProfileInput {
   isPublic?: boolean;
   photoVisible?: boolean;
   availabilityStatus?: AvailabilityStatus;
+  availableFrom?: string;
   notifyByEmail?: boolean;
 }

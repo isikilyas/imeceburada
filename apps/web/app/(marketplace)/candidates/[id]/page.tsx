@@ -46,6 +46,11 @@ export default function CandidateDetailPage() {
           {isAvailable ? "🟢 Müsait" : "🔴 Şu An Çalışıyor"}
         </span>
       </div>
+      {!isAvailable && candidate.availableFrom && (
+        <p className="mt-1 text-sm text-silver-500">
+          {new Date(candidate.availableFrom).toLocaleDateString("tr-TR")} tarihinden itibaren müsait olacak
+        </p>
+      )}
       <p className="mt-1 text-silver-500">
         {candidate.city}
         {candidate.district ? ` / ${candidate.district}` : ""} · {candidate.experienceYears} yıl deneyim
