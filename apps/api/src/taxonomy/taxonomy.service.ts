@@ -12,7 +12,6 @@ import {
   TAXONOMY_SUGGESTION_THRESHOLD,
   TaxonomySuggestResponse,
   TaxonomySuggestion,
-  TaxonomyTermStatus,
   TaxonomyTermType,
   TRADE_CATEGORIES,
   UserRole,
@@ -117,33 +116,5 @@ export class TaxonomyService {
     }
     scored.sort((a, b) => b.similarity - a.similarity);
     return scored.slice(0, COMPANY_NAME_SUGGESTION_LIMIT);
-  }
-
-  // --- admin moderation ---
-
-  listTerms(status?: TaxonomyTermStatus, type?: TaxonomyTermType) {
-    return this.prisma.taxonomyTerm.findMany({
-      where: { ...(status ? { status } : {}), ...(type ? { type } : {}) },
-      orderBy: { createdAt: "asc" },
-    });
-  }
-
-  approveTerm(id: string, adminId: string, labelOverride?: string) {
-    return this.prisma.taxonomyTerm.update({
-      where: { id },
-      data: {
-        status: "APPROVED",
-        reviewedByUserId: adminId,
-        reviewedAt: new Date(),
-        ...(labelOverride ? { label: labelOverride } : {}),
-      },
-    });
-  }
-
-  rejectTerm(id: string, adminId: string) {
-    return this.prisma.taxonomyTerm.update({
-      where: { id },
-      data: { status: "REJECTED", reviewedByUserId: adminId, reviewedAt: new Date() },
-    });
   }
 }
