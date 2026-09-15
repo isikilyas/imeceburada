@@ -39,6 +39,8 @@ import { FormSkeleton } from "@/components/form-skeleton";
 
 type Tab = "profile" | "corporate" | "addresses" | "privacy" | "notifications" | "security" | "membership" | "activity";
 
+const cardClass = "rounded-2xl border border-ink-800 bg-ink-900/60 p-5 sm:p-6";
+
 interface AccountFields {
   role: string;
   email: string;
@@ -161,7 +163,7 @@ function CandidateAccountPanel() {
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
       {(tab === "profile" || tab === "privacy" || tab === "notifications") && (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className={`${cardClass} space-y-4`}>
           {tab === "profile" && (
             <>
               <CandidatePhotoUploader photoUrl={profile.photoUrl} />
@@ -433,7 +435,7 @@ function CompanyAccountPanel() {
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
       {(tab === "profile" || tab === "corporate" || tab === "privacy" || tab === "notifications") && (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className={`${cardClass} space-y-4`}>
           {tab === "profile" && (
             <>
               <CompanyLogoUploader logoUrl={profile.logoUrl} queryKey="my-company-profile" />
@@ -658,7 +660,7 @@ function SupplierAccountPanel() {
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
       {(tab === "profile" || tab === "corporate" || tab === "privacy") && (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className={`${cardClass} space-y-4`}>
           {tab === "profile" && (
             <>
               <CompanyLogoUploader logoUrl={profile.logoUrl} queryKey="my-supplier-profile" />
@@ -878,7 +880,7 @@ function SubcontractorAccountPanel() {
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
       {(tab === "profile" || tab === "corporate" || tab === "privacy") && (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className={`${cardClass} space-y-4`}>
           {tab === "profile" && (
             <>
               <CompanyLogoUploader logoUrl={profile.logoUrl} queryKey="my-subcontractor-profile" />
@@ -1040,7 +1042,7 @@ function AdminAccountPanel() {
         pendingEmail={profile.pendingEmail}
         isCorporate={false}
       />
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className={`${cardClass} space-y-4`}>
         <Field label={t("accountPanel.admin.titleLabel")}>
           <input value={title} onChange={(e) => setTitle(e.target.value)} className={inputClass} />
         </Field>
@@ -1079,8 +1081,11 @@ export default function AccountPage() {
   if (!user) return <p className="text-silver-500">{t("dashboard.candidate.roleGuard")}</p>;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
-      <h1 className="text-2xl font-semibold text-silver-300">{t("accountPanel.title")}</h1>
+    <div className="mx-auto max-w-3xl space-y-6 pb-12">
+      <div className="space-y-1">
+        <h1 className="text-3xl font-semibold tracking-tight text-silver-300">{t("accountPanel.title")}</h1>
+        <div className="h-1 w-12 rounded-full bg-gold-500" />
+      </div>
       {user.role === "CANDIDATE" && <CandidateAccountPanel />}
       {user.role === "COMPANY" && <CompanyAccountPanel />}
       {user.role === "SUPPLIER" && <SupplierAccountPanel />}
