@@ -88,6 +88,10 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       contact: "WhatsApp ile İletişime Geç",
       unavailable: "Şu an müsait değil",
     },
+    phoneCallButton: {
+      call: "Beni Ara",
+      unavailable: "Şu an müsait değil",
+    },
     whatsappShareButton: {
       share: "WhatsApp'ta Paylaş",
     },
@@ -191,6 +195,10 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
     },
     whatsappContactButton: {
       contact: "Contact via WhatsApp",
+      unavailable: "Not available right now",
+    },
+    phoneCallButton: {
+      call: "Call Me",
       unavailable: "Not available right now",
     },
     whatsappShareButton: {
@@ -300,6 +308,10 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       contact: "Über WhatsApp kontaktieren",
       unavailable: "Momentan nicht verfügbar",
     },
+    phoneCallButton: {
+      call: "Anrufen",
+      unavailable: "Momentan nicht verfügbar",
+    },
     whatsappShareButton: {
       share: "Auf WhatsApp teilen",
     },
@@ -406,6 +418,10 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       contact: "Связаться через WhatsApp",
       unavailable: "Сейчас недоступно",
     },
+    phoneCallButton: {
+      call: "Позвонить",
+      unavailable: "Сейчас недоступно",
+    },
     whatsappShareButton: {
       share: "Поделиться в WhatsApp",
     },
@@ -509,6 +525,10 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
     },
     whatsappContactButton: {
       contact: "تواصل عبر واتساب",
+      unavailable: "غير متاح حاليًا",
+    },
+    phoneCallButton: {
+      call: "اتصل بي",
       unavailable: "غير متاح حاليًا",
     },
     whatsappShareButton: {
@@ -618,6 +638,10 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       contact: "Contactar por WhatsApp",
       unavailable: "No disponible en este momento",
     },
+    phoneCallButton: {
+      call: "Llamarme",
+      unavailable: "No disponible en este momento",
+    },
     whatsappShareButton: {
       share: "Compartir en WhatsApp",
     },
@@ -724,6 +748,10 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
     },
     whatsappContactButton: {
       contact: "Contacter via WhatsApp",
+      unavailable: "Actuellement indisponible",
+    },
+    phoneCallButton: {
+      call: "Appelez-moi",
       unavailable: "Actuellement indisponible",
     },
     whatsappShareButton: {
