@@ -10,6 +10,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { WhatsAppShareButton } from "@/components/whatsapp-share-button";
 import { VerifiedBadge } from "@/components/verified-badge";
+import { StarRating } from "@/components/star-rating";
 import { DetailSkeleton } from "@/components/detail-skeleton";
 
 export function JobDetailClient() {
@@ -82,6 +83,9 @@ export function JobDetailClient() {
         {job.companyName}
         {job.companyVerified && <VerifiedBadge />}
       </p>
+      <div className="mt-1">
+        <StarRating averageRating={job.averageRating} reviewCount={job.reviewCount} />
+      </div>
 
       <div className="mt-4 flex flex-wrap gap-3 text-sm text-silver-500">
         <span>

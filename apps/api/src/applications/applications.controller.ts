@@ -31,6 +31,12 @@ export class ApplicationsController {
     return this.applicationsService.findForJob(user, jobId);
   }
 
+  /** Aday veya ilanı açan firma erişebilir — mesajlaşma/yorum sayfaları başvuru durumunu bilmek için kullanır. */
+  @Get(":id")
+  findOne(@CurrentUser() user: RequestUser, @Param("id") id: string) {
+    return this.applicationsService.findOne(user, id);
+  }
+
   @Roles("COMPANY")
   @Patch(":id/status")
   updateStatus(

@@ -4,12 +4,13 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { MessageDto } from "@imeceburada/shared";
+import { ApplicationDto, MessageDto } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api-client";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { inputClass } from "@/components/form";
 import { FormSkeleton } from "@/components/form-skeleton";
+import { ReviewsSection } from "@/components/reviews-section";
 
 export default function MessageThreadPage() {
   const { applicationId } = useParams<{ applicationId: string }>();
@@ -26,6 +27,12 @@ export default function MessageThreadPage() {
     queryFn: () => authFetch<MessageDto[]>(`/applications/${applicationId}/messages`),
     enabled: !!applicationId && (user?.role === "CANDIDATE" || user?.role === "COMPANY"),
     refetchInterval: 5000,
+  });
+
+  const { data: application } = useQuery({
+    queryKey: ["application-detail", applicationId],
+    queryFn: () => authFetch<ApplicationDto>(`/applications/${applicationId}`),
+    enabled: !!applicationId && (user?.role === "CANDIDATE" || user?.role === "COMPANY"),
   });
 
   useEffect(() => {
@@ -106,6 +113,8 @@ export default function MessageThreadPage() {
             </button>
           </form>
           {error && <p className="text-sm text-red-400">{error}</p>}
+
+          {application?.status === "ACCEPTED" && <ReviewsSection applicationId={applicationId} />}
         </>
       )}
     </div>

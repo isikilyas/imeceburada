@@ -17,6 +17,8 @@ export interface JobPostingDto {
   description: string;
   status: JobStatus;
   createdAt: string;
+  averageRating?: number | null;
+  reviewCount?: number;
 }
 
 export interface CreateJobInput {

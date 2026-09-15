@@ -56,6 +56,12 @@ export class CandidatesService {
       throw new NotFoundException("Aday bulunamadı");
     }
 
+    const reviewAggregate = await this.prisma.review.aggregate({
+      where: { targetUserId: candidate.userId },
+      _avg: { rating: true },
+      _count: true,
+    });
+
     return {
       id: candidate.id,
       fullName: candidate.fullName,
@@ -68,6 +74,8 @@ export class CandidatesService {
       availabilityStatus: candidate.availabilityStatus,
       phone: candidate.phoneVisible ? candidate.phone : null,
       photoUrl: candidate.photoVisible ? candidate.photoUrl : null,
+      averageRating: reviewAggregate._avg.rating,
+      reviewCount: reviewAggregate._count,
     };
   }
 }

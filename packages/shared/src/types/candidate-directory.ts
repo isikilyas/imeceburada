@@ -15,6 +15,8 @@ export interface CandidateDirectoryEntryDto {
 
 export interface CandidateDirectoryDetailDto extends CandidateDirectoryEntryDto {
   phone?: string | null;
+  averageRating?: number | null;
+  reviewCount?: number;
 }
 
 export interface CandidateDirectorySearchQuery {

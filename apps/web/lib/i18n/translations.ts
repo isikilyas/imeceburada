@@ -8,6 +8,7 @@ import { formComponentsDict } from "./dictionaries/formComponents";
 import { componentsDict } from "./dictionaries/components";
 import { accountPanelDict } from "./dictionaries/account-panel";
 import { messagesDict } from "./dictionaries/messages";
+import { reviewsDict } from "./dictionaries/reviews";
 
 const base = {
   tr: {
@@ -1309,6 +1310,7 @@ function mergeLocale<L extends keyof typeof base>(locale: L) {
     components: componentsDict[locale],
     accountPanel: accountPanelDict[locale],
     messages: messagesDict[locale],
+    reviews: reviewsDict[locale],
   };
 }
 
