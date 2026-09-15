@@ -73,4 +73,16 @@ export class UpdateCandidateProfileDto {
   @IsOptional()
   @IsBoolean()
   notifyByEmail?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  hasProfessionalQualificationCert?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  hasMasterCraftsmanCert?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  hasOshCert?: boolean;
 }

@@ -18,6 +18,7 @@ export interface SupplierProfileDto {
   supplyCategories: string[];
   membershipStatus: string;
   membershipExpiresAt?: string | null;
+  hasActivityCertificate: boolean;
 }
 
 export interface UpdateSupplierProfileInput {
@@ -34,4 +35,5 @@ export interface UpdateSupplierProfileInput {
   companyEmail?: string;
   supplyCategories?: string[];
   phoneVisible?: boolean;
+  hasActivityCertificate?: boolean;
 }

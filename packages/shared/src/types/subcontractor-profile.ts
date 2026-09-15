@@ -19,6 +19,7 @@ export interface SubcontractorProfileDto {
   isPublic: boolean;
   membershipStatus: string;
   membershipExpiresAt?: string | null;
+  hasActivityCertificate: boolean;
 }
 
 export interface UpdateSubcontractorProfileInput {
@@ -36,4 +37,5 @@ export interface UpdateSubcontractorProfileInput {
   companyEmail?: string;
   isPublic?: boolean;
   phoneVisible?: boolean;
+  hasActivityCertificate?: boolean;
 }

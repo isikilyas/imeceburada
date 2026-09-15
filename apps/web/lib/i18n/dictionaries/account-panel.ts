@@ -18,6 +18,14 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Uzmanlık Alanı",
     skillsHint: "Virgülle ayırarak yaz, ör. sıva, kalıp, demir bağlama",
     availableFromLabel: "Ne zaman müsait olacaksınız?",
+    certs: {
+      heading: "Belge ve Yeterlilikler",
+      professionalQualification: "Mesleki Yeterlilik Belgesi",
+      masterCraftsman: "Ustalık Belgesi",
+      osh: "İSG Sertifikası",
+      activityCertificate: "Kurumsal Faaliyet Belgesi",
+      hint: "Bu bilgiler kendi beyanınızdır, belge yükleme veya doğrulama gerekmez.",
+    },
     tabs: {
       profile: "Profilim",
       corporate: "Kurumsal Bilgiler",
@@ -142,6 +150,14 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Areas of Expertise",
     skillsHint: "Separate with commas, e.g. plastering, formwork, rebar tying",
     availableFromLabel: "When will you be available?",
+    certs: {
+      heading: "Documents & Qualifications",
+      professionalQualification: "Professional Qualification Certificate",
+      masterCraftsman: "Master Craftsman Certificate",
+      osh: "Occupational Health & Safety Certificate",
+      activityCertificate: "Corporate Activity Certificate",
+      hint: "This is your own declaration — no document upload or verification required.",
+    },
     tabs: {
       profile: "My Profile",
       corporate: "Corporate Info",
@@ -266,6 +282,14 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Fachgebiete",
     skillsHint: "Durch Kommas trennen, z. B. Putz, Schalung, Bewehrung binden",
     availableFromLabel: "Ab wann sind Sie verfügbar?",
+    certs: {
+      heading: "Dokumente & Qualifikationen",
+      professionalQualification: "Berufsqualifikationsnachweis",
+      masterCraftsman: "Meisterbrief",
+      osh: "Arbeitsschutzzertifikat",
+      activityCertificate: "Unternehmenstätigkeitsnachweis",
+      hint: "Dies ist Ihre eigene Angabe — kein Dokumenten-Upload oder Verifizierung erforderlich.",
+    },
     tabs: {
       profile: "Mein Profil",
       corporate: "Unternehmensdaten",
@@ -390,6 +414,14 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Специализация",
     skillsHint: "Через запятую, напр. штукатурка, опалубка, вязка арматуры",
     availableFromLabel: "С какой даты вы будете доступны?",
+    certs: {
+      heading: "Документы и квалификация",
+      professionalQualification: "Свидетельство о профессиональной квалификации",
+      masterCraftsman: "Свидетельство мастера",
+      osh: "Сертификат по охране труда",
+      activityCertificate: "Свидетельство о деятельности компании",
+      hint: "Это ваше собственное заявление — загрузка или проверка документов не требуется.",
+    },
     tabs: {
       profile: "Мой профиль",
       corporate: "Данные компании",
@@ -514,6 +546,14 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "مجالات الخبرة",
     skillsHint: "افصل بينها بفواصل، مثل: محارة، شدة، ربط حديد",
     availableFromLabel: "متى ستكون متاحًا؟",
+    certs: {
+      heading: "المستندات والمؤهلات",
+      professionalQualification: "شهادة الكفاءة المهنية",
+      masterCraftsman: "شهادة أستاذ حرفي",
+      osh: "شهادة الصحة والسلامة المهنية",
+      activityCertificate: "شهادة نشاط الشركة",
+      hint: "هذا إقرار شخصي منك — لا حاجة لرفع مستندات أو التحقق منها.",
+    },
     tabs: {
       profile: "ملفي الشخصي",
       corporate: "بيانات الشركة",
@@ -638,6 +678,14 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Áreas de Especialización",
     skillsHint: "Separa con comas, ej. enlucido, encofrado, atado de hierro",
     availableFromLabel: "¿A partir de cuándo estarás disponible?",
+    certs: {
+      heading: "Documentos y Cualificaciones",
+      professionalQualification: "Certificado de Cualificación Profesional",
+      masterCraftsman: "Certificado de Maestro Artesano",
+      osh: "Certificado de Seguridad y Salud Laboral",
+      activityCertificate: "Certificado de Actividad Empresarial",
+      hint: "Esta es tu propia declaración — no requiere subir ni verificar documentos.",
+    },
     tabs: {
       profile: "Mi Perfil",
       corporate: "Datos de la Empresa",
@@ -762,6 +810,14 @@ export const accountPanelDict: Record<Locale, Record<string, any>> = {
     skillsLabel: "Domaines d'Expertise",
     skillsHint: "Sépare par des virgules, ex. enduit, coffrage, ferraillage",
     availableFromLabel: "À partir de quand serez-vous disponible ?",
+    certs: {
+      heading: "Documents et Qualifications",
+      professionalQualification: "Certificat de Qualification Professionnelle",
+      masterCraftsman: "Certificat de Maître Artisan",
+      osh: "Certificat de Santé et Sécurité au Travail",
+      activityCertificate: "Certificat d'Activité de l'Entreprise",
+      hint: "Il s'agit de votre propre déclaration — aucun téléversement ni vérification de document requis.",
+    },
     tabs: {
       profile: "Mon Profil",
       corporate: "Infos de l'Entreprise",

@@ -19,6 +19,7 @@ export interface CompanyProfileDto {
   membershipStatus: string;
   membershipExpiresAt?: string | null;
   notifyByEmail: boolean;
+  hasActivityCertificate: boolean;
 }
 
 export interface UpdateCompanyProfileInput {
@@ -36,4 +37,5 @@ export interface UpdateCompanyProfileInput {
   companyEmail?: string;
   phoneVisible?: boolean;
   notifyByEmail?: boolean;
+  hasActivityCertificate?: boolean;
 }
