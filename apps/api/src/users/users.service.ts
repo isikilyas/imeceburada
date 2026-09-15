@@ -58,6 +58,10 @@ export class UsersService {
       if (!profile) throw new NotFoundException("Yapı Tedarik profili bulunamadı");
       return { role: "SUPPLIER", ...account, ...profile };
     }
+    if (user.role === "ADMIN") {
+      // Yöneticinin adaya/şirkete özel bir profil kaydı yok — sadece hesap bilgileri döner.
+      return { role: "ADMIN", ...account };
+    }
     throw new BadRequestException("Bu rol için profil bulunmuyor");
   }
 
