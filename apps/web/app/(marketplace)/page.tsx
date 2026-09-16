@@ -5,11 +5,14 @@ import { WeatherWidget } from "@/components/weather-widget";
 import { HomeStats } from "@/components/home-stats";
 import { SupplierSpotlight } from "@/components/supplier-spotlight";
 import { AdSlot } from "@/components/ad-slot";
+import { RoleQuickAccess } from "@/components/role-quick-access";
 import Image from "next/image";
+import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 export default function HomePage() {
   const { t } = useLocale();
+  const { user } = useAuth();
 
   const PILLARS = [
     { icon: "🛡️", label: t("home.pillarTrust") },
@@ -109,6 +112,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <RoleQuickAccess />
+
       {/* Weather — a full weekly overview, sized to match the stats panel below it */}
       <div className="flex justify-center px-4 py-4 sm:px-6">
         <WeatherWidget />
@@ -190,20 +195,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="relative my-16 overflow-hidden rounded-2xl bg-gradient-to-b from-ink-900 to-ink-950 p-10 text-center ring-1 ring-inset ring-gold-500/20">
-        <div className="hero-glow pointer-events-none absolute inset-0" />
-        <div className="relative flex flex-col items-center gap-4">
-          <h2 className="text-2xl font-semibold text-silver-200 sm:text-3xl">{t("home.ctaHeading")}</h2>
-          <p className="max-w-lg text-sm text-silver-500">{t("home.ctaDesc")}</p>
-          <Link
-            href="/register"
-            className="rounded-md bg-gold-500 px-6 py-3 font-medium text-ink-950 shadow-[0_0_24px_rgba(212,175,55,0.3)] transition hover:-translate-y-0.5 hover:bg-gold-400 hover:shadow-[0_0_32px_rgba(212,175,55,0.45)]"
-          >
-            {t("home.ctaButton")}
-          </Link>
-        </div>
-      </section>
+      {/* Final CTA — only for guests; a logged-in user has already registered */}
+      {!user && (
+        <section className="relative my-16 overflow-hidden rounded-2xl bg-gradient-to-b from-ink-900 to-ink-950 p-10 text-center ring-1 ring-inset ring-gold-500/20">
+          <div className="hero-glow pointer-events-none absolute inset-0" />
+          <div className="relative flex flex-col items-center gap-4">
+            <h2 className="text-2xl font-semibold text-silver-200 sm:text-3xl">{t("home.ctaHeading")}</h2>
+            <p className="max-w-lg text-sm text-silver-500">{t("home.ctaDesc")}</p>
+            <Link
+              href="/register"
+              className="rounded-md bg-gold-500 px-6 py-3 font-medium text-ink-950 shadow-[0_0_24px_rgba(212,175,55,0.3)] transition hover:-translate-y-0.5 hover:bg-gold-400 hover:shadow-[0_0_32px_rgba(212,175,55,0.45)]"
+            >
+              {t("home.ctaButton")}
+            </Link>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
