@@ -22,7 +22,7 @@ const base = {
       membership: "Üyelik",
       favorites: "Favorilerim",
       messages: "Mesajlarım",
-      account: "Hesabım",
+      account: "Panelim",
       accountPanel: "Profil Ayarları",
       dashboard: "Panelim",
       logout: "Çıkış Yap",
