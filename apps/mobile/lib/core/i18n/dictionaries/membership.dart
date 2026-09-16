@@ -9,6 +9,9 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.betaBanner': 'imeceburada.com lansmanına özel: tüm kurumsal özellikler geçici süreyle ücretsizdir!',
     'membership.activeStatus': 'Üyeliğin aktif ✓',
     'membership.expiresAt': 'Bitiş tarihi: {{date}}',
+    'membership.betaFreeAccessTitle': 'Tam erişimin aktif ✓',
+    'membership.betaFreeAccessBody':
+        'Erken Erişim/Beta döneminde tüm özellikler ücretsiz — herhangi bir ödeme yapmana gerek yok.',
     'membership.phoneVerificationTitle': 'Telefon Doğrulama',
     'membership.phoneVerificationPrompt':
         'Üyelik için önce telefon numaranı doğrulaman gerekiyor. Doğrulama kodu SMS ile değil, hesabının kayıtlı e-posta adresine gönderilir.',
@@ -40,6 +43,8 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.betaBanner': 'Special for the imeceburada.com launch: all corporate features are free for a limited time!',
     'membership.activeStatus': 'Your membership is active ✓',
     'membership.expiresAt': 'Expires on: {{date}}',
+    'membership.betaFreeAccessTitle': 'Full access active ✓',
+    'membership.betaFreeAccessBody': 'All features are free during Early Access/Beta — no payment needed.',
     'membership.phoneVerificationTitle': 'Phone Verification',
     'membership.phoneVerificationPrompt':
         'You need to verify your phone number before activating membership. The verification code is sent to your account email, not by SMS.',
@@ -71,6 +76,9 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.betaBanner': 'Zum Start von imeceburada.com: Alle Unternehmensfunktionen sind vorübergehend kostenlos!',
     'membership.activeStatus': 'Deine Mitgliedschaft ist aktiv ✓',
     'membership.expiresAt': 'Ablaufdatum: {{date}}',
+    'membership.betaFreeAccessTitle': 'Voller Zugriff aktiv ✓',
+    'membership.betaFreeAccessBody':
+        'Während der Early-Access-/Beta-Phase sind alle Funktionen kostenlos — keine Zahlung erforderlich.',
     'membership.phoneVerificationTitle': 'Telefonverifizierung',
     'membership.phoneVerificationPrompt':
         'Du musst zuerst deine Telefonnummer verifizieren, um die Mitgliedschaft zu aktivieren. Der Bestätigungscode wird an deine E-Mail-Adresse gesendet, nicht per SMS.',
@@ -102,6 +110,9 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.betaBanner': 'Специально к запуску imeceburada.com: все корпоративные функции временно бесплатны!',
     'membership.activeStatus': 'Ваше членство активно ✓',
     'membership.expiresAt': 'Дата окончания: {{date}}',
+    'membership.betaFreeAccessTitle': 'Полный доступ активен ✓',
+    'membership.betaFreeAccessBody':
+        'В период раннего доступа/бета-тестирования все функции бесплатны — оплата не требуется.',
     'membership.phoneVerificationTitle': 'Подтверждение телефона',
     'membership.phoneVerificationPrompt':
         'Перед оформлением членства необходимо подтвердить номер телефона. Код подтверждения отправляется на почту вашего аккаунта, а не по SMS.',
@@ -133,6 +144,8 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.betaBanner': 'بمناسبة إطلاق imeceburada.com: جميع الميزات المؤسسية مجانية مؤقتًا!',
     'membership.activeStatus': 'عضويتك نشطة ✓',
     'membership.expiresAt': 'تاريخ الانتهاء: {{date}}',
+    'membership.betaFreeAccessTitle': 'الوصول الكامل مفعّل ✓',
+    'membership.betaFreeAccessBody': 'جميع الميزات مجانية خلال فترة الوصول المبكر/التجريبي — لا حاجة لأي دفع.',
     'membership.phoneVerificationTitle': 'التحقق من رقم الهاتف',
     'membership.phoneVerificationPrompt':
         'يجب عليك التحقق من رقم هاتفك قبل تفعيل العضوية. يتم إرسال رمز التحقق إلى بريدك الإلكتروني المسجَّل، وليس عبر الرسائل النصية.',
@@ -164,6 +177,9 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.betaBanner': 'Especial por el lanzamiento de imeceburada.com: ¡todas las funciones corporativas son gratis por tiempo limitado!',
     'membership.activeStatus': 'Tu membresía está activa ✓',
     'membership.expiresAt': 'Fecha de vencimiento: {{date}}',
+    'membership.betaFreeAccessTitle': 'Acceso completo activo ✓',
+    'membership.betaFreeAccessBody':
+        'Todas las funciones son gratuitas durante el Acceso Anticipado/Beta — no se requiere pago.',
     'membership.phoneVerificationTitle': 'Verificación telefónica',
     'membership.phoneVerificationPrompt':
         'Debes verificar tu número de teléfono antes de activar la membresía. El código de verificación se envía a tu correo electrónico, no por SMS.',
@@ -195,6 +211,9 @@ const Map<String, Map<String, String>> membershipDict = {
     'membership.betaBanner': "Spécial lancement d'imeceburada.com : toutes les fonctionnalités professionnelles sont gratuites pour une durée limitée !",
     'membership.activeStatus': 'Votre abonnement est actif ✓',
     'membership.expiresAt': "Date d'expiration : {{date}}",
+    'membership.betaFreeAccessTitle': 'Accès complet actif ✓',
+    'membership.betaFreeAccessBody':
+        "Toutes les fonctionnalités sont gratuites pendant l'accès anticipé/bêta — aucun paiement requis.",
     'membership.phoneVerificationTitle': 'Vérification du téléphone',
     'membership.phoneVerificationPrompt':
         "Vous devez vérifier votre numéro de téléphone avant d'activer l'abonnement. Le code de vérification est envoyé à l'adresse e-mail de votre compte, pas par SMS.",

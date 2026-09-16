@@ -234,9 +234,17 @@ export default function MembershipPage() {
     <div className="mx-auto max-w-lg">
       <h1 className="mb-6 text-2xl font-semibold text-silver-300">{t("pages.membershipHeading")}</h1>
 
-      {membership?.betaFreeAccess && <BetaBanner />}
-
-      {membership?.status === "ACTIVE" ? (
+      {membership?.betaFreeAccess ? (
+        <>
+          <BetaBanner />
+          <div className="rounded-lg border border-gold-500/40 bg-ink-900 p-6">
+            <p className="text-lg font-medium text-gold-400">Tam erişimin aktif ✓</p>
+            <p className="mt-2 text-sm text-silver-500">
+              Erken Erişim/Beta döneminde tüm özellikler ücretsiz — herhangi bir ödeme yapmana gerek yok.
+            </p>
+          </div>
+        </>
+      ) : membership?.status === "ACTIVE" ? (
         <div className="rounded-lg border border-gold-500/40 bg-ink-900 p-6">
           <p className="text-lg font-medium text-gold-400">Üyeliğin aktif ✓</p>
           {membership.expiresAt && (

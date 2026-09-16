@@ -167,13 +167,30 @@ class _MembershipScreenState extends State<MembershipScreen> {
     final membership = _membership;
     if (membership == null) return const SizedBox.shrink();
 
+    if (membership.betaFreeAccess) {
+      return Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _betaBanner(t),
+            Text(t('membership.betaFreeAccessTitle'), style: const TextStyle(color: AppColors.gold400, fontSize: 18)),
+            const SizedBox(height: 8),
+            Text(
+              t('membership.betaFreeAccessBody'),
+              style: const TextStyle(color: AppColors.silver500),
+            ),
+          ],
+        ),
+      );
+    }
+
     if (membership.status == 'ACTIVE') {
       return Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (membership.betaFreeAccess) _betaBanner(t),
             Text(t('membership.activeStatus'), style: const TextStyle(color: AppColors.gold400, fontSize: 18)),
             if (membership.expiresAt != null) ...[
               const SizedBox(height: 8),
@@ -193,7 +210,6 @@ class _MembershipScreenState extends State<MembershipScreen> {
       return ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          if (membership.betaFreeAccess) _betaBanner(t),
           Text(t('membership.phoneVerificationTitle'), style: const TextStyle(color: AppColors.silver300, fontSize: 18)),
           const SizedBox(height: 8),
           Text(
@@ -237,7 +253,6 @@ class _MembershipScreenState extends State<MembershipScreen> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        if (membership.betaFreeAccess) _betaBanner(t),
         Text(t('membership.selectPlanTitle'), style: const TextStyle(color: AppColors.silver300, fontSize: 18)),
         const SizedBox(height: 12),
         Row(
