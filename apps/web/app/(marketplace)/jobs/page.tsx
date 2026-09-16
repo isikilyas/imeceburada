@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { EMPLOYMENT_TYPES, JobPostingDto, LISTING_INTENTS, PaginatedResult } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
@@ -14,7 +15,8 @@ import { useLocale } from "@/lib/i18n/locale-context";
 
 export default function JobsPage() {
   const { t } = useLocale();
-  const [listingType, setListingType] = useState("");
+  const searchParams = useSearchParams();
+  const [listingType, setListingType] = useState(searchParams.get("listingType") ?? "");
   const [tradeCategory, setTradeCategory] = useState("");
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
