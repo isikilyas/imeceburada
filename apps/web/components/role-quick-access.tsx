@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { UserRole } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 
@@ -9,6 +10,15 @@ interface QuickLink {
   icon: string;
   label: string;
 }
+
+/** register/page.tsx'teki ROLE_LABELS ile aynı — üyelik türü burada da aynı adlarla gösterilir. */
+const ROLE_LABELS: Record<UserRole, string> = {
+  CANDIDATE: "İş Arayan Personel",
+  COMPANY: "Firma",
+  SUPPLIER: "Yapı Tedarik",
+  SUBCONTRACTOR: "Taşeron Firma",
+  ADMIN: "Yönetici",
+};
 
 /**
  * Giriş yapmış kullanıcıya, rolüne göre en çok ihtiyaç duyacağı sayfalara
@@ -56,6 +66,10 @@ export function RoleQuickAccess() {
   return (
     <section className="px-4 sm:px-6">
       <div className="mx-auto max-w-4xl">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-3 py-1.5 text-sm font-semibold text-gold-400">
+          <span>👤</span>
+          {ROLE_LABELS[user.role]} {t("home.membershipTypeSuffix")}
+        </div>
         <p className="mb-3 text-xs font-medium uppercase tracking-wider text-silver-500">
           {t("home.quickAccessHeading")}
         </p>
