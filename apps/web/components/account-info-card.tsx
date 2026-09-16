@@ -9,12 +9,15 @@ export function AccountInfoCard({
   lastLoginAt,
   pendingEmail,
   isCorporate,
+  accountTypeLabel,
 }: {
   email: string;
   accountCreatedAt: string;
   lastLoginAt?: string | null;
   pendingEmail?: string | null;
   isCorporate: boolean;
+  /** Bireysel/Kurumsal ikilisine girmeyen roller (ör. ADMIN) için özel etiket. */
+  accountTypeLabel?: string;
 }) {
   const { t } = useLocale();
   const initial = email.charAt(0).toUpperCase();
@@ -29,7 +32,8 @@ export function AccountInfoCard({
           <p className="truncate text-base font-medium text-silver-300">{email}</p>
           <div className="mt-1 flex flex-wrap items-center gap-2">
             <span className="rounded-full border border-ink-700 px-2.5 py-0.5 text-xs text-silver-400">
-              {isCorporate ? t("accountPanel.accountTypeCorporate") : t("accountPanel.accountTypeIndividual")}
+              {accountTypeLabel ??
+                (isCorporate ? t("accountPanel.accountTypeCorporate") : t("accountPanel.accountTypeIndividual"))}
             </span>
             {pendingEmail ? (
               <span className="rounded-full bg-amber-400/10 px-2.5 py-0.5 text-xs font-medium text-amber-400">

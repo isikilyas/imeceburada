@@ -1172,6 +1172,7 @@ function AdminAccountPanel() {
         lastLoginAt={profile.lastLoginAt}
         pendingEmail={profile.pendingEmail}
         isCorporate={false}
+        accountTypeLabel={t("accountPanel.accountTypeAdmin")}
       />
       <form onSubmit={handleSubmit} className={`${cardClass} space-y-4`}>
         <AdminPhotoUploader photoUrl={profile.photoUrl} />
@@ -1200,6 +1201,7 @@ function AdminAccountPanel() {
         <ChangePasswordForm />
         <ChangeEmailForm />
         <LogoutAllDevicesButton />
+        <DeleteAccountSection />
       </div>
     </div>
   );
