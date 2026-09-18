@@ -19,6 +19,7 @@ export function JobDetailClient() {
   const { t } = useLocale();
   const [applyState, setApplyState] = useState<"idle" | "submitting" | "done" | "error">("idle");
   const [applyError, setApplyError] = useState<string | null>(null);
+  const [expectedWage, setExpectedWage] = useState("");
 
   const {
     data: job,
@@ -34,7 +35,10 @@ export function JobDetailClient() {
     setApplyState("submitting");
     setApplyError(null);
     try {
-      await authFetch(`/applications`, { method: "POST", body: JSON.stringify({ jobId: id }) });
+      await authFetch(`/applications`, {
+        method: "POST",
+        body: JSON.stringify({ jobId: id, expectedWage: expectedWage ? Number(expectedWage) : undefined }),
+      });
       setApplyState("done");
     } catch (err) {
       setApplyError(err instanceof ApiError ? err.message : "Başvuru gönderilemedi");
@@ -122,13 +126,26 @@ export function JobDetailClient() {
           </p>
         )}
         {user?.role === "CANDIDATE" && applyState !== "done" && (
-          <button
-            onClick={handleApply}
-            disabled={applyState === "submitting"}
-            className="rounded-md bg-gold-500 px-5 py-2.5 font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60"
-          >
-            {applyState === "submitting" ? "Gönderiliyor..." : "Başvur"}
-          </button>
+          <div className="max-w-xs space-y-3">
+            <div>
+              <label className="mb-1 block text-xs text-silver-500">Beklediğiniz Ücret (₺/ay, isteğe bağlı)</label>
+              <input
+                type="number"
+                min={0}
+                placeholder="Örn. 35000"
+                value={expectedWage}
+                onChange={(e) => setExpectedWage(e.target.value)}
+                className="w-full rounded-md border border-ink-700 bg-ink-900 px-3 py-2 text-sm text-silver-200 focus:border-gold-500 focus:outline-none"
+              />
+            </div>
+            <button
+              onClick={handleApply}
+              disabled={applyState === "submitting"}
+              className="rounded-md bg-gold-500 px-5 py-2.5 font-medium text-ink-950 hover:bg-gold-400 disabled:opacity-60"
+            >
+              {applyState === "submitting" ? "Gönderiliyor..." : "Başvur"}
+            </button>
+          </div>
         )}
         {applyState === "done" && <p className="text-sm text-green-400">Başvurun alındı!</p>}
         {applyError && (

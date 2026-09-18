@@ -61,6 +61,11 @@ export default function CandidateDashboardPage() {
                 <Link href={`/jobs/${app.jobId}`} className="min-w-0 flex-1">
                   <p className="truncate font-medium text-silver-200">{app.jobTitle}</p>
                   <span className="text-sm text-silver-500">{t(`dashboard.applicationStatus.${app.status}`)}</span>
+                  {app.offeredWage != null && (
+                    <p className="mt-1 text-xs text-gold-400">
+                      Firmanın teklifi: {app.offeredWage.toLocaleString("tr-TR")} ₺/ay
+                    </p>
+                  )}
                 </Link>
                 <Link href={`/messages/${app.id}`} className="shrink-0 text-sm text-gold-400 hover:underline">
                   {t("nav.messages")}

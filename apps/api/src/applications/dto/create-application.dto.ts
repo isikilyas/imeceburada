@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsUUID } from "class-validator";
+import { IsInt, IsOptional, IsString, IsUUID, Max, Min } from "class-validator";
 
 export class CreateApplicationDto {
   @IsUUID()
@@ -7,4 +7,10 @@ export class CreateApplicationDto {
   @IsOptional()
   @IsString()
   message?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(1000000)
+  expectedWage?: number;
 }
