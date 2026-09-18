@@ -104,10 +104,6 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
         kicker: "EDİNİN",
         title: "Google Play",
       },
-      appGallery: {
-        kicker: "Şurada keşfedin",
-        title: "AppGallery",
-      },
     },
   },
   en: {
@@ -212,10 +208,6 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       googlePlay: {
         kicker: "GET IT ON",
         title: "Google Play",
-      },
-      appGallery: {
-        kicker: "Explore it on",
-        title: "AppGallery",
       },
     },
   },
@@ -324,10 +316,6 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
         kicker: "JETZT BEI",
         title: "Google Play",
       },
-      appGallery: {
-        kicker: "Entdecken auf",
-        title: "AppGallery",
-      },
     },
   },
   ru: {
@@ -434,10 +422,6 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
         kicker: "ДОСТУПНО В",
         title: "Google Play",
       },
-      appGallery: {
-        kicker: "Загрузите в",
-        title: "AppGallery",
-      },
     },
   },
   ar: {
@@ -542,10 +526,6 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       googlePlay: {
         kicker: "احصل عليه من",
         title: "Google Play",
-      },
-      appGallery: {
-        kicker: "استكشفه على",
-        title: "AppGallery",
       },
     },
   },
@@ -654,10 +634,6 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
         kicker: "DISPONIBLE EN",
         title: "Google Play",
       },
-      appGallery: {
-        kicker: "Descúbrelo en",
-        title: "AppGallery",
-      },
     },
   },
   fr: {
@@ -765,10 +741,6 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       googlePlay: {
         kicker: "DISPONIBLE SUR",
         title: "Google Play",
-      },
-      appGallery: {
-        kicker: "Découvrez-le sur",
-        title: "AppGallery",
       },
     },
   },
