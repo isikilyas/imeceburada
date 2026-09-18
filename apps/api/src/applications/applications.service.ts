@@ -37,7 +37,7 @@ export class ApplicationsService {
     if (existing) throw new ConflictException("Bu ilana zaten başvurdunuz");
 
     const application = await this.prisma.application.create({
-      data: { jobId: dto.jobId, candidateId, message: dto.message },
+      data: { jobId: dto.jobId, candidateId, message: dto.message, expectedWage: dto.expectedWage },
       include: { job: true, candidate: true },
     });
 
@@ -101,7 +101,7 @@ export class ApplicationsService {
 
     const updated = await this.prisma.application.update({
       where: { id },
-      data: { status: dto.status },
+      data: { status: dto.status, ...(dto.offeredWage !== undefined ? { offeredWage: dto.offeredWage } : {}) },
       include: { job: true, candidate: true },
     });
 
@@ -119,6 +119,8 @@ export class ApplicationsService {
     jobId: string;
     candidateId: string;
     status: string;
+    expectedWage: number | null;
+    offeredWage: number | null;
     createdAt: Date;
     job: { title: string };
     candidate: { fullName: string };
@@ -129,6 +131,8 @@ export class ApplicationsService {
     candidateId: application.candidateId,
     candidateName: application.candidate.fullName,
     status: application.status,
+    expectedWage: application.expectedWage,
+    offeredWage: application.offeredWage,
     createdAt: application.createdAt.toISOString(),
   });
 }
