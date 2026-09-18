@@ -124,8 +124,8 @@ export default function NewSiteRequestPage() {
         <ProvinceDistrictSelect
           city={form.city}
           district={form.district ?? ""}
-          onCityChange={(v) => setForm({ ...form, city: v })}
-          onDistrictChange={(v) => setForm({ ...form, district: v })}
+          onCityChange={(v) => setForm((prev) => ({ ...prev, city: v }))}
+          onDistrictChange={(v) => setForm((prev) => ({ ...prev, district: v }))}
           allowEmptyDistrict
         />
 
