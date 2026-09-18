@@ -16,6 +16,15 @@ export const PRICE_SUBMISSION_TYPES: { value: PriceSubmissionType; label: string
   { value: "OFFER", label: "Teklif / Beklenti" },
 ];
 
+/** Yevmiye/Maaş Bilgisi Paylaş formunda bildirilen ücretin kime ait olduğu. */
+export type WageSubjectType = "INDIVIDUAL" | "TEAM" | "EQUIPMENT";
+
+export const WAGE_SUBJECT_TYPES: { value: WageSubjectType; label: string }[] = [
+  { value: "INDIVIDUAL", label: "Kişi" },
+  { value: "TEAM", label: "Ekip" },
+  { value: "EQUIPMENT", label: "Ekipman" },
+];
+
 export type ExperienceLevel = "JUNIOR" | "MID" | "SENIOR";
 
 /** Adayın şu an iş kabul edip etmediği — dizinde ve WhatsApp iletişim butonunda kullanılır. */

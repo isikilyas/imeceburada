@@ -51,6 +51,14 @@ enum PriceSubmissionType {
   OFFER
 }
 
+/// Yevmiye/Maaş Bilgisi Paylaş formunda bildirilen ücretin kime ait olduğu —
+/// tek bir kişi mi, bir ekip mi, yoksa kiralık bir ekipman mı.
+enum WageSubjectType {
+  INDIVIDUAL
+  TEAM
+  EQUIPMENT
+}
+
 enum AvailabilityStatus {
   AVAILABLE
   BUSY
@@ -558,25 +566,37 @@ model Message {
 
 model WageSubmission {
   id              String          @id @default(uuid())
-  tradeCategory   String
+  /// Varsayılan INDIVIDUAL (tek kişi ücreti) — mevcut tüm eski kayıtlar bu türdendir.
+  subjectType     WageSubjectType @default(INDIVIDUAL)
+  /// INDIVIDUAL ve TEAM için zorunlu (hangi meslek/branş); EQUIPMENT'ta null,
+  /// onun yerine equipmentType kullanılır.
+  tradeCategory   String?
   city            String
   district        String?
-  experienceLevel ExperienceLevel
+  /// Sadece INDIVIDUAL'da anlamlı — ekip/ekipman için deneyim seviyesi sorulmaz.
+  experienceLevel ExperienceLevel?
+  /// Sadece TEAM'de zorunlu — kaç kişilik ekip.
+  teamSize        Int?
+  /// Sadece EQUIPMENT'ta zorunlu — hangi ekipman türü.
+  equipmentType   String?
   amount          Int
   period          WagePeriod
   submissionType  PriceSubmissionType @default(ACTUAL)
   submittedById   String
   submittedBy     User            @relation(fields: [submittedById], references: [id], onDelete: Cascade)
-  /// Gönderenin kayıt telefonu — piyasayı yanıltacak tekrar girişleri önlemek
-  /// için (phone, tradeCategory, city, experienceLevel, submissionMonth) eşsiz
-  /// olmalı. experienceLevel dahil çünkü aynı kişi/firma junior ve senior ücreti
-  /// ayrı ayrı bildirebilir — bu ayrı, geçerli veri noktalarıdır.
+  /// Gönderenin telefonu — profilinde kayıtlıysa oradan, yoksa gönderim anında
+  /// formda istenir. Piyasayı yanıltacak tekrar girişleri önlemek için
+  /// (phone, subjectType, tradeCategory, equipmentType, city, experienceLevel,
+  /// submissionMonth) eşsiz olmalı. NULL alanlarda Postgres'in eşsizlik
+  /// kısıtı her NULL'u farklı sayar — yani TEAM/EQUIPMENT gönderimlerinde
+  /// (experienceLevel her zaman null olduğu için) tekrar-giriş koruması
+  /// INDIVIDUAL'a göre daha zayıftır; bu, düşük öncelikli kabul edilmiş bir durumdur.
   phone           String
   /// "YYYY-MM" — gönderim anındaki ay, eşsizlik kısıtının ay bazlı çalışması için.
   submissionMonth String
   createdAt       DateTime        @default(now())
 
-  @@unique([phone, tradeCategory, city, experienceLevel, submissionMonth])
+  @@unique([phone, subjectType, tradeCategory, equipmentType, city, experienceLevel, submissionMonth], name: "wage_submissions_dedup_key", map: "wage_submissions_dedup_key")
   @@index([tradeCategory, city, createdAt])
   @@map("wage_submissions")
 }

@@ -66,7 +66,12 @@ export class WageIndexService {
     private taxonomyService: TaxonomyService,
   ) {}
 
-  private async getSubmitterPhone(user: RequestUser): Promise<string> {
+  /**
+   * Profilinde kayıtlı telefon varsa onu kullanır; yoksa (ör. profil telefonu
+   * hiç girmemiş bir kullanıcı) formda o an girilen `dto.phone`'a düşer —
+   * eskiden bu durumda işlem tamamen reddediliyordu.
+   */
+  private async getSubmitterPhone(user: RequestUser, dtoPhone?: string): Promise<string> {
     const profile =
       user.role === "CANDIDATE"
         ? await this.prisma.candidateProfile.findUnique({ where: { userId: user.id } })
@@ -77,23 +82,56 @@ export class WageIndexService {
             : user.role === "SUBCONTRACTOR"
               ? await this.prisma.subcontractorProfile.findUnique({ where: { userId: user.id } })
               : null;
-    if (!profile?.phone) {
-      throw new BadRequestException("Bu işlem için profilinde kayıtlı bir telefon numarası olmalı");
+    const phone = profile?.phone || dtoPhone;
+    if (!phone) {
+      throw new BadRequestException("Bir telefon numarası girmelisin");
     }
-    return profile.phone;
+    return phone;
   }
 
   async submit(user: RequestUser, dto: CreateWageSubmissionDto) {
-    const phone = await this.getSubmitterPhone(user);
+    if (dto.subjectType === "EQUIPMENT" && !dto.equipmentType) {
+      throw new BadRequestException("Ekipman türü zorunludur");
+    }
+    if (dto.subjectType !== "EQUIPMENT" && !dto.tradeCategory) {
+      throw new BadRequestException("Meslek/branş zorunludur");
+    }
+    if (dto.subjectType === "TEAM" && !dto.teamSize) {
+      throw new BadRequestException("Ekip büyüklüğü zorunludur");
+    }
+    if (dto.subjectType === "INDIVIDUAL" && !dto.experienceLevel) {
+      throw new BadRequestException("Deneyim seviyesi zorunludur");
+    }
+
+    const phone = await this.getSubmitterPhone(user, dto.phone);
     const submissionMonth = new Date().toISOString().slice(0, 7); // "YYYY-MM"
-    const tradeCategory = await this.taxonomyService.resolveOrQueueTerm(
-      "TRADE_PROFESSION",
-      dto.tradeCategory,
-      user.id,
-    );
+    const tradeCategory = dto.tradeCategory
+      ? await this.taxonomyService.resolveOrQueueTerm("TRADE_PROFESSION", dto.tradeCategory, user.id)
+      : undefined;
+    const equipmentType = dto.equipmentType
+      ? await this.taxonomyService.resolveOrQueueTerm("EQUIPMENT_TYPE", dto.equipmentType, user.id)
+      : undefined;
+    // subjectType'a göre uygulanmayan alanları (ör. TEAM'de experienceLevel) hiç
+    // yazmıyoruz — DTO'dan boşuna gelmiş olsalar bile veritabanına girmesinler.
+    const experienceLevel = dto.subjectType === "INDIVIDUAL" ? dto.experienceLevel : undefined;
+    const teamSize = dto.subjectType === "TEAM" ? dto.teamSize : undefined;
     try {
       const submission = await this.prisma.wageSubmission.create({
-        data: { ...dto, tradeCategory, submittedById: user.id, phone, submissionMonth },
+        data: {
+          subjectType: dto.subjectType,
+          city: dto.city,
+          district: dto.district,
+          amount: dto.amount,
+          period: dto.period,
+          submissionType: dto.submissionType,
+          tradeCategory,
+          equipmentType,
+          experienceLevel,
+          teamSize,
+          submittedById: user.id,
+          phone,
+          submissionMonth,
+        },
       });
       return { success: true, id: submission.id };
     } catch (err) {
@@ -134,6 +172,7 @@ export class WageIndexService {
           FROM wage_submissions ws
           JOIN users u ON u.id = ws."submittedById"
           WHERE ws."createdAt" >= ${since}
+            AND ws."subjectType" = 'INDIVIDUAL'
             AND (${tradeCategory}::text IS NULL OR ws."tradeCategory" = ${tradeCategory})
             AND (${city}::text IS NULL OR ws."city" = ${city})
             AND ws."district" = ${district}
@@ -158,6 +197,7 @@ export class WageIndexService {
           FROM wage_submissions ws
           JOIN users u ON u.id = ws."submittedById"
           WHERE ws."createdAt" >= ${since}
+            AND ws."subjectType" = 'INDIVIDUAL'
             AND (${tradeCategory}::text IS NULL OR ws."tradeCategory" = ${tradeCategory})
             AND (${city}::text IS NULL OR ws."city" = ${city})
           GROUP BY "month", ws."tradeCategory", ws."city"
@@ -210,6 +250,7 @@ export class WageIndexService {
           FROM wage_submissions ws
           JOIN users u ON u.id = ws."submittedById"
           WHERE ws."createdAt" >= ${since}
+            AND ws."subjectType" = 'INDIVIDUAL'
             AND ws."tradeCategory" = ${tradeCategory}
             AND ws."city" = ${city}
             AND ws."district" = ${district}
@@ -235,6 +276,7 @@ export class WageIndexService {
           FROM wage_submissions ws
           JOIN users u ON u.id = ws."submittedById"
           WHERE ws."createdAt" >= ${since}
+            AND ws."subjectType" = 'INDIVIDUAL'
             AND ws."tradeCategory" = ${tradeCategory}
             AND ws."city" = ${city}
           GROUP BY ws."tradeCategory", ws."city", ws."period"
