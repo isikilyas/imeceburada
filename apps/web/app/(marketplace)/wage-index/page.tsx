@@ -12,8 +12,10 @@ import {
   TRADE_FIELDS,
   TURKISH_PROVINCES,
   WAGE_PERIODS,
+  WAGE_SUBJECT_TYPES,
   WagePeriod,
   WageIndexPoint,
+  WageSubjectType,
 } from "@imeceburada/shared";
 import { ApiError } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
@@ -21,6 +23,7 @@ import { Field, inputClass, selectClass } from "@/components/form";
 import { IndexChart } from "@/components/index-chart";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
+import { EquipmentCategorySelect } from "@/components/equipment-category-select";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 export default function WageIndexPage() {
@@ -39,14 +42,25 @@ export default function WageIndexPage() {
     enabled: !!user,
   });
 
+  const { data: myProfile } = useQuery({
+    queryKey: ["my-profile-phone"],
+    queryFn: () => authFetch<{ phone?: string | null }>("/users/me/profile"),
+    enabled: !!user,
+  });
+  const needsPhone = !!user && myProfile !== undefined && !myProfile?.phone;
+
   const [form, setForm] = useState<CreateWageSubmissionInput>({
+    subjectType: "INDIVIDUAL",
     tradeCategory: TRADE_FIELDS[0].branches[0].professions[0].value,
     city: TURKISH_PROVINCES[0],
     district: "",
     experienceLevel: "MID",
+    equipmentType: "",
+    teamSize: undefined,
     amount: 0,
     period: "DAILY",
     submissionType: "ACTUAL",
+    phone: "",
   });
   const [status, setStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
@@ -56,10 +70,23 @@ export default function WageIndexPage() {
     setStatus("submitting");
     setError(null);
     try {
-      await authFetch("/wage-index", {
-        method: "POST",
-        body: JSON.stringify({ ...form, district: form.district || undefined }),
-      });
+      const payload: Record<string, unknown> = {
+        subjectType: form.subjectType,
+        city: form.city,
+        district: form.district || undefined,
+        amount: form.amount,
+        period: form.period,
+        submissionType: form.submissionType,
+        phone: needsPhone ? form.phone || undefined : undefined,
+      };
+      if (form.subjectType === "EQUIPMENT") {
+        payload.equipmentType = form.equipmentType;
+      } else {
+        payload.tradeCategory = form.tradeCategory;
+        if (form.subjectType === "TEAM") payload.teamSize = form.teamSize;
+        if (form.subjectType === "INDIVIDUAL") payload.experienceLevel = form.experienceLevel;
+      }
+      await authFetch("/wage-index", { method: "POST", body: JSON.stringify(payload) });
       setStatus("done");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Gönderilemedi");
@@ -109,10 +136,30 @@ export default function WageIndexPage() {
               güvenilirliğini bozar.
             </p>
             <form onSubmit={handleSubmit} className="space-y-4">
-            <TradeCategorySelect
-              value={form.tradeCategory}
-              onChange={(v) => setForm({ ...form, tradeCategory: v })}
-            />
+            <Field label="Kimin için?">
+              <select
+                value={form.subjectType}
+                onChange={(e) => setForm({ ...form, subjectType: e.target.value as WageSubjectType })}
+                className={selectClass}
+              >
+                {WAGE_SUBJECT_TYPES.map((x) => (
+                  <option key={x.value} value={x.value}>
+                    {x.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            {form.subjectType === "EQUIPMENT" ? (
+              <EquipmentCategorySelect
+                value={form.equipmentType ?? ""}
+                onChange={(v) => setForm({ ...form, equipmentType: v })}
+              />
+            ) : (
+              <TradeCategorySelect
+                value={form.tradeCategory ?? ""}
+                onChange={(v) => setForm({ ...form, tradeCategory: v })}
+              />
+            )}
             <ProvinceDistrictSelect
               city={form.city}
               district={form.district ?? ""}
@@ -120,19 +167,45 @@ export default function WageIndexPage() {
               onDistrictChange={(v) => setForm((prev) => ({ ...prev, district: v }))}
               allowEmptyDistrict
             />
-            <Field label="Deneyim">
-              <select
-                value={form.experienceLevel}
-                onChange={(e) => setForm({ ...form, experienceLevel: e.target.value as ExperienceLevel })}
-                className={selectClass}
-              >
-                {EXPERIENCE_LEVELS.map((x) => (
-                  <option key={x.value} value={x.value}>
-                    {x.label}
-                  </option>
-                ))}
-              </select>
-            </Field>
+            {form.subjectType === "INDIVIDUAL" && (
+              <Field label="Deneyim">
+                <select
+                  value={form.experienceLevel}
+                  onChange={(e) => setForm({ ...form, experienceLevel: e.target.value as ExperienceLevel })}
+                  className={selectClass}
+                >
+                  {EXPERIENCE_LEVELS.map((x) => (
+                    <option key={x.value} value={x.value}>
+                      {x.label}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            )}
+            {form.subjectType === "TEAM" && (
+              <Field label="Ekip Büyüklüğü (kişi sayısı)">
+                <input
+                  type="number"
+                  min={2}
+                  required
+                  value={form.teamSize ?? ""}
+                  onChange={(e) => setForm({ ...form, teamSize: Number(e.target.value) })}
+                  className={inputClass}
+                />
+              </Field>
+            )}
+            {needsPhone && (
+              <Field label="Telefon Numarası (+90...)">
+                <input
+                  type="tel"
+                  required
+                  placeholder="+905551234567"
+                  value={form.phone ?? ""}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  className={inputClass}
+                />
+              </Field>
+            )}
             <Field label="Periyot">
               <select
                 value={form.period}

@@ -146,16 +146,18 @@ async function main() {
     for (const wage of sampleWages) {
       await prisma.wageSubmission.upsert({
         where: {
-          phone_tradeCategory_city_experienceLevel_submissionMonth: {
+          wage_submissions_dedup_key: {
             phone: "+905559876543",
+            subjectType: "INDIVIDUAL",
             tradeCategory: wage.tradeCategory,
+            equipmentType: undefined as unknown as string,
             city: wage.city,
             experienceLevel: wage.experienceLevel,
             submissionMonth,
           },
         },
         update: {},
-        create: { ...wage, submittedById: candidate.id, phone: "+905559876543", submissionMonth },
+        create: { ...wage, subjectType: "INDIVIDUAL", submittedById: candidate.id, phone: "+905559876543", submissionMonth },
       });
     }
   }
@@ -375,16 +377,24 @@ async function main() {
     for (const wage of moreWages) {
       await prisma.wageSubmission.upsert({
         where: {
-          phone_tradeCategory_city_experienceLevel_submissionMonth: {
+          wage_submissions_dedup_key: {
             phone: "+905559876543",
+            subjectType: "INDIVIDUAL",
             tradeCategory: wage.tradeCategory,
+            equipmentType: undefined as unknown as string,
             city: wage.city,
             experienceLevel: wage.experienceLevel,
             submissionMonth: moreWagesMonth,
           },
         },
         update: {},
-        create: { ...wage, submittedById: candidate.id, phone: "+905559876543", submissionMonth: moreWagesMonth },
+        create: {
+          ...wage,
+          subjectType: "INDIVIDUAL",
+          submittedById: candidate.id,
+          phone: "+905559876543",
+          submissionMonth: moreWagesMonth,
+        },
       });
     }
 

@@ -1,13 +1,22 @@
-import { ExperienceLevel, PriceSubmissionType, WagePeriod } from "./enums";
+import { ExperienceLevel, PriceSubmissionType, WagePeriod, WageSubjectType } from "./enums";
 
 export interface CreateWageSubmissionInput {
-  tradeCategory: string;
+  subjectType: WageSubjectType;
+  /** INDIVIDUAL/TEAM için zorunlu, EQUIPMENT'ta kullanılmaz. */
+  tradeCategory?: string;
   city: string;
   district?: string;
-  experienceLevel: ExperienceLevel;
+  /** Sadece INDIVIDUAL'da gönderilir. */
+  experienceLevel?: ExperienceLevel;
+  /** Sadece TEAM'de gönderilir. */
+  teamSize?: number;
+  /** Sadece EQUIPMENT'ta zorunlu. */
+  equipmentType?: string;
   amount: number;
   period: WagePeriod;
   submissionType: PriceSubmissionType;
+  /** Profilinde kayıtlı telefonu olmayan kullanıcılar için — o zaman zorunludur. */
+  phone?: string;
 }
 
 export interface WageIndexQuery {
