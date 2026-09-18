@@ -49,26 +49,3 @@ export function GooglePlayBadge({ href, className = "" }: StoreBadgeProps) {
     </a>
   );
 }
-
-/** Huawei AppGallery'nin resmi rozetiyle aynı düzende, sade bir yeniden çizim. */
-export function AppGalleryBadge({ href, className = "" }: StoreBadgeProps) {
-  const { t } = useLocale();
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={`${badgeBase} ${className}`}>
-      <svg viewBox="0 0 24 24" className={iconClass}>
-        <path
-          d="M12 2.5l8.5 4.9v9.2L12 21.5l-8.5-4.9V7.4L12 2.5z"
-          fill="none"
-          stroke="#fff"
-          strokeWidth="1.4"
-          strokeLinejoin="round"
-        />
-        <path d="M8.4 8.6h7.2l-3.6 6.8-3.6-6.8z" fill="#C7000B" />
-      </svg>
-      <span className={textWrapClass}>
-        <span className={kickerClass}>{t("components.storeBadges.appGallery.kicker")}</span>
-        <span className={titleClass}>{t("components.storeBadges.appGallery.title")}</span>
-      </span>
-    </a>
-  );
-}

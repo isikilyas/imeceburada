@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/locale-context";
-import { AppStoreBadge, GooglePlayBadge, AppGalleryBadge } from "@/components/store-badges";
+import { AppStoreBadge, GooglePlayBadge } from "@/components/store-badges";
 import Image from "next/image";
 
 export function Footer() {
@@ -50,7 +50,6 @@ export function Footer() {
           <div className="flex items-stretch gap-2 sm:gap-3">
             <AppStoreBadge href="#" />
             <GooglePlayBadge href="#" />
-            <AppGalleryBadge href="#" />
           </div>
         </div>
 
