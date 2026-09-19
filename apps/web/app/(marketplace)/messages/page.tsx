@@ -14,7 +14,7 @@ export default function MessagesPage() {
   const { data: conversations, isLoading } = useQuery({
     queryKey: ["my-conversations"],
     queryFn: () => authFetch<ConversationSummaryDto[]>("/conversations"),
-    enabled: user?.role === "CANDIDATE" || user?.role === "COMPANY",
+    enabled: user?.role === "CANDIDATE" || user?.role === "COMPANY" || user?.role === "SUBCONTRACTOR",
   });
 
   if (authLoading) return <p className="text-silver-500">{t("common.loading")}</p>;
@@ -27,8 +27,8 @@ export default function MessagesPage() {
         </Link>
       </p>
     );
-  if (user.role !== "CANDIDATE" && user.role !== "COMPANY") {
-    return <p className="text-silver-500">Bu sayfa sadece bireysel ve firma hesapları içindir.</p>;
+  if (user.role !== "CANDIDATE" && user.role !== "COMPANY" && user.role !== "SUBCONTRACTOR") {
+    return <p className="text-silver-500">Bu sayfa sadece bireysel, taşeron ve firma hesapları içindir.</p>;
   }
 
   return (
@@ -52,7 +52,7 @@ export default function MessagesPage() {
             >
               <div className="min-w-0">
                 <p className="font-medium text-silver-200">
-                  {user.role === "CANDIDATE" ? c.companyName : c.candidateName}
+                  {user.role === "COMPANY" ? c.applicantName : c.companyName}
                 </p>
                 <p className="text-xs text-silver-500">{c.jobTitle}</p>
                 {c.lastMessageBody && (

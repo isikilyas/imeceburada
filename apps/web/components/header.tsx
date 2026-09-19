@@ -20,7 +20,9 @@ export function Header() {
         ? "/dashboard/candidate"
         : user?.role === "SUPPLIER"
           ? "/dashboard/supplier"
-          : null;
+          : user?.role === "SUBCONTRACTOR"
+            ? "/dashboard/subcontractor"
+            : null;
 
   const linkClass = "whitespace-nowrap hover:text-gold-400";
   const [accountOpen, setAccountOpen] = useState(false);
@@ -50,7 +52,7 @@ export function Header() {
         ...(user.role === "COMPANY" || user.role === "SUPPLIER" || user.role === "SUBCONTRACTOR"
           ? [{ href: "/membership", label: t("nav.membership") }]
           : []),
-        ...(user.role === "CANDIDATE" || user.role === "COMPANY"
+        ...(user.role === "CANDIDATE" || user.role === "COMPANY" || user.role === "SUBCONTRACTOR"
           ? [{ href: "/messages", label: t("nav.messages") }]
           : []),
         ...(dashboardHref ? [{ href: dashboardHref, label: t("nav.dashboard") }] : []),
