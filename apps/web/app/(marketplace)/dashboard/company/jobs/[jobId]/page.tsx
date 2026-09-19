@@ -48,7 +48,7 @@ export default function JobApplicationsPage() {
           <div key={app.id} className="rounded-lg border border-ink-800 bg-ink-900 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="font-medium text-silver-200">{app.candidateName}</p>
+                <p className="font-medium text-silver-200">{app.applicantName}</p>
                 <p className="text-xs text-silver-500">{t(`dashboard.applicationStatus.${app.status}`)}</p>
                 {app.expectedWage != null && (
                   <p className="mt-1 text-xs text-gold-400">Beklediği ücret: {app.expectedWage.toLocaleString("tr-TR")} ₺/ay</p>

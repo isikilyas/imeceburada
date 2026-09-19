@@ -88,6 +88,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       membershipStatusLink: "Üyelik Durumu",
       membershipHint:
         "Dizinde görünmek ve firmaların size ulaşabilmesi için aktif üyeliğin ve doğrulanmış telefon numaran olmalı (üyelik sayfasından tamamlayabilirsin).",
+      applicationsHeading: "Başvurularım",
+      noApplications: "Henüz başvurun yok.",
+      browseJobsLink: "Taşeron ilanlarına göz at",
     },
     supplier: {
       companyNameLabel: "Firma Adı",
@@ -196,6 +199,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       membershipStatusLink: "Membership Status",
       membershipHint:
         "To appear in the directory and be reachable by companies, you need an active membership and a verified phone number (you can complete this from the membership page).",
+      applicationsHeading: "My Applications",
+      noApplications: "You haven't applied to anything yet.",
+      browseJobsLink: "Browse subcontractor listings",
     },
     supplier: {
       companyNameLabel: "Company Name",
@@ -304,6 +310,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       membershipStatusLink: "Mitgliedschaftsstatus",
       membershipHint:
         "Um im Verzeichnis zu erscheinen und für Firmen erreichbar zu sein, benötigst du eine aktive Mitgliedschaft und eine verifizierte Telefonnummer (kannst du auf der Mitgliedschaftsseite abschließen).",
+      applicationsHeading: "Meine Bewerbungen",
+      noApplications: "Du hast dich noch nicht beworben.",
+      browseJobsLink: "Subunternehmer-Anzeigen durchsuchen",
     },
     supplier: {
       companyNameLabel: "Firmenname",
@@ -412,6 +421,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       membershipStatusLink: "Статус членства",
       membershipHint:
         "Чтобы отображаться в каталоге и быть доступным для компаний, у вас должно быть активное членство и подтвержденный номер телефона (это можно завершить на странице членства).",
+      applicationsHeading: "Мои заявки",
+      noApplications: "У вас пока нет заявок.",
+      browseJobsLink: "Смотреть вакансии для субподрядчиков",
     },
     supplier: {
       companyNameLabel: "Название компании",
@@ -520,6 +532,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       membershipStatusLink: "حالة العضوية",
       membershipHint:
         "لتظهر في الدليل وتتمكن الشركات من التواصل معك، يجب أن تملك عضوية نشطة ورقم هاتف موثّق (يمكنك إكمال ذلك من صفحة العضوية).",
+      applicationsHeading: "طلباتي",
+      noApplications: "لم تتقدم بأي طلب بعد.",
+      browseJobsLink: "تصفح إعلانات المقاولين من الباطن",
     },
     supplier: {
       companyNameLabel: "اسم الشركة",
@@ -628,6 +643,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       membershipStatusLink: "Estado de membresía",
       membershipHint:
         "Para aparecer en el directorio y que las empresas puedan contactarte, necesitas una membresía activa y un número de teléfono verificado (puedes completarlo desde la página de membresía).",
+      applicationsHeading: "Mis postulaciones",
+      noApplications: "Aún no te has postulado a nada.",
+      browseJobsLink: "Ver anuncios para subcontratistas",
     },
     supplier: {
       companyNameLabel: "Nombre de la empresa",
@@ -736,6 +754,9 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       membershipStatusLink: "Statut de l'abonnement",
       membershipHint:
         "Pour apparaître dans l'annuaire et être joignable par les entreprises, vous devez disposer d'un abonnement actif et d'un numéro de téléphone vérifié (vous pouvez le faire depuis la page d'abonnement).",
+      applicationsHeading: "Mes candidatures",
+      noApplications: "Vous n'avez encore postulé à aucune offre.",
+      browseJobsLink: "Parcourir les annonces pour sous-traitants",
     },
     supplier: {
       companyNameLabel: "Nom de l'entreprise",

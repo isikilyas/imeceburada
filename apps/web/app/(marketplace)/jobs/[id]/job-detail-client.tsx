@@ -61,6 +61,9 @@ export function JobDetailClient() {
     );
   if (!job) return <p className="text-silver-500">İlan bulunamadı.</p>;
 
+  const isCandidateListing = job.listingType === "PERSONNEL" || job.listingType === "TEAM";
+  const canApply = user?.role === (isCandidateListing ? "CANDIDATE" : "SUBCONTRACTOR");
+
   const tradeLabel = TRADE_CATEGORIES.find((tc) => tc.value === job.tradeCategory)?.label ?? job.tradeCategory;
   const employmentLabel = t(`enums.employmentType.${job.employmentType}`);
   const listingTypeLabel = t(`enums.listingIntent.${job.listingType}`);
@@ -120,12 +123,14 @@ export function JobDetailClient() {
             .
           </p>
         )}
-        {!authLoading && user && user.role !== "CANDIDATE" && (
+        {!authLoading && user && !canApply && (
           <p className="text-sm text-silver-500">
-            İş ilanlarına yalnızca İş Arayan Personel hesapları başvurabilir.
+            {isCandidateListing
+              ? "Bu ilana yalnızca İş Arayan Personel hesapları başvurabilir."
+              : "Bu ilana yalnızca İş Arayan Taşeron hesapları başvurabilir."}
           </p>
         )}
-        {user?.role === "CANDIDATE" && applyState !== "done" && (
+        {canApply && applyState !== "done" && (
           <div className="max-w-xs space-y-3">
             <div>
               <label className="mb-1 block text-xs text-silver-500">Beklediğiniz Ücret (₺/ay, isteğe bağlı)</label>

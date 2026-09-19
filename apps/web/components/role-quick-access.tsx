@@ -54,7 +54,7 @@ export function RoleQuickAccess() {
   } else if (user.role === "SUBCONTRACTOR") {
     links = [
       { href: "/jobs?listingType=SUBCONTRACTOR", icon: "👷", label: t("home.quickAccessSubcontractorJobs") },
-      { href: "/account", icon: "⚙️", label: t("nav.accountPanel") },
+      { href: "/dashboard/subcontractor", icon: "📋", label: t("nav.dashboard") },
       { href: "/equipment", icon: "🏗️", label: t("home.moduleEquipmentTitle") },
     ];
   } else if (user.role === "ADMIN") {

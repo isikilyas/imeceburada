@@ -307,6 +307,12 @@ export class UsersService {
     return profile.id;
   }
 
+  async getSubcontractorProfileIdForUser(userId: string): Promise<string> {
+    const profile = await this.prisma.subcontractorProfile.findUnique({ where: { userId } });
+    if (!profile) throw new NotFoundException("Taşeron profili bulunamadı");
+    return profile.id;
+  }
+
   /**
    * Hesabı ve ona bağlı HER ŞEYİ (profil, ilanlar, başvurular, üyelik geçmişi,
    * favoriler vb.) kalıcı olarak siler. Şema genelinde tüm ilişkiler

@@ -386,6 +386,8 @@ model SubcontractorProfile {
   updatedAt DateTime @updatedAt
 
   subscriptions MembershipSubscription[]
+  applications  Application[]
+  conversations Conversation[]
 
   @@index([isPublic, city, district])
   @@index([phone])
@@ -480,12 +482,19 @@ model JobPosting {
   @@map("job_postings")
 }
 
+/// Aday VEYA taşeron firma başvurusunu temsil eder — tam olarak biri
+/// (candidateId ya da subcontractorId) dolu olmalıdır, hiçbir zaman ikisi
+/// birden değil. Hangi tarafın başvurduğu, ilanın listingType'ına göre
+/// belirlenir (PERSONNEL/TEAM → aday, SUBCONTRACTOR/SUB_SUBCONTRACTOR/
+/// SPECIALIST_FIRM/SERVICE → taşeron firma) — bkz. ApplicationsService.
 model Application {
-  id          String            @id @default(uuid())
-  jobId       String
-  job         JobPosting        @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  candidateId String
-  candidate   CandidateProfile  @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  id              String            @id @default(uuid())
+  jobId           String
+  job             JobPosting        @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  candidateId     String?
+  candidate       CandidateProfile? @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  subcontractorId String?
+  subcontractor   SubcontractorProfile? @relation(fields: [subcontractorId], references: [id], onDelete: Cascade)
   message     String?
   status      ApplicationStatus @default(PENDING)
   /// Adayın başvuru sırasında belirttiği beklenen ücret (aylık, TL) — isteğe bağlı.
@@ -500,6 +509,7 @@ model Application {
   reviews      Review[]
 
   @@unique([jobId, candidateId])
+  @@unique([jobId, subcontractorId])
   @@map("applications")
 }
 
@@ -536,8 +546,11 @@ model Conversation {
   applicationId String   @unique
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
   /// Sorgu kolaylığı için Application üzerinden değil doğrudan tutulur.
-  candidateId   String
-  candidate     CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  /// Application gibi ikisinden tam olarak biri dolu olmalıdır.
+  candidateId   String?
+  candidate     CandidateProfile? @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  subcontractorId String?
+  subcontractor   SubcontractorProfile? @relation(fields: [subcontractorId], references: [id], onDelete: Cascade)
   companyId     String
   company       CompanyProfile @relation(fields: [companyId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())
@@ -546,6 +559,7 @@ model Conversation {
   messages Message[]
 
   @@index([candidateId])
+  @@index([subcontractorId])
   @@index([companyId])
   @@map("conversations")
 }

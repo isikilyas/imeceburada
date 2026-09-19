@@ -13,13 +13,13 @@ import { RequestUser } from "../auth/types/request-user";
 export class ApplicationsController {
   constructor(private applicationsService: ApplicationsService) {}
 
-  @Roles("CANDIDATE")
+  @Roles("CANDIDATE", "SUBCONTRACTOR")
   @Post()
   create(@CurrentUser() user: RequestUser, @Body() dto: CreateApplicationDto) {
     return this.applicationsService.create(user, dto);
   }
 
-  @Roles("CANDIDATE")
+  @Roles("CANDIDATE", "SUBCONTRACTOR")
   @Get("mine")
   findMine(@CurrentUser() user: RequestUser) {
     return this.applicationsService.findMine(user);

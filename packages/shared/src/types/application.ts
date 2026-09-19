@@ -4,8 +4,12 @@ export interface ApplicationDto {
   id: string;
   jobId: string;
   jobTitle: string;
-  candidateId: string;
-  candidateName: string;
+  /** Başvuran aday mı yoksa taşeron firma mı. */
+  applicantType: "CANDIDATE" | "SUBCONTRACTOR";
+  /** applicantType'a göre candidateId ya da subcontractorId. */
+  applicantId: string;
+  /** applicantType'a göre aday adı ya da firma adı. */
+  applicantName: string;
   status: ApplicationStatus;
   /** Adayın başvuru sırasında belirttiği beklenen ücret (aylık, TL). */
   expectedWage?: number | null;

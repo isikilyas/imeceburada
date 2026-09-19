@@ -10,19 +10,21 @@ export class ReviewsService {
   async createReview(user: RequestUser, applicationId: string, dto: CreateReviewDto) {
     const application = await this.prisma.application.findUnique({
       where: { id: applicationId },
-      include: { candidate: true, job: { include: { company: true } } },
+      include: { candidate: true, subcontractor: true, job: { include: { company: true } } },
     });
     if (!application) throw new NotFoundException("Başvuru bulunamadı");
 
-    const isCandidate = application.candidate.userId === user.id;
+    const applicant = application.candidate ?? application.subcontractor;
+    if (!applicant) throw new NotFoundException("Başvuru bulunamadı");
+    const isApplicant = applicant.userId === user.id;
     const isCompany = application.job.company.userId === user.id;
-    if (!isCandidate && !isCompany) throw new ForbiddenException("Bu başvuruya yorum bırakamazsınız");
+    if (!isApplicant && !isCompany) throw new ForbiddenException("Bu başvuruya yorum bırakamazsınız");
 
     if (application.status !== "ACCEPTED") {
       throw new BadRequestException("Sadece kabul edilmiş başvurulara yorum bırakılabilir");
     }
 
-    const targetUserId = isCandidate ? application.job.company.userId : application.candidate.userId;
+    const targetUserId = isApplicant ? application.job.company.userId : applicant.userId;
 
     const existing = await this.prisma.review.findUnique({
       where: { applicationId_authorId: { applicationId, authorId: user.id } },
@@ -38,13 +40,15 @@ export class ReviewsService {
   async listReviewsForApplication(user: RequestUser, applicationId: string) {
     const application = await this.prisma.application.findUnique({
       where: { id: applicationId },
-      include: { candidate: true, job: { include: { company: true } } },
+      include: { candidate: true, subcontractor: true, job: { include: { company: true } } },
     });
     if (!application) throw new NotFoundException("Başvuru bulunamadı");
 
-    const isCandidate = application.candidate.userId === user.id;
+    const applicant = application.candidate ?? application.subcontractor;
+    if (!applicant) throw new NotFoundException("Başvuru bulunamadı");
+    const isApplicant = applicant.userId === user.id;
     const isCompany = application.job.company.userId === user.id;
-    if (!isCandidate && !isCompany) throw new ForbiddenException("Bu başvurunun yorumlarına erişemezsiniz");
+    if (!isApplicant && !isCompany) throw new ForbiddenException("Bu başvurunun yorumlarına erişemezsiniz");
 
     const reviews = await this.prisma.review.findMany({
       where: { applicationId },

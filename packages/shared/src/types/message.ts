@@ -14,7 +14,8 @@ export interface ConversationSummaryDto {
   applicationId: string;
   jobId: string;
   jobTitle: string;
-  candidateName: string;
+  /** Aday adı ya da taşeron firma adı — hangisi konuşmanın tarafıysa. */
+  applicantName: string;
   companyName: string;
   lastMessageBody: string | null;
   lastMessageAt: string | null;

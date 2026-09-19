@@ -5,10 +5,11 @@ import { EMAIL_SERVICE, EmailService } from "../email/email.service";
 
 interface ConversationContext {
   conversationId: string;
-  candidateUserId: string;
+  /** Aday ya da taşeron firma — konuşmanın başvuran tarafı. */
+  applicantUserId: string;
   companyUserId: string;
   jobTitle: string;
-  candidateNotifyByEmail: boolean;
+  applicantNotifyByEmail: boolean;
   companyNotifyByEmail: boolean;
 }
 
@@ -29,14 +30,17 @@ export class MessagesService {
       where: { id: applicationId },
       include: {
         candidate: true,
+        subcontractor: true,
         job: { include: { company: true } },
       },
     });
     if (!application) throw new NotFoundException("Başvuru bulunamadı");
 
-    const isCandidate = application.candidate.userId === user.id;
+    const applicant = application.candidate ?? application.subcontractor;
+    if (!applicant) throw new NotFoundException("Başvuru bulunamadı");
+    const isApplicant = applicant.userId === user.id;
     const isCompany = application.job.company.userId === user.id;
-    if (!isCandidate && !isCompany) throw new ForbiddenException("Bu başvurunun mesajlarına erişemezsiniz");
+    if (!isApplicant && !isCompany) throw new ForbiddenException("Bu başvurunun mesajlarına erişemezsiniz");
 
     const conversation = await this.prisma.conversation.upsert({
       where: { applicationId },
@@ -44,16 +48,17 @@ export class MessagesService {
       create: {
         applicationId,
         candidateId: application.candidateId,
+        subcontractorId: application.subcontractorId,
         companyId: application.job.companyId,
       },
     });
 
     return {
       conversationId: conversation.id,
-      candidateUserId: application.candidate.userId,
+      applicantUserId: applicant.userId,
       companyUserId: application.job.company.userId,
       jobTitle: application.job.title,
-      candidateNotifyByEmail: application.candidate.notifyByEmail,
+      applicantNotifyByEmail: "notifyByEmail" in applicant ? applicant.notifyByEmail : true,
       companyNotifyByEmail: application.job.company.notifyByEmail,
     };
   }
@@ -69,9 +74,9 @@ export class MessagesService {
       data: { updatedAt: new Date() },
     });
 
-    const recipientIsCandidate = user.id !== context.candidateUserId;
-    const recipientUserId = recipientIsCandidate ? context.candidateUserId : context.companyUserId;
-    const recipientNotifyByEmail = recipientIsCandidate ? context.candidateNotifyByEmail : context.companyNotifyByEmail;
+    const recipientIsApplicant = user.id !== context.applicantUserId;
+    const recipientUserId = recipientIsApplicant ? context.applicantUserId : context.companyUserId;
+    const recipientNotifyByEmail = recipientIsApplicant ? context.applicantNotifyByEmail : context.companyNotifyByEmail;
     if (recipientNotifyByEmail) {
       const recipient = await this.prisma.user.findUnique({ where: { id: recipientUserId } });
       if (recipient) {
@@ -101,21 +106,32 @@ export class MessagesService {
   }
 
   async listMyConversations(user: RequestUser) {
-    if (user.role !== "CANDIDATE" && user.role !== "COMPANY") return [];
+    if (user.role !== "CANDIDATE" && user.role !== "COMPANY" && user.role !== "SUBCONTRACTOR") return [];
 
     const candidateProfile =
       user.role === "CANDIDATE"
         ? await this.prisma.candidateProfile.findUnique({ where: { userId: user.id } })
         : null;
+    const subcontractorProfile =
+      user.role === "SUBCONTRACTOR"
+        ? await this.prisma.subcontractorProfile.findUnique({ where: { userId: user.id } })
+        : null;
     const companyProfile =
       user.role === "COMPANY" ? await this.prisma.companyProfile.findUnique({ where: { userId: user.id } }) : null;
-    if (!candidateProfile && !companyProfile) return [];
+    if (!candidateProfile && !subcontractorProfile && !companyProfile) return [];
+
+    const where = candidateProfile
+      ? { candidateId: candidateProfile.id }
+      : subcontractorProfile
+        ? { subcontractorId: subcontractorProfile.id }
+        : { companyId: companyProfile!.id };
 
     const conversations = await this.prisma.conversation.findMany({
-      where: candidateProfile ? { candidateId: candidateProfile.id } : { companyId: companyProfile!.id },
+      where,
       include: {
         application: { include: { job: true } },
         candidate: true,
+        subcontractor: true,
         company: true,
         messages: { orderBy: { createdAt: "desc" }, take: 1 },
       },
@@ -139,7 +155,7 @@ export class MessagesService {
       applicationId: c.applicationId,
       jobId: c.application.jobId,
       jobTitle: c.application.job.title,
-      candidateName: c.candidate.fullName,
+      applicantName: c.candidate?.fullName ?? c.subcontractor?.companyName ?? "",
       companyName: c.company.companyName,
       lastMessageBody: c.messages[0]?.body ?? null,
       lastMessageAt: c.messages[0]?.createdAt.toISOString() ?? null,
