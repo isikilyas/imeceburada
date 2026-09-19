@@ -123,3 +123,6 @@ export const LISTING_INTENTS: { value: ListingIntent; label: string }[] = [
 ];
 
 export const LISTING_INTENT_VALUES = LISTING_INTENTS.map((l) => l.value) as [string, ...string[]];
+
+/** PERSONNEL/TEAM ilanlarına aday, diğerlerine (taşeron/uzman firma/hizmet) taşeron firma başvurur. */
+export const CANDIDATE_LISTING_TYPES: ListingIntent[] = ["PERSONNEL", "TEAM"];
