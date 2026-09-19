@@ -1,6 +1,6 @@
 import { BadRequestException, ConflictException, ForbiddenException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
-import { ApplicationStatus, ListingIntent } from "@imeceburada/shared";
+import { ApplicationStatus, CANDIDATE_LISTING_TYPES, ListingIntent } from "@imeceburada/shared";
 import { PrismaService } from "../prisma/prisma.service";
 import { UsersService } from "../users/users.service";
 import { RequestUser } from "../auth/types/request-user";
@@ -14,9 +14,6 @@ const STATUS_LABELS: Record<ApplicationStatus, string> = {
   ACCEPTED: "Kabul Edildi",
   REJECTED: "Reddedildi",
 };
-
-/** PERSONNEL/TEAM ilanlarına aday, diğerlerine (taşeron/uzman firma/hizmet) taşeron firma başvurur. */
-const CANDIDATE_LISTING_TYPES: ListingIntent[] = ["PERSONNEL", "TEAM"];
 
 @Injectable()
 export class ApplicationsService {

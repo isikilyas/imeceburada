@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ApplicationDto, ApplicationStatus } from "@imeceburada/shared";
+import { ApplicationDto, ApplicationStatus, JobMatchDto } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { ListSkeleton } from "@/components/list-skeleton";
@@ -19,6 +19,11 @@ export default function JobApplicationsPage() {
   const { data: applications, isLoading } = useQuery({
     queryKey: ["job-applications", jobId],
     queryFn: () => authFetch<ApplicationDto[]>(`/applications/job/${jobId}`),
+  });
+
+  const { data: matches, isLoading: matchesLoading } = useQuery({
+    queryKey: ["job-matches", jobId],
+    queryFn: () => authFetch<JobMatchDto[]>(`/jobs/${jobId}/matches`),
   });
 
   async function updateStatus(applicationId: string, status: ApplicationStatus, offeredWage?: number) {
@@ -103,6 +108,56 @@ export default function JobApplicationsPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-12 border-t border-ink-800 pt-8">
+        <h2 className="mb-1 text-xl font-semibold text-silver-300">{t("dashboard.companyJobDetail.matchesHeading")}</h2>
+        <p className="mb-6 text-sm text-silver-500">{t("dashboard.companyJobDetail.matchesHint")}</p>
+        {matchesLoading && <ListSkeleton count={3} />}
+        {matches?.length === 0 && (
+          <p className="text-silver-500">{t("dashboard.companyJobDetail.matchesEmpty")}</p>
+        )}
+        <div className="space-y-3">
+          {matches?.map((m) => (
+            <div
+              key={m.id}
+              className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-ink-800 bg-ink-900 p-4"
+            >
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium text-silver-200">{m.name}</p>
+                  <span className="rounded-full bg-gold-500/10 px-2 py-0.5 text-xs font-semibold text-gold-400">
+                    {t("dashboard.companyJobDetail.matchScoreLabel", { score: m.score })}
+                  </span>
+                  {m.alreadyApplied && (
+                    <span className="rounded-full bg-ink-800 px-2 py-0.5 text-xs text-silver-400">
+                      {t("dashboard.companyJobDetail.alreadyAppliedBadge")}
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 text-xs text-silver-500">
+                  {m.city}
+                  {m.district ? ` / ${m.district}` : ""}
+                </p>
+                {m.reasons.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {m.reasons.map((reason) => (
+                      <span key={reason} className="rounded bg-ink-800 px-1.5 py-0.5 text-[11px] text-silver-400">
+                        {reason}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <Link
+                href={m.applicantType === "CANDIDATE" ? `/candidates/${m.id}` : `/subcontractors/${m.id}`}
+                className="shrink-0 rounded-md border border-ink-700 px-3 py-1 text-sm text-gold-400 hover:border-gold-500"
+              >
+                {t("dashboard.companyJobDetail.viewProfileLink")}
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

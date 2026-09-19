@@ -10,6 +10,7 @@ export * from "./types/taxonomy";
 export * from "./types/auth";
 export * from "./types/job";
 export * from "./types/application";
+export * from "./types/job-match";
 export * from "./types/wage";
 export * from "./types/material";
 export * from "./types/equipment";

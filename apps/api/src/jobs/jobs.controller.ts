@@ -33,6 +33,13 @@ export class JobsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard, MembershipGuard)
   @Roles("COMPANY")
+  @Get(":id/matches")
+  getMatches(@CurrentUser() user: RequestUser, @Param("id") id: string) {
+    return this.jobsService.getMatches(user, id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard, MembershipGuard)
+  @Roles("COMPANY")
   @Post()
   create(@CurrentUser() user: RequestUser, @Body() dto: CreateJobDto) {
     return this.jobsService.create(user, dto);
