@@ -58,7 +58,7 @@ export class MessagesService {
       applicantUserId: applicant.userId,
       companyUserId: application.job.company.userId,
       jobTitle: application.job.title,
-      applicantNotifyByEmail: "notifyByEmail" in applicant ? applicant.notifyByEmail : true,
+      applicantNotifyByEmail: applicant.notifyByEmail,
       companyNotifyByEmail: application.job.company.notifyByEmail,
     };
   }

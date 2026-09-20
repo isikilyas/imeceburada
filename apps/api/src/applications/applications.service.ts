@@ -135,7 +135,7 @@ export class ApplicationsService {
     });
 
     const applicantUser = application.candidate?.user ?? application.subcontractor?.user;
-    const applicantNotifyByEmail = application.candidate?.notifyByEmail ?? true;
+    const applicantNotifyByEmail = application.candidate?.notifyByEmail ?? application.subcontractor?.notifyByEmail ?? true;
     if (applicantUser && applicantNotifyByEmail) {
       await this.emailService
         .sendApplicationStatusNotification(applicantUser.email, application.job.title, STATUS_LABELS[dto.status])

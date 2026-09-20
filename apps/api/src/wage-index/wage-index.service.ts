@@ -119,14 +119,17 @@ export class WageIndexService {
 
     const phone = await this.getSubmitterPhone(user, dto.phone);
     const submissionMonth = new Date().toISOString().slice(0, 7); // "YYYY-MM"
-    const tradeCategory = dto.tradeCategory
-      ? await this.taxonomyService.resolveOrQueueTerm("TRADE_PROFESSION", dto.tradeCategory, user.id)
-      : undefined;
-    const equipmentType = dto.equipmentType
-      ? await this.taxonomyService.resolveOrQueueTerm("EQUIPMENT_TYPE", dto.equipmentType, user.id)
-      : undefined;
-    // subjectType'a göre uygulanmayan alanları (ör. TEAM'de experienceLevel) hiç
-    // yazmıyoruz — DTO'dan boşuna gelmiş olsalar bile veritabanına girmesinler.
+    // subjectType'a göre uygulanmayan alanları (ör. TEAM'de experienceLevel, EQUIPMENT'ta
+    // tradeCategory) hiç yazmıyoruz — DTO'dan boşuna/kötü niyetle gelmiş olsalar bile
+    // veritabanına girmesinler ve dedup anahtarının bileşimini bozmasınlar.
+    const tradeCategory =
+      dto.subjectType !== "EQUIPMENT" && dto.tradeCategory
+        ? await this.taxonomyService.resolveOrQueueTerm("TRADE_PROFESSION", dto.tradeCategory, user.id)
+        : undefined;
+    const equipmentType =
+      dto.subjectType === "EQUIPMENT" && dto.equipmentType
+        ? await this.taxonomyService.resolveOrQueueTerm("EQUIPMENT_TYPE", dto.equipmentType, user.id)
+        : undefined;
     const experienceLevel = dto.subjectType === "INDIVIDUAL" ? dto.experienceLevel : undefined;
     const teamSize = dto.subjectType === "TEAM" ? dto.teamSize : undefined;
     try {
