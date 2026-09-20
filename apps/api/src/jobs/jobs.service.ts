@@ -159,19 +159,17 @@ export class JobsService {
     if (!job) throw new NotFoundException("İlan bulunamadı");
     if (job.companyId !== companyId) throw new ForbiddenException("Bu ilanın eşleşmelerini görme yetkiniz yok");
 
-    const existingApplications = await this.prisma.application.findMany({
-      where: { jobId },
-      select: { candidateId: true, subcontractorId: true },
-    });
-    const appliedIds = new Set(existingApplications.map((a) => a.candidateId ?? a.subcontractorId));
-
     const isCandidateListing = CANDIDATE_LISTING_TYPES.includes(job.listingType as ListingIntent);
 
     if (isCandidateListing) {
-      const candidates = await this.prisma.candidateProfile.findMany({
-        where: { isPublic: true, user: { deactivatedAt: null }, primaryTradeCategory: job.tradeCategory },
-        take: MATCH_CANDIDATE_POOL_SIZE,
-      });
+      const [existingApplications, candidates] = await Promise.all([
+        this.prisma.application.findMany({ where: { jobId }, select: { candidateId: true, subcontractorId: true } }),
+        this.prisma.candidateProfile.findMany({
+          where: { isPublic: true, user: { deactivatedAt: null }, primaryTradeCategory: job.tradeCategory },
+          take: MATCH_CANDIDATE_POOL_SIZE,
+        }),
+      ]);
+      const appliedIds = new Set(existingApplications.map((a) => a.candidateId ?? a.subcontractorId));
       const reviewByUserId = await this.getReviewSummariesByUserId(candidates.map((c) => c.userId));
       return candidates
         .map((c) => this.scoreCandidate(job, c, reviewByUserId.get(c.userId), appliedIds.has(c.id)))
@@ -179,10 +177,14 @@ export class JobsService {
         .slice(0, MAX_MATCH_RESULTS);
     }
 
-    const subcontractors = await this.prisma.subcontractorProfile.findMany({
-      where: { isPublic: true, user: { deactivatedAt: null }, tradeCategories: { has: job.tradeCategory } },
-      take: MATCH_CANDIDATE_POOL_SIZE,
-    });
+    const [existingApplications, subcontractors] = await Promise.all([
+      this.prisma.application.findMany({ where: { jobId }, select: { candidateId: true, subcontractorId: true } }),
+      this.prisma.subcontractorProfile.findMany({
+        where: { isPublic: true, user: { deactivatedAt: null }, tradeCategories: { has: job.tradeCategory } },
+        take: MATCH_CANDIDATE_POOL_SIZE,
+      }),
+    ]);
+    const appliedIds = new Set(existingApplications.map((a) => a.candidateId ?? a.subcontractorId));
     const reviewByUserId = await this.getReviewSummariesByUserId(subcontractors.map((s) => s.userId));
     return subcontractors
       .map((s) => this.scoreSubcontractor(job, s, reviewByUserId.get(s.userId), appliedIds.has(s.id)))

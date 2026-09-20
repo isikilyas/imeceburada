@@ -58,6 +58,9 @@ function useWageSummary(city: string | undefined, enabled: boolean) {
     queryFn: () =>
       apiFetch<WageHomepageSummaryResponse>(`/wage-index/homepage-summary${city ? `?city=${encodeURIComponent(city)}` : ""}`),
     enabled,
+    // Son 3 aylık veriye dayanıyor, ziyaretçi başına anlık değişmiyor — her
+    // ana sayfa girişinde/geri dönüşünde tekrar sorgulamaya gerek yok.
+    staleTime: 10 * 60 * 1000,
   });
 }
 
