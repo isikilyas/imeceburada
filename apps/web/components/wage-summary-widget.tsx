@@ -50,6 +50,9 @@ function useWageSummary(city?: string) {
     queryKey: ["wage-homepage-summary", city ?? "national"],
     queryFn: () =>
       apiFetch<WageHomepageSummaryResponse>(`/wage-index/homepage-summary${city ? `?city=${encodeURIComponent(city)}` : ""}`),
+    // Son 3 aylık veriye dayanıyor, ziyaretçi başına anlık değişmiyor — her
+    // ana sayfa girişinde/geri dönüşünde tekrar sorgulamaya gerek yok.
+    staleTime: 10 * 60 * 1000,
   });
 }
 
