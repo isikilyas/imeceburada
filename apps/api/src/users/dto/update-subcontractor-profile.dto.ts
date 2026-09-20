@@ -70,4 +70,8 @@ export class UpdateSubcontractorProfileDto {
   @Min(0)
   @Max(1000)
   serviceRadiusKm?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  notifyByEmail?: boolean;
 }

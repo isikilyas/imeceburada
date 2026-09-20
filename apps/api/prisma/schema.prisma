@@ -383,6 +383,8 @@ model SubcontractorProfile {
   hasActivityCertificate Boolean @default(false)
   /// Hizmet verilen km yarıçapı — kullanıcının kendi beyanı, arama/eşleştirmede kullanılmaz.
   serviceRadiusKm         Int?
+  /// Başvuru durumu değiştiğinde e-posta bildirimi alınsın mı — Hesabım > Bildirimler'den yönetilir.
+  notifyByEmail       Boolean  @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
