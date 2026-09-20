@@ -5,7 +5,12 @@ import { TaxonomyService } from "../taxonomy/taxonomy.service";
 import { RequestUser } from "../auth/types/request-user";
 import { CreateWageSubmissionDto } from "./dto/create-wage-submission.dto";
 import { WageIndexQueryDto } from "./dto/wage-index-query.dto";
-import { WAGE_INDEX_MIN_SAMPLE_SIZE, WageIndexPoint, WageScalePoint } from "@imeceburada/shared";
+import {
+  WAGE_INDEX_MIN_SAMPLE_SIZE,
+  WageHomepageSummaryResponse,
+  WageIndexPoint,
+  WageScalePoint,
+} from "@imeceburada/shared";
 
 interface WageIndexRow {
   month: string;
@@ -20,6 +25,15 @@ interface WageIndexRow {
   sampleSize: number;
   expectationAverage: number | null;
   expectationSampleSize: number;
+}
+
+interface WageHomepageSummaryRow {
+  tradeCategory: string;
+  employerAverage: number | null;
+  employerSampleSize: number;
+  jobseekerAverage: number | null;
+  jobseekerSampleSize: number;
+  sampleSize: number;
 }
 
 interface WageScaleRow {
@@ -216,6 +230,47 @@ export class WageIndexService {
       expectationAverage: mapExpectation(r.expectationAverage, r.expectationSampleSize),
       expectationSampleSize: r.expectationSampleSize,
     }));
+  }
+
+  /**
+   * Ana sayfadaki "Türkiye Ortalaması" / "Bulunduğun Yer" özet slaytı — son 3 aydaki
+   * en çok veri girilen meslekleri (örneklem büyüklüğüne göre), şehir verilmezse
+   * Türkiye geneli, verilirse o ile kısıtlı olarak özetler. getIndex ile aynı gizlilik
+   * eşiğini uygular; period'a göre ayrım yapmaz (getIndex'teki mevcut basitleştirme).
+   */
+  async getHomepageSummary(city?: string): Promise<WageHomepageSummaryResponse> {
+    const since = new Date();
+    since.setMonth(since.getMonth() - 3);
+    const cityParam = city ?? null;
+
+    const rows = await this.prisma.$queryRaw<WageHomepageSummaryRow[]>`
+      SELECT
+        ws."tradeCategory",
+        AVG(ws.amount) FILTER (WHERE ws."submissionType" = 'ACTUAL' AND u.role IN ('COMPANY', 'SUBCONTRACTOR'))::float as "employerAverage",
+        COUNT(*) FILTER (WHERE ws."submissionType" = 'ACTUAL' AND u.role IN ('COMPANY', 'SUBCONTRACTOR'))::int as "employerSampleSize",
+        AVG(ws.amount) FILTER (WHERE ws."submissionType" = 'ACTUAL' AND u.role = 'CANDIDATE')::float as "jobseekerAverage",
+        COUNT(*) FILTER (WHERE ws."submissionType" = 'ACTUAL' AND u.role = 'CANDIDATE')::int as "jobseekerSampleSize",
+        COUNT(*) FILTER (WHERE ws."submissionType" = 'ACTUAL')::int as "sampleSize"
+      FROM wage_submissions ws
+      JOIN users u ON u.id = ws."submittedById"
+      WHERE ws."createdAt" >= ${since}
+        AND ws."subjectType" = 'INDIVIDUAL'
+        AND (${cityParam}::text IS NULL OR ws."city" = ${cityParam})
+      GROUP BY ws."tradeCategory"
+      HAVING COUNT(*) FILTER (WHERE ws."submissionType" = 'ACTUAL') >= ${WAGE_INDEX_MIN_SAMPLE_SIZE}
+      ORDER BY "sampleSize" DESC
+      LIMIT 6
+    `;
+
+    return {
+      scope: city ? "CITY" : "NATIONAL",
+      city: city ?? null,
+      items: rows.map((r) => ({
+        tradeCategory: r.tradeCategory,
+        averageAmount: Math.round(combineEmployerAndJobseeker(r.employerAverage, r.jobseekerAverage)),
+        sampleSize: r.sampleSize,
+      })),
+    };
   }
 
   /**

@@ -84,6 +84,11 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       windWarningTitle: "Rüzgar Uyarısı:",
       windWarningText: "Vinç ve iskele işlerinde dikkatli olun.",
     },
+    wageSummaryWidget: {
+      nationalTitle: "Türkiye Ortalaması",
+      localTitle: "{{city}} Ortalaması",
+      sampleSizeNote: "{{count}} veri girişi",
+    },
     whatsappContactButton: {
       contact: "WhatsApp ile İletişime Geç",
       unavailable: "Şu an müsait değil",
@@ -188,6 +193,11 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       heatWarningText: "Take breaks from work during midday hours and make sure workers drink plenty of water.",
       windWarningTitle: "Wind Warning:",
       windWarningText: "Use caution with crane and scaffolding work.",
+    },
+    wageSummaryWidget: {
+      nationalTitle: "Turkey Average",
+      localTitle: "{{city}} Average",
+      sampleSizeNote: "{{count}} data points",
     },
     whatsappContactButton: {
       contact: "Contact via WhatsApp",
@@ -296,6 +306,11 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       windWarningTitle: "Windwarnung:",
       windWarningText: "Sei bei Kran- und Gerüstarbeiten vorsichtig.",
     },
+    wageSummaryWidget: {
+      nationalTitle: "Türkei-Durchschnitt",
+      localTitle: "{{city}}-Durchschnitt",
+      sampleSizeNote: "{{count}} Dateneinträge",
+    },
     whatsappContactButton: {
       contact: "Über WhatsApp kontaktieren",
       unavailable: "Momentan nicht verfügbar",
@@ -402,6 +417,11 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       windWarningTitle: "Предупреждение о ветре:",
       windWarningText: "Соблюдайте осторожность при работе с краном и лесами.",
     },
+    wageSummaryWidget: {
+      nationalTitle: "Средний показатель по Турции",
+      localTitle: "Средний показатель — {{city}}",
+      sampleSizeNote: "{{count}} записей данных",
+    },
     whatsappContactButton: {
       contact: "Связаться через WhatsApp",
       unavailable: "Сейчас недоступно",
@@ -506,6 +526,11 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       heatWarningText: "خذ فترات راحة من العمل خلال ساعات الظهيرة وتأكد من شرب العمال كميات كافية من الماء.",
       windWarningTitle: "تحذير من الرياح:",
       windWarningText: "كن حذرًا في أعمال الرافعات والسقالات.",
+    },
+    wageSummaryWidget: {
+      nationalTitle: "متوسط تركيا",
+      localTitle: "متوسط {{city}}",
+      sampleSizeNote: "{{count}} إدخال بيانات",
     },
     whatsappContactButton: {
       contact: "تواصل عبر واتساب",
@@ -614,6 +639,11 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       windWarningTitle: "Aviso de viento:",
       windWarningText: "Extreme la precaución en los trabajos con grúas y andamios.",
     },
+    wageSummaryWidget: {
+      nationalTitle: "Promedio de Turquía",
+      localTitle: "Promedio de {{city}}",
+      sampleSizeNote: "{{count}} registros de datos",
+    },
     whatsappContactButton: {
       contact: "Contactar por WhatsApp",
       unavailable: "No disponible en este momento",
@@ -721,6 +751,11 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
         "Faites des pauses pendant les heures de la mi-journée et veillez à ce que les ouvriers boivent suffisamment d'eau.",
       windWarningTitle: "Alerte vent :",
       windWarningText: "Soyez prudent lors des travaux de grue et d'échafaudage.",
+    },
+    wageSummaryWidget: {
+      nationalTitle: "Moyenne Turquie",
+      localTitle: "Moyenne {{city}}",
+      sampleSizeNote: "{{count}} entrées de données",
     },
     whatsappContactButton: {
       contact: "Contacter via WhatsApp",

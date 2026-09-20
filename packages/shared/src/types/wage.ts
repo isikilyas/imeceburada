@@ -43,6 +43,19 @@ export interface WageIndexPoint {
 /** Örneklem bu eşiğin altındaysa gizlilik nedeniyle sonuç döndürülmez. */
 export const WAGE_INDEX_MIN_SAMPLE_SIZE = 3;
 
+/** Ana sayfadaki "Türkiye Ortalaması" / "Bulunduğun Yer" özet slaytı için tek bir meslek satırı. */
+export interface WageHomepageSummaryPoint {
+  tradeCategory: string;
+  averageAmount: number;
+  sampleSize: number;
+}
+
+export interface WageHomepageSummaryResponse {
+  scope: "NATIONAL" | "CITY";
+  city: string | null;
+  items: WageHomepageSummaryPoint[];
+}
+
 /** "Maaş Pusulam" — kullanıcının kendi mesleği + bölgesi için min/ortalama/maks ücret skalası. */
 export interface WageScalePoint {
   tradeCategory: string;
