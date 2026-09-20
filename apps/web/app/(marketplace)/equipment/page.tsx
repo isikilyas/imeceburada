@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { EquipmentListingDto, EQUIPMENT_LISTING_TYPES, EquipmentListingType, PaginatedResult } from "@imeceburada/shared";
@@ -11,6 +11,7 @@ import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { EquipmentCategorySelect } from "@/components/equipment-category-select";
 import { ListingsTabs } from "@/components/listings-tabs";
 import { ListSkeleton } from "@/components/list-skeleton";
+import { Pagination } from "@/components/pagination";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 export default function EquipmentPage() {
@@ -20,15 +21,21 @@ export default function EquipmentPage() {
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
   const [listingType, setListingType] = useState<EquipmentListingType | "">("");
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [equipmentType, city, district, listingType]);
 
   const params = new URLSearchParams();
   if (equipmentType) params.set("equipmentType", equipmentType);
   if (city) params.set("city", city);
   if (district) params.set("district", district);
   if (listingType) params.set("listingType", listingType);
+  params.set("page", String(page));
 
   const { data, isLoading } = useQuery({
-    queryKey: ["equipment", equipmentType, city, district, listingType],
+    queryKey: ["equipment", equipmentType, city, district, listingType, page],
     queryFn: () => apiFetch<PaginatedResult<EquipmentListingDto>>(`/equipment?${params.toString()}`),
   });
 
@@ -97,6 +104,8 @@ export default function EquipmentPage() {
           <EquipmentCard key={listing.id} listing={listing} />
         ))}
       </div>
+
+      {data && <Pagination page={data.page} pageSize={data.pageSize} total={data.total} onPageChange={setPage} />}
     </div>
   );
 }

@@ -18,9 +18,13 @@ const STATIC_ROUTES = [
   "/forgot-password",
 ];
 
+// API'ler pageSize'ı 50 ile sınırlıyor (bkz. ilgili SearchXDto'lar) — daha
+// yüksek bir değer istemek 400 döndürüp sitemap'i sessizce boş bırakırdı.
+const MAX_API_PAGE_SIZE = 50;
+
 async function fetchIds(path: string): Promise<string[]> {
   try {
-    const res = await fetch(`${API_URL}${path}?pageSize=200`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_URL}${path}?pageSize=${MAX_API_PAGE_SIZE}`, { next: { revalidate: 3600 } });
     if (!res.ok) {
       console.error(`sitemap: ${path} returned ${res.status} — dynamic URLs for this section will be missing`);
       return [];
@@ -40,7 +44,7 @@ async function fetchIds(path: string): Promise<string[]> {
  */
 async function fetchLandingPagePairs(): Promise<{ city: string; trade: string }[]> {
   try {
-    const res = await fetch(`${API_URL}/jobs?pageSize=200`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_URL}/jobs?pageSize=${MAX_API_PAGE_SIZE}`, { next: { revalidate: 3600 } });
     if (!res.ok) return [];
     const data = (await res.json()) as { items?: { city: string; tradeCategory: string }[] };
     const seen = new Set<string>();

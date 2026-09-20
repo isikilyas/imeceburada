@@ -84,6 +84,11 @@ const base = {
       membershipRequiredError: "Bu sayfayı görmek için aktif üyeliğin olmalı.",
       whatsappShareSuffix: "İmece Burada'da incele:",
     },
+    pagination: {
+      previous: "Önceki",
+      next: "Sonraki",
+      pageOf: "Sayfa {{page}} / {{totalPages}}",
+    },
     pages: {
       jobsHeading: "İş İlanları",
       relatedSearchesHeading: "İlgili Aramalar",
@@ -274,6 +279,11 @@ const base = {
       betaBanner: "Special for the imeceburada.com launch: all corporate features are free for a limited time!",
       membershipRequiredError: "You need an active membership to view this page.",
       whatsappShareSuffix: "Check it out on İmece Burada:",
+    },
+    pagination: {
+      previous: "Previous",
+      next: "Next",
+      pageOf: "Page {{page}} of {{totalPages}}",
     },
     pages: {
       jobsHeading: "Job Listings",
@@ -467,6 +477,11 @@ const base = {
       membershipRequiredError: "Du benötigst eine aktive Mitgliedschaft, um diese Seite zu sehen.",
       whatsappShareSuffix: "Sieh es dir auf İmece Burada an:",
     },
+    pagination: {
+      previous: "Zurück",
+      next: "Weiter",
+      pageOf: "Seite {{page}} von {{totalPages}}",
+    },
     pages: {
       jobsHeading: "Stellenanzeigen",
       relatedSearchesHeading: "Verwandte Suchanfragen",
@@ -658,6 +673,11 @@ const base = {
       membershipRequiredError: "Чтобы просмотреть эту страницу, у вас должно быть активное членство.",
       whatsappShareSuffix: "Посмотри на İmece Burada:",
     },
+    pagination: {
+      previous: "Назад",
+      next: "Вперёд",
+      pageOf: "Страница {{page}} из {{totalPages}}",
+    },
     pages: {
       jobsHeading: "Вакансии",
       relatedSearchesHeading: "Похожие запросы",
@@ -847,6 +867,11 @@ const base = {
       betaBanner: "بمناسبة إطلاق imeceburada.com: جميع الميزات المؤسسية مجانية مؤقتًا!",
       membershipRequiredError: "يجب أن تمتلك عضوية نشطة لعرض هذه الصفحة.",
       whatsappShareSuffix: "شاهده على İmece Burada:",
+    },
+    pagination: {
+      previous: "السابق",
+      next: "التالي",
+      pageOf: "صفحة {{page}} من {{totalPages}}",
     },
     pages: {
       jobsHeading: "إعلانات الوظائف",
@@ -1040,6 +1065,11 @@ const base = {
       membershipRequiredError: "Necesitas una membresía activa para ver esta página.",
       whatsappShareSuffix: "Míralo en İmece Burada:",
     },
+    pagination: {
+      previous: "Anterior",
+      next: "Siguiente",
+      pageOf: "Página {{page}} de {{totalPages}}",
+    },
     pages: {
       jobsHeading: "Anuncios de Empleo",
       relatedSearchesHeading: "Búsquedas Relacionadas",
@@ -1231,6 +1261,11 @@ const base = {
       betaBanner: "Spécial lancement d'imeceburada.com : toutes les fonctionnalités professionnelles sont gratuites pour une durée limitée !",
       membershipRequiredError: "Tu dois avoir un abonnement actif pour voir cette page.",
       whatsappShareSuffix: "Découvre-le sur İmece Burada :",
+    },
+    pagination: {
+      previous: "Précédent",
+      next: "Suivant",
+      pageOf: "Page {{page}} sur {{totalPages}}",
     },
     pages: {
       jobsHeading: "Offres d'Emploi",
