@@ -9,6 +9,7 @@ export interface CandidateDirectoryEntryDto {
   primaryTradeCategory?: string | null;
   skills: string[];
   workPreferences: string[];
+  machineSpecialties: string[];
   availabilityStatus: AvailabilityStatus;
   photoUrl?: string | null;
 }
@@ -25,6 +26,8 @@ export interface CandidateDirectorySearchQuery {
   tradeCategory?: string;
   city?: string;
   district?: string;
+  /** Sadece tradeCategory "HAFRIYAT_OPERATORU" iken anlamlı bir filtre. */
+  machineSpecialty?: string;
   page?: number;
   pageSize?: number;
 }

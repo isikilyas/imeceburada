@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { CandidateDirectoryEntryDto, PaginatedResult, TRADE_CATEGORIES } from "@imeceburada/shared";
+import { CandidateDirectoryEntryDto, EXCAVATION_MACHINE_TYPES, PaginatedResult, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { Avatar } from "@/components/avatar";
+import { Field, selectClass } from "@/components/form";
 import { ListSkeleton } from "@/components/list-skeleton";
 import { useLocale } from "@/lib/i18n/locale-context";
 
@@ -17,14 +18,16 @@ export default function CandidateDirectoryPage() {
   const [tradeCategory, setTradeCategory] = useState("");
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
+  const [machineSpecialty, setMachineSpecialty] = useState("");
 
   const params = new URLSearchParams();
   if (tradeCategory) params.set("tradeCategory", tradeCategory);
   if (city) params.set("city", city);
   if (district) params.set("district", district);
+  if (tradeCategory === "HAFRIYAT_OPERATORU" && machineSpecialty) params.set("machineSpecialty", machineSpecialty);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["candidates", tradeCategory, city, district],
+    queryKey: ["candidates", tradeCategory, city, district, machineSpecialty],
     queryFn: () => authFetch<PaginatedResult<CandidateDirectoryEntryDto>>(`/candidates?${params.toString()}`),
     enabled: user?.role === "COMPANY",
   });
@@ -40,6 +43,18 @@ export default function CandidateDirectoryPage() {
 
       <div className="mb-6 space-y-3">
         <TradeCategorySelect value={tradeCategory} onChange={setTradeCategory} allowEmpty />
+        {tradeCategory === "HAFRIYAT_OPERATORU" && (
+          <Field label={t("pages.machineSpecialtyFilterLabel")}>
+            <select value={machineSpecialty} onChange={(e) => setMachineSpecialty(e.target.value)} className={selectClass}>
+              <option value="">{t("filters.allMachineSpecialties")}</option>
+              {EXCAVATION_MACHINE_TYPES.map((m) => (
+                <option key={m.value} value={m.value}>
+                  {m.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+        )}
         <ProvinceDistrictSelect
           city={city}
           district={district}
@@ -95,6 +110,15 @@ export default function CandidateDirectoryPage() {
                 {c.workPreferences.map((v) => (
                   <span key={v} className="rounded-full bg-ink-800 px-2 py-0.5 text-[11px] text-silver-400">
                     {t(`enums.workPreference.${v}`)}
+                  </span>
+                ))}
+              </div>
+            )}
+            {c.machineSpecialties.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {c.machineSpecialties.map((v) => (
+                  <span key={v} className="rounded-full bg-gold-500/10 px-2 py-0.5 text-[11px] text-gold-400">
+                    {EXCAVATION_MACHINE_TYPES.find((m) => m.value === v)?.label ?? v}
                   </span>
                 ))}
               </div>
