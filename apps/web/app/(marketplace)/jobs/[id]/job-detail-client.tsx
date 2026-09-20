@@ -126,8 +126,8 @@ export function JobDetailClient() {
         {!authLoading && user && !canApply && (
           <p className="text-sm text-silver-500">
             {isCandidateListing
-              ? "Bu ilana yalnızca İş Arayan Personel hesapları başvurabilir."
-              : "Bu ilana yalnızca İş Arayan Taşeron hesapları başvurabilir."}
+              ? "Bu ilana yalnızca personel hesapları başvurabilir."
+              : "Bu ilana yalnızca taşeron hesapları başvurabilir."}
           </p>
         )}
         {canApply && applyState !== "done" && (
