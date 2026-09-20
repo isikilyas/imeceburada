@@ -21,6 +21,7 @@ export interface SubcontractorProfileDto {
   membershipExpiresAt?: string | null;
   hasActivityCertificate: boolean;
   serviceRadiusKm?: number | null;
+  notifyByEmail: boolean;
 }
 
 export interface UpdateSubcontractorProfileInput {
@@ -40,4 +41,5 @@ export interface UpdateSubcontractorProfileInput {
   phoneVisible?: boolean;
   hasActivityCertificate?: boolean;
   serviceRadiusKm?: number;
+  notifyByEmail?: boolean;
 }

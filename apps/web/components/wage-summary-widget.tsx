@@ -45,11 +45,19 @@ function useLocalProvince() {
   return province;
 }
 
-function useWageSummary(city?: string) {
+/**
+ * city=undefined + enabled=true → "Türkiye geneli" sorgusu. city + enabled ise
+ * il çözülünce devreye giren "bu şehir" sorgusu. `enabled` ayrı bir parametre:
+ * geolocation henüz sonuçlanmadan bu hook `city=undefined` ile çağrılırsa,
+ * enabled'ı da false vermezsek queryKey ulusal sorguyla çakışıp aynı önbellek
+ * girdisini paylaşır ve gereksiz bir istek daha atılır.
+ */
+function useWageSummary(city: string | undefined, enabled: boolean) {
   return useQuery({
     queryKey: ["wage-homepage-summary", city ?? "national"],
     queryFn: () =>
       apiFetch<WageHomepageSummaryResponse>(`/wage-index/homepage-summary${city ? `?city=${encodeURIComponent(city)}` : ""}`),
+    enabled,
   });
 }
 
@@ -96,8 +104,8 @@ function IndexSlideCard({ title, data }: { title: string; data: WageHomepageSumm
 export function WageSummaryWidget() {
   const { t } = useLocale();
   const localProvince = useLocalProvince();
-  const national = useWageSummary();
-  const local = useWageSummary(localProvince ?? undefined);
+  const national = useWageSummary(undefined, true);
+  const local = useWageSummary(localProvince ?? undefined, !!localProvince);
 
   const hasNational = !!national.data?.items.length;
   const hasLocal = !!localProvince && !!local.data?.items.length;

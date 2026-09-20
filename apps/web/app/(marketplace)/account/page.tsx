@@ -948,6 +948,7 @@ function SubcontractorAccountPanel() {
   const [phoneVisible, setPhoneVisible] = useState(false);
   const [hasActivityCertificate, setHasActivityCertificate] = useState(false);
   const [serviceRadiusKm, setServiceRadiusKm] = useState("");
+  const [notifyByEmail, setNotifyByEmail] = useState(true);
 
   useEffect(() => {
     if (!profile) return;
@@ -967,6 +968,7 @@ function SubcontractorAccountPanel() {
     setPhoneVisible(profile.phoneVisible);
     setHasActivityCertificate(profile.hasActivityCertificate);
     setServiceRadiusKm(profile.serviceRadiusKm != null ? String(profile.serviceRadiusKm) : "");
+    setNotifyByEmail(profile.notifyByEmail);
   }, [profile]);
 
   async function handleSubmit(e: FormEvent) {
@@ -992,6 +994,7 @@ function SubcontractorAccountPanel() {
       isPublic,
       phoneVisible,
       hasActivityCertificate,
+      notifyByEmail,
     });
   }
 
@@ -1002,6 +1005,7 @@ function SubcontractorAccountPanel() {
     { id: "corporate", label: t("accountPanel.tabs.corporate") },
     { id: "addresses", label: t("accountPanel.tabs.addresses") },
     { id: "privacy", label: t("accountPanel.tabs.privacy") },
+    { id: "notifications", label: t("accountPanel.tabs.notifications") },
     { id: "security", label: t("accountPanel.tabs.security") },
     { id: "membership", label: t("accountPanel.tabs.membership") },
     { id: "activity", label: t("accountPanel.tabs.activity") },
@@ -1018,7 +1022,7 @@ function SubcontractorAccountPanel() {
       />
       <TabNav tabs={tabs} active={tab} onChange={(id) => setTab(id as Tab)} />
 
-      {(tab === "profile" || tab === "corporate" || tab === "privacy") && (
+      {(tab === "profile" || tab === "corporate" || tab === "privacy" || tab === "notifications") && (
         <form onSubmit={handleSubmit} className={`${cardClass} space-y-4`}>
           {tab === "profile" && (
             <>
@@ -1117,6 +1121,20 @@ function SubcontractorAccountPanel() {
                 {t("dashboard.subcontractor.phoneVisibleLabel")}
               </label>
               <p className="text-xs text-silver-500">{t("dashboard.subcontractor.phoneVisibleHint")}</p>
+            </>
+          )}
+
+          {tab === "notifications" && (
+            <>
+              <label className="flex items-center gap-2 text-sm text-silver-300">
+                <input
+                  type="checkbox"
+                  checked={notifyByEmail}
+                  onChange={(e) => setNotifyByEmail(e.target.checked)}
+                />
+                {t("accountPanel.notifications.applicationStatusLabel")}
+              </label>
+              <p className="text-xs text-silver-500">{t("accountPanel.notifications.applicationStatusHint")}</p>
             </>
           )}
 

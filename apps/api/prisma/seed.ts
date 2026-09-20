@@ -150,7 +150,12 @@ async function main() {
             phone: "+905559876543",
             subjectType: "INDIVIDUAL",
             tradeCategory: wage.tradeCategory,
-            equipmentType: undefined as unknown as string,
+            // Prisma'nın compound-unique tipi equipmentType'ı `string` (non-null) olarak
+            // üretiyor, gerçek DB kolonu nullable olsa da — bu yüzden cast gerekiyor.
+            // `undefined` DEĞİL `null` kullanılıyor: undefined, JSON serileştirmesinde
+            // alanı tamamen düşürür ve Prisma'nın runtime doğrulaması "eksik argüman"
+            // hatası fırlatabilir; null ise gerçek DB değeriyle eşleşen açık bir değer olarak iletilir.
+            equipmentType: null as unknown as string,
             city: wage.city,
             experienceLevel: wage.experienceLevel,
             submissionMonth,
@@ -381,7 +386,7 @@ async function main() {
             phone: "+905559876543",
             subjectType: "INDIVIDUAL",
             tradeCategory: wage.tradeCategory,
-            equipmentType: undefined as unknown as string,
+            equipmentType: null as unknown as string,
             city: wage.city,
             experienceLevel: wage.experienceLevel,
             submissionMonth: moreWagesMonth,
