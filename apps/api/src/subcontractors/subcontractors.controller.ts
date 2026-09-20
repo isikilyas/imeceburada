@@ -6,17 +6,18 @@ import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { MembershipGuard } from "../membership/guards/membership.guard";
 
-@UseGuards(JwtAuthGuard, RolesGuard, MembershipGuard)
-@Roles("COMPANY")
 @Controller("subcontractors")
 export class SubcontractorsController {
   constructor(private subcontractorsService: SubcontractorsService) {}
 
+  /** Misafirler dahil herkese açık — sadece liste/özet alanları döner, telefon içermez. */
   @Get()
   search(@Query() query: SearchSubcontractorsDto) {
     return this.subcontractorsService.search(query);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard, MembershipGuard)
+  @Roles("COMPANY")
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.subcontractorsService.findOne(id);

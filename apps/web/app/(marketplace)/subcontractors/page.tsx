@@ -2,20 +2,25 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { PaginatedResult, SubcontractorDirectoryEntryDto, TRADE_CATEGORIES } from "@imeceburada/shared";
+import { apiFetch } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { ListSkeleton } from "@/components/list-skeleton";
+import { LoginModal } from "@/components/login-modal";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 export default function SubcontractorDirectoryPage() {
-  const { user, isLoading: authLoading, authFetch } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const { t } = useLocale();
+  const router = useRouter();
   const [tradeCategory, setTradeCategory] = useState("");
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
+  const [pendingSubcontractorId, setPendingSubcontractorId] = useState<string | null>(null);
 
   const params = new URLSearchParams();
   if (tradeCategory) params.set("tradeCategory", tradeCategory);
@@ -24,14 +29,10 @@ export default function SubcontractorDirectoryPage() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["subcontractors", tradeCategory, city, district],
-    queryFn: () => authFetch<PaginatedResult<SubcontractorDirectoryEntryDto>>(`/subcontractors?${params.toString()}`),
-    enabled: user?.role === "COMPANY",
+    queryFn: () => apiFetch<PaginatedResult<SubcontractorDirectoryEntryDto>>(`/subcontractors?${params.toString()}`),
   });
 
   if (authLoading) return <ListSkeleton count={4} columns={2} />;
-  if (user?.role !== "COMPANY") {
-    return <p className="text-silver-500">{t("pages.subcontractorsCompanyOnly")}</p>;
-  }
 
   return (
     <div>
@@ -63,6 +64,12 @@ export default function SubcontractorDirectoryPage() {
           <Link
             key={s.id}
             href={`/subcontractors/${s.id}`}
+            onClick={(e) => {
+              if (!user) {
+                e.preventDefault();
+                setPendingSubcontractorId(s.id);
+              }
+            }}
             className="block rounded-lg border border-ink-800 bg-ink-900 p-4 hover:border-gold-500"
           >
             <p className="font-medium text-silver-200">{s.companyName}</p>
@@ -80,6 +87,14 @@ export default function SubcontractorDirectoryPage() {
           </Link>
         ))}
       </div>
+
+      <LoginModal
+        open={pendingSubcontractorId !== null}
+        onClose={() => setPendingSubcontractorId(null)}
+        onSuccess={() => {
+          if (pendingSubcontractorId) router.push(`/subcontractors/${pendingSubcontractorId}`);
+        }}
+      />
     </div>
   );
 }
