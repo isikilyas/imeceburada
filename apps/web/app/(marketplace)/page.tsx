@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { WeatherWidget } from "@/components/weather-widget";
+import { WageSummaryWidget } from "@/components/wage-summary-widget";
 import { HomeStats } from "@/components/home-stats";
 import { SupplierSpotlight } from "@/components/supplier-spotlight";
 import { AdSlot } from "@/components/ad-slot";
@@ -117,6 +118,11 @@ export default function HomePage() {
       {/* Weather — a full weekly overview, sized to match the stats panel below it */}
       <div className="flex justify-center px-4 py-4 sm:px-6">
         <WeatherWidget />
+      </div>
+
+      {/* Wage index teaser — national average, plus a local one if geolocation resolves */}
+      <div className="flex justify-center px-4 pb-4 sm:px-6">
+        <WageSummaryWidget />
       </div>
 
       {/* Stats — an elevated panel with a soft gold glow instead of a bare divided row */}
