@@ -86,6 +86,7 @@ const base = {
     },
     pages: {
       jobsHeading: "İş İlanları",
+      relatedSearchesHeading: "İlgili Aramalar",
       equipmentHeading: "Ekipman / Makine Kiralama",
       materialListingsHeading: "Malzeme İlanları",
       siteRadarHeading: "Şantiye Radarı",
@@ -272,6 +273,7 @@ const base = {
     },
     pages: {
       jobsHeading: "Job Listings",
+      relatedSearchesHeading: "Related Searches",
       equipmentHeading: "Equipment Rentals",
       materialListingsHeading: "Material Listings",
       siteRadarHeading: "Site Radar",
@@ -459,6 +461,7 @@ const base = {
     },
     pages: {
       jobsHeading: "Stellenanzeigen",
+      relatedSearchesHeading: "Verwandte Suchanfragen",
       equipmentHeading: "Geräte-/Maschinenvermietung",
       materialListingsHeading: "Materialanzeigen",
       siteRadarHeading: "Baustellen-Radar",
@@ -645,6 +648,7 @@ const base = {
     },
     pages: {
       jobsHeading: "Вакансии",
+      relatedSearchesHeading: "Похожие запросы",
       equipmentHeading: "Аренда техники/оборудования",
       materialListingsHeading: "Объявления о материалах",
       siteRadarHeading: "Радар объектов",
@@ -830,6 +834,7 @@ const base = {
     },
     pages: {
       jobsHeading: "إعلانات الوظائف",
+      relatedSearchesHeading: "عمليات بحث ذات صلة",
       equipmentHeading: "تأجير المعدات/الآليات",
       materialListingsHeading: "إعلانات المواد",
       siteRadarHeading: "رادار الموقع",
@@ -1017,6 +1022,7 @@ const base = {
     },
     pages: {
       jobsHeading: "Anuncios de Empleo",
+      relatedSearchesHeading: "Búsquedas Relacionadas",
       equipmentHeading: "Alquiler de Equipos / Maquinaria",
       materialListingsHeading: "Anuncios de Materiales",
       siteRadarHeading: "Radar de Obra",
@@ -1204,6 +1210,7 @@ const base = {
     },
     pages: {
       jobsHeading: "Offres d'Emploi",
+      relatedSearchesHeading: "Recherches Associées",
       equipmentHeading: "Location d'Équipements / Engins",
       materialListingsHeading: "Annonces de Matériaux",
       siteRadarHeading: "Radar de Chantier",

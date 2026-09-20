@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { EMPLOYMENT_TYPES, JobPostingDto, LISTING_INTENTS, PaginatedResult } from "@imeceburada/shared";
+import Link from "next/link";
+import { EMPLOYMENT_TYPES, JobPostingDto, LISTING_INTENTS, PaginatedResult, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { JobCard } from "@/components/job-card";
 import { Field, selectClass } from "@/components/form";
@@ -12,6 +13,7 @@ import { TradeCategorySelect } from "@/components/trade-category-select";
 import { ListingsTabs } from "@/components/listings-tabs";
 import { ListSkeleton } from "@/components/list-skeleton";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { slugifyTurkish } from "@/lib/slug";
 
 export default function JobsPage() {
   const { t } = useLocale();
@@ -78,6 +80,46 @@ export default function JobsPage() {
 
       <div className="space-y-3">
         {data?.items.map((job) => <JobCard key={job.id} job={job} />)}
+      </div>
+
+      {data && data.items.length > 0 && (
+        <RelatedSearches jobs={data.items} />
+      )}
+    </div>
+  );
+}
+
+/** Yüklenen ilanlardaki şehir+meslek kombinasyonlarından, o kombinasyona özel SEO iniş sayfasına linkler üretir. */
+function RelatedSearches({ jobs }: { jobs: JobPostingDto[] }) {
+  const { t } = useLocale();
+  const seen = new Set<string>();
+  const links: { city: string; tradeLabel: string; href: string }[] = [];
+  for (const job of jobs) {
+    const key = `${job.city}::${job.tradeCategory}`;
+    if (seen.has(key) || links.length >= 8) continue;
+    seen.add(key);
+    const tradeLabel = TRADE_CATEGORIES.find((t) => t.value === job.tradeCategory)?.label ?? job.tradeCategory;
+    links.push({
+      city: job.city,
+      tradeLabel,
+      href: `/is-ilanlari/${slugifyTurkish(job.city)}/${slugifyTurkish(job.tradeCategory)}`,
+    });
+  }
+  if (links.length === 0) return null;
+
+  return (
+    <div className="mt-8 border-t border-ink-800 pt-6">
+      <p className="mb-2 text-sm font-medium text-silver-300">{t("pages.relatedSearchesHeading")}</p>
+      <div className="flex flex-wrap gap-2">
+        {links.map((l) => (
+          <Link
+            key={l.href}
+            href={l.href}
+            className="rounded-full border border-ink-700 px-3 py-1 text-xs text-silver-400 hover:border-gold-500 hover:text-gold-400"
+          >
+            {l.city} {l.tradeLabel}
+          </Link>
+        ))}
       </div>
     </div>
   );
