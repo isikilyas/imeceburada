@@ -13,6 +13,8 @@ export interface CandidateProfileDto {
   skills: string[];
   workPreferences: string[];
   primaryTradeCategory?: string | null;
+  /** Sadece primaryTradeCategory "HAFRIYAT_OPERATORU" iken anlamlı — uzman olunan hafriyat makineleri. */
+  machineSpecialties: string[];
   isPublic: boolean;
   photoUrl?: string | null;
   photoVisible: boolean;
@@ -38,6 +40,7 @@ export interface UpdateCandidateProfileInput {
   skills?: string[];
   workPreferences?: string[];
   primaryTradeCategory?: string;
+  machineSpecialties?: string[];
   isPublic?: boolean;
   photoVisible?: boolean;
   availabilityStatus?: AvailabilityStatus;

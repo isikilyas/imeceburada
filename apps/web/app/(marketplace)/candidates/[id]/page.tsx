@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { CandidateDirectoryDetailDto, TRADE_CATEGORIES } from "@imeceburada/shared";
+import { CandidateDirectoryDetailDto, EXCAVATION_MACHINE_TYPES, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { WhatsAppContactButton } from "@/components/whatsapp-contact-button";
@@ -96,6 +96,19 @@ export default function CandidateDetailPage() {
             {candidate.workPreferences.map((v) => (
               <span key={v} className="rounded-full bg-ink-800 px-3 py-1 text-xs text-silver-400">
                 {t(`enums.workPreference.${v}`)}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {candidate.machineSpecialties.length > 0 && (
+        <div className="mt-4">
+          <p className="mb-2 text-sm text-silver-500">{t("dashboard.candidate.machineSpecialtiesLabel")}</p>
+          <div className="flex flex-wrap gap-2">
+            {candidate.machineSpecialties.map((v) => (
+              <span key={v} className="rounded-full bg-gold-500/10 px-3 py-1 text-xs text-gold-400">
+                {EXCAVATION_MACHINE_TYPES.find((m) => m.value === v)?.label ?? v}
               </span>
             ))}
           </div>

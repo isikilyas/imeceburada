@@ -1,5 +1,5 @@
 import { IsArray, IsBoolean, IsDateString, IsIn, IsInt, IsOptional, IsString, Length, Max, Min, MaxLength } from "class-validator";
-import { AvailabilityStatus, WORK_PREFERENCE_VALUES } from "@imeceburada/shared";
+import { AvailabilityStatus, EXCAVATION_MACHINE_TYPE_VALUES, WORK_PREFERENCE_VALUES } from "@imeceburada/shared";
 
 const AVAILABILITY_STATUS_VALUES: AvailabilityStatus[] = ["AVAILABLE", "BUSY"];
 
@@ -53,6 +53,11 @@ export class UpdateCandidateProfileDto {
   @IsString()
   @Length(2, 60)
   primaryTradeCategory?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsIn(EXCAVATION_MACHINE_TYPE_VALUES, { each: true })
+  machineSpecialties?: string[];
 
   @IsOptional()
   @IsBoolean()

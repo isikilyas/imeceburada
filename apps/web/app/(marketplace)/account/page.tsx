@@ -7,6 +7,7 @@ import {
   AvailabilityStatus,
   CandidateProfileDto,
   CompanyProfileDto,
+  EXCAVATION_MACHINE_TYPES,
   SubcontractorProfileDto,
   SupplierProfileDto,
   TRADE_FIELDS,
@@ -92,6 +93,7 @@ function CandidateAccountPanel() {
   const [phone, setPhone] = useState("");
   const [skillsText, setSkillsText] = useState("");
   const [workPreferences, setWorkPreferences] = useState<string[]>([]);
+  const [machineSpecialties, setMachineSpecialties] = useState<string[]>([]);
   const [isPublic, setIsPublic] = useState(false);
   const [photoVisible, setPhotoVisible] = useState(true);
   const [phoneVisible, setPhoneVisible] = useState(false);
@@ -115,6 +117,7 @@ function CandidateAccountPanel() {
     setPhone(profile.phone ?? "");
     setSkillsText(profile.skills.join(", "));
     setWorkPreferences(profile.workPreferences);
+    setMachineSpecialties(profile.machineSpecialties);
     setIsPublic(profile.isPublic);
     setPhotoVisible(profile.photoVisible);
     setPhoneVisible(profile.phoneVisible);
@@ -144,6 +147,7 @@ function CandidateAccountPanel() {
       phone,
       skills,
       workPreferences,
+      machineSpecialties: primaryTradeCategory === "HAFRIYAT_OPERATORU" ? machineSpecialties : [],
       isPublic,
       photoVisible,
       phoneVisible,
@@ -263,6 +267,30 @@ function CandidateAccountPanel() {
                   ))}
                 </div>
               </div>
+
+              {primaryTradeCategory === "HAFRIYAT_OPERATORU" && (
+                <div>
+                  <p className="mb-2 text-sm text-silver-300">{t("dashboard.candidate.machineSpecialtiesLabel")}</p>
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    {EXCAVATION_MACHINE_TYPES.map((m) => (
+                      <label key={m.value} className="flex items-center gap-2 text-sm text-silver-400">
+                        <input
+                          type="checkbox"
+                          checked={machineSpecialties.includes(m.value)}
+                          onChange={(e) =>
+                            setMachineSpecialties(
+                              e.target.checked
+                                ? [...machineSpecialties, m.value]
+                                : machineSpecialties.filter((v) => v !== m.value),
+                            )
+                          }
+                        />
+                        {m.label}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div>
                 <p className="mb-2 text-sm text-silver-300">{t("dashboard.candidate.availabilityLabel")}</p>

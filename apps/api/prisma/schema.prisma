@@ -204,6 +204,8 @@ model CandidateProfile {
   skills              String[] @default([])
   workPreferences     String[] @default([])
   primaryTradeCategory String?
+  /// Sadece primaryTradeCategory "HAFRIYAT_OPERATORU" iken anlamlı — uzman olunan hafriyat makineleri.
+  machineSpecialties  String[] @default([])
   isPublic            Boolean  @default(false)
   photoUrl            String?
   photoVisible        Boolean  @default(true)

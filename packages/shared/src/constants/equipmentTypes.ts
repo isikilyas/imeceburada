@@ -244,6 +244,16 @@ export const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
   },
 ];
 
+/**
+ * "Hafriyat Operatörü" adayının hangi hafriyat makinesi/makinelerinde uzman
+ * olduğunu belirtmesi için — Kazı, Hafriyat ve Yükleme kategorisiyle aynı
+ * makine listesini paylaşır (ekipman ilanlarıyla aynı taksonomi).
+ */
+export const EXCAVATION_MACHINE_TYPES: EquipmentTypeDef[] =
+  EQUIPMENT_CATEGORIES.find((c) => c.label === "Kazı, Hafriyat ve Yükleme")?.items ?? [];
+
+export const EXCAVATION_MACHINE_TYPE_VALUES = EXCAVATION_MACHINE_TYPES.map((e) => e.value);
+
 const seen = new Map<string, EquipmentTypeDef>();
 for (const category of EQUIPMENT_CATEGORIES) {
   for (const item of category.items) {

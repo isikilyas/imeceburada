@@ -16,6 +16,7 @@ export class CandidatesService {
       ...(query.tradeCategory ? { primaryTradeCategory: query.tradeCategory } : {}),
       ...(query.city ? { city: query.city } : {}),
       ...(query.district ? { district: query.district } : {}),
+      ...(query.machineSpecialty ? { machineSpecialties: { has: query.machineSpecialty } } : {}),
     };
 
     const [items, total] = await Promise.all([
@@ -38,6 +39,7 @@ export class CandidatesService {
         primaryTradeCategory: c.primaryTradeCategory,
         skills: c.skills,
         workPreferences: c.workPreferences,
+        machineSpecialties: c.machineSpecialties,
         availabilityStatus: c.availabilityStatus,
         photoUrl: c.photoVisible ? c.photoUrl : null,
       })),
@@ -71,6 +73,7 @@ export class CandidatesService {
       primaryTradeCategory: candidate.primaryTradeCategory,
       skills: candidate.skills,
       workPreferences: candidate.workPreferences,
+      machineSpecialties: candidate.machineSpecialties,
       availabilityStatus: candidate.availabilityStatus,
       availableFrom: candidate.availabilityStatus === "BUSY" ? candidate.availableFrom : null,
       phone: candidate.phoneVisible ? candidate.phone : null,

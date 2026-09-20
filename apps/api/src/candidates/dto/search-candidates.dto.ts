@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
-import { IsInt, IsOptional, IsString, Max, Min } from "class-validator";
+import { IsIn, IsInt, IsOptional, IsString, Max, Min } from "class-validator";
+import { EXCAVATION_MACHINE_TYPE_VALUES } from "@imeceburada/shared";
 
 export class SearchCandidatesDto {
   @IsOptional()
@@ -13,6 +14,11 @@ export class SearchCandidatesDto {
   @IsOptional()
   @IsString()
   district?: string;
+
+  /** Sadece tradeCategory "HAFRIYAT_OPERATORU" ile birlikte anlamlı bir filtre. */
+  @IsOptional()
+  @IsIn(EXCAVATION_MACHINE_TYPE_VALUES)
+  machineSpecialty?: string;
 
   @IsOptional()
   @Type(() => Number)
