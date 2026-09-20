@@ -10,7 +10,7 @@ export class CandidatesService {
   async search(query: SearchCandidatesDto) {
     const page = query.page ?? 1;
     const pageSize = query.pageSize ?? 20;
-    const where = {
+    const baseWhere = {
       isPublic: true,
       user: { deactivatedAt: null },
       ...(query.tradeCategory ? { primaryTradeCategory: query.tradeCategory } : {}),
@@ -18,6 +18,27 @@ export class CandidatesService {
       ...(query.district ? { district: query.district } : {}),
       ...(query.machineSpecialty ? { machineSpecialties: { has: query.machineSpecialty } } : {}),
     };
+
+    // skills serbest metin olduğu için Prisma'nın dizi filtreleri (has/hasSome) sadece
+    // birebir eşleşme destekler. Kısmi eşleşme (ör. "kaynak" -> "TIG Kaynağı") için önce
+    // diğer filtrelere uyan adayların id+skills'ini çekip JS tarafında eşleştiriyoruz,
+    // asıl sayfalanmış sorguyu bu id kümesiyle kısıtlıyoruz. Aday havuzu bu ölçekte
+    // (Beta) küçük olduğu için yeterince hızlı; çok büyürse Postgres tarafında
+    // trigram/unnest tabanlı bir arama gerekir.
+    const skillTerm = query.skill?.trim().toLocaleLowerCase("tr-TR");
+    const skillFilter = skillTerm
+      ? {
+          id: {
+            in: (
+              await this.prisma.candidateProfile.findMany({ where: baseWhere, select: { id: true, skills: true } })
+            )
+              .filter((c) => c.skills.some((s) => s.toLocaleLowerCase("tr-TR").includes(skillTerm)))
+              .map((c) => c.id),
+          },
+        }
+      : {};
+
+    const where = { ...baseWhere, ...skillFilter };
 
     const [items, total] = await Promise.all([
       this.prisma.candidateProfile.findMany({
