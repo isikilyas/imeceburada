@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { SiteRequestDto, SITE_REQUEST_TYPES, TRADE_CATEGORIES, EQUIPMENT_TYPES } from "@imeceburada/shared";
+import { SiteRequestDto, SITE_REQUEST_TYPES, TRADE_CATEGORIES, EQUIPMENT_TYPES, PaginatedResult } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { SiteMap } from "@/components/site-map";
 import { ListSkeleton } from "@/components/list-skeleton";
+import { Pagination } from "@/components/pagination";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 function requestSubtitle(r: SiteRequestDto) {
@@ -24,12 +25,21 @@ export default function SiteRadarPage() {
   const { t } = useLocale();
   const router = useRouter();
   const [requestType, setRequestType] = useState("");
+  const [page, setPage] = useState(1);
 
-  const { data: requests, isLoading } = useQuery({
-    queryKey: ["site-requests", requestType],
-    queryFn: () =>
-      apiFetch<SiteRequestDto[]>(`/site-requests${requestType ? `?requestType=${requestType}` : ""}`),
+  useEffect(() => {
+    setPage(1);
+  }, [requestType]);
+
+  const params = new URLSearchParams();
+  if (requestType) params.set("requestType", requestType);
+  params.set("page", String(page));
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["site-requests", requestType, page],
+    queryFn: () => apiFetch<PaginatedResult<SiteRequestDto>>(`/site-requests?${params.toString()}`),
   });
+  const requests = data?.items;
 
   return (
     <div>
@@ -101,6 +111,8 @@ export default function SiteRadarPage() {
           </Link>
         ))}
       </div>
+
+      {data && <Pagination page={data.page} pageSize={data.pageSize} total={data.total} onPageChange={setPage} />}
     </div>
   );
 }

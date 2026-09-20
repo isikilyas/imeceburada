@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -12,6 +12,7 @@ import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { ListingsTabs } from "@/components/listings-tabs";
 import { ListSkeleton } from "@/components/list-skeleton";
+import { Pagination } from "@/components/pagination";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { slugifyTurkish } from "@/lib/slug";
 
@@ -23,6 +24,11 @@ export default function JobsPage() {
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
   const [employmentType, setEmploymentType] = useState("");
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [listingType, tradeCategory, city, district, employmentType]);
 
   const params = new URLSearchParams();
   if (listingType) params.set("listingType", listingType);
@@ -30,9 +36,10 @@ export default function JobsPage() {
   if (city) params.set("city", city);
   if (district) params.set("district", district);
   if (employmentType) params.set("employmentType", employmentType);
+  params.set("page", String(page));
 
   const { data, isLoading } = useQuery({
-    queryKey: ["jobs", listingType, tradeCategory, city, district, employmentType],
+    queryKey: ["jobs", listingType, tradeCategory, city, district, employmentType, page],
     queryFn: () => apiFetch<PaginatedResult<JobPostingDto>>(`/jobs?${params.toString()}`),
   });
 
@@ -81,6 +88,8 @@ export default function JobsPage() {
       <div className="space-y-3">
         {data?.items.map((job) => <JobCard key={job.id} job={job} />)}
       </div>
+
+      {data && <Pagination page={data.page} pageSize={data.pageSize} total={data.total} onPageChange={setPage} />}
 
       {data && data.items.length > 0 && (
         <RelatedSearches jobs={data.items} />

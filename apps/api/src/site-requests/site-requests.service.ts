@@ -44,18 +44,25 @@ export class SiteRequestsService {
   ) {}
 
   async search(query: SearchSiteRequestsDto) {
+    const page = query.page ?? 1;
+    const pageSize = query.pageSize ?? 20;
     const where = {
       status: "OPEN" as const,
       ...(query.city ? { city: query.city } : {}),
       ...(query.district ? { district: query.district } : {}),
       ...(query.requestType ? { requestType: query.requestType } : {}),
     };
-    const requests = await this.prisma.siteRequest.findMany({
-      where,
-      include: creatorInclude,
-      orderBy: { createdAt: "desc" },
-    });
-    return requests.map(this.toDto);
+    const [requests, total] = await Promise.all([
+      this.prisma.siteRequest.findMany({
+        where,
+        include: creatorInclude,
+        orderBy: { createdAt: "desc" },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      this.prisma.siteRequest.count({ where }),
+    ]);
+    return { items: requests.map(this.toDto), total, page, pageSize };
   }
 
   async findOne(id: string) {

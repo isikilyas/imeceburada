@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { MATERIAL_TYPES, MaterialListingDto, PaginatedResult } from "@imeceburada/shared";
@@ -12,6 +12,7 @@ import { ListingsTabs } from "@/components/listings-tabs";
 import { FavoriteButton } from "@/components/favorite-button";
 import { VerifiedBadge } from "@/components/verified-badge";
 import { ListSkeleton } from "@/components/list-skeleton";
+import { Pagination } from "@/components/pagination";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 export default function MaterialListingsPage() {
@@ -20,14 +21,20 @@ export default function MaterialListingsPage() {
   const [materialType, setMaterialType] = useState("");
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [materialType, city, district]);
 
   const params = new URLSearchParams();
   if (materialType) params.set("materialType", materialType);
   if (city) params.set("city", city);
   if (district) params.set("district", district);
+  params.set("page", String(page));
 
   const { data, isLoading } = useQuery({
-    queryKey: ["material-listings", materialType, city, district],
+    queryKey: ["material-listings", materialType, city, district, page],
     queryFn: () => apiFetch<PaginatedResult<MaterialListingDto>>(`/material-listings?${params.toString()}`),
   });
 
@@ -101,6 +108,8 @@ export default function MaterialListingsPage() {
           </Link>
         ))}
       </div>
+
+      {data && <Pagination page={data.page} pageSize={data.pageSize} total={data.total} onPageChange={setPage} />}
     </div>
   );
 }
