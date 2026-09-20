@@ -28,6 +28,8 @@ export interface CandidateDirectorySearchQuery {
   district?: string;
   /** Sadece tradeCategory "HAFRIYAT_OPERATORU" iken anlamlı bir filtre. */
   machineSpecialty?: string;
+  /** skills alanında (serbest metin) kısmi eşleşme araması — tüm mesleklerde kullanılabilir. */
+  skill?: string;
   page?: number;
   pageSize?: number;
 }

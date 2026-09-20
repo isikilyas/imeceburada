@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { CandidateDirectoryEntryDto, EXCAVATION_MACHINE_TYPES, PaginatedResult, TRADE_CATEGORIES } from "@imeceburada/shared";
@@ -8,7 +8,7 @@ import { useAuth } from "@/lib/auth-context";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { Avatar } from "@/components/avatar";
-import { Field, selectClass } from "@/components/form";
+import { Field, inputClass, selectClass } from "@/components/form";
 import { ListSkeleton } from "@/components/list-skeleton";
 import { useLocale } from "@/lib/i18n/locale-context";
 
@@ -19,15 +19,23 @@ export default function CandidateDirectoryPage() {
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
   const [machineSpecialty, setMachineSpecialty] = useState("");
+  const [skillInput, setSkillInput] = useState("");
+  const [skill, setSkill] = useState("");
+
+  useEffect(() => {
+    const id = setTimeout(() => setSkill(skillInput.trim()), 400);
+    return () => clearTimeout(id);
+  }, [skillInput]);
 
   const params = new URLSearchParams();
   if (tradeCategory) params.set("tradeCategory", tradeCategory);
   if (city) params.set("city", city);
   if (district) params.set("district", district);
   if (tradeCategory === "HAFRIYAT_OPERATORU" && machineSpecialty) params.set("machineSpecialty", machineSpecialty);
+  if (skill) params.set("skill", skill);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["candidates", tradeCategory, city, district, machineSpecialty],
+    queryKey: ["candidates", tradeCategory, city, district, machineSpecialty, skill],
     queryFn: () => authFetch<PaginatedResult<CandidateDirectoryEntryDto>>(`/candidates?${params.toString()}`),
     enabled: user?.role === "COMPANY",
   });
@@ -63,6 +71,14 @@ export default function CandidateDirectoryPage() {
           allowEmptyCity
           allowEmptyDistrict
         />
+        <Field label={t("pages.skillFilterLabel")}>
+          <input
+            value={skillInput}
+            onChange={(e) => setSkillInput(e.target.value)}
+            placeholder={t("pages.skillFilterPlaceholder")}
+            className={inputClass}
+          />
+        </Field>
       </div>
 
       {isLoading && <ListSkeleton count={4} columns={2} />}
@@ -105,6 +121,15 @@ export default function CandidateDirectoryPage() {
             <p className="mt-2 text-xs text-gold-400">
               {TRADE_CATEGORIES.find((t) => t.value === c.primaryTradeCategory)?.label ?? c.primaryTradeCategory}
             </p>
+            {c.skills.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {c.skills.map((s) => (
+                  <span key={s} className="rounded-full border border-ink-700 px-2 py-0.5 text-[11px] text-silver-400">
+                    {s}
+                  </span>
+                ))}
+              </div>
+            )}
             {c.workPreferences.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {c.workPreferences.map((v) => (

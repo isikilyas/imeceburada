@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsIn, IsInt, IsOptional, IsString, Max, Min } from "class-validator";
+import { IsIn, IsInt, IsOptional, IsString, Max, MaxLength, Min } from "class-validator";
 import { EXCAVATION_MACHINE_TYPE_VALUES } from "@imeceburada/shared";
 
 export class SearchCandidatesDto {
@@ -19,6 +19,12 @@ export class SearchCandidatesDto {
   @IsOptional()
   @IsIn(EXCAVATION_MACHINE_TYPE_VALUES)
   machineSpecialty?: string;
+
+  /** skills alanında (serbest metin) kısmi eşleşme araması — tüm mesleklerde kullanılabilir. */
+  @IsOptional()
+  @IsString()
+  @MaxLength(60)
+  skill?: string;
 
   @IsOptional()
   @Type(() => Number)
