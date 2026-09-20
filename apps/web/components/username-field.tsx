@@ -1,13 +1,22 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api-client";
 import { Field, inputClass } from "@/components/form";
 import { useLocale } from "@/lib/i18n/locale-context";
 
-/** Hesabım panelinde, girişte kullanılmayan, isteğe bağlı görünen kullanıcı adı alanı — kendi kaydetme akışına sahip. */
+/**
+ * Hesabım panelinde, girişte kullanılmayan, isteğe bağlı görünen kullanıcı adı
+ * alanı — kendi kaydetme akışına sahip. Bilerek <form> DEĞİL <div> render eder:
+ * bu bileşen her zaman ana profil formunun (candidate/company/supplier/
+ * subcontractor) İÇİNDE kullanılıyor, ve HTML'de form içinde form geçersizdir
+ * — tarayıcı bunu parse ederken iç formu yok sayar ve "Kaydet" butonu dıştaki
+ * ana forma bağlanır, tıklanınca kullanıcı adı hiç kaydedilmeden ana form
+ * submit olur. Native form yerine kendi buton/onClick akışını kullanmak bunu
+ * kökten önler.
+ */
 export function UsernameField({ value, queryKey }: { value?: string | null; queryKey: string }) {
   const { t } = useLocale();
   const { authFetch } = useAuth();
@@ -21,8 +30,7 @@ export function UsernameField({ value, queryKey }: { value?: string | null; quer
     setUsername(value ?? "");
   }, [value]);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function handleSave() {
     setError(null);
     setSuccess(false);
     setIsSaving(true);
@@ -41,17 +49,24 @@ export function UsernameField({ value, queryKey }: { value?: string | null; quer
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-2">
+    <div className="flex flex-wrap items-end gap-2">
       <Field label={t("accountPanel.username.label")}>
         <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSave();
+            }
+          }}
           placeholder={t("accountPanel.username.placeholder")}
           className={inputClass}
         />
       </Field>
       <button
-        type="submit"
+        type="button"
+        onClick={handleSave}
         disabled={isSaving}
         className="rounded-md border border-ink-700 px-3 py-2 text-sm text-silver-300 hover:border-gold-500 hover:text-gold-400 disabled:opacity-60"
       >
@@ -59,6 +74,6 @@ export function UsernameField({ value, queryKey }: { value?: string | null; quer
       </button>
       {error && <p className="w-full text-xs text-red-400">{error}</p>}
       {success && <p className="w-full text-xs text-green-400">{t("dashboard.form.saved")}</p>}
-    </form>
+    </div>
   );
 }
