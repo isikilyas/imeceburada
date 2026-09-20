@@ -2,25 +2,30 @@
 
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CandidateDirectoryEntryDto, EXCAVATION_MACHINE_TYPES, PaginatedResult, TRADE_CATEGORIES } from "@imeceburada/shared";
+import { apiFetch } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { Avatar } from "@/components/avatar";
 import { Field, inputClass, selectClass } from "@/components/form";
 import { ListSkeleton } from "@/components/list-skeleton";
+import { LoginModal } from "@/components/login-modal";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 export default function CandidateDirectoryPage() {
-  const { user, isLoading: authLoading, authFetch } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const { t } = useLocale();
+  const router = useRouter();
   const [tradeCategory, setTradeCategory] = useState("");
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
   const [machineSpecialty, setMachineSpecialty] = useState("");
   const [skillInput, setSkillInput] = useState("");
   const [skill, setSkill] = useState("");
+  const [pendingCandidateId, setPendingCandidateId] = useState<string | null>(null);
 
   useEffect(() => {
     const id = setTimeout(() => setSkill(skillInput.trim()), 400);
@@ -36,14 +41,10 @@ export default function CandidateDirectoryPage() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["candidates", tradeCategory, city, district, machineSpecialty, skill],
-    queryFn: () => authFetch<PaginatedResult<CandidateDirectoryEntryDto>>(`/candidates?${params.toString()}`),
-    enabled: user?.role === "COMPANY",
+    queryFn: () => apiFetch<PaginatedResult<CandidateDirectoryEntryDto>>(`/candidates?${params.toString()}`),
   });
 
   if (authLoading) return <ListSkeleton count={4} columns={2} />;
-  if (user?.role !== "COMPANY") {
-    return <p className="text-silver-500">{t("pages.candidatesCompanyOnly")}</p>;
-  }
 
   return (
     <div>
@@ -94,6 +95,12 @@ export default function CandidateDirectoryPage() {
           <Link
             key={c.id}
             href={`/candidates/${c.id}`}
+            onClick={(e) => {
+              if (!user) {
+                e.preventDefault();
+                setPendingCandidateId(c.id);
+              }
+            }}
             className="block rounded-lg border border-ink-800 bg-ink-900 p-4 hover:border-gold-500"
           >
             <div className="flex items-start justify-between gap-3">
@@ -151,6 +158,14 @@ export default function CandidateDirectoryPage() {
           </Link>
         ))}
       </div>
+
+      <LoginModal
+        open={pendingCandidateId !== null}
+        onClose={() => setPendingCandidateId(null)}
+        onSuccess={() => {
+          if (pendingCandidateId) router.push(`/candidates/${pendingCandidateId}`);
+        }}
+      />
     </div>
   );
 }

@@ -32,6 +32,12 @@ export function Header() {
       <Link href="/jobs" className={linkClass} onClick={() => setMenuOpen(false)}>
         {t("nav.listings")}
       </Link>
+      <Link href="/candidates" className={linkClass} onClick={() => setMenuOpen(false)}>
+        {t("nav.candidates")}
+      </Link>
+      <Link href="/subcontractors" className={linkClass} onClick={() => setMenuOpen(false)}>
+        {t("nav.subcontractors")}
+      </Link>
       <Link href="/wage-index" className={linkClass} onClick={() => setMenuOpen(false)}>
         {t("nav.wageIndex")}
       </Link>
@@ -47,8 +53,6 @@ export function Header() {
   const accountLinks: { href: string; label: string }[] = user
     ? [
         { href: "/account", label: t("nav.accountPanel") },
-        ...(user.role === "COMPANY" ? [{ href: "/candidates", label: t("nav.candidates") }] : []),
-        ...(user.role === "COMPANY" ? [{ href: "/subcontractors", label: t("nav.subcontractors") }] : []),
         ...(user.role === "COMPANY" || user.role === "SUPPLIER" || user.role === "SUBCONTRACTOR"
           ? [{ href: "/membership", label: t("nav.membership") }]
           : []),
