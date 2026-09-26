@@ -127,10 +127,18 @@ export default function HomePage() {
 
       {/* Stats — an elevated panel with a soft gold glow instead of a bare divided row */}
       <section className="px-4 sm:px-6">
-        <div className="gradient-border relative mx-auto max-w-4xl overflow-hidden rounded-2xl bg-ink-900/60 py-10 shadow-[0_0_40px_-12px_rgba(212,175,55,0.15)] ring-1 ring-inset ring-ink-800">
-          <p className="mb-6 text-center text-xs font-medium uppercase tracking-wider text-silver-500">
-            {t("home.statsHeading")}
-          </p>
+        <div className="gradient-border relative mx-auto max-w-5xl overflow-hidden rounded-2xl bg-ink-900/60 py-12 shadow-[0_0_40px_-12px_rgba(212,175,55,0.15)] ring-1 ring-inset ring-ink-800 sm:py-14">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent" />
+          <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/10 blur-3xl" />
+          <div className="relative mb-8 flex items-center justify-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            <p className="text-center text-xs font-medium uppercase tracking-wider text-silver-500">
+              {t("home.statsHeading")}
+            </p>
+          </div>
           <HomeStats />
         </div>
       </section>
