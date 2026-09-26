@@ -31,10 +31,15 @@ function useCountUp(target: number, durationMs = 1200) {
 function StatTile({ value, label, icon, delay }: { value: number; label: string; icon: string; delay: number }) {
   const animated = useCountUp(value);
   return (
-    <div className="animate-fade-in-up flex flex-1 flex-col items-center gap-1 px-4 text-center" style={{ animationDelay: `${delay}ms` }}>
-      <div className="text-xl">{icon}</div>
-      <p className="text-3xl font-semibold text-gold-400">{animated.toLocaleString("tr-TR")}</p>
-      <p className="text-xs text-silver-500">{label}</p>
+    <div
+      className="animate-fade-in-up group flex flex-col items-center gap-2 rounded-xl px-4 py-3 text-center transition hover:-translate-y-1 hover:bg-ink-800/40"
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-500/10 text-2xl ring-1 ring-inset ring-gold-500/20 transition group-hover:ring-gold-500/40">
+        {icon}
+      </div>
+      <p className="text-3xl font-semibold text-gold-400 sm:text-4xl">{animated.toLocaleString("tr-TR")}</p>
+      <p className="text-xs uppercase tracking-wide text-silver-500">{label}</p>
     </div>
   );
 }
@@ -62,7 +67,7 @@ export function HomeStats() {
   const totals = data ?? { jobs: 0, equipment: 0, materials: 0 };
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-wrap items-stretch justify-center divide-x divide-ink-800">
+    <div className="mx-auto grid w-full max-w-3xl grid-cols-2 gap-x-2 gap-y-6 sm:grid-cols-4 sm:gap-x-0 sm:divide-x sm:divide-ink-800">
       <StatTile icon="👷" value={totals.jobs} label={t("home.statJobs")} delay={0} />
       <StatTile icon="🏗️" value={totals.equipment} label={t("home.statEquipment")} delay={80} />
       <StatTile icon="🧱" value={totals.materials} label={t("home.statMaterials")} delay={160} />
