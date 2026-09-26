@@ -523,6 +523,15 @@ export const TRADE_FIELDS: TradeField[] = [
           { value: "HAKEDIS_UZMANI", label: "Hakediş Uzmanı" },
         ],
       },
+      {
+        label: "Güvenlik ve Bekçilik",
+        professions: [
+          { value: "GECE_BEKCISI", label: "Gece Bekçisi" },
+          { value: "GUNDUZ_BEKCISI", label: "Gündüz Bekçisi" },
+          { value: "SANTIYE_BEKCISI", label: "Şantiye Bekçisi" },
+          { value: "SANTIYE_GUVENLIK_GOREVLISI", label: "Şantiye Güvenlik Görevlisi" },
+        ],
+      },
     ],
   },
   {
