@@ -60,7 +60,11 @@ export function Header() {
 
   const guestLinks = (
     <>
-      <Link href="/login" className={linkClass} onClick={() => setMenuOpen(false)}>
+      <Link
+        href="/login"
+        onClick={() => setMenuOpen(false)}
+        className="whitespace-nowrap rounded-md bg-gold-500 px-3 py-1.5 text-center font-medium text-ink-950 hover:bg-gold-400"
+      >
         {t("nav.login")}
       </Link>
       <Link
