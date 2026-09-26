@@ -28,7 +28,7 @@ export function Footer() {
 
           <nav className="flex flex-col gap-2 text-sm">
             <span className="mb-1 text-xs font-semibold uppercase tracking-wider text-silver-500">Keşfet</span>
-            <Link href="/jobs" className="text-silver-400 hover:text-gold-400">
+            <Link href="/listings" className="text-silver-400 hover:text-gold-400">
               {t("nav.listings")}
             </Link>
             <Link href="/wage-index" className="text-silver-400 hover:text-gold-400">

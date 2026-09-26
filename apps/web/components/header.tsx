@@ -26,19 +26,10 @@ export function Header() {
 
   const linkClass = "whitespace-nowrap hover:text-gold-400";
   const [accountOpen, setAccountOpen] = useState(false);
-  const [directoriesOpen, setDirectoriesOpen] = useState(false);
 
-  const directoryLinks = [
-    { href: "/candidates", label: t("nav.candidates") },
-    { href: "/subcontractors", label: t("nav.subcontractors") },
-  ];
-
-  // Masaüstünde tek satıra çok fazla düz öge sığmadığı için Personel Bul/Taşeron
-  // Bul, Hesabım'daki gibi küçük bir açılır menüde toplanıyor; mobilde ise düz
-  // liste olarak (aşağıdaki mobileDirectoryLinks) gösteriliyor.
   const primaryLinks = (
     <>
-      <Link href="/jobs" className={linkClass} onClick={() => setMenuOpen(false)}>
+      <Link href="/listings" className={linkClass} onClick={() => setMenuOpen(false)}>
         {t("nav.listings")}
       </Link>
       <Link href="/wage-index" className={linkClass} onClick={() => setMenuOpen(false)}>
@@ -50,16 +41,6 @@ export function Header() {
       <Link href="/site-radar" className={linkClass} onClick={() => setMenuOpen(false)}>
         {t("nav.siteRadar")}
       </Link>
-    </>
-  );
-
-  const mobileDirectoryLinks = (
-    <>
-      {directoryLinks.map((l) => (
-        <Link key={l.href} href={l.href} className={linkClass} onClick={() => setMenuOpen(false)}>
-          {l.label}
-        </Link>
-      ))}
     </>
   );
 
@@ -130,37 +111,9 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-7 text-sm xl:flex">
-          <Link href="/jobs" className={linkClass} onClick={() => setMenuOpen(false)}>
+          <Link href="/listings" className={linkClass} onClick={() => setMenuOpen(false)}>
             {t("nav.listings")}
           </Link>
-
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setDirectoriesOpen((o) => !o)}
-              className="flex items-center gap-1.5 whitespace-nowrap text-silver-300 hover:text-gold-400"
-            >
-              {t("nav.directories")}
-              <span className="text-xs text-silver-500">▾</span>
-            </button>
-            {directoriesOpen && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setDirectoriesOpen(false)} />
-                <div className="absolute start-0 top-full z-50 mt-2 w-48 rounded-md border border-ink-700 bg-ink-900 py-1 shadow-lg">
-                  {directoryLinks.map((l) => (
-                    <Link
-                      key={l.href}
-                      href={l.href}
-                      onClick={() => setDirectoriesOpen(false)}
-                      className="block px-3 py-2 text-start text-sm text-silver-300 hover:bg-ink-800 hover:text-gold-400"
-                    >
-                      {l.label}
-                    </Link>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
 
           <Link href="/wage-index" className={linkClass} onClick={() => setMenuOpen(false)}>
             {t("nav.wageIndex")}
@@ -250,7 +203,6 @@ export function Header() {
         <nav className="flex flex-col gap-1 border-t border-ink-800 px-4 pb-4 pt-2 text-base [&>a]:block [&>a]:rounded-md [&>a]:px-3 [&>a]:py-2.5 [&>a]:hover:bg-ink-800 [&>button]:px-3 [&>button]:py-2.5 xl:hidden">
           <SearchBox className="mb-2 mt-1" onSubmit={() => setMenuOpen(false)} />
           {primaryLinks}
-          {mobileDirectoryLinks}
           {mobileAccountLinks}
         </nav>
       )}

@@ -98,7 +98,7 @@ export default function HomePage() {
             style={{ animationDelay: "240ms" }}
           >
             <Link
-              href="/jobs"
+              href="/listings"
               className="rounded-md bg-gold-500 px-6 py-3 font-medium text-ink-950 shadow-[0_0_24px_rgba(212,175,55,0.35)] transition hover:-translate-y-0.5 hover:bg-gold-400 hover:shadow-[0_0_32px_rgba(212,175,55,0.5)]"
             >
               {t("home.browseListings")}
