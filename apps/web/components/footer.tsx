@@ -59,6 +59,9 @@ export function Footer() {
             <Link href="/privacy" className="hover:text-gold-400">
               Gizlilik Politikası
             </Link>
+            <Link href="/data-deletion" className="hover:text-gold-400">
+              Verilerimi Sil
+            </Link>
             <Link href="/terms" className="hover:text-gold-400">
               Kullanım Şartları
             </Link>
