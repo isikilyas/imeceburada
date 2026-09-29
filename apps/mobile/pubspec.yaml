@@ -1,7 +1,7 @@
 name: imeceburada
 description: İmece Burada - İnşaat sektörüne özel iş ilanları ve canlı piyasa endeksi
 publish_to: "none"
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
