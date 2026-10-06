@@ -15,7 +15,6 @@ import '../subcontractors/subcontractor_dashboard_screen.dart';
 import '../subcontractors/subcontractor_directory_screen.dart';
 import '../equipment/equipment_mine_screen.dart';
 import '../favorites/favorites_screen.dart';
-import '../../widgets/language_switcher.dart';
 import '../../widgets/password_field.dart';
 import '../../core/api_client.dart';
 import 'candidate_profile_screen.dart';
@@ -39,13 +38,11 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(t('profile.title'))),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const LanguageSwitcher(),
-            const SizedBox(height: 12),
             if (user == null) ...[
               Text(
                 t('profile.loginPrompt'),

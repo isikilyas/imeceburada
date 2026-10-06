@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'home_screen.dart';
 import '../market_index/market_index_screen.dart';
 import '../jobs/jobs_list_screen.dart';
 import '../site_radar/site_radar_screen.dart';
@@ -7,8 +8,8 @@ import '../profile/profile_screen.dart';
 import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 
-/// Faz 1 mobil kapsamı tamamlandı: Piyasa, İlanlar, Radar ve Profil
-/// sekmelerinin hepsi işlevsel.
+/// Faz 1 mobil kapsamı tamamlandı: Ana Sayfa, Piyasa, İlanlar, Radar ve
+/// Profil sekmelerinin hepsi işlevsel.
 class RootTabs extends StatefulWidget {
   const RootTabs({super.key});
 
@@ -19,11 +20,14 @@ class RootTabs extends StatefulWidget {
 class _RootTabsState extends State<RootTabs> {
   int _index = 0;
 
-  static const _screens = [
-    MarketIndexScreen(),
-    JobsListScreen(),
-    SiteRadarScreen(),
-    ProfileScreen(),
+  void _goToTab(int index) => setState(() => _index = index);
+
+  late final _screens = [
+    HomeScreen(onNavigateTab: _goToTab),
+    const MarketIndexScreen(),
+    const JobsListScreen(),
+    const SiteRadarScreen(),
+    const ProfileScreen(),
   ];
 
   @override
@@ -33,9 +37,13 @@ class _RootTabsState extends State<RootTabs> {
       body: IndexedStack(index: _index, children: _screens),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
-        onTap: (i) => setState(() => _index = i),
+        onTap: _goToTab,
+        type: BottomNavigationBarType.fixed,
         backgroundColor: AppColors.ink900,
+        selectedFontSize: 11.5,
+        unselectedFontSize: 11.5,
         items: [
+          BottomNavigationBarItem(icon: const Icon(Icons.home_outlined), label: t('nav.home')),
           BottomNavigationBarItem(icon: const Icon(Icons.show_chart), label: t('nav.market')),
           BottomNavigationBarItem(icon: const Icon(Icons.work_outline), label: t('nav.listings')),
           BottomNavigationBarItem(icon: const Icon(Icons.map_outlined), label: t('nav.radar')),

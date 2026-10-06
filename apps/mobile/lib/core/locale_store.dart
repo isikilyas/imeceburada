@@ -23,42 +23,49 @@ const List<String> supportedLocaleCodes = ['tr', 'en', 'de', 'ru', 'ar', 'es', '
 
 const Map<String, Map<String, String>> _core = {
   'tr': {
+    'nav.home': 'Ana Sayfa',
     'nav.market': 'Piyasa',
     'nav.listings': 'İlanlar',
     'nav.radar': 'Radar',
     'nav.profile': 'Profil',
   },
   'en': {
+    'nav.home': 'Home',
     'nav.market': 'Market',
     'nav.listings': 'Listings',
     'nav.radar': 'Radar',
     'nav.profile': 'Profile',
   },
   'de': {
+    'nav.home': 'Start',
     'nav.market': 'Markt',
     'nav.listings': 'Anzeigen',
     'nav.radar': 'Radar',
     'nav.profile': 'Profil',
   },
   'ru': {
+    'nav.home': 'Главная',
     'nav.market': 'Рынок',
     'nav.listings': 'Объявления',
     'nav.radar': 'Радар',
     'nav.profile': 'Профиль',
   },
   'ar': {
+    'nav.home': 'الرئيسية',
     'nav.market': 'السوق',
     'nav.listings': 'الإعلانات',
     'nav.radar': 'الرادار',
     'nav.profile': 'الملف الشخصي',
   },
   'es': {
+    'nav.home': 'Inicio',
     'nav.market': 'Mercado',
     'nav.listings': 'Anuncios',
     'nav.radar': 'Radar',
     'nav.profile': 'Perfil',
   },
   'fr': {
+    'nav.home': 'Accueil',
     'nav.market': 'Marché',
     'nav.listings': 'Annonces',
     'nav.radar': 'Radar',
