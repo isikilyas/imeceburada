@@ -161,14 +161,9 @@ class _HeroHeader extends StatelessWidget {
           ),
           Column(
             children: [
-              RichText(
-                text: const TextSpan(
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, letterSpacing: -0.5, height: 1.0),
-                  children: [
-                    TextSpan(text: 'İmece', style: TextStyle(color: AppColors.silver300)),
-                    TextSpan(text: 'Burada', style: TextStyle(color: AppColors.gold500)),
-                  ],
-                ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Image.asset('assets/logo.png', height: 80, fit: BoxFit.contain),
               ),
               const SizedBox(height: 10),
               Container(
