@@ -152,6 +152,7 @@ class _HeroHeader extends StatelessWidget {
         ),
       ),
       child: Stack(
+        alignment: Alignment.topCenter,
         children: [
           const Positioned(
             top: 0,
