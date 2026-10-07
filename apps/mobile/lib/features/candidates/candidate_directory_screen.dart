@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
@@ -21,6 +22,8 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
   String _tradeCategory = '';
   String _city = '';
   String _district = '';
+  String _skill = '';
+  Timer? _skillDebounce;
   bool _isLoading = true;
   String? _error;
   List<CandidateDirectoryEntry> _candidates = [];
@@ -29,6 +32,18 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
   void initState() {
     super.initState();
     _load();
+  }
+
+  @override
+  void dispose() {
+    _skillDebounce?.cancel();
+    super.dispose();
+  }
+
+  void _onSkillChanged(String value) {
+    _skill = value;
+    _skillDebounce?.cancel();
+    _skillDebounce = Timer(const Duration(milliseconds: 400), _load);
   }
 
   Future<void> _load() async {
@@ -41,6 +56,7 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
         if (_tradeCategory.isNotEmpty) 'tradeCategory': _tradeCategory,
         if (_city.isNotEmpty) 'city': _city,
         if (_district.isNotEmpty) 'district': _district,
+        if (_skill.trim().isNotEmpty) 'skill': _skill.trim(),
       });
       final map = raw as Map<String, dynamic>;
       final items =
@@ -64,6 +80,15 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          TextField(
+            onChanged: _onSkillChanged,
+            decoration: InputDecoration(
+              labelText: t('candidates.directory.skillLabel'),
+              hintText: t('candidates.directory.skillPlaceholder'),
+              prefixIcon: const Icon(Icons.search, color: AppColors.silver500),
+            ),
+          ),
+          const SizedBox(height: 12),
           AppDropdown(
             label: t('candidates.directory.tradeLabel'),
             value: _tradeCategory,

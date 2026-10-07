@@ -16,6 +16,7 @@ export class SubcontractorsService {
       ...(query.tradeCategory ? { tradeCategories: { has: query.tradeCategory } } : {}),
       ...(query.city ? { city: query.city } : {}),
       ...(query.district ? { district: query.district } : {}),
+      ...(query.q ? { companyName: { contains: query.q, mode: "insensitive" as const } } : {}),
     };
 
     const [items, total] = await Promise.all([

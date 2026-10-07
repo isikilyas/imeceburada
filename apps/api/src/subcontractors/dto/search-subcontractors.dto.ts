@@ -1,10 +1,16 @@
 import { Type } from "class-transformer";
-import { IsInt, IsOptional, IsString, Max, Min } from "class-validator";
+import { IsInt, IsOptional, IsString, Max, MaxLength, Min } from "class-validator";
 
 export class SearchSubcontractorsDto {
   @IsOptional()
   @IsString()
   tradeCategory?: string;
+
+  /** Firma adında serbest metin araması. */
+  @IsOptional()
+  @IsString()
+  @MaxLength(60)
+  q?: string;
 
   @IsOptional()
   @IsString()
