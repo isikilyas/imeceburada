@@ -24,7 +24,7 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.detail.contactLabel': 'İletişim',
     'subcontractors.detail.contactMessage':
         'Merhaba, platformunuzdaki {{companyName}} profilinizi gördüm. Görüşmek isterseniz müsait misiniz?',
-    'subcontractors.directory.title': 'Taşeron Firma Dizini',
+    'subcontractors.directory.title': 'Taşeron Bul',
     'subcontractors.directory.hint': 'Faturalı iş yapan taşeron firmaları meslek ve bölgeye göre bul.',
     'subcontractors.directory.tradeLabel': 'Meslek',
     'subcontractors.directory.allTrades': 'Tüm Meslekler',

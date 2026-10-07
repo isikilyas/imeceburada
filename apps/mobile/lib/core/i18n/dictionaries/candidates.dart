@@ -9,7 +9,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.detail.contactMessage':
         'Merhaba, platformunuzdaki {{trade}} profilinizi gördüm. Görüşmek isterseniz müsait misiniz?',
     'candidates.detail.notAvailable': 'Şu an iş aramıyor',
-    'candidates.directory.title': 'Usta / Aday Dizini',
+    'candidates.directory.title': 'Personel Bul',
     'candidates.directory.tradeLabel': 'Meslek',
     'candidates.directory.allTrades': 'Tüm Meslekler',
     'candidates.directory.noResults': 'Sonuç bulunamadı.',
