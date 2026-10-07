@@ -18,6 +18,7 @@ import '../favorites/favorites_screen.dart';
 import '../../widgets/password_field.dart';
 import '../../core/api_client.dart';
 import 'candidate_profile_screen.dart';
+import 'company_profile_screen.dart';
 
 const Map<String, String> _roleLabelKeys = {
   'CANDIDATE': 'profile.roleCandidate',
@@ -89,6 +90,12 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ],
               if (user.role == 'COMPANY') ...[
+                OutlinedButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const CompanyProfileScreen())),
+                  child: Text(t('profile.companyProfileButton')),
+                ),
+                const SizedBox(height: 12),
                 OutlinedButton(
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => const CompanyJobsScreen())),

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'i18n/dictionaries/auth.dart';
 import 'i18n/dictionaries/candidates.dart';
+import 'i18n/dictionaries/company.dart';
 import 'i18n/dictionaries/equipment.dart';
 import 'i18n/dictionaries/favorites.dart';
 import 'i18n/dictionaries/home.dart';
@@ -81,6 +82,7 @@ Map<String, Map<String, String>> _mergeDicts() {
     _core,
     authDict,
     candidatesDict,
+    companyDict,
     equipmentDict,
     favoritesDict,
     homeDict,
