@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
@@ -21,6 +22,8 @@ class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScr
   String _tradeCategory = '';
   String _city = '';
   String _district = '';
+  String _q = '';
+  Timer? _qDebounce;
   bool _isLoading = true;
   String? _error;
   List<SubcontractorDirectoryEntry> _subcontractors = [];
@@ -29,6 +32,18 @@ class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScr
   void initState() {
     super.initState();
     _load();
+  }
+
+  @override
+  void dispose() {
+    _qDebounce?.cancel();
+    super.dispose();
+  }
+
+  void _onQueryChanged(String value) {
+    _q = value;
+    _qDebounce?.cancel();
+    _qDebounce = Timer(const Duration(milliseconds: 400), _load);
   }
 
   Future<void> _load() async {
@@ -41,6 +56,7 @@ class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScr
         if (_tradeCategory.isNotEmpty) 'tradeCategory': _tradeCategory,
         if (_city.isNotEmpty) 'city': _city,
         if (_district.isNotEmpty) 'district': _district,
+        if (_q.trim().isNotEmpty) 'q': _q.trim(),
       });
       final map = raw as Map<String, dynamic>;
       final items = (map['items'] as List)
@@ -72,6 +88,15 @@ class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScr
               style: const TextStyle(color: AppColors.silver500, fontSize: 13),
             ),
           ),
+          TextField(
+            onChanged: _onQueryChanged,
+            decoration: InputDecoration(
+              labelText: t('subcontractors.directory.searchLabel'),
+              hintText: t('subcontractors.directory.searchPlaceholder'),
+              prefixIcon: const Icon(Icons.search, color: AppColors.silver500),
+            ),
+          ),
+          const SizedBox(height: 12),
           AppDropdown(
             label: t('subcontractors.directory.tradeLabel'),
             value: _tradeCategory,

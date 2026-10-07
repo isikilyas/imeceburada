@@ -7,6 +7,7 @@ import '../../models/equipment_listing.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
 import '../../widgets/province_district_picker.dart';
+import '../search/search_screen.dart';
 import 'equipment_detail_screen.dart';
 import 'new_equipment_screen.dart';
 
@@ -65,6 +66,13 @@ class _EquipmentListScreenState extends State<EquipmentListScreen> {
       appBar: AppBar(
         title: Text(t('equipment.list.title')),
         actions: [
+          IconButton(
+            tooltip: t('search.title'),
+            icon: const Icon(Icons.search),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const SearchScreen()),
+            ),
+          ),
           IconButton(
             tooltip: t('equipment.list.newListingTooltip'),
             icon: const Icon(Icons.add_circle_outline),

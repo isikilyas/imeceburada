@@ -7,6 +7,7 @@ import '../../models/material_listing.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
 import '../../widgets/province_district_picker.dart';
+import '../search/search_screen.dart';
 import 'material_listing_detail_screen.dart';
 
 class MaterialListingsScreen extends StatefulWidget {
@@ -59,7 +60,18 @@ class _MaterialListingsScreenState extends State<MaterialListingsScreen> {
     final t = context.watch<LocaleStore>().t;
     final allMaterials = Option('', t('materialListings.allMaterials'));
     return Scaffold(
-      appBar: AppBar(title: Text(t('materialListings.list.title'))),
+      appBar: AppBar(
+        title: Text(t('materialListings.list.title')),
+        actions: [
+          IconButton(
+            tooltip: t('search.title'),
+            icon: const Icon(Icons.search),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const SearchScreen()),
+            ),
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
