@@ -5,7 +5,7 @@ import 'package:imeceburada/main.dart';
 void main() {
   testWidgets('Uygulama açılışta Ana Sayfa sekmesini gösterir', (WidgetTester tester) async {
     await tester.pumpWidget(const ImeceBuradaApp());
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     expect(find.text('Ne Arıyorsun?'), findsOneWidget);
   });
