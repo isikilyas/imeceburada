@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/fade_in_up.dart';
 import '../../widgets/language_switcher.dart';
 import '../candidates/candidate_directory_screen.dart';
 import '../equipment/equipment_list_screen.dart';
@@ -94,17 +95,22 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: _HeroHeader(tagline: t('home.tagline'))),
+            SliverToBoxAdapter(
+              child: FadeInUp(child: _HeroHeader(tagline: t('home.tagline'))),
+            ),
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  Text(
-                    t('home.sectionHeading'),
-                    style: const TextStyle(
-                      color: AppColors.silver300,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 80),
+                    child: Text(
+                      t('home.sectionHeading'),
+                      style: const TextStyle(
+                        color: AppColors.silver300,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 14),
@@ -116,12 +122,15 @@ class HomeScreen extends StatelessWidget {
                     crossAxisSpacing: 12,
                     childAspectRatio: 0.98,
                     children: [
-                      for (final card in cards)
-                        _HomeCategoryCard(
-                          icon: card.icon,
-                          title: t(card.titleKey),
-                          description: t(card.descKey),
-                          onTap: card.onTap,
+                      for (final entry in cards.asMap().entries)
+                        FadeInUp(
+                          delay: Duration(milliseconds: 120 + entry.key * 60),
+                          child: _HomeCategoryCard(
+                            icon: entry.value.icon,
+                            title: t(entry.value.titleKey),
+                            description: t(entry.value.descKey),
+                            onTap: entry.value.onTap,
+                          ),
                         ),
                     ],
                   ),
