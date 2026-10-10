@@ -16,6 +16,8 @@ export interface CandidateDirectoryEntryDto {
 
 export interface CandidateDirectoryDetailDto extends CandidateDirectoryEntryDto {
   phone?: string | null;
+  expectedSalaryMin?: number | null;
+  expectedSalaryMax?: number | null;
   averageRating?: number | null;
   reviewCount?: number;
   /** Sadece availabilityStatus BUSY iken anlamlı. */

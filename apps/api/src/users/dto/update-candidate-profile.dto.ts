@@ -40,6 +40,16 @@ export class UpdateCandidateProfileDto {
   experienceYears?: number;
 
   @IsOptional()
+  @IsInt()
+  @Min(0)
+  expectedSalaryMin?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  expectedSalaryMax?: number;
+
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   skills?: string[];

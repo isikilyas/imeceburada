@@ -79,6 +79,17 @@ export default function CandidateDetailPage() {
       </div>
       <span className="mt-3 inline-block rounded-full bg-ink-800 px-3 py-1 text-xs text-gold-400">{tradeLabel}</span>
 
+      {(candidate.expectedSalaryMin || candidate.expectedSalaryMax) && (
+        <div className="mt-4 rounded-lg border border-gold-500/30 bg-gold-500/5 px-4 py-3">
+          <p className="text-xs text-silver-500">Maaş Beklentisi</p>
+          <p className="text-lg font-semibold text-gold-400">
+            {candidate.expectedSalaryMin && candidate.expectedSalaryMax
+              ? `${candidate.expectedSalaryMin.toLocaleString("tr-TR")} - ${candidate.expectedSalaryMax.toLocaleString("tr-TR")} ₺`
+              : `${(candidate.expectedSalaryMin ?? candidate.expectedSalaryMax)!.toLocaleString("tr-TR")} ₺`}
+          </p>
+        </div>
+      )}
+
       {candidate.skills.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {candidate.skills.map((skill) => (

@@ -43,6 +43,8 @@ export class AuthService {
             city: dto.city,
             district: dto.district,
             phone: dto.phone,
+            expectedSalaryMin: dto.expectedSalaryMin,
+            expectedSalaryMax: dto.expectedSalaryMax,
           },
         },
       },
