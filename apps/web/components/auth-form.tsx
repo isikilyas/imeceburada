@@ -80,6 +80,8 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
   const [city, setCity] = useState(TURKISH_PROVINCES[0]);
   const [district, setDistrict] = useState("");
   const [fullName, setFullName] = useState("");
+  const [expectedSalaryMin, setExpectedSalaryMin] = useState("");
+  const [expectedSalaryMax, setExpectedSalaryMax] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [sector, setSector] = useState("");
   const [tradeCategories, setTradeCategories] = useState<string[]>([
@@ -95,7 +97,16 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
     try {
       const districtValue = district || undefined;
       if (role === "CANDIDATE") {
-        await registerCandidate({ email, password: regPassword, fullName, city, district: districtValue, phone });
+        await registerCandidate({
+          email,
+          password: regPassword,
+          fullName,
+          city,
+          district: districtValue,
+          phone,
+          expectedSalaryMin: expectedSalaryMin ? Number(expectedSalaryMin) : undefined,
+          expectedSalaryMax: expectedSalaryMax ? Number(expectedSalaryMax) : undefined,
+        });
       } else if (role === "COMPANY") {
         await registerCompany({
           email,
@@ -237,14 +248,41 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
 
           <form onSubmit={handleRegisterSubmit} className="space-y-4">
             {role === "CANDIDATE" ? (
-              <Field label="Ad Soyad">
-                <input
-                  required
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className={inputClass}
-                />
-              </Field>
+              <>
+                <Field label="Ad Soyad">
+                  <input
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className={inputClass}
+                  />
+                </Field>
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Maaş Beklentisi (Min)">
+                    <input
+                      type="number"
+                      min={0}
+                      placeholder="Örn. 30000"
+                      value={expectedSalaryMin}
+                      onChange={(e) => setExpectedSalaryMin(e.target.value)}
+                      className={inputClass}
+                    />
+                  </Field>
+                  <Field label="Maaş Beklentisi (Max)">
+                    <input
+                      type="number"
+                      min={0}
+                      placeholder="Örn. 45000"
+                      value={expectedSalaryMax}
+                      onChange={(e) => setExpectedSalaryMax(e.target.value)}
+                      className={inputClass}
+                    />
+                  </Field>
+                </div>
+                <p className="-mt-2 text-xs text-silver-500">
+                  Opsiyonel — girersen firmalar profilinde aylık maaş beklentini görebilir.
+                </p>
+              </>
             ) : role === "COMPANY" ? (
               <>
                 <Field label="Firma Adı">

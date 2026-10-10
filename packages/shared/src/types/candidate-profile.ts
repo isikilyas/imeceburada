@@ -10,6 +10,8 @@ export interface CandidateProfileDto {
   address?: string | null;
   bio?: string | null;
   experienceYears: number;
+  expectedSalaryMin?: number | null;
+  expectedSalaryMax?: number | null;
   skills: string[];
   workPreferences: string[];
   primaryTradeCategory?: string | null;
@@ -37,6 +39,8 @@ export interface UpdateCandidateProfileInput {
   address?: string;
   bio?: string;
   experienceYears?: number;
+  expectedSalaryMin?: number;
+  expectedSalaryMax?: number;
   skills?: string[];
   workPreferences?: string[];
   primaryTradeCategory?: string;

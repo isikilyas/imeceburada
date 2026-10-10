@@ -91,6 +91,8 @@ export class CandidatesService {
       city: candidate.city,
       district: candidate.district,
       experienceYears: candidate.experienceYears,
+      expectedSalaryMin: candidate.expectedSalaryMin,
+      expectedSalaryMax: candidate.expectedSalaryMax,
       primaryTradeCategory: candidate.primaryTradeCategory,
       skills: candidate.skills,
       workPreferences: candidate.workPreferences,

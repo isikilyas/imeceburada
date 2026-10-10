@@ -22,6 +22,8 @@ export interface RegisterCandidateInput {
   city: string;
   district?: string;
   phone: string;
+  expectedSalaryMin?: number;
+  expectedSalaryMax?: number;
 }
 
 export interface RegisterCompanyInput {

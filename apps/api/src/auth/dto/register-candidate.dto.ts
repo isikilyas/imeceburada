@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
+import { IsEmail, IsInt, IsOptional, IsString, Min, MinLength } from "class-validator";
 
 export class RegisterCandidateDto {
   @IsEmail()
@@ -26,4 +26,14 @@ export class RegisterCandidateDto {
   @IsString()
   @MinLength(10)
   phone!: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  expectedSalaryMin?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  expectedSalaryMax?: number;
 }
