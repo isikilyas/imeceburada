@@ -1,3 +1,3 @@
 -- AlterTable
-ALTER TABLE "CandidateProfile" ADD COLUMN "expectedSalaryMin" INTEGER;
-ALTER TABLE "CandidateProfile" ADD COLUMN "expectedSalaryMax" INTEGER;
+ALTER TABLE "candidate_profiles" ADD COLUMN "expectedSalaryMin" INTEGER;
+ALTER TABLE "candidate_profiles" ADD COLUMN "expectedSalaryMax" INTEGER;
