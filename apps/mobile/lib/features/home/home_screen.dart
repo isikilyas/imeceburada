@@ -18,6 +18,13 @@ class _HomeCard {
   const _HomeCard({required this.icon, required this.titleKey, required this.descKey, required this.onTap});
 }
 
+class _SearchOption {
+  final IconData icon;
+  final String labelKey;
+  final VoidCallback onTap;
+  const _SearchOption({required this.icon, required this.labelKey, required this.onTap});
+}
+
 /// Uygulamanın karşılama/ana ekranı — alt sekmelerdeki Piyasa/İlanlar/Radar'a
 /// ek olarak, sekme çubuğunda yer almayan dizin ve hava durumu ekranlarına da
 /// buradan tek dokunuşla ulaşılır.
@@ -91,6 +98,18 @@ class HomeScreen extends StatelessWidget {
       ),
     ];
 
+    final searchOptions = <_SearchOption>[
+      _SearchOption(icon: Icons.work_outline, labelKey: 'home.searchOptionJobs', onTap: cards[0].onTap),
+      _SearchOption(icon: Icons.engineering_outlined, labelKey: 'home.searchOptionCandidates', onTap: cards[1].onTap),
+      _SearchOption(
+        icon: Icons.apartment_outlined,
+        labelKey: 'home.searchOptionSubcontractors',
+        onTap: cards[2].onTap,
+      ),
+      _SearchOption(icon: Icons.construction_outlined, labelKey: 'home.searchOptionEquipment', onTap: cards[3].onTap),
+      _SearchOption(icon: Icons.inventory_2_outlined, labelKey: 'home.searchOptionMaterials', onTap: cards[4].onTap),
+    ];
+
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -111,6 +130,14 @@ class HomeScreen extends StatelessWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                       ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 100),
+                    child: _QuickSearchBar(
+                      placeholder: t('home.searchBarPlaceholder'),
+                      onTap: () => _showQuickSearchSheet(context, t, searchOptions),
                     ),
                   ),
                   const SizedBox(height: 14),
@@ -138,6 +165,84 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+void _showQuickSearchSheet(
+  BuildContext context,
+  String Function(String) t,
+  List<_SearchOption> options,
+) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: AppColors.ink900,
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+    builder: (sheetContext) => SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 8),
+              decoration: BoxDecoration(color: AppColors.ink700, borderRadius: BorderRadius.circular(2)),
+            ),
+            for (final opt in options)
+              ListTile(
+                leading: Icon(opt.icon, color: AppColors.gold400),
+                title: Text(
+                  t(opt.labelKey),
+                  style: const TextStyle(color: AppColors.silver300, fontWeight: FontWeight.w600, fontSize: 15),
+                ),
+                onTap: () {
+                  Navigator.of(sheetContext).pop();
+                  opt.onTap();
+                },
+              ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+class _QuickSearchBar extends StatelessWidget {
+  final String placeholder;
+  final VoidCallback onTap;
+
+  const _QuickSearchBar({required this.placeholder, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.ink900,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AppColors.ink700),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.search, color: AppColors.gold400, size: 20),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  placeholder,
+                  style: const TextStyle(color: AppColors.silver500, fontSize: 14),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
