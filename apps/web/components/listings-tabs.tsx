@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { Icon } from "@/components/icon";
 
 interface ListingsTabsProps {
   active: "jobs" | "equipment" | "materials";
@@ -17,21 +18,21 @@ const TAB_DEFS: {
   {
     key: "jobs",
     href: "/jobs",
-    icon: "👷",
+    icon: "work_outline",
     titleKey: "components.listingsTabs.jobsTitle",
     descriptionKey: "components.listingsTabs.jobsDesc",
   },
   {
     key: "equipment",
     href: "/equipment",
-    icon: "🏗️",
+    icon: "construction",
     titleKey: "components.listingsTabs.equipmentTitle",
     descriptionKey: "components.listingsTabs.equipmentDesc",
   },
   {
     key: "materials",
     href: "/material-listings",
-    icon: "🧱",
+    icon: "inventory_2",
     titleKey: "components.listingsTabs.materialsTitle",
     descriptionKey: "components.listingsTabs.materialsDesc",
   },
@@ -55,7 +56,7 @@ export function ListingsTabs({ active }: ListingsTabsProps) {
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <span className="text-xl leading-none">{tab.icon}</span>
+              <Icon name={tab.icon} className={`text-xl ${isActive ? "text-gold-400" : "text-silver-400"}`} />
               <span className={`font-medium ${isActive ? "text-gold-400" : "text-silver-200"}`}>{tab.title}</span>
             </div>
             <p className="mt-1.5 text-xs leading-snug text-silver-500">{tab.description}</p>

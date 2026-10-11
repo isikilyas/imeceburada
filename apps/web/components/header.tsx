@@ -1,12 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { SearchBox } from "@/components/search-box";
 import Image from "next/image";
+
+/**
+ * Header'da `backdrop-blur` var — bu, içindeki `position: fixed` elemanların
+ * (dropdown kapatma katmanı gibi) artık tüm ekrana değil, sadece header'ın
+ * kendi kutusuna göre konumlanmasına sebep oluyor (CSS: backdrop-filter,
+ * fixed elemanlar için yeni bir "containing block" oluşturur). Bu yüzden
+ * dropdown'ları "fixed inset-0" katmanıyla değil, dışarı tıklamayı dinleyen
+ * bu hook ile kapatıyoruz.
+ */
+function useCloseOnOutsideClick<T extends HTMLElement>(open: boolean, onClose: () => void, extraRef?: React.RefObject<HTMLElement>) {
+  const ref = useRef<T>(null);
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(e: MouseEvent) {
+      const target = e.target as Node;
+      if (ref.current?.contains(target)) return;
+      if (extraRef?.current?.contains(target)) return;
+      onClose();
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [open, onClose, extraRef]);
+  return ref;
+}
 
 export function Header() {
   const { user, isLoading, logout } = useAuth();
@@ -26,6 +50,9 @@ export function Header() {
 
   const linkClass = "whitespace-nowrap hover:text-gold-400";
   const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useCloseOnOutsideClick<HTMLDivElement>(accountOpen, () => setAccountOpen(false));
+  const mobileToggleRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useCloseOnOutsideClick<HTMLElement>(menuOpen, () => setMenuOpen(false), mobileToggleRef);
 
   const primaryLinks = (
     <>
@@ -130,7 +157,7 @@ export function Header() {
           </Link>
 
           {isLoading ? null : user ? (
-            <div className="relative">
+            <div className="relative" ref={accountRef}>
               <button
                 type="button"
                 onClick={() => setAccountOpen((o) => !o)}
@@ -145,32 +172,29 @@ export function Header() {
               </button>
 
               {accountOpen && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={() => setAccountOpen(false)} />
-                  <div className="absolute end-0 top-full z-50 mt-2 w-52 rounded-md border border-ink-700 bg-ink-900 py-1 shadow-lg">
-                    {accountLinks.map((l) => (
-                      <Link
-                        key={l.href}
-                        href={l.href}
-                        onClick={() => setAccountOpen(false)}
-                        className="block px-3 py-2 text-start text-sm text-silver-300 hover:bg-ink-800 hover:text-gold-400"
-                      >
-                        {l.label}
-                      </Link>
-                    ))}
-                    <div className="my-1 border-t border-ink-800" />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setAccountOpen(false);
-                        logout();
-                      }}
-                      className="block w-full px-3 py-2 text-start text-sm text-silver-500 hover:bg-ink-800 hover:text-gold-400"
+                <div className="absolute end-0 top-full z-50 mt-2 w-52 rounded-md border border-ink-700 bg-ink-900 py-1 shadow-lg">
+                  {accountLinks.map((l) => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      onClick={() => setAccountOpen(false)}
+                      className="block px-3 py-2 text-start text-sm text-silver-300 hover:bg-ink-800 hover:text-gold-400"
                     >
-                      {t("nav.logout")}
-                    </button>
-                  </div>
-                </>
+                      {l.label}
+                    </Link>
+                  ))}
+                  <div className="my-1 border-t border-ink-800" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAccountOpen(false);
+                      logout();
+                    }}
+                    className="block w-full px-3 py-2 text-start text-sm text-silver-500 hover:bg-ink-800 hover:text-gold-400"
+                  >
+                    {t("nav.logout")}
+                  </button>
+                </div>
               )}
             </div>
           ) : (
@@ -181,7 +205,7 @@ export function Header() {
           <LanguageSwitcher />
         </nav>
 
-        <div className="flex items-center gap-2 xl:hidden">
+        <div className="flex items-center gap-2 xl:hidden" ref={mobileToggleRef}>
           <LanguageSwitcher />
           <button
             type="button"
@@ -204,7 +228,10 @@ export function Header() {
       </div>
 
       {menuOpen && (
-        <nav className="flex flex-col gap-1 border-t border-ink-800 px-4 pb-4 pt-2 text-base [&>a]:block [&>a]:rounded-md [&>a]:px-3 [&>a]:py-2.5 [&>a]:hover:bg-ink-800 [&>button]:px-3 [&>button]:py-2.5 xl:hidden">
+        <nav
+          ref={mobileMenuRef}
+          className="flex flex-col gap-1 border-t border-ink-800 px-4 pb-4 pt-2 text-base [&>a]:block [&>a]:rounded-md [&>a]:px-3 [&>a]:py-2.5 [&>a]:hover:bg-ink-800 [&>button]:px-3 [&>button]:py-2.5 xl:hidden"
+        >
           <SearchBox className="mb-2 mt-1" onSubmit={() => setMenuOpen(false)} />
           {primaryLinks}
           {mobileAccountLinks}

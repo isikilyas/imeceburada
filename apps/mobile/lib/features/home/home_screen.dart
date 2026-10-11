@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/auth_store.dart';
 import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/fade_in_up.dart';
 import '../../widgets/language_switcher.dart';
+import '../auth/register_screen.dart';
 import '../candidates/candidate_directory_screen.dart';
 import '../equipment/equipment_list_screen.dart';
+import '../jobs/company_jobs_screen.dart';
+import '../jobs/my_applications_screen.dart';
 import '../material_listings/material_listings_screen.dart';
+import '../material_listings/supplier_dashboard_screen.dart';
+import '../subcontractors/subcontractor_dashboard_screen.dart';
 import '../subcontractors/subcontractor_directory_screen.dart';
 import '../weather/weather_screen.dart';
 
@@ -36,6 +42,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.watch<LocaleStore>().t;
+    final authUser = context.watch<AuthStore>().user;
 
     // Bu beş hedef (iş ilanları/eleman/taşeron/ekipman/malzeme) aşağıdaki
     // arama çubuğunda zaten var — kart grid'inde tekrar etmesin diye burada
@@ -63,7 +70,30 @@ class HomeScreen extends StatelessWidget {
       ),
     ];
 
+    final VoidCallback createListingTap = switch (authUser?.role) {
+      'COMPANY' => () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const CompanyJobsScreen()),
+          ),
+      'SUPPLIER' => () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const SupplierDashboardScreen()),
+          ),
+      'SUBCONTRACTOR' => () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const SubcontractorDashboardScreen()),
+          ),
+      'CANDIDATE' => () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const MyApplicationsScreen()),
+          ),
+      _ => () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const RegisterScreen()),
+          ),
+    };
+
     final searchOptions = <_SearchOption>[
+      _SearchOption(
+        icon: Icons.edit_note,
+        labelKey: 'home.searchOptionCreateListing',
+        onTap: createListingTap,
+      ),
       _SearchOption(
         icon: Icons.work_outline,
         labelKey: 'home.searchOptionJobs',
