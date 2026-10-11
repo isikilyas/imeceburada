@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import { UserRole } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -31,7 +32,17 @@ const ROLE_LABELS: Record<UserRole, string> = {
 export function RoleQuickAccess() {
   const { user } = useAuth();
   const { t } = useLocale();
+  const router = useRouter();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState("");
+
+  function handleSearchSubmit(e: FormEvent) {
+    e.preventDefault();
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+    setSearchOpen(false);
+  }
 
   if (!user) return null;
 
@@ -99,14 +110,20 @@ export function RoleQuickAccess() {
         </div>
         <p className="mb-3 text-lg font-semibold text-silver-200 sm:text-xl">{t("home.quickAccessHeading")}</p>
         <div className="relative mb-4">
-          <button
-            type="button"
-            onClick={() => setSearchOpen((v) => !v)}
-            className="flex w-full items-center gap-3 rounded-xl border border-ink-700 bg-ink-900 px-4 py-3 text-left transition hover:border-gold-500/40"
+          <form
+            onSubmit={handleSearchSubmit}
+            className="flex w-full items-center gap-3 rounded-xl border border-ink-700 bg-ink-900 px-4 py-3 transition focus-within:border-gold-500/40 hover:border-gold-500/40"
           >
             <Icon name="search" className="text-silver-500" />
-            <span className="text-sm text-silver-500">{t("home.quickAccessSearchPlaceholder")}</span>
-          </button>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setSearchOpen(true)}
+              placeholder={t("home.quickAccessSearchPlaceholder")}
+              className="w-full bg-transparent text-sm text-silver-200 placeholder:text-silver-500 focus:outline-none"
+            />
+          </form>
           {searchOpen && (
             <>
               <div className="fixed inset-0 z-10" onClick={() => setSearchOpen(false)} />
