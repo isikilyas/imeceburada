@@ -21,6 +21,8 @@ const Map<String, Map<String, String>> authDict = {
     'auth.subcontractorInfoText':
         'Taşeron Firma üyeliği, hangi branşta taşeronluk yaptığını diğer firmaların bulabileceği şekilde ilan eder.',
     'auth.fullNameLabel': 'Ad Soyad',
+    'auth.expectedSalaryMinLabel': 'Minimum Maaş Beklentisi',
+    'auth.maxSalaryOfferLabel': 'Verebileceğim Maksimum Maaş',
     'auth.companyNameLabel': 'Firma Adı',
     'auth.descriptionOptionalLabel': 'Açıklama (opsiyonel)',
     'auth.passwordMinLabel': 'Şifre (en az 8 karakter)',
@@ -58,6 +60,8 @@ const Map<String, Map<String, String>> authDict = {
     'auth.subcontractorInfoText':
         'A Subcontractor membership lists which trade you work in, making it visible to other companies.',
     'auth.fullNameLabel': 'Full Name',
+    'auth.expectedSalaryMinLabel': 'Minimum Expected Salary',
+    'auth.maxSalaryOfferLabel': 'Maximum Salary I Can Offer',
     'auth.companyNameLabel': 'Company Name',
     'auth.descriptionOptionalLabel': 'Description (optional)',
     'auth.passwordMinLabel': 'Password (at least 8 characters)',
@@ -95,6 +99,8 @@ const Map<String, Map<String, String>> authDict = {
     'auth.subcontractorInfoText':
         'Eine Subunternehmer-Mitgliedschaft zeigt anderen Unternehmen, in welchem Gewerk du tätig bist.',
     'auth.fullNameLabel': 'Vor- und Nachname',
+    'auth.expectedSalaryMinLabel': 'Mindestgehaltsvorstellung',
+    'auth.maxSalaryOfferLabel': 'Maximales Gehalt, das ich bieten kann',
     'auth.companyNameLabel': 'Firmenname',
     'auth.descriptionOptionalLabel': 'Beschreibung (optional)',
     'auth.passwordMinLabel': 'Passwort (mind. 8 Zeichen)',
@@ -132,6 +138,8 @@ const Map<String, Map<String, String>> authDict = {
     'auth.subcontractorInfoText':
         'Членство субподрядчика показывает другим компаниям, в какой специализации вы работаете.',
     'auth.fullNameLabel': 'Имя и фамилия',
+    'auth.expectedSalaryMinLabel': 'Минимальная ожидаемая зарплата',
+    'auth.maxSalaryOfferLabel': 'Максимальная зарплата, которую я могу предложить',
     'auth.companyNameLabel': 'Название компании',
     'auth.descriptionOptionalLabel': 'Описание (необязательно)',
     'auth.passwordMinLabel': 'Пароль (минимум 8 символов)',
@@ -168,6 +176,8 @@ const Map<String, Map<String, String>> authDict = {
         'عضوية مورّد مواد البناء مخصصة فقط لنشر إعلانات مواد البناء — لا يمكنك نشر إعلانات وظائف. اختيار فئات المنتجات/الخدمات التي تورّدها اختياري.',
     'auth.subcontractorInfoText': 'عضوية المقاول من الباطن تُعلن للشركات الأخرى عن الفرع الذي تعمل فيه.',
     'auth.fullNameLabel': 'الاسم الكامل',
+    'auth.expectedSalaryMinLabel': 'الحد الأدنى للراتب المتوقع',
+    'auth.maxSalaryOfferLabel': 'الحد الأقصى للراتب الذي يمكنني تقديمه',
     'auth.companyNameLabel': 'اسم الشركة',
     'auth.descriptionOptionalLabel': 'الوصف (اختياري)',
     'auth.passwordMinLabel': 'كلمة المرور (8 أحرف على الأقل)',
@@ -204,6 +214,8 @@ const Map<String, Map<String, String>> authDict = {
         'La membresía de Proveedor de materiales es solo para publicar anuncios de materiales de construcción — no podrás publicar ofertas de empleo. Seleccionar las categorías de productos/servicios que suministras es opcional.',
     'auth.subcontractorInfoText': 'La membresía de Subcontratista indica a otras empresas en qué oficio trabajas.',
     'auth.fullNameLabel': 'Nombre completo',
+    'auth.expectedSalaryMinLabel': 'Expectativa Salarial Mínima',
+    'auth.maxSalaryOfferLabel': 'Salario Máximo que Puedo Ofrecer',
     'auth.companyNameLabel': 'Nombre de la empresa',
     'auth.descriptionOptionalLabel': 'Descripción (opcional)',
     'auth.passwordMinLabel': 'Contraseña (mínimo 8 caracteres)',
@@ -241,6 +253,8 @@ const Map<String, Map<String, String>> authDict = {
     'auth.subcontractorInfoText':
         "L'abonnement Sous-traitant indique aux autres entreprises dans quel métier vous intervenez.",
     'auth.fullNameLabel': 'Nom complet',
+    'auth.expectedSalaryMinLabel': 'Prétention Salariale Minimale',
+    'auth.maxSalaryOfferLabel': 'Salaire Maximum que Je Peux Offrir',
     'auth.companyNameLabel': "Nom de l'entreprise",
     'auth.descriptionOptionalLabel': 'Description (facultatif)',
     'auth.passwordMinLabel': 'Mot de passe (8 caractères minimum)',

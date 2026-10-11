@@ -70,6 +70,7 @@ export class AuthService {
             district: dto.district,
             sector: dto.sector,
             phone: dto.phone,
+            maxSalaryOffer: dto.maxSalaryOffer,
           },
         },
       },

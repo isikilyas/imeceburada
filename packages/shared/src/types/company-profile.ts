@@ -2,6 +2,7 @@ export interface CompanyProfileDto {
   id: string;
   companyName: string;
   sector?: string | null;
+  maxSalaryOffer?: number | null;
   phone?: string | null;
   phoneVisible: boolean;
   phoneVerifiedAt?: string | null;
@@ -25,6 +26,7 @@ export interface CompanyProfileDto {
 export interface UpdateCompanyProfileInput {
   companyName?: string;
   sector?: string;
+  maxSalaryOffer?: number;
   city?: string;
   district?: string;
   address?: string;

@@ -68,6 +68,7 @@ class AuthStore extends ChangeNotifier {
     required String city,
     String? district,
     required String phone,
+    int? expectedSalaryMin,
   }) async {
     final json = await _api.post('/auth/register/candidate', body: {
       'email': email,
@@ -76,6 +77,7 @@ class AuthStore extends ChangeNotifier {
       'city': city,
       if (district != null && district.isNotEmpty) 'district': district,
       'phone': phone,
+      if (expectedSalaryMin != null) 'expectedSalaryMin': expectedSalaryMin,
     });
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
   }
@@ -87,6 +89,7 @@ class AuthStore extends ChangeNotifier {
     required String city,
     String? district,
     required String phone,
+    int? maxSalaryOffer,
   }) async {
     final json = await _api.post('/auth/register/company', body: {
       'email': email,
@@ -95,6 +98,7 @@ class AuthStore extends ChangeNotifier {
       'city': city,
       if (district != null && district.isNotEmpty) 'district': district,
       'phone': phone,
+      if (maxSalaryOffer != null) 'maxSalaryOffer': maxSalaryOffer,
     });
     await _persist(AuthSession.fromAuthResponseJson(json as Map<String, dynamic>));
   }

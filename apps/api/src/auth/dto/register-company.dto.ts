@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
+import { IsEmail, IsInt, IsOptional, IsString, Min, MinLength } from "class-validator";
 
 export class RegisterCompanyDto {
   @IsEmail()
@@ -21,6 +21,11 @@ export class RegisterCompanyDto {
   @IsOptional()
   @IsString()
   sector?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  maxSalaryOffer?: number;
 
   /**
    * Zorunlu — piyasa endeksine (ücret/fiyat) girilen verilerin doğruluğunu

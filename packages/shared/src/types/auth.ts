@@ -23,13 +23,13 @@ export interface RegisterCandidateInput {
   district?: string;
   phone: string;
   expectedSalaryMin?: number;
-  expectedSalaryMax?: number;
 }
 
 export interface RegisterCompanyInput {
   email: string;
   password: string;
   companyName: string;
+  maxSalaryOffer?: number;
   sector?: string;
   city: string;
   district?: string;
