@@ -21,7 +21,6 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       fullNameLabel: "Ad Soyad",
       experienceLabel: "Deneyim (yıl)",
       expectedSalaryMinLabel: "Minimum Maaş Beklentisi",
-      maxSalaryOfferLabel: "Verebileceğim Maksimum Maaş",
       phoneLabel: "Telefon",
       workPreferencesLabel: "Çalışma Şekli Tercihlerim",
       machineSpecialtiesLabel: "Uzman Olduğum Hafriyat Makineleri",
@@ -48,6 +47,7 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Firma Adı",
       sectorLabel: "Sektör (opsiyonel)",
+      maxSalaryOfferLabel: "Verebileceğim Maksimum Maaş",
       phoneVisibleLabel: "Telefon numaramı dizindeki profilimde göster",
       phoneVisibleHint:
         "Kapatırsan telefon numaran kaydedilmiş kalır ama başka kullanıcılara gösterilmez; açarsan sana ulaşmak isteyenler numarayı görebilir.",
@@ -141,7 +141,6 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       fullNameLabel: "Full Name",
       experienceLabel: "Experience (years)",
       expectedSalaryMinLabel: "Minimum Expected Salary",
-      maxSalaryOfferLabel: "Maximum Salary I Can Offer",
       phoneLabel: "Phone",
       workPreferencesLabel: "My Employment Type Preferences",
       machineSpecialtiesLabel: "Excavation Machines I Specialize In",
@@ -168,6 +167,7 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Company Name",
       sectorLabel: "Sector (optional)",
+      maxSalaryOfferLabel: "Maximum Salary I Can Offer",
       phoneVisibleLabel: "Show my phone number on my profile in the directory",
       phoneVisibleHint:
         "If disabled, your phone number stays saved but isn't shown to other users; if enabled, anyone trying to reach you can see it.",
@@ -261,7 +261,6 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       fullNameLabel: "Name",
       experienceLabel: "Erfahrung (Jahre)",
       expectedSalaryMinLabel: "Mindestgehaltsvorstellung",
-      maxSalaryOfferLabel: "Maximales Gehalt, das ich bieten kann",
       phoneLabel: "Telefon",
       workPreferencesLabel: "Meine Beschäftigungsart-Präferenzen",
       machineSpecialtiesLabel: "Erdbaumaschinen, auf die ich spezialisiert bin",
@@ -288,6 +287,7 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Firmenname",
       sectorLabel: "Branche (optional)",
+      maxSalaryOfferLabel: "Maximales Gehalt, das ich bieten kann",
       phoneVisibleLabel: "Meine Telefonnummer in meinem Profil im Verzeichnis anzeigen",
       phoneVisibleHint:
         "Wenn deaktiviert, bleibt deine Telefonnummer gespeichert, wird aber anderen Nutzern nicht angezeigt; wenn aktiviert, kann jeder, der dich erreichen möchte, sie sehen.",
@@ -381,7 +381,6 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       fullNameLabel: "Имя и фамилия",
       experienceLabel: "Опыт (лет)",
       expectedSalaryMinLabel: "Минимальная ожидаемая зарплата",
-      maxSalaryOfferLabel: "Максимальная зарплата, которую я могу предложить",
       phoneLabel: "Телефон",
       workPreferencesLabel: "Мои предпочтения по типу занятости",
       machineSpecialtiesLabel: "Землеройная техника, на которой я специализируюсь",
@@ -408,6 +407,7 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Название компании",
       sectorLabel: "Сфера деятельности (опционально)",
+      maxSalaryOfferLabel: "Максимальная зарплата, которую я могу предложить",
       phoneVisibleLabel: "Показывать мой номер телефона в профиле в каталоге",
       phoneVisibleHint:
         "Если отключить, номер телефона останется сохранённым, но не будет виден другим пользователям; если включить, его увидит любой, кто попытается с вами связаться.",
@@ -501,7 +501,6 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       fullNameLabel: "الاسم الكامل",
       experienceLabel: "الخبرة (سنوات)",
       expectedSalaryMinLabel: "الحد الأدنى للراتب المتوقع",
-      maxSalaryOfferLabel: "الحد الأقصى للراتب الذي يمكنني تقديمه",
       phoneLabel: "الهاتف",
       workPreferencesLabel: "تفضيلاتي لنوع التوظيف",
       machineSpecialtiesLabel: "معدات الحفر التي أتخصص بها",
@@ -528,6 +527,7 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "اسم الشركة",
       sectorLabel: "القطاع (اختياري)",
+      maxSalaryOfferLabel: "الحد الأقصى للراتب الذي يمكنني تقديمه",
       phoneVisibleLabel: "إظهار رقم هاتفي في ملفي الشخصي بالدليل",
       phoneVisibleHint:
         "عند التعطيل، يبقى رقم هاتفك محفوظًا لكنه لا يظهر لباقي المستخدمين؛ وعند التفعيل، يمكن لأي شخص يحاول التواصل معك رؤيته.",
@@ -621,7 +621,6 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       fullNameLabel: "Nombre completo",
       experienceLabel: "Experiencia (años)",
       expectedSalaryMinLabel: "Expectativa Salarial Mínima",
-      maxSalaryOfferLabel: "Salario Máximo que Puedo Ofrecer",
       phoneLabel: "Teléfono",
       workPreferencesLabel: "Mis preferencias de tipo de empleo",
       machineSpecialtiesLabel: "Máquinas de excavación en las que me especializo",
@@ -648,6 +647,7 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Nombre de la empresa",
       sectorLabel: "Sector (opcional)",
+      maxSalaryOfferLabel: "Salario Máximo que Puedo Ofrecer",
       phoneVisibleLabel: "Mostrar mi número de teléfono en mi perfil del directorio",
       phoneVisibleHint:
         "Si lo desactivas, tu número de teléfono seguirá guardado pero no se mostrará a otros usuarios; si lo activas, cualquiera que quiera contactarte podrá verlo.",
@@ -741,7 +741,6 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
       fullNameLabel: "Nom complet",
       experienceLabel: "Expérience (années)",
       expectedSalaryMinLabel: "Prétention Salariale Minimale",
-      maxSalaryOfferLabel: "Salaire Maximum que Je Peux Offrir",
       phoneLabel: "Téléphone",
       workPreferencesLabel: "Mes préférences de type d'emploi",
       machineSpecialtiesLabel: "Engins de terrassement dans lesquels je suis spécialisé",
@@ -768,6 +767,7 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     company: {
       companyNameLabel: "Nom de l'entreprise",
       sectorLabel: "Secteur (facultatif)",
+      maxSalaryOfferLabel: "Salaire Maximum que Je Peux Offrir",
       phoneVisibleLabel: "Afficher mon numéro de téléphone sur mon profil dans l'annuaire",
       phoneVisibleHint:
         "Si désactivé, votre numéro de téléphone reste enregistré mais n'est pas affiché aux autres utilisateurs ; si activé, toute personne cherchant à vous contacter pourra le voir.",

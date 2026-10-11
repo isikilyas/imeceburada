@@ -14,12 +14,13 @@ interface QuickLink {
   label: string;
 }
 
-/** auth-form.tsx'teki ROLE_LABELS ile aynı — üyelik türü burada da aynı hedef-odaklı adlarla gösterilir. */
+/** Burada "hesap türü ne" gösteriliyor — kayıt formundaki hedef-odaklı
+ * ifadeler ("İş Arıyorum" vb.) burada anlamsız kaçtığı için sade tutuluyor. */
 const ROLE_LABELS: Record<UserRole, string> = {
-  CANDIDATE: "İş Arıyorum",
-  COMPANY: "Personel / Taşeron Arıyorum",
-  SUPPLIER: "Malzeme / Ekipman Satıyorum",
-  SUBCONTRACTOR: "Taşeron Olarak İş Arıyorum",
+  CANDIDATE: "Bireysel",
+  COMPANY: "Firma",
+  SUPPLIER: "Tedarikçi",
+  SUBCONTRACTOR: "Taşeron",
   ADMIN: "Yönetici",
 };
 
