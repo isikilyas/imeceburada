@@ -51,3 +51,33 @@ export function PasswordInput(props: InputHTMLAttributes<HTMLInputElement>) {
     </div>
   );
 }
+
+/**
+ * Para alanı — yazarken otomatik binlik nokta ayracı uygular (tr-TR) ve
+ * sağda ₺ gösterir. `value`/`onChange` ham rakam dizesidir (örn. "50000"),
+ * ayraçlı görünüm sadece ekranda; gönderilen veri hep düz sayı olur.
+ */
+export function CurrencyInput({
+  value,
+  onChange,
+  placeholder,
+}: {
+  value: string;
+  onChange: (raw: string) => void;
+  placeholder?: string;
+}) {
+  const formatted = value ? Number(value).toLocaleString("tr-TR") : "";
+  return (
+    <div className="relative">
+      <input
+        type="text"
+        inputMode="numeric"
+        value={formatted}
+        onChange={(e) => onChange(e.target.value.replace(/\D/g, ""))}
+        placeholder={placeholder}
+        className={`${inputClass} pe-9`}
+      />
+      <span className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-silver-500">₺</span>
+    </div>
+  );
+}

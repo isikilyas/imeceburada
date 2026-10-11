@@ -13,6 +13,7 @@ import { Avatar } from "@/components/avatar";
 import { Field, inputClass, selectClass } from "@/components/form";
 import { ListSkeleton } from "@/components/list-skeleton";
 import { LoginModal } from "@/components/login-modal";
+import { LiveWageBadge } from "@/components/live-wage-badge";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 export default function CandidateDirectoryPage() {
@@ -48,7 +49,10 @@ export default function CandidateDirectoryPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-semibold text-silver-300">{t("pages.candidatesHeading")}</h1>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold text-silver-300">{t("pages.candidatesHeading")}</h1>
+        <LiveWageBadge />
+      </div>
 
       <div className="mb-6 space-y-3">
         <TradeCategorySelect value={tradeCategory} onChange={setTradeCategory} allowEmpty />

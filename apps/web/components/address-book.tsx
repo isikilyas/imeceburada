@@ -67,9 +67,9 @@ function AddressForm({
         allowEmptyDistrict
       />
       <Field label={t("accountPanel.addresses.lineLabel")}>
-        <textarea
+        <input
           required
-          rows={2}
+          placeholder={t("accountPanel.addresses.linePlaceholder")}
           value={form.line}
           onChange={(e) => setForm({ ...form, line: e.target.value })}
           className={inputClass}
