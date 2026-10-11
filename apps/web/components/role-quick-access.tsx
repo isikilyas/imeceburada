@@ -12,12 +12,12 @@ interface QuickLink {
   label: string;
 }
 
-/** register/page.tsx'teki ROLE_LABELS ile aynı — üyelik türü burada da aynı adlarla gösterilir. */
+/** auth-form.tsx'teki ROLE_LABELS ile aynı — üyelik türü burada da aynı hedef-odaklı adlarla gösterilir. */
 const ROLE_LABELS: Record<UserRole, string> = {
-  CANDIDATE: "İş Arayan Personel",
-  COMPANY: "Firma",
-  SUPPLIER: "Yapı Tedarik",
-  SUBCONTRACTOR: "Taşeron Firma",
+  CANDIDATE: "İş Arıyorum",
+  COMPANY: "Personel / Taşeron Arıyorum",
+  SUPPLIER: "Malzeme / Ekipman Satıyorum",
+  SUBCONTRACTOR: "Taşeron Olarak İş Arıyorum",
   ADMIN: "Yönetici",
 };
 
@@ -85,6 +85,10 @@ export function RoleQuickAccess() {
     { href: "/material-listings", icon: "🧱", label: t("home.quickAccessSearchMaterials") },
   ];
 
+  // Arama çubuğuyla aynı hedefe giden kartları gösterme — tekrarı önler.
+  const searchHrefs = new Set(searchOptions.map((o) => o.href));
+  const gridLinks = links.filter((l) => !searchHrefs.has(l.href));
+
   return (
     <section className="px-4 sm:px-6">
       <div className="mx-auto max-w-4xl">
@@ -121,20 +125,22 @@ export function RoleQuickAccess() {
             </>
           )}
         </div>
-        <div className={`grid grid-cols-2 gap-3 ${links.length >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-1"}`}>
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="gradient-border group flex flex-col items-center gap-2 rounded-xl bg-ink-900 px-4 py-5 text-center shadow-sm transition hover:-translate-y-1 hover:bg-ink-800"
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gold-500/10 text-xl ring-1 ring-inset ring-gold-500/20 transition group-hover:scale-110">
-                {l.icon}
-              </span>
-              <span className="text-sm font-medium text-silver-200">{l.label}</span>
-            </Link>
-          ))}
-        </div>
+        {gridLinks.length > 0 && (
+          <div className={`grid grid-cols-2 gap-3 ${gridLinks.length >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-1"}`}>
+            {gridLinks.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="gradient-border group flex flex-col items-center gap-2 rounded-xl bg-ink-900 px-4 py-5 text-center shadow-sm transition hover:-translate-y-1 hover:bg-ink-800"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gold-500/10 text-xl ring-1 ring-inset ring-gold-500/20 transition group-hover:scale-110">
+                  {l.icon}
+                </span>
+                <span className="text-sm font-medium text-silver-200">{l.label}</span>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
