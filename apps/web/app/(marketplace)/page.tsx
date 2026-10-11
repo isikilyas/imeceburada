@@ -23,34 +23,6 @@ export default function HomePage() {
     { icon: "rocket_launch", label: t("home.pillarFuture") },
   ];
 
-  const MODULES = [
-    { href: "/jobs", icon: "work_outline", title: t("home.moduleJobsTitle"), desc: t("home.moduleJobsDesc") },
-    {
-      href: "/equipment",
-      icon: "construction",
-      title: t("home.moduleEquipmentTitle"),
-      desc: t("home.moduleEquipmentDesc"),
-    },
-    {
-      href: "/material-listings",
-      icon: "inventory_2",
-      title: t("home.moduleMaterialsTitle"),
-      desc: t("home.moduleMaterialsDesc"),
-    },
-    {
-      href: "/site-radar",
-      icon: "map",
-      title: t("home.moduleSiteRadarTitle"),
-      desc: t("home.moduleSiteRadarDesc"),
-    },
-    {
-      href: "/wage-index",
-      icon: "show_chart",
-      title: t("home.moduleWageIndexTitle"),
-      desc: t("home.moduleWageIndexDesc"),
-    },
-  ];
-
   const STEPS = [
     { n: "01", title: t("home.step1Title"), desc: t("home.step1Desc") },
     { n: "02", title: t("home.step2Title"), desc: t("home.step2Desc") },
@@ -146,32 +118,6 @@ export default function HomePage() {
             </p>
           </div>
           <HomeStats />
-        </div>
-      </section>
-
-      {/* Modules */}
-      <section className="py-16">
-        <div className="mb-10 text-center">
-          <h2 className="text-2xl font-semibold text-silver-200 sm:text-3xl">{t("home.modulesHeading")}</h2>
-          <p className="mt-2 text-sm text-silver-500">{t("home.modulesSubheading")}</p>
-        </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {MODULES.map((m) => (
-            <Link
-              key={m.href}
-              href={m.href}
-              className="gradient-border group relative flex flex-col gap-3 overflow-hidden rounded-xl bg-ink-900 p-5 shadow-sm transition hover:-translate-y-1 hover:bg-ink-800 hover:shadow-[0_12px_32px_-12px_rgba(212,175,55,0.3)]"
-            >
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gold-500/10 ring-1 ring-inset ring-gold-500/20 transition group-hover:scale-110 group-hover:bg-gold-500/15">
-                <Icon name={m.icon} className="text-2xl text-gold-400" />
-              </div>
-              <h3 className="font-medium text-silver-200">{m.title}</h3>
-              <p className="text-xs leading-snug text-silver-500">{m.desc}</p>
-              <span className="mt-auto flex items-center pt-1 text-gold-400 opacity-0 transition group-hover:translate-x-1 group-hover:opacity-100">
-                →
-              </span>
-            </Link>
-          ))}
         </div>
       </section>
 
