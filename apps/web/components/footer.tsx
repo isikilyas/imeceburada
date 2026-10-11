@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/locale-context";
-import { AppStoreBadge, GooglePlayBadge } from "@/components/store-badges";
+import { GooglePlayBadge } from "@/components/store-badges";
 import Image from "next/image";
 
 export function Footer() {
@@ -48,8 +48,7 @@ export function Footer() {
             Mobil Uygulamamızı İndirin
           </span>
           <div className="flex items-stretch gap-2 sm:gap-3">
-            <AppStoreBadge href="#" />
-            <GooglePlayBadge href="#" />
+            <GooglePlayBadge href="https://play.google.com/store/apps/details?id=imeceburada.com" />
           </div>
         </div>
 

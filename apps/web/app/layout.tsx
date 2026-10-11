@@ -41,6 +41,12 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="tr" className={inter.variable}>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..500,0,0&display=swap"
+        />
+      </head>
       <body className="blueprint-grid min-h-screen font-sans">
         <GoogleAnalytics />
         <Providers>{children}</Providers>

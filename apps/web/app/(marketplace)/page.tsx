@@ -7,6 +7,7 @@ import { HomeStats } from "@/components/home-stats";
 import { SupplierSpotlight } from "@/components/supplier-spotlight";
 import { AdSlot } from "@/components/ad-slot";
 import { RoleQuickAccess } from "@/components/role-quick-access";
+import { Icon } from "@/components/icon";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -16,30 +17,35 @@ export default function HomePage() {
   const { user } = useAuth();
 
   const PILLARS = [
-    { icon: "🛡️", label: t("home.pillarTrust") },
-    { icon: "🏗️", label: t("home.pillarExperience") },
-    { icon: "⚙️", label: t("home.pillarTech") },
-    { icon: "🚀", label: t("home.pillarFuture") },
+    { icon: "shield", label: t("home.pillarTrust") },
+    { icon: "construction", label: t("home.pillarExperience") },
+    { icon: "settings", label: t("home.pillarTech") },
+    { icon: "rocket_launch", label: t("home.pillarFuture") },
   ];
 
   const MODULES = [
-    { href: "/jobs", icon: "👷", title: t("home.moduleJobsTitle"), desc: t("home.moduleJobsDesc") },
-    { href: "/equipment", icon: "🏗️", title: t("home.moduleEquipmentTitle"), desc: t("home.moduleEquipmentDesc") },
+    { href: "/jobs", icon: "work_outline", title: t("home.moduleJobsTitle"), desc: t("home.moduleJobsDesc") },
+    {
+      href: "/equipment",
+      icon: "construction",
+      title: t("home.moduleEquipmentTitle"),
+      desc: t("home.moduleEquipmentDesc"),
+    },
     {
       href: "/material-listings",
-      icon: "🧱",
+      icon: "inventory_2",
       title: t("home.moduleMaterialsTitle"),
       desc: t("home.moduleMaterialsDesc"),
     },
     {
       href: "/site-radar",
-      icon: "📍",
+      icon: "map",
       title: t("home.moduleSiteRadarTitle"),
       desc: t("home.moduleSiteRadarDesc"),
     },
     {
       href: "/wage-index",
-      icon: "📊",
+      icon: "show_chart",
       title: t("home.moduleWageIndexTitle"),
       desc: t("home.moduleWageIndexDesc"),
     },
@@ -156,8 +162,8 @@ export default function HomePage() {
               href={m.href}
               className="gradient-border group relative flex flex-col gap-3 overflow-hidden rounded-xl bg-ink-900 p-5 shadow-sm transition hover:-translate-y-1 hover:bg-ink-800 hover:shadow-[0_12px_32px_-12px_rgba(212,175,55,0.3)]"
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gold-500/10 text-2xl ring-1 ring-inset ring-gold-500/20 transition group-hover:scale-110 group-hover:bg-gold-500/15">
-                {m.icon}
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gold-500/10 ring-1 ring-inset ring-gold-500/20 transition group-hover:scale-110 group-hover:bg-gold-500/15">
+                <Icon name={m.icon} className="text-2xl text-gold-400" />
               </div>
               <h3 className="font-medium text-silver-200">{m.title}</h3>
               <p className="text-xs leading-snug text-silver-500">{m.desc}</p>
@@ -199,8 +205,8 @@ export default function HomePage() {
             <div key={pillar.label} className="flex items-center gap-4">
               {i > 0 && <span className="hidden h-4 w-px bg-ink-700 sm:block" />}
               <div className="flex items-center gap-2 text-sm font-medium text-gold-500">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gold-500/10 text-base ring-1 ring-inset ring-gold-500/20">
-                  {pillar.icon}
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gold-500/10 ring-1 ring-inset ring-gold-500/20">
+                  <Icon name={pillar.icon} className="text-base text-gold-500" />
                 </span>
                 {pillar.label}
               </div>

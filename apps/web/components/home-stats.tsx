@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api-client";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { Icon } from "@/components/icon";
 
 function useCountUp(target: number, durationMs = 1200) {
   const [value, setValue] = useState(0);
@@ -35,8 +36,8 @@ function StatTile({ value, label, icon, delay }: { value: number; label: string;
       className="animate-fade-in-up group flex flex-col items-center gap-2 rounded-xl px-4 py-3 text-center transition hover:-translate-y-1 hover:bg-ink-800/40"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-500/10 text-2xl ring-1 ring-inset ring-gold-500/20 transition group-hover:ring-gold-500/40">
-        {icon}
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-500/10 ring-1 ring-inset ring-gold-500/20 transition group-hover:ring-gold-500/40">
+        <Icon name={icon} className="text-2xl text-gold-400" />
       </div>
       <p className="text-3xl font-semibold text-gold-400 sm:text-4xl">{animated.toLocaleString("tr-TR")}</p>
       <p className="text-xs uppercase tracking-wide text-silver-500">{label}</p>
@@ -68,10 +69,10 @@ export function HomeStats() {
 
   return (
     <div className="mx-auto grid w-full max-w-3xl grid-cols-2 gap-x-2 gap-y-6 sm:grid-cols-4 sm:gap-x-0 sm:divide-x sm:divide-ink-800">
-      <StatTile icon="👷" value={totals.jobs} label={t("home.statJobs")} delay={0} />
-      <StatTile icon="🏗️" value={totals.equipment} label={t("home.statEquipment")} delay={80} />
-      <StatTile icon="🧱" value={totals.materials} label={t("home.statMaterials")} delay={160} />
-      <StatTile icon="🗺️" value={81} label={t("home.statProvinces")} delay={240} />
+      <StatTile icon="work_outline" value={totals.jobs} label={t("home.statJobs")} delay={0} />
+      <StatTile icon="construction" value={totals.equipment} label={t("home.statEquipment")} delay={80} />
+      <StatTile icon="inventory_2" value={totals.materials} label={t("home.statMaterials")} delay={160} />
+      <StatTile icon="map" value={81} label={t("home.statProvinces")} delay={240} />
     </div>
   );
 }
