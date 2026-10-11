@@ -70,9 +70,7 @@ export function RoleQuickAccess() {
           <span>👤</span>
           {ROLE_LABELS[user.role]} {t("home.membershipTypeSuffix")}
         </div>
-        <p className="mb-3 text-xs font-medium uppercase tracking-wider text-silver-500">
-          {t("home.quickAccessHeading")}
-        </p>
+        <p className="mb-3 text-lg font-semibold text-silver-200 sm:text-xl">{t("home.quickAccessHeading")}</p>
         <div className={`grid grid-cols-2 gap-3 ${links.length >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-1"}`}>
           {links.map((l) => (
             <Link
