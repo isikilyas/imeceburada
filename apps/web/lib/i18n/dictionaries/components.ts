@@ -109,6 +109,9 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       localTitle: "{{city}} Ortalaması",
       sampleSizeNote: "{{count}} veri girişi",
     },
+    liveWageBadge: {
+      label: "Canlı Endeks",
+    },
     whatsappContactButton: {
       contact: "WhatsApp ile İletişime Geç",
       unavailable: "Şu an müsait değil",
@@ -238,6 +241,9 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       nationalTitle: "Turkey Average",
       localTitle: "{{city}} Average",
       sampleSizeNote: "{{count}} data points",
+    },
+    liveWageBadge: {
+      label: "Live Index",
     },
     whatsappContactButton: {
       contact: "Contact via WhatsApp",
@@ -371,6 +377,9 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       localTitle: "{{city}}-Durchschnitt",
       sampleSizeNote: "{{count}} Dateneinträge",
     },
+    liveWageBadge: {
+      label: "Live-Index",
+    },
     whatsappContactButton: {
       contact: "Über WhatsApp kontaktieren",
       unavailable: "Momentan nicht verfügbar",
@@ -502,6 +511,9 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       localTitle: "Средний показатель — {{city}}",
       sampleSizeNote: "{{count}} записей данных",
     },
+    liveWageBadge: {
+      label: "Живой индекс",
+    },
     whatsappContactButton: {
       contact: "Связаться через WhatsApp",
       unavailable: "Сейчас недоступно",
@@ -631,6 +643,9 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       nationalTitle: "متوسط تركيا",
       localTitle: "متوسط {{city}}",
       sampleSizeNote: "{{count}} إدخال بيانات",
+    },
+    liveWageBadge: {
+      label: "مؤشر مباشر",
     },
     whatsappContactButton: {
       contact: "تواصل عبر واتساب",
@@ -764,6 +779,9 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       localTitle: "Promedio de {{city}}",
       sampleSizeNote: "{{count}} registros de datos",
     },
+    liveWageBadge: {
+      label: "Índice en Vivo",
+    },
     whatsappContactButton: {
       contact: "Contactar por WhatsApp",
       unavailable: "No disponible en este momento",
@@ -896,6 +914,9 @@ export const componentsDict: Record<Locale, Record<string, any>> = {
       nationalTitle: "Moyenne Turquie",
       localTitle: "Moyenne {{city}}",
       sampleSizeNote: "{{count}} entrées de données",
+    },
+    liveWageBadge: {
+      label: "Indice en Direct",
     },
     whatsappContactButton: {
       contact: "Contacter via WhatsApp",

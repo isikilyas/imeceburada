@@ -11,6 +11,7 @@ import { Field, selectClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { ListingsTabs } from "@/components/listings-tabs";
+import { LiveWageBadge } from "@/components/live-wage-badge";
 import { ListSkeleton } from "@/components/list-skeleton";
 import { Pagination } from "@/components/pagination";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -46,7 +47,10 @@ export default function JobsPage() {
   return (
     <div>
       <ListingsTabs active="jobs" />
-      <h1 className="mb-6 text-2xl font-semibold text-silver-300">{t("pages.jobsHeading")}</h1>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold text-silver-300">{t("pages.jobsHeading")}</h1>
+        <LiveWageBadge />
+      </div>
 
       <div className="mb-6 space-y-4 rounded-lg border border-ink-800 bg-ink-900/50 p-4">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

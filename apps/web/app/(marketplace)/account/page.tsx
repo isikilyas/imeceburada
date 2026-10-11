@@ -17,7 +17,7 @@ import {
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { useProfileSave } from "@/lib/use-profile-save";
-import { Field, inputClass } from "@/components/form";
+import { CurrencyInput, Field, inputClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-select";
@@ -237,14 +237,7 @@ function CandidateAccountPanel() {
                 />
               </Field>
               <Field label={t("dashboard.candidate.expectedSalaryMinLabel")}>
-                <input
-                  type="number"
-                  min={0}
-                  placeholder="30000"
-                  value={expectedSalaryMin}
-                  onChange={(e) => setExpectedSalaryMin(e.target.value)}
-                  className={inputClass}
-                />
+                <CurrencyInput value={expectedSalaryMin} onChange={setExpectedSalaryMin} placeholder="30.000" />
               </Field>
               <Field label={t("dashboard.candidate.phoneLabel")}>
                 <input
@@ -563,14 +556,7 @@ function CompanyAccountPanel() {
                 <input value={sector} onChange={(e) => setSector(e.target.value)} className={inputClass} />
               </Field>
               <Field label={t("dashboard.company.maxSalaryOfferLabel")}>
-                <input
-                  type="number"
-                  min={0}
-                  placeholder="50000"
-                  value={maxSalaryOffer}
-                  onChange={(e) => setMaxSalaryOffer(e.target.value)}
-                  className={inputClass}
-                />
+                <CurrencyInput value={maxSalaryOffer} onChange={setMaxSalaryOffer} placeholder="50.000" />
               </Field>
               <ProvinceDistrictSelect
                 city={city}

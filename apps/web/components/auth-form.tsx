@@ -6,7 +6,7 @@ import Link from "next/link";
 import { TRADE_FIELDS, TURKISH_PROVINCES, UserRole } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api-client";
-import { Field, inputClass, PasswordInput } from "@/components/form";
+import { CurrencyInput, Field, inputClass, PasswordInput } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-select";
 import { MaterialCategoryMultiSelect } from "@/components/material-category-multi-select";
@@ -258,14 +258,7 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
                   />
                 </Field>
                 <Field label="Minimum Maaş Beklentisi">
-                  <input
-                    type="number"
-                    min={0}
-                    placeholder="Örn. 30000"
-                    value={expectedSalaryMin}
-                    onChange={(e) => setExpectedSalaryMin(e.target.value)}
-                    className={inputClass}
-                  />
+                  <CurrencyInput value={expectedSalaryMin} onChange={setExpectedSalaryMin} placeholder="Örn. 30.000" />
                 </Field>
                 <p className="-mt-2 text-xs text-silver-500">
                   Opsiyonel — girersen firmalar profilinde en az ne kadar maaş istediğini görebilir.
@@ -286,14 +279,7 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
                   <input value={sector} onChange={(e) => setSector(e.target.value)} className={inputClass} />
                 </Field>
                 <Field label="Verebileceğim Maksimum Maaş">
-                  <input
-                    type="number"
-                    min={0}
-                    placeholder="Örn. 50000"
-                    value={maxSalaryOffer}
-                    onChange={(e) => setMaxSalaryOffer(e.target.value)}
-                    className={inputClass}
-                  />
+                  <CurrencyInput value={maxSalaryOffer} onChange={setMaxSalaryOffer} placeholder="Örn. 50.000" />
                 </Field>
                 <p className="-mt-2 text-xs text-silver-500">
                   Opsiyonel — girersen adaylar/taşeronlar en fazla ne kadar ödeyebileceğini görebilir.
