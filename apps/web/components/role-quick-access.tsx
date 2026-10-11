@@ -65,7 +65,19 @@ export function RoleQuickAccess() {
 
   if (links.length === 0) return null;
 
+  const dashboardHref =
+    user.role === "CANDIDATE"
+      ? "/dashboard/candidate"
+      : user.role === "COMPANY"
+        ? "/dashboard/company"
+        : user.role === "SUPPLIER"
+          ? "/dashboard/supplier"
+          : user.role === "SUBCONTRACTOR"
+            ? "/dashboard/subcontractor"
+            : "/account";
+
   const searchOptions: QuickLink[] = [
+    { href: dashboardHref, icon: "📝", label: t("home.quickAccessSearchCreateListing") },
     { href: "/jobs", icon: "👷", label: t("home.quickAccessSearchJobs") },
     { href: "/candidates", icon: "🔍", label: t("home.quickAccessSearchCandidates") },
     { href: "/subcontractors", icon: "🏢", label: t("home.quickAccessSearchSubcontractors") },
