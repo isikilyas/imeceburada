@@ -37,45 +37,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = context.watch<LocaleStore>().t;
 
+    // Bu beş hedef (iş ilanları/eleman/taşeron/ekipman/malzeme) aşağıdaki
+    // arama çubuğunda zaten var — kart grid'inde tekrar etmesin diye burada
+    // sadece aramada OLMAYAN hedefler kart olarak listeleniyor.
     final cards = <_HomeCard>[
-      _HomeCard(
-        icon: Icons.work_outline,
-        titleKey: 'home.jobsTitle',
-        descKey: 'home.jobsDesc',
-        onTap: () => onNavigateTab(2),
-      ),
-      _HomeCard(
-        icon: Icons.engineering_outlined,
-        titleKey: 'home.candidatesTitle',
-        descKey: 'home.candidatesDesc',
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const CandidateDirectoryScreen()),
-        ),
-      ),
-      _HomeCard(
-        icon: Icons.apartment_outlined,
-        titleKey: 'home.subcontractorsTitle',
-        descKey: 'home.subcontractorsDesc',
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const SubcontractorDirectoryScreen()),
-        ),
-      ),
-      _HomeCard(
-        icon: Icons.construction_outlined,
-        titleKey: 'home.equipmentTitle',
-        descKey: 'home.equipmentDesc',
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const EquipmentListScreen()),
-        ),
-      ),
-      _HomeCard(
-        icon: Icons.inventory_2_outlined,
-        titleKey: 'home.materialsTitle',
-        descKey: 'home.materialsDesc',
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const MaterialListingsScreen()),
-        ),
-      ),
       _HomeCard(
         icon: Icons.map_outlined,
         titleKey: 'home.siteRadarTitle',
@@ -99,15 +64,39 @@ class HomeScreen extends StatelessWidget {
     ];
 
     final searchOptions = <_SearchOption>[
-      _SearchOption(icon: Icons.work_outline, labelKey: 'home.searchOptionJobs', onTap: cards[0].onTap),
-      _SearchOption(icon: Icons.engineering_outlined, labelKey: 'home.searchOptionCandidates', onTap: cards[1].onTap),
+      _SearchOption(
+        icon: Icons.work_outline,
+        labelKey: 'home.searchOptionJobs',
+        onTap: () => onNavigateTab(2),
+      ),
+      _SearchOption(
+        icon: Icons.engineering_outlined,
+        labelKey: 'home.searchOptionCandidates',
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const CandidateDirectoryScreen()),
+        ),
+      ),
       _SearchOption(
         icon: Icons.apartment_outlined,
         labelKey: 'home.searchOptionSubcontractors',
-        onTap: cards[2].onTap,
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const SubcontractorDirectoryScreen()),
+        ),
       ),
-      _SearchOption(icon: Icons.construction_outlined, labelKey: 'home.searchOptionEquipment', onTap: cards[3].onTap),
-      _SearchOption(icon: Icons.inventory_2_outlined, labelKey: 'home.searchOptionMaterials', onTap: cards[4].onTap),
+      _SearchOption(
+        icon: Icons.construction_outlined,
+        labelKey: 'home.searchOptionEquipment',
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const EquipmentListScreen()),
+        ),
+      ),
+      _SearchOption(
+        icon: Icons.inventory_2_outlined,
+        labelKey: 'home.searchOptionMaterials',
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const MaterialListingsScreen()),
+        ),
+      ),
     ];
 
     return Scaffold(
