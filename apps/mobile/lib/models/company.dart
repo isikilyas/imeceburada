@@ -2,6 +2,7 @@ class CompanyProfile {
   final String id;
   final String companyName;
   final String? sector;
+  final int? maxSalaryOffer;
   final String city;
   final String? district;
   final String? description;
@@ -12,6 +13,7 @@ class CompanyProfile {
     required this.id,
     required this.companyName,
     this.sector,
+    this.maxSalaryOffer,
     required this.city,
     this.district,
     this.description,
@@ -23,6 +25,7 @@ class CompanyProfile {
         id: json['id'] as String,
         companyName: json['companyName'] as String,
         sector: json['sector'] as String?,
+        maxSalaryOffer: json['maxSalaryOffer'] as int?,
         city: json['city'] as String,
         district: json['district'] as String?,
         description: json['description'] as String?,

@@ -88,7 +88,6 @@ function CandidateAccountPanel() {
   const [bio, setBio] = useState("");
   const [experienceYears, setExperienceYears] = useState(0);
   const [expectedSalaryMin, setExpectedSalaryMin] = useState("");
-  const [expectedSalaryMax, setExpectedSalaryMax] = useState("");
   const [primaryTradeCategory, setPrimaryTradeCategory] = useState(
     TRADE_FIELDS[0].branches[0].professions[0].value,
   );
@@ -116,7 +115,6 @@ function CandidateAccountPanel() {
     setBio(profile.bio ?? "");
     setExperienceYears(profile.experienceYears);
     setExpectedSalaryMin(profile.expectedSalaryMin != null ? String(profile.expectedSalaryMin) : "");
-    setExpectedSalaryMax(profile.expectedSalaryMax != null ? String(profile.expectedSalaryMax) : "");
     setPrimaryTradeCategory(profile.primaryTradeCategory ?? TRADE_FIELDS[0].branches[0].professions[0].value);
     setPhone(profile.phone ?? "");
     setSkillsText(profile.skills.join(", "));
@@ -148,7 +146,6 @@ function CandidateAccountPanel() {
       bio: bio || undefined,
       experienceYears,
       expectedSalaryMin: expectedSalaryMin ? Number(expectedSalaryMin) : undefined,
-      expectedSalaryMax: expectedSalaryMax ? Number(expectedSalaryMax) : undefined,
       primaryTradeCategory,
       phone,
       skills,
@@ -239,28 +236,16 @@ function CandidateAccountPanel() {
                   className={inputClass}
                 />
               </Field>
-              <div className="grid grid-cols-2 gap-3">
-                <Field label={t("dashboard.candidate.expectedSalaryMinLabel")}>
-                  <input
-                    type="number"
-                    min={0}
-                    placeholder="30000"
-                    value={expectedSalaryMin}
-                    onChange={(e) => setExpectedSalaryMin(e.target.value)}
-                    className={inputClass}
-                  />
-                </Field>
-                <Field label={t("dashboard.candidate.expectedSalaryMaxLabel")}>
-                  <input
-                    type="number"
-                    min={0}
-                    placeholder="45000"
-                    value={expectedSalaryMax}
-                    onChange={(e) => setExpectedSalaryMax(e.target.value)}
-                    className={inputClass}
-                  />
-                </Field>
-              </div>
+              <Field label={t("dashboard.candidate.expectedSalaryMinLabel")}>
+                <input
+                  type="number"
+                  min={0}
+                  placeholder="30000"
+                  value={expectedSalaryMin}
+                  onChange={(e) => setExpectedSalaryMin(e.target.value)}
+                  className={inputClass}
+                />
+              </Field>
               <Field label={t("dashboard.candidate.phoneLabel")}>
                 <input
                   placeholder="+905551234567"
@@ -483,6 +468,7 @@ function CompanyAccountPanel() {
 
   const [companyName, setCompanyName] = useState("");
   const [sector, setSector] = useState("");
+  const [maxSalaryOffer, setMaxSalaryOffer] = useState("");
   const [city, setCity] = useState(TURKISH_PROVINCES[0]);
   const [district, setDistrict] = useState("");
   const [address, setAddress] = useState("");
@@ -501,6 +487,7 @@ function CompanyAccountPanel() {
     if (!profile) return;
     setCompanyName(profile.companyName);
     setSector(profile.sector ?? "");
+    setMaxSalaryOffer(profile.maxSalaryOffer != null ? String(profile.maxSalaryOffer) : "");
     setCity(profile.city);
     setDistrict(profile.district ?? "");
     setAddress(profile.address ?? "");
@@ -521,6 +508,7 @@ function CompanyAccountPanel() {
     await save({
       companyName,
       sector: sector || undefined,
+      maxSalaryOffer: maxSalaryOffer ? Number(maxSalaryOffer) : undefined,
       city,
       district: district || undefined,
       address: address || undefined,
@@ -573,6 +561,16 @@ function CompanyAccountPanel() {
               <CompanyNameWarning name={companyName} />
               <Field label={t("dashboard.company.sectorLabel")}>
                 <input value={sector} onChange={(e) => setSector(e.target.value)} className={inputClass} />
+              </Field>
+              <Field label={t("dashboard.company.maxSalaryOfferLabel")}>
+                <input
+                  type="number"
+                  min={0}
+                  placeholder="50000"
+                  value={maxSalaryOffer}
+                  onChange={(e) => setMaxSalaryOffer(e.target.value)}
+                  className={inputClass}
+                />
               </Field>
               <ProvinceDistrictSelect
                 city={city}

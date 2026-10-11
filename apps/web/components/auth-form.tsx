@@ -16,10 +16,10 @@ import { useLocale } from "@/lib/i18n/locale-context";
 type RegisterableRole = Extract<UserRole, "CANDIDATE" | "COMPANY" | "SUPPLIER" | "SUBCONTRACTOR">;
 
 const ROLE_LABELS: Record<RegisterableRole, string> = {
-  CANDIDATE: "İş Arayan Personel",
-  COMPANY: "Firma",
-  SUPPLIER: "Yapı Tedarik",
-  SUBCONTRACTOR: "Taşeron Firma",
+  CANDIDATE: "İş Arıyorum",
+  COMPANY: "Personel / Taşeron Arıyorum",
+  SUPPLIER: "Malzeme / Ekipman Satıyorum",
+  SUBCONTRACTOR: "Taşeron Olarak İş Arıyorum",
 };
 
 const REMEMBERED_IDENTIFIER_KEY = "imeceburada.rememberedIdentifier";
@@ -81,9 +81,9 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
   const [district, setDistrict] = useState("");
   const [fullName, setFullName] = useState("");
   const [expectedSalaryMin, setExpectedSalaryMin] = useState("");
-  const [expectedSalaryMax, setExpectedSalaryMax] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [sector, setSector] = useState("");
+  const [maxSalaryOffer, setMaxSalaryOffer] = useState("");
   const [tradeCategories, setTradeCategories] = useState<string[]>([
     TRADE_FIELDS[0].branches[0].professions[0].value,
   ]);
@@ -105,7 +105,6 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
           district: districtValue,
           phone,
           expectedSalaryMin: expectedSalaryMin ? Number(expectedSalaryMin) : undefined,
-          expectedSalaryMax: expectedSalaryMax ? Number(expectedSalaryMax) : undefined,
         });
       } else if (role === "COMPANY") {
         await registerCompany({
@@ -116,6 +115,7 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
           district: districtValue,
           sector: sector || undefined,
           phone,
+          maxSalaryOffer: maxSalaryOffer ? Number(maxSalaryOffer) : undefined,
         });
       } else if (role === "SUPPLIER") {
         await registerSupplier({
@@ -257,30 +257,18 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
                     className={inputClass}
                   />
                 </Field>
-                <div className="grid grid-cols-2 gap-3">
-                  <Field label="Maaş Beklentisi (Min)">
-                    <input
-                      type="number"
-                      min={0}
-                      placeholder="Örn. 30000"
-                      value={expectedSalaryMin}
-                      onChange={(e) => setExpectedSalaryMin(e.target.value)}
-                      className={inputClass}
-                    />
-                  </Field>
-                  <Field label="Maaş Beklentisi (Max)">
-                    <input
-                      type="number"
-                      min={0}
-                      placeholder="Örn. 45000"
-                      value={expectedSalaryMax}
-                      onChange={(e) => setExpectedSalaryMax(e.target.value)}
-                      className={inputClass}
-                    />
-                  </Field>
-                </div>
+                <Field label="Minimum Maaş Beklentisi">
+                  <input
+                    type="number"
+                    min={0}
+                    placeholder="Örn. 30000"
+                    value={expectedSalaryMin}
+                    onChange={(e) => setExpectedSalaryMin(e.target.value)}
+                    className={inputClass}
+                  />
+                </Field>
                 <p className="-mt-2 text-xs text-silver-500">
-                  Opsiyonel — girersen firmalar profilinde aylık maaş beklentini görebilir.
+                  Opsiyonel — girersen firmalar profilinde en az ne kadar maaş istediğini görebilir.
                 </p>
               </>
             ) : role === "COMPANY" ? (
@@ -297,6 +285,19 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
                 <Field label="Sektör (opsiyonel)">
                   <input value={sector} onChange={(e) => setSector(e.target.value)} className={inputClass} />
                 </Field>
+                <Field label="Verebileceğim Maksimum Maaş">
+                  <input
+                    type="number"
+                    min={0}
+                    placeholder="Örn. 50000"
+                    value={maxSalaryOffer}
+                    onChange={(e) => setMaxSalaryOffer(e.target.value)}
+                    className={inputClass}
+                  />
+                </Field>
+                <p className="-mt-2 text-xs text-silver-500">
+                  Opsiyonel — girersen adaylar/taşeronlar en fazla ne kadar ödeyebileceğini görebilir.
+                </p>
               </>
             ) : (
               <>

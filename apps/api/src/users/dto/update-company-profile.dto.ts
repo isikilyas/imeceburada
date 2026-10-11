@@ -1,9 +1,14 @@
-import { IsBoolean, IsEmail, IsOptional, IsString, MaxLength } from "class-validator";
+import { IsBoolean, IsEmail, IsInt, IsOptional, IsString, Min, MaxLength } from "class-validator";
 
 export class UpdateCompanyProfileDto {
   @IsOptional()
   @IsString()
   companyName?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  maxSalaryOffer?: number;
 
   @IsOptional()
   @IsBoolean()

@@ -242,6 +242,9 @@ model CompanyProfile {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   companyName String
   sector      String?
+  /// Verebileceği azami maaş (aylık, TL) — Hesabım panelinden veya kayıt sırasında girilir,
+  /// adaylara/taşeronlara karşı şeffaflık için firma profilinde gösterilir.
+  maxSalaryOffer Int?
   city        String
   district    String?
   /// Açık adres — sadece kullanıcının kendi Hesabım panelinde görünür.

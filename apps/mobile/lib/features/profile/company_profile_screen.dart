@@ -23,6 +23,7 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
 
   final _companyNameController = TextEditingController();
   final _sectorController = TextEditingController();
+  final _maxSalaryOfferController = TextEditingController();
   final _descriptionController = TextEditingController();
   String _city = turkishProvinces.first;
   String _district = '';
@@ -42,6 +43,7 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
   void dispose() {
     _companyNameController.dispose();
     _sectorController.dispose();
+    _maxSalaryOfferController.dispose();
     _descriptionController.dispose();
     super.dispose();
   }
@@ -57,6 +59,7 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
       setState(() {
         _companyNameController.text = profile.companyName;
         _sectorController.text = profile.sector ?? '';
+        _maxSalaryOfferController.text = profile.maxSalaryOffer?.toString() ?? '';
         _city = profile.city;
         _district = profile.district ?? '';
         _descriptionController.text = profile.description ?? '';
@@ -86,6 +89,8 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
       await context.read<AuthStore>().authorizedPatch('/users/me/profile/company', body: {
         'companyName': _companyNameController.text.trim(),
         'sector': _sectorController.text.trim(),
+        if (_maxSalaryOfferController.text.trim().isNotEmpty)
+          'maxSalaryOffer': int.tryParse(_maxSalaryOfferController.text.trim()),
         'city': _city,
         if (_district.isNotEmpty) 'district': _district,
         'description': _descriptionController.text.trim(),
@@ -139,6 +144,12 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                     TextField(
                       controller: _sectorController,
                       decoration: InputDecoration(labelText: t('company.dashboard.sectorLabel')),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: _maxSalaryOfferController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(labelText: t('company.dashboard.maxSalaryOfferLabel')),
                     ),
                     const SizedBox(height: 12),
                     ProvinceDistrictPicker(
