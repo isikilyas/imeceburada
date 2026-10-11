@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { UserRole } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -29,6 +30,7 @@ const ROLE_LABELS: Record<UserRole, string> = {
 export function RoleQuickAccess() {
   const { user } = useAuth();
   const { t } = useLocale();
+  const [searchOpen, setSearchOpen] = useState(false);
 
   if (!user) return null;
 
@@ -63,6 +65,14 @@ export function RoleQuickAccess() {
 
   if (links.length === 0) return null;
 
+  const searchOptions: QuickLink[] = [
+    { href: "/jobs", icon: "👷", label: t("home.quickAccessSearchJobs") },
+    { href: "/candidates", icon: "🔍", label: t("home.quickAccessSearchCandidates") },
+    { href: "/subcontractors", icon: "🏢", label: t("home.quickAccessSearchSubcontractors") },
+    { href: "/equipment", icon: "🏗️", label: t("home.quickAccessSearchEquipment") },
+    { href: "/material-listings", icon: "🧱", label: t("home.quickAccessSearchMaterials") },
+  ];
+
   return (
     <section className="px-4 sm:px-6">
       <div className="mx-auto max-w-4xl">
@@ -71,6 +81,34 @@ export function RoleQuickAccess() {
           {ROLE_LABELS[user.role]} {t("home.membershipTypeSuffix")}
         </div>
         <p className="mb-3 text-lg font-semibold text-silver-200 sm:text-xl">{t("home.quickAccessHeading")}</p>
+        <div className="relative mb-4">
+          <button
+            type="button"
+            onClick={() => setSearchOpen((v) => !v)}
+            className="flex w-full items-center gap-3 rounded-xl border border-ink-700 bg-ink-900 px-4 py-3 text-left transition hover:border-gold-500/40"
+          >
+            <span className="text-silver-500">🔍</span>
+            <span className="text-sm text-silver-500">{t("home.quickAccessSearchPlaceholder")}</span>
+          </button>
+          {searchOpen && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setSearchOpen(false)} />
+              <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-xl border border-ink-700 bg-ink-900 shadow-xl">
+                {searchOptions.map((opt) => (
+                  <Link
+                    key={opt.href}
+                    href={opt.href}
+                    onClick={() => setSearchOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-silver-200 transition hover:bg-ink-800"
+                  >
+                    <span>{opt.icon}</span>
+                    {opt.label}
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
         <div className={`grid grid-cols-2 gap-3 ${links.length >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-1"}`}>
           {links.map((l) => (
             <Link
