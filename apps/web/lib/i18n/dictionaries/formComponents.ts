@@ -16,6 +16,12 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       equipment: "Ekipman",
       allEquipment: "Tüm Ekipmanlar",
     },
+    materialCategorySelect: {
+      category: "Malzeme Kategorisi",
+      allCategories: "Tüm Kategoriler",
+      material: "Malzeme",
+      allMaterials: "Tüm Malzemeler",
+    },
     materialCategory: {
       remove: "Kaldır",
       label: "Tedarik Edilen Ürün/Hizmet Grubu",
@@ -82,6 +88,12 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       allCategories: "All Categories",
       equipment: "Equipment",
       allEquipment: "All Equipment",
+    },
+    materialCategorySelect: {
+      category: "Material Category",
+      allCategories: "All Categories",
+      material: "Material",
+      allMaterials: "All Materials",
     },
     materialCategory: {
       remove: "Remove",
@@ -150,6 +162,12 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       equipment: "Gerät",
       allEquipment: "Alle Geräte",
     },
+    materialCategorySelect: {
+      category: "Materialkategorie",
+      allCategories: "Alle Kategorien",
+      material: "Material",
+      allMaterials: "Alle Materialien",
+    },
     materialCategory: {
       remove: "Entfernen",
       label: "Gelieferte Produkt-/Dienstleistungsgruppe",
@@ -216,6 +234,12 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       allCategories: "Все категории",
       equipment: "Техника",
       allEquipment: "Вся техника",
+    },
+    materialCategorySelect: {
+      category: "Категория материала",
+      allCategories: "Все категории",
+      material: "Материал",
+      allMaterials: "Все материалы",
     },
     materialCategory: {
       remove: "Удалить",
@@ -284,6 +308,12 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       equipment: "المعدات",
       allEquipment: "جميع المعدات",
     },
+    materialCategorySelect: {
+      category: "فئة المواد",
+      allCategories: "جميع الفئات",
+      material: "المادة",
+      allMaterials: "جميع المواد",
+    },
     materialCategory: {
       remove: "إزالة",
       label: "مجموعة المنتجات/الخدمات الموردة",
@@ -351,6 +381,12 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       equipment: "Equipo",
       allEquipment: "Todos los Equipos",
     },
+    materialCategorySelect: {
+      category: "Categoría de Material",
+      allCategories: "Todas las Categorías",
+      material: "Material",
+      allMaterials: "Todos los Materiales",
+    },
     materialCategory: {
       remove: "Eliminar",
       label: "Grupo de Productos/Servicios Suministrados",
@@ -417,6 +453,12 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       allCategories: "Toutes les Catégories",
       equipment: "Équipement",
       allEquipment: "Tous les Équipements",
+    },
+    materialCategorySelect: {
+      category: "Catégorie de Matériau",
+      allCategories: "Toutes les Catégories",
+      material: "Matériau",
+      allMaterials: "Tous les Matériaux",
     },
     materialCategory: {
       remove: "Supprimer",

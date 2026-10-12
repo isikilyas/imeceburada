@@ -79,6 +79,8 @@ enum EquipmentListingType {
 enum SiteRequestType {
   WORKER
   EQUIPMENT
+  SUBCONTRACTOR
+  MATERIAL
 }
 
 enum SiteRequestStatus {
@@ -719,6 +721,7 @@ model SiteRequest {
   requestType   SiteRequestType
   tradeCategory String?
   equipmentType String?
+  materialCategory String?
   title         String
   description   String
   city          String

@@ -26,7 +26,7 @@ class _SiteRadarScreenState extends State<SiteRadarScreen> {
   bool _isLoading = true;
   String? _error;
   List<SiteRequest> _requests = [];
-  String? _typeFilter; // null = tümü, WORKER, EQUIPMENT
+  String? _typeFilter; // null = tümü, WORKER, EQUIPMENT, SUBCONTRACTOR, MATERIAL
 
   @override
   void initState() {
@@ -69,9 +69,11 @@ class _SiteRadarScreenState extends State<SiteRadarScreen> {
   }
 
   String _subtitle(SiteRequest r, String Function(String key, {Map<String, String>? vars}) t) {
-    final label = r.requestType == 'WORKER'
+    final label = r.requestType == 'WORKER' || r.requestType == 'SUBCONTRACTOR'
         ? tradeCategories.labelFor(r.tradeCategory ?? '')
-        : equipmentTypes.labelFor(r.equipmentType ?? '');
+        : r.requestType == 'MATERIAL'
+            ? materialCategoryItems.labelFor(r.materialCategory ?? '')
+            : equipmentTypes.labelFor(r.equipmentType ?? '');
     final location = r.district != null ? '${r.city} / ${r.district}' : r.city;
     return t('siteRadar.itemSubtitle', vars: {'label': label, 'location': location, 'count': r.neededCount.toString()});
   }
@@ -92,23 +94,40 @@ class _SiteRadarScreenState extends State<SiteRadarScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.all(12),
-            child: Row(
-              children: [
-                _FilterChip(label: t('siteRadar.filter.all'), selected: _typeFilter == null, onTap: () {
-                  setState(() => _typeFilter = null);
-                  _load();
-                }),
-                const SizedBox(width: 8),
-                _FilterChip(label: t('siteRadar.type.worker'), selected: _typeFilter == 'WORKER', onTap: () {
-                  setState(() => _typeFilter = 'WORKER');
-                  _load();
-                }),
-                const SizedBox(width: 8),
-                _FilterChip(label: t('siteRadar.type.equipment'), selected: _typeFilter == 'EQUIPMENT', onTap: () {
-                  setState(() => _typeFilter = 'EQUIPMENT');
-                  _load();
-                }),
-              ],
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _FilterChip(label: t('siteRadar.filter.all'), selected: _typeFilter == null, onTap: () {
+                    setState(() => _typeFilter = null);
+                    _load();
+                  }),
+                  const SizedBox(width: 8),
+                  _FilterChip(label: t('siteRadar.type.worker'), selected: _typeFilter == 'WORKER', onTap: () {
+                    setState(() => _typeFilter = 'WORKER');
+                    _load();
+                  }),
+                  const SizedBox(width: 8),
+                  _FilterChip(label: t('siteRadar.type.equipment'), selected: _typeFilter == 'EQUIPMENT', onTap: () {
+                    setState(() => _typeFilter = 'EQUIPMENT');
+                    _load();
+                  }),
+                  const SizedBox(width: 8),
+                  _FilterChip(
+                    label: t('siteRadar.type.subcontractor'),
+                    selected: _typeFilter == 'SUBCONTRACTOR',
+                    onTap: () {
+                      setState(() => _typeFilter = 'SUBCONTRACTOR');
+                      _load();
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                  _FilterChip(label: t('siteRadar.type.material'), selected: _typeFilter == 'MATERIAL', onTap: () {
+                    setState(() => _typeFilter = 'MATERIAL');
+                    _load();
+                  }),
+                ],
+              ),
             ),
           ),
           SizedBox(

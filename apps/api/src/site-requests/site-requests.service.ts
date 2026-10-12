@@ -19,6 +19,7 @@ interface SiteRequestWithCreator {
   requestType: string;
   tradeCategory: string | null;
   equipmentType: string | null;
+  materialCategory: string | null;
   title: string;
   description: string;
   city: string;
@@ -87,11 +88,15 @@ export class SiteRequestsService {
     const equipmentType = dto.equipmentType
       ? await this.taxonomyService.resolveOrQueueTerm("EQUIPMENT_TYPE", dto.equipmentType, user.id)
       : undefined;
+    const materialCategory = dto.materialCategory
+      ? await this.taxonomyService.resolveOrQueueTerm("MATERIAL_CATEGORY_ITEM", dto.materialCategory, user.id)
+      : undefined;
     const request = await this.prisma.siteRequest.create({
       data: {
         ...dto,
         ...(tradeCategory ? { tradeCategory } : {}),
         ...(equipmentType ? { equipmentType } : {}),
+        ...(materialCategory ? { materialCategory } : {}),
         neededBy: dto.neededBy ? new Date(dto.neededBy) : null,
         createdById: user.id,
       },
@@ -162,6 +167,7 @@ export class SiteRequestsService {
     requestType: request.requestType,
     tradeCategory: request.tradeCategory,
     equipmentType: request.equipmentType,
+    materialCategory: request.materialCategory,
     title: request.title,
     description: request.description,
     city: request.city,

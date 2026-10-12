@@ -2,7 +2,7 @@ import { Type } from "class-transformer";
 import { IsIn, IsInt, IsOptional, IsString, Max, Min } from "class-validator";
 import { SiteRequestType } from "@imeceburada/shared";
 
-const SITE_REQUEST_TYPE_VALUES: SiteRequestType[] = ["WORKER", "EQUIPMENT"];
+const SITE_REQUEST_TYPE_VALUES: SiteRequestType[] = ["WORKER", "EQUIPMENT", "SUBCONTRACTOR", "MATERIAL"];
 
 export class SearchSiteRequestsDto {
   @IsOptional()

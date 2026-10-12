@@ -110,9 +110,11 @@ class _SiteRequestDetailScreenState extends State<SiteRequestDetailScreen> {
   }
 
   Widget _buildContent(SiteRequest request, String Function(String key, {Map<String, String>? vars}) t) {
-    final kindLabel = request.requestType == 'WORKER'
+    final kindLabel = request.requestType == 'WORKER' || request.requestType == 'SUBCONTRACTOR'
         ? tradeCategories.labelFor(request.tradeCategory ?? '')
-        : equipmentTypes.labelFor(request.equipmentType ?? '');
+        : request.requestType == 'MATERIAL'
+            ? materialCategoryItems.labelFor(request.materialCategory ?? '')
+            : equipmentTypes.labelFor(request.equipmentType ?? '');
     final location = request.district != null ? '${request.city} / ${request.district}' : request.city;
     final isOwner = context.watch<AuthStore>().user?.id == request.createdById;
 

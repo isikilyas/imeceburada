@@ -2,9 +2,10 @@ class SiteRequest {
   final String id;
   final String createdById;
   final String createdByName;
-  final String requestType; // WORKER | EQUIPMENT
+  final String requestType; // WORKER | EQUIPMENT | SUBCONTRACTOR | MATERIAL
   final String? tradeCategory;
   final String? equipmentType;
+  final String? materialCategory;
   final String title;
   final String description;
   final String city;
@@ -24,6 +25,7 @@ class SiteRequest {
     required this.requestType,
     this.tradeCategory,
     this.equipmentType,
+    this.materialCategory,
     required this.title,
     required this.description,
     required this.city,
@@ -44,6 +46,7 @@ class SiteRequest {
         requestType: json['requestType'] as String,
         tradeCategory: json['tradeCategory'] as String?,
         equipmentType: json['equipmentType'] as String?,
+        materialCategory: json['materialCategory'] as String?,
         title: json['title'] as String,
         description: json['description'] as String,
         city: json['city'] as String,
