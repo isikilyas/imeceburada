@@ -2,7 +2,7 @@
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { EQUIPMENT_TYPES, SiteRequestDto, TRADE_CATEGORIES } from "@imeceburada/shared";
+import { EQUIPMENT_TYPES, MATERIAL_CATEGORY_ITEMS, SiteRequestDto, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 
@@ -43,9 +43,11 @@ export default function MySiteRequestsPage() {
       <div className="space-y-3">
         {requests?.map((r) => {
           const kindLabel =
-            r.requestType === "WORKER"
+            r.requestType === "WORKER" || r.requestType === "SUBCONTRACTOR"
               ? TRADE_CATEGORIES.find((t) => t.value === r.tradeCategory)?.label
-              : EQUIPMENT_TYPES.find((e) => e.value === r.equipmentType)?.label;
+              : r.requestType === "MATERIAL"
+                ? MATERIAL_CATEGORY_ITEMS.find((m) => m.value === r.materialCategory)?.label
+                : EQUIPMENT_TYPES.find((e) => e.value === r.equipmentType)?.label;
           return (
             <div key={r.id} className="rounded-lg border border-ink-800 bg-ink-900 p-4">
               <div className="flex items-start justify-between gap-4">

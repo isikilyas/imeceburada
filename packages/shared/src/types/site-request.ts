@@ -7,6 +7,7 @@ export interface SiteRequestDto {
   requestType: SiteRequestType;
   tradeCategory?: string | null;
   equipmentType?: string | null;
+  materialCategory?: string | null;
   title: string;
   description: string;
   city: string;
@@ -24,6 +25,7 @@ export interface CreateSiteRequestInput {
   requestType: SiteRequestType;
   tradeCategory?: string;
   equipmentType?: string;
+  materialCategory?: string;
   title: string;
   description: string;
   city: string;

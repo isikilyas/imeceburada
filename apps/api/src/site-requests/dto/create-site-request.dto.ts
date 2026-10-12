@@ -12,7 +12,7 @@ import {
 } from "class-validator";
 import { SiteRequestType } from "@imeceburada/shared";
 
-const SITE_REQUEST_TYPE_VALUES: SiteRequestType[] = ["WORKER", "EQUIPMENT"];
+const SITE_REQUEST_TYPE_VALUES: SiteRequestType[] = ["WORKER", "EQUIPMENT", "SUBCONTRACTOR", "MATERIAL"];
 
 export class CreateSiteRequestDto {
   @IsIn(SITE_REQUEST_TYPE_VALUES)
@@ -27,6 +27,11 @@ export class CreateSiteRequestDto {
   @IsString()
   @Length(2, 60)
   equipmentType?: string;
+
+  @IsOptional()
+  @IsString()
+  @Length(2, 60)
+  materialCategory?: string;
 
   @IsString()
   @MinLength(5)

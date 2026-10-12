@@ -52,7 +52,6 @@ export function RoleQuickAccess() {
     links = [
       { href: "/jobs", icon: "work_outline", label: t("home.moduleJobsTitle") },
       { href: "/dashboard/candidate", icon: "assignment", label: t("nav.dashboard") },
-      { href: "/favorites", icon: "star", label: t("nav.favorites") },
     ];
   } else if (user.role === "COMPANY") {
     links = [

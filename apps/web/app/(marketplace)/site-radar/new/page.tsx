@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   CreateSiteRequestInput,
   EQUIPMENT_CATEGORIES,
+  MATERIAL_CATEGORIES,
   SITE_REQUEST_TYPES,
   SiteRequestType,
   TRADE_FIELDS,
@@ -19,6 +20,7 @@ import { SiteMap } from "@/components/site-map";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { EquipmentCategorySelect } from "@/components/equipment-category-select";
+import { MaterialCategorySelect } from "@/components/material-category-select";
 
 export default function NewSiteRequestPage() {
   const { user, isLoading: authLoading, authFetch } = useAuth();
@@ -29,6 +31,7 @@ export default function NewSiteRequestPage() {
     requestType: "WORKER",
     tradeCategory: TRADE_FIELDS[0].branches[0].professions[0].value,
     equipmentType: EQUIPMENT_CATEGORIES[0].items[0].value,
+    materialCategory: MATERIAL_CATEGORIES[0].items[0].value,
     title: "",
     description: "",
     city: TURKISH_PROVINCES[0],
@@ -84,25 +87,32 @@ export default function NewSiteRequestPage() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <Field label={t("siteRadar.new.requestTypeLabel")}>
           <div className="grid grid-cols-2 gap-2">
-            {SITE_REQUEST_TYPES.map((t) => (
+            {SITE_REQUEST_TYPES.map((opt) => (
               <button
-                key={t.value}
+                key={opt.value}
                 type="button"
-                onClick={() => setForm({ ...form, requestType: t.value as SiteRequestType })}
+                onClick={() => setForm({ ...form, requestType: opt.value as SiteRequestType })}
                 className={`rounded-md py-2 text-sm font-medium ${
-                  form.requestType === t.value ? "bg-gold-500 text-ink-950" : "border border-ink-700 text-silver-400"
+                  form.requestType === opt.value
+                    ? "bg-gold-500 text-ink-950"
+                    : "border border-ink-700 text-silver-400"
                 }`}
               >
-                {t.label}
+                {opt.label}
               </button>
             ))}
           </div>
         </Field>
 
-        {form.requestType === "WORKER" ? (
+        {form.requestType === "WORKER" || form.requestType === "SUBCONTRACTOR" ? (
           <TradeCategorySelect
             value={form.tradeCategory ?? ""}
             onChange={(v) => setForm({ ...form, tradeCategory: v })}
+          />
+        ) : form.requestType === "MATERIAL" ? (
+          <MaterialCategorySelect
+            value={form.materialCategory ?? ""}
+            onChange={(v) => setForm({ ...form, materialCategory: v })}
           />
         ) : (
           <EquipmentCategorySelect

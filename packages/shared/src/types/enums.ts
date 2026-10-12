@@ -71,11 +71,13 @@ export const EQUIPMENT_LISTING_TYPES: { value: EquipmentListingType; label: stri
   { value: "SALE", label: "Satılık" },
 ];
 
-export type SiteRequestType = "WORKER" | "EQUIPMENT";
+export type SiteRequestType = "WORKER" | "EQUIPMENT" | "SUBCONTRACTOR" | "MATERIAL";
 
 export const SITE_REQUEST_TYPES: { value: SiteRequestType; label: string }[] = [
   { value: "WORKER", label: "Usta / İşçi" },
   { value: "EQUIPMENT", label: "İş Makinesi" },
+  { value: "SUBCONTRACTOR", label: "Taşeron" },
+  { value: "MATERIAL", label: "Malzeme" },
 ];
 
 export type SiteRequestStatus = "OPEN" | "CLOSED";

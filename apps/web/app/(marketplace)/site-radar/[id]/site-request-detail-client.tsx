@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { EQUIPMENT_TYPES, SiteRequestDto, TRADE_CATEGORIES } from "@imeceburada/shared";
+import { EQUIPMENT_TYPES, MATERIAL_CATEGORY_ITEMS, SiteRequestDto, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { apiFetch, ApiError } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -43,9 +43,11 @@ export function SiteRequestDetailClient() {
   if (!request) return <p className="text-silver-500">{t("siteRadar.detail.notFound")}</p>;
 
   const kindLabel =
-    request.requestType === "WORKER"
+    request.requestType === "WORKER" || request.requestType === "SUBCONTRACTOR"
       ? TRADE_CATEGORIES.find((t) => t.value === request.tradeCategory)?.label
-      : EQUIPMENT_TYPES.find((e) => e.value === request.equipmentType)?.label;
+      : request.requestType === "MATERIAL"
+        ? MATERIAL_CATEGORY_ITEMS.find((m) => m.value === request.materialCategory)?.label
+        : EQUIPMENT_TYPES.find((e) => e.value === request.equipmentType)?.label;
 
   const isOwner = user?.id === request.createdById;
 

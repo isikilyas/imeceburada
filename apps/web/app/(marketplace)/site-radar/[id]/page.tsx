@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EQUIPMENT_TYPES, SiteRequestDto, TRADE_CATEGORIES } from "@imeceburada/shared";
+import { EQUIPMENT_TYPES, MATERIAL_CATEGORY_ITEMS, SiteRequestDto, TRADE_CATEGORIES } from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { SiteRequestDetailClient } from "./site-request-detail-client";
 
@@ -16,9 +16,11 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   if (!request) return { title: "Talep Bulunamadı — İmece Pazaryeri" };
 
   const kindLabel =
-    request.requestType === "WORKER"
+    request.requestType === "WORKER" || request.requestType === "SUBCONTRACTOR"
       ? (TRADE_CATEGORIES.find((t) => t.value === request.tradeCategory)?.label ?? "Personel")
-      : (EQUIPMENT_TYPES.find((e) => e.value === request.equipmentType)?.label ?? "Ekipman");
+      : request.requestType === "MATERIAL"
+        ? (MATERIAL_CATEGORY_ITEMS.find((m) => m.value === request.materialCategory)?.label ?? "Malzeme")
+        : (EQUIPMENT_TYPES.find((e) => e.value === request.equipmentType)?.label ?? "Ekipman");
 
   const title = `${request.title} — ${kindLabel} Aranıyor, ${request.city} | İmece Pazaryeri`;
   const description = request.description

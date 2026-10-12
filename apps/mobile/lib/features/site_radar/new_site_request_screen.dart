@@ -8,6 +8,7 @@ import '../../core/constants.dart';
 import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/equipment_category_picker.dart';
+import '../../widgets/material_category_single_picker.dart';
 import '../../widgets/province_district_picker.dart';
 import '../../widgets/trade_category_picker.dart';
 
@@ -24,6 +25,7 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
   String _requestType = 'WORKER';
   String _tradeCategory = tradeFields.first.branches.first.professions.first.value;
   String _equipmentType = equipmentCategories.first.items.first.value;
+  String _materialCategory = materialCategories.first.items.first.value;
   String _city = turkishProvinces.first;
   String _district = '';
   int _neededCount = 1;
@@ -48,8 +50,9 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
     try {
       await context.read<AuthStore>().authorizedPost('/site-requests', body: {
         'requestType': _requestType,
-        if (_requestType == 'WORKER') 'tradeCategory': _tradeCategory,
+        if (_requestType == 'WORKER' || _requestType == 'SUBCONTRACTOR') 'tradeCategory': _tradeCategory,
         if (_requestType == 'EQUIPMENT') 'equipmentType': _equipmentType,
+        if (_requestType == 'MATERIAL') 'materialCategory': _materialCategory,
         'title': _titleController.text.trim(),
         'description': _descriptionController.text.trim(),
         'city': _city,
@@ -76,30 +79,46 @@ class _NewSiteRequestScreenState extends State<NewSiteRequestScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Row(
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            childAspectRatio: 2.6,
             children: [
-              Expanded(
-                child: _TypeButton(
-                  label: t('siteRadar.type.worker'),
-                  selected: _requestType == 'WORKER',
-                  onTap: () => setState(() => _requestType = 'WORKER'),
-                ),
+              _TypeButton(
+                label: t('siteRadar.type.worker'),
+                selected: _requestType == 'WORKER',
+                onTap: () => setState(() => _requestType = 'WORKER'),
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: _TypeButton(
-                  label: t('siteRadar.type.equipment'),
-                  selected: _requestType == 'EQUIPMENT',
-                  onTap: () => setState(() => _requestType = 'EQUIPMENT'),
-                ),
+              _TypeButton(
+                label: t('siteRadar.type.equipment'),
+                selected: _requestType == 'EQUIPMENT',
+                onTap: () => setState(() => _requestType = 'EQUIPMENT'),
+              ),
+              _TypeButton(
+                label: t('siteRadar.type.subcontractor'),
+                selected: _requestType == 'SUBCONTRACTOR',
+                onTap: () => setState(() => _requestType = 'SUBCONTRACTOR'),
+              ),
+              _TypeButton(
+                label: t('siteRadar.type.material'),
+                selected: _requestType == 'MATERIAL',
+                onTap: () => setState(() => _requestType = 'MATERIAL'),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          if (_requestType == 'WORKER')
+          if (_requestType == 'WORKER' || _requestType == 'SUBCONTRACTOR')
             TradeCategoryPicker(
               value: _tradeCategory,
               onChanged: (v) => setState(() => _tradeCategory = v),
+            )
+          else if (_requestType == 'MATERIAL')
+            MaterialCategorySinglePicker(
+              value: _materialCategory,
+              onChanged: (v) => setState(() => _materialCategory = v),
             )
           else
             EquipmentCategoryPicker(

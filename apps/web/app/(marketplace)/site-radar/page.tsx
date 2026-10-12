@@ -4,7 +4,14 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { SiteRequestDto, SITE_REQUEST_TYPES, TRADE_CATEGORIES, EQUIPMENT_TYPES, PaginatedResult } from "@imeceburada/shared";
+import {
+  SiteRequestDto,
+  SITE_REQUEST_TYPES,
+  TRADE_CATEGORIES,
+  EQUIPMENT_TYPES,
+  MATERIAL_CATEGORY_ITEMS,
+  PaginatedResult,
+} from "@imeceburada/shared";
 import { apiFetch } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 import { SiteMap } from "@/components/site-map";
@@ -14,9 +21,11 @@ import { useLocale } from "@/lib/i18n/locale-context";
 
 function requestSubtitle(r: SiteRequestDto) {
   const kind =
-    r.requestType === "WORKER"
+    r.requestType === "WORKER" || r.requestType === "SUBCONTRACTOR"
       ? TRADE_CATEGORIES.find((t) => t.value === r.tradeCategory)?.label
-      : EQUIPMENT_TYPES.find((e) => e.value === r.equipmentType)?.label;
+      : r.requestType === "MATERIAL"
+        ? MATERIAL_CATEGORY_ITEMS.find((m) => m.value === r.materialCategory)?.label
+        : EQUIPMENT_TYPES.find((e) => e.value === r.equipmentType)?.label;
   return `${kind ?? ""} · ${r.city} · ${r.neededCount} adet`;
 }
 
@@ -67,13 +76,13 @@ export default function SiteRadarPage() {
         >
           {t("filters.all")}
         </button>
-        {SITE_REQUEST_TYPES.map((t) => (
+        {SITE_REQUEST_TYPES.map((opt) => (
           <button
-            key={t.value}
-            onClick={() => setRequestType(t.value)}
-            className={`rounded-md px-3 py-1.5 ${requestType === t.value ? "bg-gold-500 text-ink-950" : "border border-ink-700 text-silver-400"}`}
+            key={opt.value}
+            onClick={() => setRequestType(opt.value)}
+            className={`rounded-md px-3 py-1.5 ${requestType === opt.value ? "bg-gold-500 text-ink-950" : "border border-ink-700 text-silver-400"}`}
           >
-            {t.label}
+            {opt.label}
           </button>
         ))}
       </div>
