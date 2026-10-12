@@ -128,7 +128,7 @@ export function Header() {
   );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink-800 bg-ink-950/95 backdrop-blur">
+    <header className="sticky top-0 z-[1100] border-b border-ink-800 bg-ink-950/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <Link href="/" className="transition hover:opacity-90" onClick={() => setMenuOpen(false)}>
           <Image
