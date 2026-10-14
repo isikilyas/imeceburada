@@ -1,7 +1,7 @@
 name: imeceburada
 description: İmece Burada - İnşaat sektörüne özel iş ilanları ve canlı piyasa endeksi
 publish_to: "none"
-version: 1.0.4+6
+version: 1.0.5+7
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -33,6 +33,7 @@ flutter:
     - assets/logo.png
     - assets/splash_icon.png
     - assets/app_icon.png
+    - assets/app_icon_mark.png
 
 flutter_native_splash:
   color: "#0a0c10"
@@ -44,8 +45,9 @@ flutter_native_splash:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/app_icon.png"
-  background_color: "#0a0c10"
-  theme_color: "#0a0c10"
-  adaptive_icon_background: "#0a0c10"
-  adaptive_icon_foreground: "assets/app_icon.png"
+  image_path: "assets/app_icon_mark.png"
+  remove_alpha_ios: true
+  background_color: "#d6d5d3"
+  theme_color: "#d6d5d3"
+  adaptive_icon_background: "#d6d5d3"
+  adaptive_icon_foreground: "assets/app_icon_mark.png"
