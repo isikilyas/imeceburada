@@ -539,6 +539,7 @@ const List<Option> employmentTypes = [
   Option('FULL_TIME', 'Tam Zamanlı'),
   Option('PART_TIME', 'Yarı Zamanlı'),
   Option('DAILY', 'Yevmiyeli'),
+  Option('SALARIED', 'Maaşlı'),
   Option('CONTRACT', 'Sözleşmeli / Proje Bazlı'),
 ];
 

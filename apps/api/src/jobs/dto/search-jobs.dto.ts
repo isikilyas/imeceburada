@@ -2,7 +2,7 @@ import { Type } from "class-transformer";
 import { IsIn, IsInt, IsOptional, IsString, Max, Min } from "class-validator";
 import { EmploymentType, LISTING_INTENT_VALUES, ListingIntent } from "@imeceburada/shared";
 
-const EMPLOYMENT_TYPE_VALUES: EmploymentType[] = ["FULL_TIME", "PART_TIME", "DAILY", "CONTRACT"];
+const EMPLOYMENT_TYPE_VALUES: EmploymentType[] = ["FULL_TIME", "PART_TIME", "DAILY", "SALARIED", "CONTRACT"];
 
 export class SearchJobsDto {
   @IsOptional()

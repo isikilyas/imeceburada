@@ -1,6 +1,6 @@
 export type UserRole = "CANDIDATE" | "COMPANY" | "SUPPLIER" | "SUBCONTRACTOR" | "ADMIN";
 
-export type EmploymentType = "FULL_TIME" | "PART_TIME" | "DAILY" | "CONTRACT";
+export type EmploymentType = "FULL_TIME" | "PART_TIME" | "DAILY" | "SALARIED" | "CONTRACT";
 
 export type JobStatus = "ACTIVE" | "CLOSED";
 
@@ -45,6 +45,7 @@ export const EMPLOYMENT_TYPES: { value: EmploymentType; label: string }[] = [
   { value: "FULL_TIME", label: "Tam Zamanlı" },
   { value: "PART_TIME", label: "Yarı Zamanlı" },
   { value: "DAILY", label: "Yevmiyeli" },
+  { value: "SALARIED", label: "Maaşlı" },
   { value: "CONTRACT", label: "Sözleşmeli / Proje Bazlı" },
 ];
 

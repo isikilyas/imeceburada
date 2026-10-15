@@ -19,6 +19,7 @@ enum EmploymentType {
   FULL_TIME
   PART_TIME
   DAILY
+  SALARIED
   CONTRACT
 }
 
