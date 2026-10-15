@@ -6,7 +6,7 @@ import Link from "next/link";
 import { TRADE_FIELDS, TURKISH_PROVINCES, UserRole } from "@imeceburada/shared";
 import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api-client";
-import { CurrencyInput, Field, inputClass, PasswordInput } from "@/components/form";
+import { Field, inputClass, PasswordInput } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-select";
 import { MaterialCategoryMultiSelect } from "@/components/material-category-multi-select";
@@ -87,10 +87,8 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
   const [city, setCity] = useState(TURKISH_PROVINCES[0]);
   const [district, setDistrict] = useState("");
   const [fullName, setFullName] = useState("");
-  const [expectedSalaryMin, setExpectedSalaryMin] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [sector, setSector] = useState("");
-  const [maxSalaryOffer, setMaxSalaryOffer] = useState("");
   const [tradeCategories, setTradeCategories] = useState<string[]>([
     TRADE_FIELDS[0].branches[0].professions[0].value,
   ]);
@@ -111,7 +109,6 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
           city,
           district: districtValue,
           phone,
-          expectedSalaryMin: expectedSalaryMin ? Number(expectedSalaryMin) : undefined,
         });
       } else if (role === "COMPANY") {
         await registerCompany({
@@ -122,7 +119,6 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
           district: districtValue,
           sector: sector || undefined,
           phone,
-          maxSalaryOffer: maxSalaryOffer ? Number(maxSalaryOffer) : undefined,
         });
       } else if (role === "SUPPLIER") {
         await registerSupplier({
@@ -266,12 +262,6 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
                     className={inputClass}
                   />
                 </Field>
-                <Field label="Minimum Maaş Beklentisi">
-                  <CurrencyInput value={expectedSalaryMin} onChange={setExpectedSalaryMin} placeholder="Örn. 30.000" />
-                </Field>
-                <p className="-mt-2 text-xs text-silver-500">
-                  Opsiyonel — girersen firmalar profilinde en az ne kadar maaş istediğini görebilir.
-                </p>
               </>
             ) : role === "COMPANY" ? (
               <>
@@ -287,12 +277,6 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
                 <Field label="Sektör (opsiyonel)">
                   <input value={sector} onChange={(e) => setSector(e.target.value)} className={inputClass} />
                 </Field>
-                <Field label="Verebileceğim Maksimum Maaş">
-                  <CurrencyInput value={maxSalaryOffer} onChange={setMaxSalaryOffer} placeholder="Örn. 50.000" />
-                </Field>
-                <p className="-mt-2 text-xs text-silver-500">
-                  Opsiyonel — girersen adaylar/taşeronlar en fazla ne kadar ödeyebileceğini görebilir.
-                </p>
               </>
             ) : (
               <>

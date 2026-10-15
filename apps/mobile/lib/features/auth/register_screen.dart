@@ -32,8 +32,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController(); // ad soyad ya da şirket/firma adı
   final _descriptionController = TextEditingController();
-  final _expectedSalaryMinController = TextEditingController();
-  final _maxSalaryOfferController = TextEditingController();
 
   bool _isSubmitting = false;
   String? _error;
@@ -67,9 +65,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             city: _city,
             district: _district,
             phone: phone,
-            expectedSalaryMin: _expectedSalaryMinController.text.trim().isEmpty
-                ? null
-                : int.tryParse(_expectedSalaryMinController.text.trim()),
           );
           break;
         case _Role.company:
@@ -80,9 +75,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             city: _city,
             district: _district,
             phone: phone,
-            maxSalaryOffer: _maxSalaryOfferController.text.trim().isEmpty
-                ? null
-                : int.tryParse(_maxSalaryOfferController.text.trim()),
           );
           break;
         case _Role.supplier:
@@ -148,15 +140,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: _nameController,
               decoration: InputDecoration(labelText: t('auth.fullNameLabel')),
             ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _expectedSalaryMinController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: t('auth.expectedSalaryMinLabel'),
-                hintText: '30000',
-              ),
-            ),
           ] else ...[
             TextField(
               controller: _nameController,
@@ -164,17 +147,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               decoration: InputDecoration(labelText: t('auth.companyNameLabel')),
             ),
             CompanyNameWarning(name: _nameController.text),
-            if (_role == _Role.company) ...[
-              const SizedBox(height: 12),
-              TextField(
-                controller: _maxSalaryOfferController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: t('auth.maxSalaryOfferLabel'),
-                  hintText: '50000',
-                ),
-              ),
-            ],
           ],
           const SizedBox(height: 12),
           if (_role == _Role.supplier) ...[
