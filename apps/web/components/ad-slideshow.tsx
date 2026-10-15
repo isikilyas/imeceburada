@@ -63,7 +63,7 @@ export function AdSlideshow() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-3 bg-black" />
 
       {/* Üst ilerleme çubukları */}
-      <div className="absolute inset-x-3 top-5 z-20 flex gap-1">
+      <div className="absolute inset-x-3 top-1 z-20 flex gap-1">
         {SLIDES.map((slide, i) => (
           <div key={slide.key} className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/15">
             {i === index && (
