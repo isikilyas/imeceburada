@@ -55,6 +55,7 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       uploadLogo: "Logo Yükle",
       remove: "Kaldır",
       hint: "JPEG, PNG veya WEBP · en fazla {{size}} MB",
+      saved: "Kaydedildi ✓",
     },
     searchBox: {
       placeholder: "İlan ara...",
@@ -128,6 +129,7 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       uploadLogo: "Upload Logo",
       remove: "Remove",
       hint: "JPEG, PNG, or WEBP · max {{size}} MB",
+      saved: "Saved ✓",
     },
     searchBox: {
       placeholder: "Search listings...",
@@ -201,6 +203,7 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       uploadLogo: "Logo hochladen",
       remove: "Entfernen",
       hint: "JPEG, PNG oder WEBP · max. {{size}} MB",
+      saved: "Gespeichert ✓",
     },
     searchBox: {
       placeholder: "Anzeigen durchsuchen...",
@@ -274,6 +277,7 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       uploadLogo: "Загрузить логотип",
       remove: "Удалить",
       hint: "JPEG, PNG или WEBP · макс. {{size}} МБ",
+      saved: "Сохранено ✓",
     },
     searchBox: {
       placeholder: "Поиск объявлений...",
@@ -347,6 +351,7 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       uploadLogo: "رفع الشعار",
       remove: "إزالة",
       hint: "JPEG أو PNG أو WEBP · بحد أقصى {{size}} ميجابايت",
+      saved: "تم الحفظ ✓",
     },
     searchBox: {
       placeholder: "ابحث عن الإعلانات...",
@@ -420,6 +425,7 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       uploadLogo: "Subir Logo",
       remove: "Eliminar",
       hint: "JPEG, PNG o WEBP · máx. {{size}} MB",
+      saved: "Guardado ✓",
     },
     searchBox: {
       placeholder: "Buscar anuncios...",
@@ -493,6 +499,7 @@ export const formComponentsDict: Record<Locale, Record<string, any>> = {
       uploadLogo: "Télécharger le Logo",
       remove: "Supprimer",
       hint: "JPEG, PNG ou WEBP · max. {{size}} Mo",
+      saved: "Enregistré ✓",
     },
     searchBox: {
       placeholder: "Rechercher des annonces...",

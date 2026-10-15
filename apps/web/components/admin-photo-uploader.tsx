@@ -17,6 +17,7 @@ export function AdminPhotoUploader({ photoUrl }: { photoUrl?: string | null }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -33,12 +34,14 @@ export function AdminPhotoUploader({ photoUrl }: { photoUrl?: string | null }) {
     }
 
     setError(null);
+    setSuccess(false);
     setIsUploading(true);
     try {
       const formData = new FormData();
       formData.append("photo", file);
       await authFetch("/users/me/admin-photo", { method: "POST", body: formData });
       queryClient.invalidateQueries({ queryKey: ["my-admin-profile"] });
+      setSuccess(true);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("formComponents.photoUploader.uploadFailed"));
     } finally {
@@ -48,10 +51,12 @@ export function AdminPhotoUploader({ photoUrl }: { photoUrl?: string | null }) {
 
   async function handleRemove() {
     setError(null);
+    setSuccess(false);
     setIsUploading(true);
     try {
       await authFetch("/users/me/admin-photo", { method: "DELETE" });
       queryClient.invalidateQueries({ queryKey: ["my-admin-profile"] });
+      setSuccess(true);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("formComponents.photoUploader.removeFailed"));
     } finally {
@@ -91,6 +96,7 @@ export function AdminPhotoUploader({ photoUrl }: { photoUrl?: string | null }) {
           {t("formComponents.photoUploader.hint", { size: MAX_SIZE_MB })}
         </p>
         {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
+        {success && <p className="mt-1 text-xs text-green-400">{t("formComponents.photoUploader.saved")}</p>}
         <input
           ref={fileInputRef}
           type="file"
