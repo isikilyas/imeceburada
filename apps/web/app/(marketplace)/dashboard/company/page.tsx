@@ -10,6 +10,7 @@ import {
   JobPostingDto,
   LISTING_INTENTS,
   ListingIntent,
+  TRADE_CATEGORIES,
   TRADE_FIELDS,
   TURKISH_PROVINCES,
 } from "@imeceburada/shared";
@@ -51,11 +52,16 @@ export default function CompanyDashboardPage() {
     setError(null);
     setIsSubmitting(true);
     try {
+      const tradeLabel = TRADE_CATEGORIES.find((tc) => tc.value === form.tradeCategory)?.label ?? form.tradeCategory;
       await authFetch("/jobs", {
         method: "POST",
-        body: JSON.stringify({ ...form, district: form.district || undefined }),
+        body: JSON.stringify({
+          ...form,
+          title: `${tradeLabel} Aranıyor`,
+          district: form.district || undefined,
+        }),
       });
-      setForm({ ...form, title: "", description: "" });
+      setForm({ ...form, description: "" });
       queryClient.invalidateQueries({ queryKey: ["my-jobs"] });
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("dashboard.form.createFailed"));
@@ -129,14 +135,6 @@ export default function CompanyDashboardPage() {
       <section>
         <h2 className="mb-4 text-xl font-semibold text-silver-300">{t("dashboard.company.newJobHeading")}</h2>
         <form onSubmit={handleCreate} className="space-y-4">
-          <Field label={t("dashboard.company.titleLabel")}>
-            <input
-              required
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className={inputClass}
-            />
-          </Field>
           <Field label={t("dashboard.company.listingTypeLabel")}>
             <select
               value={form.listingType}
