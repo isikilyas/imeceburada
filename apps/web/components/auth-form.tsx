@@ -16,10 +16,17 @@ import { useLocale } from "@/lib/i18n/locale-context";
 type RegisterableRole = Extract<UserRole, "CANDIDATE" | "COMPANY" | "SUPPLIER" | "SUBCONTRACTOR">;
 
 const ROLE_LABELS: Record<RegisterableRole, string> = {
-  CANDIDATE: "İş Arıyorum",
-  COMPANY: "Personel / Taşeron Arıyorum",
-  SUPPLIER: "Malzeme / Ekipman Satıyorum",
-  SUBCONTRACTOR: "Taşeron Olarak İş Arıyorum",
+  CANDIDATE: "İş Arayan Olarak",
+  COMPANY: "Firma Olarak",
+  SUBCONTRACTOR: "Taşeron Olarak",
+  SUPPLIER: "Tedarikçi Firma Olarak",
+};
+
+const ROLE_DESCRIPTIONS: Record<RegisterableRole, string> = {
+  CANDIDATE: "Kendi adına iş arıyorsun, firmalar seni bulup iletişime geçsin.",
+  COMPANY: "Projen için personel, ekip veya taşeron arıyorsun.",
+  SUBCONTRACTOR: "Bir işi anahtar teslim üstleniyorsun (ör. kalıp, sıva taşeronluğu).",
+  SUPPLIER: "Malzeme veya ekipman satıyor ya da kiralıyorsun.",
 };
 
 const REMEMBERED_IDENTIFIER_KEY = "imeceburada.rememberedIdentifier";
@@ -245,6 +252,8 @@ export function AuthForm({ defaultTab }: AuthFormProps) {
               </button>
             ))}
           </div>
+
+          <p className="-mt-4 mb-6 text-xs text-silver-500">{ROLE_DESCRIPTIONS[role]}</p>
 
           <form onSubmit={handleRegisterSubmit} className="space-y-4">
             {role === "CANDIDATE" ? (
