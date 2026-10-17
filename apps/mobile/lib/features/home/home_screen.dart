@@ -91,7 +91,7 @@ class HomeScreen extends StatelessWidget {
     final searchOptions = <_SearchOption>[
       _SearchOption(
         icon: Icons.edit_note,
-        labelKey: 'home.searchOptionCreateListing',
+        labelKey: authUser?.role == 'CANDIDATE' ? 'jobs.applications.title' : 'home.searchOptionCreateListing',
         onTap: createListingTap,
       ),
       _SearchOption(
