@@ -101,6 +101,28 @@ class _CandidateDetailScreenState extends State<CandidateDetailScreen> {
             style: const TextStyle(color: AppColors.gold400, fontSize: 12),
           ),
         ),
+        if (candidate.expectedSalaryMin != null) ...[
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppColors.gold500.withValues(alpha: 0.3)),
+              color: AppColors.gold500.withValues(alpha: 0.05),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(t('candidates.detail.expectedRateLabel'), style: const TextStyle(color: AppColors.silver500, fontSize: 11)),
+                const SizedBox(height: 2),
+                Text(
+                  '${candidate.expectedSalaryMin} ₺${_ratePeriodSuffix(candidate.expectedSalaryPeriod)}',
+                  style: const TextStyle(color: AppColors.gold400, fontSize: 16, fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
+          ),
+        ],
         if (candidate.skills.isNotEmpty) ...[
           const SizedBox(height: 12),
           Wrap(
@@ -146,5 +168,17 @@ class _CandidateDetailScreenState extends State<CandidateDetailScreen> {
         ],
       ],
     );
+  }
+
+  String _ratePeriodSuffix(String? period) {
+    switch (period) {
+      case 'DAILY':
+        return '/gün';
+      case 'PER_SQUARE_METER':
+        return '/m²';
+      case 'MONTHLY':
+      default:
+        return '/ay';
+    }
   }
 }

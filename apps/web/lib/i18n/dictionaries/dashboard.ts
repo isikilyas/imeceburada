@@ -20,7 +20,8 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     candidate: {
       fullNameLabel: "Ad Soyad",
       experienceLabel: "Deneyim (yıl)",
-      expectedSalaryMinLabel: "Minimum Maaş Beklentisi",
+      expectedSalaryPeriodLabel: "Ücret Birimi",
+      expectedSalaryMinLabel: "Beklenen Tutar (₺)",
       phoneLabel: "Telefon",
       workPreferencesLabel: "Çalışma Şekli Tercihlerim",
       machineSpecialtiesLabel: "Uzman Olduğum Hafriyat Makineleri",
@@ -140,7 +141,8 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     candidate: {
       fullNameLabel: "Full Name",
       experienceLabel: "Experience (years)",
-      expectedSalaryMinLabel: "Minimum Expected Salary",
+      expectedSalaryPeriodLabel: "Rate Unit",
+      expectedSalaryMinLabel: "Expected Amount (₺)",
       phoneLabel: "Phone",
       workPreferencesLabel: "My Employment Type Preferences",
       machineSpecialtiesLabel: "Excavation Machines I Specialize In",
@@ -260,7 +262,8 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     candidate: {
       fullNameLabel: "Name",
       experienceLabel: "Erfahrung (Jahre)",
-      expectedSalaryMinLabel: "Mindestgehaltsvorstellung",
+      expectedSalaryPeriodLabel: "Vergütungseinheit",
+      expectedSalaryMinLabel: "Erwarteter Betrag (₺)",
       phoneLabel: "Telefon",
       workPreferencesLabel: "Meine Beschäftigungsart-Präferenzen",
       machineSpecialtiesLabel: "Erdbaumaschinen, auf die ich spezialisiert bin",
@@ -380,7 +383,8 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     candidate: {
       fullNameLabel: "Имя и фамилия",
       experienceLabel: "Опыт (лет)",
-      expectedSalaryMinLabel: "Минимальная ожидаемая зарплата",
+      expectedSalaryPeriodLabel: "Единица оплаты",
+      expectedSalaryMinLabel: "Ожидаемая сумма (₺)",
       phoneLabel: "Телефон",
       workPreferencesLabel: "Мои предпочтения по типу занятости",
       machineSpecialtiesLabel: "Землеройная техника, на которой я специализируюсь",
@@ -500,7 +504,8 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     candidate: {
       fullNameLabel: "الاسم الكامل",
       experienceLabel: "الخبرة (سنوات)",
-      expectedSalaryMinLabel: "الحد الأدنى للراتب المتوقع",
+      expectedSalaryPeriodLabel: "وحدة الأجر",
+      expectedSalaryMinLabel: "المبلغ المتوقع (₺)",
       phoneLabel: "الهاتف",
       workPreferencesLabel: "تفضيلاتي لنوع التوظيف",
       machineSpecialtiesLabel: "معدات الحفر التي أتخصص بها",
@@ -620,7 +625,8 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     candidate: {
       fullNameLabel: "Nombre completo",
       experienceLabel: "Experiencia (años)",
-      expectedSalaryMinLabel: "Expectativa Salarial Mínima",
+      expectedSalaryPeriodLabel: "Unidad de Tarifa",
+      expectedSalaryMinLabel: "Monto Esperado (₺)",
       phoneLabel: "Teléfono",
       workPreferencesLabel: "Mis preferencias de tipo de empleo",
       machineSpecialtiesLabel: "Máquinas de excavación en las que me especializo",
@@ -740,7 +746,8 @@ export const dashboardDict: Record<Locale, Record<string, any>> = {
     candidate: {
       fullNameLabel: "Nom complet",
       experienceLabel: "Expérience (années)",
-      expectedSalaryMinLabel: "Prétention Salariale Minimale",
+      expectedSalaryPeriodLabel: "Unité de Rémunération",
+      expectedSalaryMinLabel: "Montant Attendu (₺)",
       phoneLabel: "Téléphone",
       workPreferencesLabel: "Mes préférences de type d'emploi",
       machineSpecialtiesLabel: "Engins de terrassement dans lesquels je suis spécialisé",

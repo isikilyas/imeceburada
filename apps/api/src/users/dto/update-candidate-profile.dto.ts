@@ -1,7 +1,13 @@
 import { IsArray, IsBoolean, IsDateString, IsIn, IsInt, IsOptional, IsString, Length, Max, Min, MaxLength } from "class-validator";
-import { AvailabilityStatus, EXCAVATION_MACHINE_TYPE_VALUES, WORK_PREFERENCE_VALUES } from "@imeceburada/shared";
+import {
+  AvailabilityStatus,
+  EXCAVATION_MACHINE_TYPE_VALUES,
+  ExpectedRatePeriod,
+  WORK_PREFERENCE_VALUES,
+} from "@imeceburada/shared";
 
 const AVAILABILITY_STATUS_VALUES: AvailabilityStatus[] = ["AVAILABLE", "BUSY"];
+const EXPECTED_RATE_PERIOD_VALUES: ExpectedRatePeriod[] = ["DAILY", "MONTHLY", "PER_SQUARE_METER"];
 
 export class UpdateCandidateProfileDto {
   @IsOptional()
@@ -43,6 +49,10 @@ export class UpdateCandidateProfileDto {
   @IsInt()
   @Min(0)
   expectedSalaryMin?: number;
+
+  @IsOptional()
+  @IsIn(EXPECTED_RATE_PERIOD_VALUES)
+  expectedSalaryPeriod?: ExpectedRatePeriod;
 
   @IsOptional()
   @IsInt()

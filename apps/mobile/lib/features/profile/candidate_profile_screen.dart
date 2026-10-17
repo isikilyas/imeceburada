@@ -6,6 +6,7 @@ import '../../core/constants.dart';
 import '../../core/locale_store.dart';
 import '../../models/candidate_profile.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/app_dropdown.dart';
 import '../../widgets/multi_checkbox_list.dart';
 import '../../widgets/province_district_picker.dart';
 import '../../widgets/trade_category_picker.dart';
@@ -26,6 +27,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   String _district = '';
   final _experienceYearsController = TextEditingController(text: '0');
   final _phoneController = TextEditingController();
+  final _expectedSalaryController = TextEditingController();
+  String _expectedSalaryPeriod = 'MONTHLY';
   List<String> _workPreferences = [];
   bool _isPublic = false;
   bool _phoneVisible = false;
@@ -45,6 +48,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   void dispose() {
     _experienceYearsController.dispose();
     _phoneController.dispose();
+    _expectedSalaryController.dispose();
     super.dispose();
   }
 
@@ -62,6 +66,8 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
         _district = profile.district ?? '';
         _experienceYearsController.text = profile.experienceYears.toString();
         _phoneController.text = profile.phone ?? '';
+        _expectedSalaryController.text = profile.expectedSalaryMin?.toString() ?? '';
+        _expectedSalaryPeriod = profile.expectedSalaryPeriod ?? 'MONTHLY';
         _workPreferences = profile.workPreferences;
         _isPublic = profile.isPublic;
         _phoneVisible = profile.phoneVisible;
@@ -91,6 +97,9 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
         if (_district.isNotEmpty) 'district': _district,
         'experienceYears': int.tryParse(_experienceYearsController.text.trim()) ?? 0,
         'phone': _phoneController.text.trim(),
+        if (_expectedSalaryController.text.trim().isNotEmpty)
+          'expectedSalaryMin': int.tryParse(_expectedSalaryController.text.trim()),
+        'expectedSalaryPeriod': _expectedSalaryPeriod,
         'workPreferences': _workPreferences,
         'isPublic': _isPublic,
         'phoneVisible': _phoneVisible,
@@ -142,6 +151,21 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                       decoration: InputDecoration(
                         labelText: t('profile.candidateProfile.phoneLabel'),
                         hintText: '+905551234567',
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    AppDropdown(
+                      label: t('profile.candidateProfile.expectedSalaryPeriodLabel'),
+                      value: _expectedSalaryPeriod,
+                      options: expectedRatePeriods,
+                      onChanged: (v) => setState(() => _expectedSalaryPeriod = v),
+                    ),
+                    TextField(
+                      controller: _expectedSalaryController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: t('profile.candidateProfile.expectedSalaryMinLabel'),
+                        hintText: '30000',
                       ),
                     ),
                     const SizedBox(height: 14),

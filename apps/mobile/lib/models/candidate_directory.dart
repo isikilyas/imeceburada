@@ -9,6 +9,8 @@ class CandidateDirectoryEntry {
   final List<String> workPreferences;
   final String? phone;
   final String availabilityStatus;
+  final int? expectedSalaryMin;
+  final String? expectedSalaryPeriod;
 
   const CandidateDirectoryEntry({
     required this.id,
@@ -21,6 +23,8 @@ class CandidateDirectoryEntry {
     required this.workPreferences,
     this.phone,
     this.availabilityStatus = 'AVAILABLE',
+    this.expectedSalaryMin,
+    this.expectedSalaryPeriod,
   });
 
   factory CandidateDirectoryEntry.fromJson(Map<String, dynamic> json) => CandidateDirectoryEntry(
@@ -34,5 +38,7 @@ class CandidateDirectoryEntry {
         workPreferences: (json['workPreferences'] as List?)?.map((e) => e as String).toList() ?? [],
         phone: json['phone'] as String?,
         availabilityStatus: json['availabilityStatus'] as String? ?? 'AVAILABLE',
+        expectedSalaryMin: json['expectedSalaryMin'] as int?,
+        expectedSalaryPeriod: json['expectedSalaryPeriod'] as String?,
       );
 }

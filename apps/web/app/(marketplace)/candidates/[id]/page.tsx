@@ -3,6 +3,12 @@
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { CandidateDirectoryDetailDto, EXCAVATION_MACHINE_TYPES, TRADE_CATEGORIES } from "@imeceburada/shared";
+
+const RATE_PERIOD_SUFFIX: Record<string, string> = {
+  DAILY: "/gün",
+  MONTHLY: "/ay",
+  PER_SQUARE_METER: "/m²",
+};
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { WhatsAppContactButton } from "@/components/whatsapp-contact-button";
@@ -81,9 +87,10 @@ export default function CandidateDetailPage() {
 
       {candidate.expectedSalaryMin && (
         <div className="mt-4 rounded-lg border border-gold-500/30 bg-gold-500/5 px-4 py-3">
-          <p className="text-xs text-silver-500">Minimum Maaş Beklentisi</p>
+          <p className="text-xs text-silver-500">Beklenen Ücret</p>
           <p className="text-lg font-semibold text-gold-400">
             {candidate.expectedSalaryMin.toLocaleString("tr-TR")} ₺
+            {RATE_PERIOD_SUFFIX[candidate.expectedSalaryPeriod ?? "MONTHLY"]}
           </p>
         </div>
       )}

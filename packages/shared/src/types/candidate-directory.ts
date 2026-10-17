@@ -1,4 +1,4 @@
-import { AvailabilityStatus } from "./enums";
+import { AvailabilityStatus, ExpectedRatePeriod } from "./enums";
 
 export interface CandidateDirectoryEntryDto {
   id: string;
@@ -17,6 +17,7 @@ export interface CandidateDirectoryEntryDto {
 export interface CandidateDirectoryDetailDto extends CandidateDirectoryEntryDto {
   phone?: string | null;
   expectedSalaryMin?: number | null;
+  expectedSalaryPeriod?: ExpectedRatePeriod | null;
   averageRating?: number | null;
   reviewCount?: number;
   /** Sadece availabilityStatus BUSY iken anlamlı. */
