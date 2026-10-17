@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
+import '../../core/auth_store.dart';
 import '../../core/constants.dart';
 import '../../core/locale_store.dart';
 import '../../models/index_point.dart';
@@ -76,6 +77,8 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
   @override
   Widget build(BuildContext context) {
     final t = context.watch<LocaleStore>().t;
+    final userRole = context.watch<AuthStore>().user?.role;
+    final canShare = _mode == _IndexMode.labor || userRole == 'SUPPLIER';
     return Scaffold(
       appBar: AppBar(
         title: Text(t('marketIndex.title')),
@@ -96,18 +99,20 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          final shared = await Navigator.of(context).push<bool>(
-            MaterialPageRoute(builder: (_) => SubmitPriceScreen(isLabor: _mode == _IndexMode.labor)),
-          );
-          if (shared == true) _load();
-        },
-        backgroundColor: AppColors.gold500,
-        foregroundColor: AppColors.ink950,
-        icon: const Icon(Icons.add),
-        label: Text(t('marketIndex.shareInfo')),
-      ),
+      floatingActionButton: canShare
+          ? FloatingActionButton.extended(
+              onPressed: () async {
+                final shared = await Navigator.of(context).push<bool>(
+                  MaterialPageRoute(builder: (_) => SubmitPriceScreen(isLabor: _mode == _IndexMode.labor)),
+                );
+                if (shared == true) _load();
+              },
+              backgroundColor: AppColors.gold500,
+              foregroundColor: AppColors.ink950,
+              icon: const Icon(Icons.add),
+              label: Text(t('marketIndex.shareInfo')),
+            )
+          : null,
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
