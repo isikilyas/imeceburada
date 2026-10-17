@@ -174,8 +174,14 @@ class _CandidateDetailScreenState extends State<CandidateDetailScreen> {
     switch (period) {
       case 'DAILY':
         return '/gün';
+      case 'HOURLY':
+        return '/saat';
       case 'PER_SQUARE_METER':
         return '/m²';
+      case 'PER_LINEAR_METER':
+        return '/mtül';
+      case 'LUMP_SUM':
+        return ' (götürü)';
       case 'MONTHLY':
       default:
         return '/ay';

@@ -6,8 +6,11 @@ import { CandidateDirectoryDetailDto, EXCAVATION_MACHINE_TYPES, TRADE_CATEGORIES
 
 const RATE_PERIOD_SUFFIX: Record<string, string> = {
   DAILY: "/gün",
+  HOURLY: "/saat",
   MONTHLY: "/ay",
   PER_SQUARE_METER: "/m²",
+  PER_LINEAR_METER: "/mtül",
+  LUMP_SUM: " (götürü)",
 };
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";

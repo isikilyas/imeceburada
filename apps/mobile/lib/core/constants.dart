@@ -562,8 +562,11 @@ const List<Option> priceSubmissionTypes = [
 
 const List<Option> expectedRatePeriods = [
   Option('DAILY', 'Yevmiye'),
+  Option('HOURLY', 'Saatlik'),
   Option('MONTHLY', 'Maaş'),
   Option('PER_SQUARE_METER', 'Metrekare'),
+  Option('PER_LINEAR_METER', 'Metretül'),
+  Option('LUMP_SUM', 'Götürü / Proje Bazı'),
 ];
 
 class EquipmentCategory {

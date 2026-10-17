@@ -7,7 +7,14 @@ import {
 } from "@imeceburada/shared";
 
 const AVAILABILITY_STATUS_VALUES: AvailabilityStatus[] = ["AVAILABLE", "BUSY"];
-const EXPECTED_RATE_PERIOD_VALUES: ExpectedRatePeriod[] = ["DAILY", "MONTHLY", "PER_SQUARE_METER"];
+const EXPECTED_RATE_PERIOD_VALUES: ExpectedRatePeriod[] = [
+  "DAILY",
+  "HOURLY",
+  "MONTHLY",
+  "PER_SQUARE_METER",
+  "PER_LINEAR_METER",
+  "LUMP_SUM",
+];
 
 export class UpdateCandidateProfileDto {
   @IsOptional()
