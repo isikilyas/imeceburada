@@ -102,16 +102,11 @@ export default function MaterialIndexPage() {
         )}
       </div>
 
+      {(!user || user.role === "SUPPLIER") && (
       <div>
         <h2 className="mb-4 text-xl font-semibold text-silver-300">Malzeme Fiyatı Paylaş</h2>
         {authLoading && <p className="text-silver-500">Yükleniyor...</p>}
         {!authLoading && !user && <p className="text-sm text-silver-500">Veri paylaşmak için giriş yapmalısın.</p>}
-        {user && user.role !== "SUPPLIER" && (
-          <p className="text-sm text-silver-500">
-            Malzeme fiyatı paylaşmak sadece tedarikçi hesapları için geçerlidir — sen endeksi görüntüleyip
-            sorgulayabilirsin.
-          </p>
-        )}
         {user && user.role === "SUPPLIER" && (
           <>
             <p className="mb-4 rounded-md border border-gold-500/30 bg-ink-800 p-3 text-xs text-silver-400">
@@ -179,6 +174,7 @@ export default function MaterialIndexPage() {
           </>
         )}
       </div>
+      )}
     </div>
   );
 }
