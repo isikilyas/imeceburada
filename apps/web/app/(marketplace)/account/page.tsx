@@ -215,10 +215,6 @@ function CandidateAccountPanel() {
                 />
               </Field>
               <p className="-mt-2 text-xs text-silver-500">{t("accountPanel.serviceRadiusHint")}</p>
-              <Field label={t("accountPanel.addressLabel")}>
-                <input value={address} onChange={(e) => setAddress(e.target.value)} className={inputClass} />
-              </Field>
-              <p className="-mt-2 text-xs text-silver-500">{t("accountPanel.addressHint")}</p>
               <Field label={t("accountPanel.bioLabel")}>
                 <textarea
                   rows={3}
@@ -570,10 +566,6 @@ function CompanyAccountPanel() {
 
           {tab === "corporate" && (
             <>
-              <Field label={t("accountPanel.addressLabel")}>
-                <input value={address} onChange={(e) => setAddress(e.target.value)} className={inputClass} />
-              </Field>
-              <p className="-mt-2 text-xs text-silver-500">{t("accountPanel.addressHint")}</p>
               <Field label={t("accountPanel.corporate.descriptionLabel")}>
                 <textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} className={inputClass} />
               </Field>
@@ -819,10 +811,6 @@ function SupplierAccountPanel() {
 
           {tab === "corporate" && (
             <>
-              <Field label={t("accountPanel.addressLabel")}>
-                <input value={address} onChange={(e) => setAddress(e.target.value)} className={inputClass} />
-              </Field>
-              <p className="-mt-2 text-xs text-silver-500">{t("accountPanel.addressHint")}</p>
               <Field label={t("accountPanel.corporate.descriptionLabel")}>
                 <textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} className={inputClass} />
               </Field>
@@ -1069,10 +1057,6 @@ function SubcontractorAccountPanel() {
 
           {tab === "corporate" && (
             <>
-              <Field label={t("accountPanel.addressLabel")}>
-                <input value={address} onChange={(e) => setAddress(e.target.value)} className={inputClass} />
-              </Field>
-              <p className="-mt-2 text-xs text-silver-500">{t("accountPanel.addressHint")}</p>
               <Field label={t("dashboard.subcontractor.descriptionLabel")}>
                 <textarea
                   rows={3}
