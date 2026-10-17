@@ -94,6 +94,9 @@ export function RoleQuickAccess() {
       icon: "edit_note",
       label: user.role === "CANDIDATE" ? t("dashboard.candidate.applicationsHeading") : t("home.quickAccessSearchCreateListing"),
     },
+    ...(user.role === "CANDIDATE"
+      ? [{ href: "/account", icon: "campaign", label: t("home.quickAccessPostCandidateAd") }]
+      : []),
     { href: "/jobs", icon: "work_outline", label: t("home.quickAccessSearchJobs") },
     { href: "/candidates", icon: "engineering", label: t("home.quickAccessSearchCandidates") },
     { href: "/subcontractors", icon: "apartment", label: t("home.quickAccessSearchSubcontractors") },
