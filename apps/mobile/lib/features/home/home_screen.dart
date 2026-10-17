@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/api_client.dart';
 import '../../core/auth_store.dart';
 import '../../core/locale_store.dart';
 import '../../theme/app_theme.dart';
@@ -180,6 +181,10 @@ class HomeScreen extends StatelessWidget {
                         ),
                     ],
                   ),
+                  const SizedBox(height: 28),
+                  const FadeInUp(delay: Duration(milliseconds: 260), child: _PlatformStats()),
+                  const SizedBox(height: 32),
+                  const FadeInUp(delay: Duration(milliseconds: 320), child: _HowItWorks()),
                 ]),
               ),
             ),
@@ -380,6 +385,192 @@ class _HomeCategoryCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Ana sayfada web'deki "Platformda Şu An" paneliyle eşleşen canlı sayaçlar.
+class _PlatformStats extends StatefulWidget {
+  const _PlatformStats();
+
+  @override
+  State<_PlatformStats> createState() => _PlatformStatsState();
+}
+
+class _PlatformStatsState extends State<_PlatformStats> {
+  final _api = ApiClient();
+  late final Future<List<int>> _future = _loadTotals();
+
+  Future<List<int>> _loadTotals() async {
+    try {
+      final results = await Future.wait([
+        _api.get('/jobs', query: {'pageSize': '1'}),
+        _api.get('/equipment', query: {'pageSize': '1'}),
+        _api.get('/material-listings', query: {'pageSize': '1'}),
+      ]);
+      return results.map((r) => ((r as Map)['total'] as num?)?.toInt() ?? 0).toList();
+    } catch (_) {
+      return const [0, 0, 0];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
+    return FutureBuilder<List<int>>(
+      future: _future,
+      builder: (context, snapshot) {
+        final totals = snapshot.data ?? const [0, 0, 0];
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+          decoration: BoxDecoration(
+            color: AppColors.ink900.withValues(alpha: 0.6),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.ink700),
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 7,
+                    height: 7,
+                    decoration: const BoxDecoration(color: Color(0xFF34D399), shape: BoxShape.circle),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    t('home.statsHeading'),
+                    style: const TextStyle(
+                      color: AppColors.silver500,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.6,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                childAspectRatio: 1.7,
+                children: [
+                  _StatTile(icon: Icons.work_outline, value: totals[0], label: t('home.statJobs')),
+                  _StatTile(icon: Icons.construction_outlined, value: totals[1], label: t('home.statEquipment')),
+                  _StatTile(icon: Icons.inventory_2_outlined, value: totals[2], label: t('home.statMaterials')),
+                  _StatTile(icon: Icons.map_outlined, value: 81, label: t('home.statProvinces')),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _StatTile extends StatelessWidget {
+  final IconData icon;
+  final int value;
+  final String label;
+
+  const _StatTile({required this.icon, required this.value, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 36,
+          height: 36,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: AppColors.gold500.withValues(alpha: 0.1),
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.gold500.withValues(alpha: 0.25)),
+          ),
+          child: Icon(icon, color: AppColors.gold400, size: 17),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          '$value',
+          style: const TextStyle(color: AppColors.gold400, fontSize: 20, fontWeight: FontWeight.w700),
+        ),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(color: AppColors.silver500, fontSize: 10),
+        ),
+      ],
+    );
+  }
+}
+
+/// Ana sayfadaki "Nasıl Çalışır" 3 adımlık anlatım bloğu — web'deki karşılığıyla aynı metinler.
+class _HowItWorks extends StatelessWidget {
+  const _HowItWorks();
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.watch<LocaleStore>().t;
+    final steps = [
+      ('01', t('home.step1Title'), t('home.step1Desc')),
+      ('02', t('home.step2Title'), t('home.step2Desc')),
+      ('03', t('home.step3Title'), t('home.step3Desc')),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          t('home.howItWorks'),
+          style: const TextStyle(color: AppColors.silver300, fontSize: 18, fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 18),
+        for (final step in steps)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 36,
+                  height: 36,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.gold500),
+                  ),
+                  child: Text(
+                    step.$1,
+                    style: const TextStyle(color: AppColors.gold400, fontWeight: FontWeight.w700, fontSize: 13),
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        step.$2,
+                        style: const TextStyle(color: AppColors.silver300, fontWeight: FontWeight.w600, fontSize: 14.5),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        step.$3,
+                        style: const TextStyle(color: AppColors.silver500, fontSize: 12.5, height: 1.4),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }
