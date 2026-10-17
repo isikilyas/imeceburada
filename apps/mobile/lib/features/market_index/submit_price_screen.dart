@@ -82,10 +82,21 @@ class _SubmitPriceScreenState extends State<SubmitPriceScreen> {
   @override
   Widget build(BuildContext context) {
     final t = context.watch<LocaleStore>().t;
+    final userRole = context.watch<AuthStore>().user?.role;
+    final materialBlocked = !widget.isLabor && userRole != 'SUPPLIER';
+
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.isLabor ? t('marketIndex.submit.laborTitle') : t('marketIndex.submit.materialTitle'))),
-      body: ListView(
+      body: materialBlocked
+          ? Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                t('marketIndex.submit.materialSupplierOnly'),
+                style: const TextStyle(color: AppColors.silver500),
+              ),
+            )
+          : ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Container(
