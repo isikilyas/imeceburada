@@ -12,6 +12,7 @@ import '../equipment/equipment_list_screen.dart';
 import '../jobs/company_jobs_screen.dart';
 import '../jobs/my_applications_screen.dart';
 import '../material_listings/material_listings_screen.dart';
+import '../profile/candidate_profile_screen.dart';
 import '../material_listings/supplier_dashboard_screen.dart';
 import '../subcontractors/subcontractor_dashboard_screen.dart';
 import '../subcontractors/subcontractor_directory_screen.dart';
@@ -95,6 +96,14 @@ class HomeScreen extends StatelessWidget {
         labelKey: authUser?.role == 'CANDIDATE' ? 'jobs.applications.title' : 'home.searchOptionCreateListing',
         onTap: createListingTap,
       ),
+      if (authUser?.role == 'CANDIDATE')
+        _SearchOption(
+          icon: Icons.campaign_outlined,
+          labelKey: 'home.searchOptionPostCandidateAd',
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const CandidateProfileScreen()),
+          ),
+        ),
       _SearchOption(
         icon: Icons.work_outline,
         labelKey: 'home.searchOptionJobs',
