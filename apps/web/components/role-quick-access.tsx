@@ -89,7 +89,11 @@ export function RoleQuickAccess() {
             : "/account";
 
   const searchOptions: QuickLink[] = [
-    { href: dashboardHref, icon: "edit_note", label: t("home.quickAccessSearchCreateListing") },
+    {
+      href: dashboardHref,
+      icon: "edit_note",
+      label: user.role === "CANDIDATE" ? t("dashboard.candidate.applicationsHeading") : t("home.quickAccessSearchCreateListing"),
+    },
     { href: "/jobs", icon: "work_outline", label: t("home.quickAccessSearchJobs") },
     { href: "/candidates", icon: "engineering", label: t("home.quickAccessSearchCandidates") },
     { href: "/subcontractors", icon: "apartment", label: t("home.quickAccessSearchSubcontractors") },
