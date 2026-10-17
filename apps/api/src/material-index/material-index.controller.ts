@@ -3,6 +3,8 @@ import { MaterialIndexService } from "./material-index.service";
 import { CreateMaterialSubmissionDto } from "./dto/create-material-submission.dto";
 import { MaterialIndexQueryDto } from "./dto/material-index-query.dto";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { RolesGuard } from "../auth/guards/roles.guard";
+import { Roles } from "../auth/decorators/roles.decorator";
 import { CurrentUser } from "../auth/decorators/current-user.decorator";
 import { RequestUser } from "../auth/types/request-user";
 
@@ -16,6 +18,8 @@ export class MaterialIndexController {
     return this.materialIndexService.getIndex(query);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPPLIER")
   @Post()
   submit(@CurrentUser() user: RequestUser, @Body() dto: CreateMaterialSubmissionDto) {
     return this.materialIndexService.submit(user, dto);

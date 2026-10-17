@@ -17,6 +17,8 @@ const Map<String, Map<String, String>> marketIndexDict = {
     'marketIndex.submit.failed': 'Gönderilemedi',
     'marketIndex.submit.laborTitle': 'Yevmiye/Maaş Bilgisi Paylaş',
     'marketIndex.submit.materialTitle': 'Malzeme Fiyatı Paylaş',
+    'marketIndex.submit.materialSupplierOnly':
+        'Malzeme fiyatı paylaşmak sadece tedarikçi hesapları için geçerlidir — sen endeksi görüntüleyip sorgulayabilirsin.',
     'marketIndex.submit.notice':
         'Lütfen gerçek ve güncel bilgi paylaş. Yanlış veya uydurma veri, herkesin gördüğü endeksin güvenilirliğini bozar.',
     'marketIndex.submit.materialLabel': 'Malzeme',
@@ -46,6 +48,8 @@ const Map<String, Map<String, String>> marketIndexDict = {
     'marketIndex.submit.failed': 'Could not be submitted',
     'marketIndex.submit.laborTitle': 'Share Wage Information',
     'marketIndex.submit.materialTitle': 'Share Material Price',
+    'marketIndex.submit.materialSupplierOnly':
+        'Sharing material prices is only available to supplier accounts — you can view and query the index.',
     'marketIndex.submit.notice':
         'Please share real and up-to-date information. False or fabricated data undermines the reliability of the index everyone sees.',
     'marketIndex.submit.materialLabel': 'Material',
@@ -75,6 +79,8 @@ const Map<String, Map<String, String>> marketIndexDict = {
     'marketIndex.submit.failed': 'Konnte nicht gesendet werden',
     'marketIndex.submit.laborTitle': 'Lohn-/Gehaltsinfo Teilen',
     'marketIndex.submit.materialTitle': 'Materialpreis Teilen',
+    'marketIndex.submit.materialSupplierOnly':
+        'Materialpreise teilen ist nur für Lieferantenkonten möglich — du kannst den Index ansehen und abfragen.',
     'marketIndex.submit.notice':
         'Bitte teile echte und aktuelle Informationen. Falsche oder erfundene Daten untergraben die Zuverlässigkeit des von allen gesehenen Index.',
     'marketIndex.submit.materialLabel': 'Material',
@@ -104,6 +110,8 @@ const Map<String, Map<String, String>> marketIndexDict = {
     'marketIndex.submit.failed': 'Не удалось отправить',
     'marketIndex.submit.laborTitle': 'Поделиться данными о зарплате',
     'marketIndex.submit.materialTitle': 'Поделиться ценой материала',
+    'marketIndex.submit.materialSupplierOnly':
+        'Делиться ценой материала могут только аккаунты поставщиков — вы можете просматривать и проверять индекс.',
     'marketIndex.submit.notice':
         'Пожалуйста, делитесь достоверной и актуальной информацией. Ложные или выдуманные данные подрывают надёжность индекса, который видят все.',
     'marketIndex.submit.materialLabel': 'Материал',
@@ -133,6 +141,8 @@ const Map<String, Map<String, String>> marketIndexDict = {
     'marketIndex.submit.failed': 'تعذّر الإرسال',
     'marketIndex.submit.laborTitle': 'مشاركة معلومات الأجر/الراتب',
     'marketIndex.submit.materialTitle': 'مشاركة سعر المادة',
+    'marketIndex.submit.materialSupplierOnly':
+        'مشاركة سعر المادة متاحة فقط لحسابات الموردين — يمكنك عرض المؤشر والاستعلام عنه.',
     'marketIndex.submit.notice':
         'يرجى مشاركة معلومات حقيقية وحديثة. البيانات الخاطئة أو الملفّقة تُضعف موثوقية المؤشر الذي يراه الجميع.',
     'marketIndex.submit.materialLabel': 'المادة',
@@ -162,6 +172,8 @@ const Map<String, Map<String, String>> marketIndexDict = {
     'marketIndex.submit.failed': 'No se pudo enviar',
     'marketIndex.submit.laborTitle': 'Compartir Información de Salario',
     'marketIndex.submit.materialTitle': 'Compartir Precio de Material',
+    'marketIndex.submit.materialSupplierOnly':
+        'Compartir precios de materiales solo está disponible para cuentas de proveedores — puedes ver y consultar el índice.',
     'marketIndex.submit.notice':
         'Por favor comparte información real y actualizada. Los datos falsos o inventados perjudican la fiabilidad del índice que todos ven.',
     'marketIndex.submit.materialLabel': 'Material',
@@ -191,6 +203,8 @@ const Map<String, Map<String, String>> marketIndexDict = {
     'marketIndex.submit.failed': "Échec de l'envoi",
     'marketIndex.submit.laborTitle': 'Partager les Infos de Salaire',
     'marketIndex.submit.materialTitle': 'Partager le Prix du Matériau',
+    'marketIndex.submit.materialSupplierOnly':
+        'Le partage des prix de matériaux est réservé aux comptes fournisseurs — tu peux consulter et interroger l\'indice.',
     'marketIndex.submit.notice':
         "Merci de partager des informations réelles et à jour. Des données fausses ou inventées nuisent à la fiabilité de l'indice que tout le monde consulte.",
     'marketIndex.submit.materialLabel': 'Matériau',
