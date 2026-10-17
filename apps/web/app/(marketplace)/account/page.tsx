@@ -8,6 +8,8 @@ import {
   CandidateProfileDto,
   CompanyProfileDto,
   EXCAVATION_MACHINE_TYPES,
+  EXPECTED_RATE_PERIODS,
+  ExpectedRatePeriod,
   SubcontractorProfileDto,
   SupplierProfileDto,
   TRADE_FIELDS,
@@ -17,7 +19,7 @@ import {
 import { useAuth } from "@/lib/auth-context";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { useProfileSave } from "@/lib/use-profile-save";
-import { CurrencyInput, Field, inputClass } from "@/components/form";
+import { CurrencyInput, Field, inputClass, selectClass } from "@/components/form";
 import { ProvinceDistrictSelect } from "@/components/province-district-select";
 import { TradeCategorySelect } from "@/components/trade-category-select";
 import { TradeCategoryMultiSelect } from "@/components/trade-category-multi-select";
@@ -88,6 +90,7 @@ function CandidateAccountPanel() {
   const [bio, setBio] = useState("");
   const [experienceYears, setExperienceYears] = useState(0);
   const [expectedSalaryMin, setExpectedSalaryMin] = useState("");
+  const [expectedSalaryPeriod, setExpectedSalaryPeriod] = useState<ExpectedRatePeriod>("MONTHLY");
   const [primaryTradeCategory, setPrimaryTradeCategory] = useState(
     TRADE_FIELDS[0].branches[0].professions[0].value,
   );
@@ -115,6 +118,7 @@ function CandidateAccountPanel() {
     setBio(profile.bio ?? "");
     setExperienceYears(profile.experienceYears);
     setExpectedSalaryMin(profile.expectedSalaryMin != null ? String(profile.expectedSalaryMin) : "");
+    setExpectedSalaryPeriod(profile.expectedSalaryPeriod ?? "MONTHLY");
     setPrimaryTradeCategory(profile.primaryTradeCategory ?? TRADE_FIELDS[0].branches[0].professions[0].value);
     setPhone(profile.phone ?? "");
     setSkillsText(profile.skills.join(", "));
@@ -146,6 +150,7 @@ function CandidateAccountPanel() {
       bio: bio || undefined,
       experienceYears,
       expectedSalaryMin: expectedSalaryMin ? Number(expectedSalaryMin) : undefined,
+      expectedSalaryPeriod,
       primaryTradeCategory,
       phone,
       skills,
@@ -232,9 +237,24 @@ function CandidateAccountPanel() {
                   className={inputClass}
                 />
               </Field>
-              <Field label={t("dashboard.candidate.expectedSalaryMinLabel")}>
-                <CurrencyInput value={expectedSalaryMin} onChange={setExpectedSalaryMin} placeholder="30.000" />
-              </Field>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label={t("dashboard.candidate.expectedSalaryPeriodLabel")}>
+                  <select
+                    value={expectedSalaryPeriod}
+                    onChange={(e) => setExpectedSalaryPeriod(e.target.value as ExpectedRatePeriod)}
+                    className={selectClass}
+                  >
+                    {EXPECTED_RATE_PERIODS.map((p) => (
+                      <option key={p.value} value={p.value}>
+                        {p.label}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+                <Field label={t("dashboard.candidate.expectedSalaryMinLabel")}>
+                  <CurrencyInput value={expectedSalaryMin} onChange={setExpectedSalaryMin} placeholder="30.000" />
+                </Field>
+              </div>
               <Field label={t("dashboard.candidate.phoneLabel")}>
                 <input
                   placeholder="+905551234567"

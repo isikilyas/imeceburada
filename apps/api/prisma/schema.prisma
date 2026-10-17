@@ -204,10 +204,12 @@ model CandidateProfile {
   /// Hakkımda / kısa biyografi.
   bio                 String?
   experienceYears     Int      @default(0)
-  /// Maaş beklentisi (aylık, TL) — kayıt sırasında veya Hesabım panelinden girilir,
-  /// firmaların başvuranın beklentisini görebilmesi için ilan sayfasında gösterilir.
+  /// Maaş beklentisi (TL) — Hesabım panelinden girilir, firmaların başvuranın
+  /// beklentisini görebilmesi için ilan sayfasında gösterilir.
   expectedSalaryMin  Int?
   expectedSalaryMax  Int?
+  /// expectedSalaryMin'in hangi birime göre olduğu: DAILY/MONTHLY/PER_SQUARE_METER.
+  expectedSalaryPeriod String?
   skills              String[] @default([])
   workPreferences     String[] @default([])
   primaryTradeCategory String?

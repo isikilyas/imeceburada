@@ -5,6 +5,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.detail.availableBadge': '🟢 Müsait',
     'candidates.detail.busyBadge': '🔴 Şu An Çalışıyor',
     'candidates.detail.meta': '{{city}} · {{years}} yıl deneyim',
+    'candidates.detail.expectedRateLabel': 'Beklenen Ücret',
     'candidates.detail.contactLabel': 'İletişim',
     'candidates.detail.contactMessage':
         'Merhaba, platformunuzdaki {{trade}} profilinizi gördüm. Görüşmek isterseniz müsait misiniz?',
@@ -23,6 +24,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.detail.availableBadge': '🟢 Available',
     'candidates.detail.busyBadge': '🔴 Currently Working',
     'candidates.detail.meta': '{{city}} · {{years}} years of experience',
+    'candidates.detail.expectedRateLabel': 'Expected Rate',
     'candidates.detail.contactLabel': 'Contact',
     'candidates.detail.contactMessage':
         "Hello, I saw your {{trade}} profile on the platform. Are you available if you'd like to talk?",
@@ -41,6 +43,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.detail.availableBadge': '🟢 Verfügbar',
     'candidates.detail.busyBadge': '🔴 Derzeit Beschäftigt',
     'candidates.detail.meta': '{{city}} · {{years}} Jahre Erfahrung',
+    'candidates.detail.expectedRateLabel': 'Erwartete Vergütung',
     'candidates.detail.contactLabel': 'Kontakt',
     'candidates.detail.contactMessage':
         'Hallo, ich habe Ihr Profil als {{trade}} auf der Plattform gesehen. Hätten Sie Zeit für ein Gespräch?',
@@ -59,6 +62,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.detail.availableBadge': '🟢 Доступен',
     'candidates.detail.busyBadge': '🔴 Сейчас работает',
     'candidates.detail.meta': '{{city}} · опыт {{years}} лет',
+    'candidates.detail.expectedRateLabel': 'Ожидаемая оплата',
     'candidates.detail.contactLabel': 'Контакт',
     'candidates.detail.contactMessage':
         'Здравствуйте, я увидел ваш профиль {{trade}} на платформе. Могли бы вы уделить время для разговора?',
@@ -77,6 +81,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.detail.availableBadge': '🟢 متاح',
     'candidates.detail.busyBadge': '🔴 يعمل حاليًا',
     'candidates.detail.meta': '{{city}} · {{years}} سنوات خبرة',
+    'candidates.detail.expectedRateLabel': 'الأجر المتوقع',
     'candidates.detail.contactLabel': 'التواصل',
     'candidates.detail.contactMessage':
         'مرحبًا، شاهدت ملفك الشخصي كـ {{trade}} على المنصة. هل أنت متاح للتحدث؟',
@@ -95,6 +100,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.detail.availableBadge': '🟢 Disponible',
     'candidates.detail.busyBadge': '🔴 Trabajando Actualmente',
     'candidates.detail.meta': '{{city}} · {{years}} años de experiencia',
+    'candidates.detail.expectedRateLabel': 'Tarifa Esperada',
     'candidates.detail.contactLabel': 'Contacto',
     'candidates.detail.contactMessage':
         'Hola, vi tu perfil de {{trade}} en la plataforma. ¿Estarías disponible si quieres hablar?',
@@ -113,6 +119,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.detail.availableBadge': '🟢 Disponible',
     'candidates.detail.busyBadge': '🔴 Actuellement en Poste',
     'candidates.detail.meta': "{{city}} · {{years}} ans d'expérience",
+    'candidates.detail.expectedRateLabel': 'Rémunération Attendue',
     'candidates.detail.contactLabel': 'Contact',
     'candidates.detail.contactMessage':
         "Bonjour, j'ai vu votre profil {{trade}} sur la plateforme. Seriez-vous disponible pour échanger ?",

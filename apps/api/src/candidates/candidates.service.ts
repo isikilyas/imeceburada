@@ -93,6 +93,7 @@ export class CandidatesService {
       experienceYears: candidate.experienceYears,
       expectedSalaryMin: candidate.expectedSalaryMin,
       expectedSalaryMax: candidate.expectedSalaryMax,
+      expectedSalaryPeriod: candidate.expectedSalaryPeriod,
       primaryTradeCategory: candidate.primaryTradeCategory,
       skills: candidate.skills,
       workPreferences: candidate.workPreferences,

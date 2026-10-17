@@ -1,4 +1,4 @@
-import { AvailabilityStatus } from "./enums";
+import { AvailabilityStatus, ExpectedRatePeriod } from "./enums";
 
 export interface CandidateProfileDto {
   id: string;
@@ -11,6 +11,7 @@ export interface CandidateProfileDto {
   bio?: string | null;
   experienceYears: number;
   expectedSalaryMin?: number | null;
+  expectedSalaryPeriod?: ExpectedRatePeriod | null;
   skills: string[];
   workPreferences: string[];
   primaryTradeCategory?: string | null;
@@ -39,6 +40,7 @@ export interface UpdateCandidateProfileInput {
   bio?: string;
   experienceYears?: number;
   expectedSalaryMin?: number;
+  expectedSalaryPeriod?: ExpectedRatePeriod;
   skills?: string[];
   workPreferences?: string[];
   primaryTradeCategory?: string;

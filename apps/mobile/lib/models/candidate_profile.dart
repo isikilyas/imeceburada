@@ -11,6 +11,8 @@ class CandidateProfile {
   final bool isPublic;
   final bool phoneVisible;
   final String availabilityStatus;
+  final int? expectedSalaryMin;
+  final String? expectedSalaryPeriod;
 
   const CandidateProfile({
     required this.id,
@@ -25,6 +27,8 @@ class CandidateProfile {
     required this.isPublic,
     this.phoneVisible = false,
     this.availabilityStatus = 'AVAILABLE',
+    this.expectedSalaryMin,
+    this.expectedSalaryPeriod,
   });
 
   factory CandidateProfile.fromJson(Map<String, dynamic> json) => CandidateProfile(
@@ -40,5 +44,7 @@ class CandidateProfile {
         isPublic: json['isPublic'] as bool? ?? false,
         phoneVisible: json['phoneVisible'] as bool? ?? false,
         availabilityStatus: json['availabilityStatus'] as String? ?? 'AVAILABLE',
+        expectedSalaryMin: json['expectedSalaryMin'] as int?,
+        expectedSalaryPeriod: json['expectedSalaryPeriod'] as String?,
       );
 }

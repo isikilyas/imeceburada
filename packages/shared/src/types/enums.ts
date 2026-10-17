@@ -8,6 +8,15 @@ export type ApplicationStatus = "PENDING" | "REVIEWED" | "ACCEPTED" | "REJECTED"
 
 export type WagePeriod = "DAILY" | "MONTHLY" | "HOURLY";
 
+/** Adayın Hesabım panelinde belirttiği maaş beklentisinin hangi birime göre olduğu. */
+export type ExpectedRatePeriod = "DAILY" | "MONTHLY" | "PER_SQUARE_METER";
+
+export const EXPECTED_RATE_PERIODS: { value: ExpectedRatePeriod; label: string }[] = [
+  { value: "DAILY", label: "Yevmiye" },
+  { value: "MONTHLY", label: "Maaş" },
+  { value: "PER_SQUARE_METER", label: "Metrekare" },
+];
+
 /** Bir fiyat/ücret gönderiminin gerçekten ödenen bir tutarı mı yoksa bir teklif/beklentiyi mi yansıttığı. */
 export type PriceSubmissionType = "ACTUAL" | "OFFER";
 

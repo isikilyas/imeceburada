@@ -560,6 +560,12 @@ const List<Option> priceSubmissionTypes = [
   Option('OFFER', 'Teklif / Beklenti'),
 ];
 
+const List<Option> expectedRatePeriods = [
+  Option('DAILY', 'Yevmiye'),
+  Option('MONTHLY', 'Maaş'),
+  Option('PER_SQUARE_METER', 'Metrekare'),
+];
+
 class EquipmentCategory {
   final String icon;
   final String label;
