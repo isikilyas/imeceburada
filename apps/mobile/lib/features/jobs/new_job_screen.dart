@@ -27,6 +27,7 @@ class _NewJobScreenState extends State<NewJobScreen> {
   String _city = turkishProvinces.first;
   String _district = '';
   String _employmentType = employmentTypes.first.value;
+  bool _isUrgent = false;
 
   bool _isSubmitting = false;
   String? _error;
@@ -47,6 +48,7 @@ class _NewJobScreenState extends State<NewJobScreen> {
         if (_salaryMinController.text.trim().isNotEmpty) 'salaryMin': int.tryParse(_salaryMinController.text.trim()),
         if (_salaryMaxController.text.trim().isNotEmpty) 'salaryMax': int.tryParse(_salaryMaxController.text.trim()),
         'description': _descriptionController.text.trim(),
+        'isUrgent': _isUrgent,
       });
       if (mounted) Navigator.of(context).pop(true);
     } on ApiException catch (e) {
@@ -117,6 +119,13 @@ class _NewJobScreenState extends State<NewJobScreen> {
             controller: _descriptionController,
             maxLines: 4,
             decoration: InputDecoration(labelText: t('jobs.new.descriptionLabel')),
+          ),
+          CheckboxListTile(
+            value: _isUrgent,
+            onChanged: (v) => setState(() => _isUrgent = v ?? false),
+            controlAffinity: ListTileControlAffinity.leading,
+            contentPadding: EdgeInsets.zero,
+            title: Text(t('jobs.new.urgentLabel'), style: const TextStyle(fontSize: 13)),
           ),
           if (_error != null) ...[
             const SizedBox(height: 12),
