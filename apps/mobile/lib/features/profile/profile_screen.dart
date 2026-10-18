@@ -19,12 +19,14 @@ import '../../widgets/password_field.dart';
 import '../../core/api_client.dart';
 import 'candidate_profile_screen.dart';
 import 'company_profile_screen.dart';
+import 'admin_account_screen.dart';
 
 const Map<String, String> _roleLabelKeys = {
   'CANDIDATE': 'profile.roleCandidate',
   'COMPANY': 'profile.roleCompany',
   'SUPPLIER': 'profile.roleSupplier',
   'SUBCONTRACTOR': 'profile.roleSubcontractor',
+  'ADMIN': 'profile.roleAdmin',
 };
 
 /// VKN/belge doğrulama Faz 2'nin sonraki bir adımında eklenecek.
@@ -131,6 +133,12 @@ class ProfileScreen extends StatelessWidget {
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => const SubcontractorDashboardScreen())),
                   child: Text(t('profile.subcontractorPanelButton')),
+                ),
+              if (user.role == 'ADMIN')
+                OutlinedButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const AdminAccountScreen())),
+                  child: Text(t('profile.adminPanelButton')),
                 ),
               const SizedBox(height: 12),
               OutlinedButton(
