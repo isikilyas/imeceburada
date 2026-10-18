@@ -28,6 +28,13 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   bool _isApplying = false;
   bool _applied = false;
   String? _applyError;
+  final _expectedWageController = TextEditingController();
+
+  @override
+  void dispose() {
+    _expectedWageController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -65,7 +72,11 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
       _applyError = null;
     });
     try {
-      await context.read<AuthStore>().authorizedPost('/applications', body: {'jobId': widget.id});
+      final expectedWage = int.tryParse(_expectedWageController.text.trim());
+      await context.read<AuthStore>().authorizedPost('/applications', body: {
+        'jobId': widget.id,
+        if (expectedWage != null) 'expectedWage': expectedWage,
+      });
       setState(() => _applied = true);
     } on ApiException catch (e) {
       setState(() => _applyError = e.message);
@@ -81,6 +92,8 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     final job = _job;
     final user = context.watch<AuthStore>().user;
     final t = context.watch<LocaleStore>().t;
+    final isCandidateListing = job == null || job.listingType == 'PERSONNEL' || job.listingType == 'TEAM';
+    final canApply = user?.role == (isCandidateListing ? 'CANDIDATE' : 'SUBCONTRACTOR');
 
     return Scaffold(
       appBar: AppBar(
@@ -129,11 +142,22 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                         const SizedBox(height: 16),
                         Text(job.description, style: const TextStyle(color: AppColors.silver300, height: 1.4)),
                         const SizedBox(height: 24),
-                        if (user?.role == 'COMPANY')
-                          Text(t('jobs.detail.companyCannotApply'), style: const TextStyle(color: AppColors.silver500))
+                        if (user != null && !canApply)
+                          Text(
+                            isCandidateListing
+                                ? t('jobs.detail.candidateOnlyNotice')
+                                : t('jobs.detail.subcontractorOnlyNotice'),
+                            style: const TextStyle(color: AppColors.silver500),
+                          )
                         else if (_applied)
                           Text(t('jobs.detail.applied'), style: const TextStyle(color: AppColors.green400))
                         else ...[
+                          TextField(
+                            controller: _expectedWageController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(labelText: t('jobs.detail.expectedWageLabel')),
+                          ),
+                          const SizedBox(height: 12),
                           ElevatedButton(
                             onPressed: _isApplying ? null : _apply,
                             child: Text(_isApplying ? t('jobs.detail.submitting') : t('jobs.detail.apply')),
