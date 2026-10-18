@@ -21,6 +21,7 @@ export default function SubcontractorDirectoryPage() {
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
   const [pendingSubcontractorId, setPendingSubcontractorId] = useState<string | null>(null);
+  const [companyOnlyNotice, setCompanyOnlyNotice] = useState(false);
 
   const params = new URLSearchParams();
   if (tradeCategory) params.set("tradeCategory", tradeCategory);
@@ -58,6 +59,11 @@ export default function SubcontractorDirectoryPage() {
         </p>
       )}
       {!isLoading && data?.items.length === 0 && <p className="text-silver-500">{t("common.noResults")}</p>}
+      {companyOnlyNotice && (
+        <p className="mb-3 rounded-md border border-gold-500/30 bg-ink-800 p-3 text-sm text-gold-400">
+          {t("pages.subcontractorsCompanyOnlyNotice")}
+        </p>
+      )}
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {data?.items.map((s) => (
@@ -68,6 +74,9 @@ export default function SubcontractorDirectoryPage() {
               if (!user) {
                 e.preventDefault();
                 setPendingSubcontractorId(s.id);
+              } else if (user.role !== "COMPANY") {
+                e.preventDefault();
+                setCompanyOnlyNotice(true);
               }
             }}
             className="block rounded-lg border border-ink-800 bg-ink-900 p-4 hover:border-gold-500"

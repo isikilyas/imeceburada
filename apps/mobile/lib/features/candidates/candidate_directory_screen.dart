@@ -19,6 +19,7 @@ class CandidateDirectoryScreen extends StatefulWidget {
 }
 
 class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
+  final _api = ApiClient();
   String _tradeCategory = '';
   String _city = '';
   String _district = '';
@@ -52,7 +53,7 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
       _error = null;
     });
     try {
-      final raw = await context.read<AuthStore>().authorizedGet('/candidates', query: {
+      final raw = await _api.get('/candidates', query: {
         if (_tradeCategory.isNotEmpty) 'tradeCategory': _tradeCategory,
         if (_city.isNotEmpty) 'city': _city,
         if (_district.isNotEmpty) 'district': _district,
