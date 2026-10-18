@@ -19,6 +19,7 @@ class SubcontractorDirectoryScreen extends StatefulWidget {
 }
 
 class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScreen> {
+  final _api = ApiClient();
   String _tradeCategory = '';
   String _city = '';
   String _district = '';
@@ -52,7 +53,7 @@ class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScr
       _error = null;
     });
     try {
-      final raw = await context.read<AuthStore>().authorizedGet('/subcontractors', query: {
+      final raw = await _api.get('/subcontractors', query: {
         if (_tradeCategory.isNotEmpty) 'tradeCategory': _tradeCategory,
         if (_city.isNotEmpty) 'city': _city,
         if (_district.isNotEmpty) 'district': _district,
@@ -75,6 +76,7 @@ class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScr
   @override
   Widget build(BuildContext context) {
     final t = context.watch<LocaleStore>().t;
+    final userRole = context.watch<AuthStore>().user?.role;
     final allTrades = Option('', t('subcontractors.directory.allTrades'));
     return Scaffold(
       appBar: AppBar(title: Text(t('subcontractors.directory.title'))),
@@ -151,9 +153,17 @@ class _SubcontractorDirectoryScreenState extends State<SubcontractorDirectoryScr
                   s.tradeCategories.isNotEmpty ? tradeCategories.labelFor(s.tradeCategories.first) : '',
                   style: const TextStyle(color: AppColors.gold400, fontSize: 12),
                 ),
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => SubcontractorDetailScreen(id: s.id)),
-                ),
+                onTap: () {
+                  if (userRole != 'COMPANY') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(t('subcontractors.directory.companyOnlyNotice'))),
+                    );
+                    return;
+                  }
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => SubcontractorDetailScreen(id: s.id)),
+                  );
+                },
               ),
             ),
           ),

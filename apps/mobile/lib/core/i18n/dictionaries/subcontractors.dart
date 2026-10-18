@@ -31,6 +31,7 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.directory.tradeLabel': 'Meslek',
     'subcontractors.directory.allTrades': 'Tüm Meslekler',
     'subcontractors.directory.noResults': 'Sonuç bulunamadı.',
+    'subcontractors.directory.companyOnlyNotice': 'Taşeron detaylarını görüntülemek sadece firma hesapları için geçerlidir.',
   },
   'en': {
     'subcontractors.connectionError': 'Connection error, please try again',
@@ -64,6 +65,7 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.directory.tradeLabel': 'Profession',
     'subcontractors.directory.allTrades': 'All Professions',
     'subcontractors.directory.noResults': 'No results found.',
+    'subcontractors.directory.companyOnlyNotice': 'Viewing subcontractor details is only available to company accounts.',
   },
   'de': {
     'subcontractors.connectionError': 'Verbindungsfehler, bitte erneut versuchen',
@@ -97,6 +99,7 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.directory.tradeLabel': 'Beruf',
     'subcontractors.directory.allTrades': 'Alle Berufe',
     'subcontractors.directory.noResults': 'Keine Ergebnisse gefunden.',
+    'subcontractors.directory.companyOnlyNotice': 'Das Ansehen von Subunternehmer-Details ist nur für Unternehmenskonten möglich.',
   },
   'ru': {
     'subcontractors.connectionError': 'Ошибка соединения, попробуйте снова',
@@ -131,6 +134,7 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.directory.tradeLabel': 'Профессия',
     'subcontractors.directory.allTrades': 'Все профессии',
     'subcontractors.directory.noResults': 'Результатов не найдено.',
+    'subcontractors.directory.companyOnlyNotice': 'Просмотр данных субподрядчика доступен только для аккаунтов компаний.',
   },
   'ar': {
     'subcontractors.connectionError': 'خطأ في الاتصال، يرجى المحاولة مرة أخرى',
@@ -164,6 +168,7 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.directory.tradeLabel': 'المهنة',
     'subcontractors.directory.allTrades': 'جميع المهن',
     'subcontractors.directory.noResults': 'لم يتم العثور على نتائج.',
+    'subcontractors.directory.companyOnlyNotice': 'عرض تفاصيل المقاول من الباطن متاح فقط لحسابات الشركات.',
   },
   'es': {
     'subcontractors.connectionError': 'Error de conexión, inténtalo de nuevo',
@@ -197,6 +202,7 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.directory.tradeLabel': 'Oficio',
     'subcontractors.directory.allTrades': 'Todos los Oficios',
     'subcontractors.directory.noResults': 'No se encontraron resultados.',
+    'subcontractors.directory.companyOnlyNotice': 'Ver los detalles del subcontratista solo está disponible para cuentas de empresa.',
   },
   'fr': {
     'subcontractors.connectionError': 'Erreur de connexion, veuillez réessayer',
@@ -230,5 +236,6 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.directory.tradeLabel': 'Métier',
     'subcontractors.directory.allTrades': 'Tous les Métiers',
     'subcontractors.directory.noResults': 'Aucun résultat trouvé.',
+    'subcontractors.directory.companyOnlyNotice': "La consultation des détails du sous-traitant est réservée aux comptes d'entreprise.",
   },
 };
