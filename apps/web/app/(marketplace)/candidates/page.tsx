@@ -27,6 +27,7 @@ export default function CandidateDirectoryPage() {
   const [skillInput, setSkillInput] = useState("");
   const [skill, setSkill] = useState("");
   const [pendingCandidateId, setPendingCandidateId] = useState<string | null>(null);
+  const [companyOnlyNotice, setCompanyOnlyNotice] = useState(false);
 
   useEffect(() => {
     const id = setTimeout(() => setSkill(skillInput.trim()), 400);
@@ -93,6 +94,11 @@ export default function CandidateDirectoryPage() {
         </p>
       )}
       {!isLoading && data?.items.length === 0 && <p className="text-silver-500">{t("common.noResults")}</p>}
+      {companyOnlyNotice && (
+        <p className="mb-3 rounded-md border border-gold-500/30 bg-ink-800 p-3 text-sm text-gold-400">
+          {t("pages.candidatesCompanyOnlyNotice")}
+        </p>
+      )}
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {data?.items.map((c) => (
@@ -103,6 +109,9 @@ export default function CandidateDirectoryPage() {
               if (!user) {
                 e.preventDefault();
                 setPendingCandidateId(c.id);
+              } else if (user.role !== "COMPANY") {
+                e.preventDefault();
+                setCompanyOnlyNotice(true);
               }
             }}
             className="block rounded-lg border border-ink-800 bg-ink-900 p-4 hover:border-gold-500"

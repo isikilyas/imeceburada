@@ -133,6 +133,7 @@ const base = {
       subcontractorsCompanyOnly: "Taşeron firma dizini yalnızca firma hesapları içindir.",
       subcontractorsIntro: "Faturalı iş yapan taşeron firmaları meslek ve bölgeye göre bul, doğrudan iletişime geç.",
       candidatesExperienceYears: "{{count}} yıl deneyim",
+      candidatesCompanyOnlyNotice: "Aday detaylarını görüntülemek sadece firma hesapları için geçerlidir.",
     },
     auth: {
       hidePassword: "Şifreyi gizle",
@@ -351,6 +352,7 @@ const base = {
       subcontractorsCompanyOnly: "The subcontractor directory is only for company accounts.",
       subcontractorsIntro: "Find invoiced subcontractor firms by trade and region, and contact them directly.",
       candidatesExperienceYears: "{{count}} years of experience",
+      candidatesCompanyOnlyNotice: "Viewing candidate details is only available to company accounts.",
     },
     auth: {
       hidePassword: "Hide password",
@@ -570,6 +572,7 @@ const base = {
       subcontractorsCompanyOnly: "Das Subunternehmer-Verzeichnis ist nur für Unternehmenskonten.",
       subcontractorsIntro: "Finde rechnungsfähige Subunternehmerfirmen nach Gewerk und Region und nimm direkt Kontakt auf.",
       candidatesExperienceYears: "{{count}} Jahre Erfahrung",
+      candidatesCompanyOnlyNotice: "Das Ansehen von Kandidatendetails ist nur für Unternehmenskonten möglich.",
     },
     auth: {
       hidePassword: "Passwort ausblenden",
@@ -788,6 +791,7 @@ const base = {
       subcontractorsCompanyOnly: "Каталог субподрядчиков доступен только для аккаунтов компаний.",
       subcontractorsIntro: "Находите субподрядные фирмы, работающие по счетам, по специализации и региону, и связывайтесь напрямую.",
       candidatesExperienceYears: "Опыт: {{count}} г.",
+      candidatesCompanyOnlyNotice: "Просмотр данных кандидата доступен только для аккаунтов компаний.",
     },
     auth: {
       hidePassword: "Скрыть пароль",
@@ -1005,6 +1009,7 @@ const base = {
       subcontractorsCompanyOnly: "دليل المقاولين من الباطن مخصص لحسابات الشركات فقط.",
       subcontractorsIntro: "ابحث عن شركات المقاولين من الباطن العاملة بالفاتورة حسب المهنة والمنطقة، وتواصل معهم مباشرة.",
       candidatesExperienceYears: "{{count}} سنة خبرة",
+      candidatesCompanyOnlyNotice: "عرض تفاصيل المرشح متاح فقط لحسابات الشركات.",
     },
     auth: {
       hidePassword: "إخفاء كلمة المرور",
@@ -1224,6 +1229,7 @@ const base = {
       subcontractorsCompanyOnly: "El directorio de subcontratistas es solo para cuentas de empresa.",
       subcontractorsIntro: "Encuentra empresas subcontratistas que facturan por oficio y región, y contáctalas directamente.",
       candidatesExperienceYears: "{{count}} años de experiencia",
+      candidatesCompanyOnlyNotice: "Ver los detalles de los candidatos solo está disponible para cuentas de empresa.",
     },
     auth: {
       hidePassword: "Ocultar contraseña",
@@ -1443,6 +1449,7 @@ const base = {
       subcontractorsCompanyOnly: "L'annuaire des sous-traitants est réservé aux comptes entreprise.",
       subcontractorsIntro: "Trouve des entreprises sous-traitantes facturées par métier et région, et contacte-les directement.",
       candidatesExperienceYears: "{{count}} ans d'expérience",
+      candidatesCompanyOnlyNotice: "La consultation des détails des candidats est réservée aux comptes d'entreprise.",
     },
     auth: {
       hidePassword: "Masquer le mot de passe",
