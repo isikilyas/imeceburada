@@ -33,6 +33,12 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
   bool _isPublic = false;
   bool _phoneVisible = false;
   String _availabilityStatus = 'AVAILABLE';
+  DateTime? _availableFrom;
+  bool _notifyByEmail = true;
+  bool _hasProfessionalQualificationCert = false;
+  bool _hasMasterCraftsmanCert = false;
+  bool _hasOshCert = false;
+  final _serviceRadiusController = TextEditingController();
 
   bool _isSaving = false;
   String? _saveError;
@@ -49,6 +55,7 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
     _experienceYearsController.dispose();
     _phoneController.dispose();
     _expectedSalaryController.dispose();
+    _serviceRadiusController.dispose();
     super.dispose();
   }
 
@@ -72,6 +79,12 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
         _isPublic = profile.isPublic;
         _phoneVisible = profile.phoneVisible;
         _availabilityStatus = profile.availabilityStatus;
+        _availableFrom = profile.availableFrom != null ? DateTime.tryParse(profile.availableFrom!) : null;
+        _notifyByEmail = profile.notifyByEmail;
+        _hasProfessionalQualificationCert = profile.hasProfessionalQualificationCert;
+        _hasMasterCraftsmanCert = profile.hasMasterCraftsmanCert;
+        _hasOshCert = profile.hasOshCert;
+        _serviceRadiusController.text = profile.serviceRadiusKm?.toString() ?? '';
       });
     } on ApiException catch (e) {
       setState(() => _loadError = e.message);
@@ -104,6 +117,14 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
         'isPublic': _isPublic,
         'phoneVisible': _phoneVisible,
         'availabilityStatus': _availabilityStatus,
+        if (_availabilityStatus == 'BUSY' && _availableFrom != null)
+          'availableFrom': _availableFrom!.toIso8601String().substring(0, 10),
+        'notifyByEmail': _notifyByEmail,
+        'hasProfessionalQualificationCert': _hasProfessionalQualificationCert,
+        'hasMasterCraftsmanCert': _hasMasterCraftsmanCert,
+        'hasOshCert': _hasOshCert,
+        if (_serviceRadiusController.text.trim().isNotEmpty)
+          'serviceRadiusKm': int.tryParse(_serviceRadiusController.text.trim()),
       });
       setState(() => _saved = true);
     } on ApiException catch (e) {
@@ -140,6 +161,20 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                       onDistrictChanged: (v) => setState(() => _district = v),
                       allowEmptyDistrict: true,
                     ),
+                    TextField(
+                      controller: _serviceRadiusController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: t('profile.candidateProfile.serviceRadiusLabel'),
+                        hintText: '50',
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      t('profile.candidateProfile.serviceRadiusHint'),
+                      style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+                    ),
+                    const SizedBox(height: 12),
                     TextField(
                       controller: _experienceYearsController,
                       keyboardType: TextInputType.number,
@@ -205,6 +240,68 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                       t('profile.candidateProfile.busyStatusHint'),
                       style: const TextStyle(color: AppColors.silver500, fontSize: 12),
                     ),
+                    if (_availabilityStatus == 'BUSY') ...[
+                      const SizedBox(height: 10),
+                      OutlinedButton(
+                        onPressed: () async {
+                          final picked = await showDatePicker(
+                            context: context,
+                            initialDate: _availableFrom ?? DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime.now().add(const Duration(days: 365)),
+                          );
+                          if (picked != null) setState(() => _availableFrom = picked);
+                        },
+                        child: Text(
+                          _availableFrom != null
+                              ? '${t('profile.candidateProfile.availableFromLabel')}: '
+                                  '${_availableFrom!.day.toString().padLeft(2, '0')}.'
+                                  '${_availableFrom!.month.toString().padLeft(2, '0')}.'
+                                  '${_availableFrom!.year}'
+                              : t('profile.candidateProfile.availableFromLabel'),
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 14),
+                    Text(t('profile.candidateProfile.certsHeading'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14)),
+                    CheckboxListTile(
+                      value: _hasProfessionalQualificationCert,
+                      onChanged: (v) => setState(() => _hasProfessionalQualificationCert = v ?? false),
+                      title: Text(
+                        t('profile.candidateProfile.certProfessionalQualification'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: AppColors.gold500,
+                    ),
+                    CheckboxListTile(
+                      value: _hasMasterCraftsmanCert,
+                      onChanged: (v) => setState(() => _hasMasterCraftsmanCert = v ?? false),
+                      title: Text(
+                        t('profile.candidateProfile.certMasterCraftsman'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: AppColors.gold500,
+                    ),
+                    CheckboxListTile(
+                      value: _hasOshCert,
+                      onChanged: (v) => setState(() => _hasOshCert = v ?? false),
+                      title: Text(
+                        t('profile.candidateProfile.certOsh'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: AppColors.gold500,
+                    ),
+                    Text(
+                      t('profile.candidateProfile.certsHint'),
+                      style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+                    ),
                     const SizedBox(height: 14),
                     CheckboxListTile(
                       value: _isPublic,
@@ -226,6 +323,21 @@ class _CandidateProfileScreenState extends State<CandidateProfileScreen> {
                       ),
                       subtitle: Text(
                         t('profile.candidateProfile.phoneVisibleHint'),
+                        style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: AppColors.gold500,
+                    ),
+                    CheckboxListTile(
+                      value: _notifyByEmail,
+                      onChanged: (v) => setState(() => _notifyByEmail = v ?? true),
+                      title: Text(
+                        t('profile.candidateProfile.notifyByEmailLabel'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      subtitle: Text(
+                        t('profile.candidateProfile.notifyByEmailHint'),
                         style: const TextStyle(color: AppColors.silver500, fontSize: 12),
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
