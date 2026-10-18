@@ -13,25 +13,36 @@ const Map<String, Map<String, String>> subcontractorsDict = {
         'Telefon numaramı dizindeki profilimde göster',
     'subcontractors.dashboard.phoneVisibleHint':
         'Kapatırsan telefon numaran kaydedilmiş kalır ama başka kullanıcılara gösterilmez; açarsan sana ulaşmak isteyenler numarayı görebilir.',
+    'subcontractors.dashboard.serviceRadiusLabel': 'Hizmet Verilen Km Yarıçapı',
+    'subcontractors.dashboard.serviceRadiusHint':
+        'İsteğe bağlı, bilgi amaçlıdır — arama/eşleştirmede kullanılmaz.',
+    'subcontractors.dashboard.notifyByEmailLabel':
+        'Başvuru durumu değiştiğinde e-posta gönder',
+    'subcontractors.dashboard.notifyByEmailHint':
+        'Bir ilana yaptığın başvurunun durumu değiştiğinde (incelendi/kabul/red) e-posta ile haberdar olursun.',
     'subcontractors.dashboard.saved': 'Kaydedildi!',
     'subcontractors.dashboard.saving': 'Kaydediliyor...',
     'subcontractors.dashboard.save': 'Kaydet',
     'subcontractors.dashboard.loadError': 'Profil yüklenemedi',
-    'subcontractors.dashboard.tradeRequiredError': 'En az bir branş/meslek seçmelisin',
+    'subcontractors.dashboard.tradeRequiredError':
+        'En az bir branş/meslek seçmelisin',
     'subcontractors.dashboard.saveError': 'Kaydedilemedi',
     'subcontractors.detail.title': 'Taşeron Detayı',
-    'subcontractors.detail.shareText': "🏢 {{companyName}} — {{city}}\nİmece Burada'da incele:",
+    'subcontractors.detail.shareText':
+        "🏢 {{companyName}} — {{city}}\nİmece Burada'da incele:",
     'subcontractors.detail.contactLabel': 'İletişim',
     'subcontractors.detail.contactMessage':
         'Merhaba, platformunuzdaki {{companyName}} profilinizi gördüm. Görüşmek isterseniz müsait misiniz?',
     'subcontractors.directory.title': 'Taşeron Bul',
-    'subcontractors.directory.hint': 'Faturalı iş yapan taşeron firmaları meslek ve bölgeye göre bul.',
+    'subcontractors.directory.hint':
+        'Faturalı iş yapan taşeron firmaları meslek ve bölgeye göre bul.',
     'subcontractors.directory.searchLabel': 'Firma Ara',
     'subcontractors.directory.searchPlaceholder': 'Firma adı yazın...',
     'subcontractors.directory.tradeLabel': 'Meslek',
     'subcontractors.directory.allTrades': 'Tüm Meslekler',
     'subcontractors.directory.noResults': 'Sonuç bulunamadı.',
-    'subcontractors.directory.companyOnlyNotice': 'Taşeron detaylarını görüntülemek sadece firma hesapları için geçerlidir.',
+    'subcontractors.directory.companyOnlyNotice':
+        'Taşeron detaylarını görüntülemek sadece firma hesapları için geçerlidir.',
   },
   'en': {
     'subcontractors.connectionError': 'Connection error, please try again',
@@ -47,28 +58,40 @@ const Map<String, Map<String, String>> subcontractorsDict = {
         'Show my phone number on my profile in the directory',
     'subcontractors.dashboard.phoneVisibleHint':
         "If disabled, your phone number stays saved but isn't shown to other users; if enabled, anyone trying to reach you can see it.",
+    'subcontractors.dashboard.serviceRadiusLabel': 'Service Radius (km)',
+    'subcontractors.dashboard.serviceRadiusHint':
+        'Optional, informational only — not used in search/matching.',
+    'subcontractors.dashboard.notifyByEmailLabel':
+        'Email me when my application status changes',
+    'subcontractors.dashboard.notifyByEmailHint':
+        'Get notified by email when a job application you submitted is reviewed, accepted, or rejected.',
     'subcontractors.dashboard.saved': 'Saved!',
     'subcontractors.dashboard.saving': 'Saving...',
     'subcontractors.dashboard.save': 'Save',
     'subcontractors.dashboard.loadError': 'Could not load the profile',
-    'subcontractors.dashboard.tradeRequiredError': 'You must select at least one trade/profession',
+    'subcontractors.dashboard.tradeRequiredError':
+        'You must select at least one trade/profession',
     'subcontractors.dashboard.saveError': 'Could not save',
     'subcontractors.detail.title': 'Subcontractor Details',
-    'subcontractors.detail.shareText': '🏢 {{companyName}} — {{city}}\nCheck it out on İmece Burada:',
+    'subcontractors.detail.shareText':
+        '🏢 {{companyName}} — {{city}}\nCheck it out on İmece Burada:',
     'subcontractors.detail.contactLabel': 'Contact',
     'subcontractors.detail.contactMessage':
         "Hello, I saw your {{companyName}} profile on the platform. Are you available if you'd like to talk?",
     'subcontractors.directory.title': 'Subcontractor Directory',
-    'subcontractors.directory.hint': 'Find invoicing subcontractor companies by profession and region.',
+    'subcontractors.directory.hint':
+        'Find invoicing subcontractor companies by profession and region.',
     'subcontractors.directory.searchLabel': 'Search Company',
     'subcontractors.directory.searchPlaceholder': 'Type a company name...',
     'subcontractors.directory.tradeLabel': 'Profession',
     'subcontractors.directory.allTrades': 'All Professions',
     'subcontractors.directory.noResults': 'No results found.',
-    'subcontractors.directory.companyOnlyNotice': 'Viewing subcontractor details is only available to company accounts.',
+    'subcontractors.directory.companyOnlyNotice':
+        'Viewing subcontractor details is only available to company accounts.',
   },
   'de': {
-    'subcontractors.connectionError': 'Verbindungsfehler, bitte erneut versuchen',
+    'subcontractors.connectionError':
+        'Verbindungsfehler, bitte erneut versuchen',
     'subcontractors.dashboard.title': 'Mein Subunternehmer-Firmenprofil',
     'subcontractors.dashboard.membership': 'Mitgliedschaft',
     'subcontractors.dashboard.hint':
@@ -81,25 +104,36 @@ const Map<String, Map<String, String>> subcontractorsDict = {
         'Meine Telefonnummer in meinem Profil im Verzeichnis anzeigen',
     'subcontractors.dashboard.phoneVisibleHint':
         'Wenn deaktiviert, bleibt deine Telefonnummer gespeichert, wird aber anderen Nutzern nicht angezeigt; wenn aktiviert, kann jeder, der dich erreichen möchte, sie sehen.',
+    'subcontractors.dashboard.serviceRadiusLabel': 'Einsatzradius (km)',
+    'subcontractors.dashboard.serviceRadiusHint':
+        'Optional, nur informativ — wird nicht für Suche/Matching verwendet.',
+    'subcontractors.dashboard.notifyByEmailLabel':
+        'Per E-Mail benachrichtigen, wenn sich mein Bewerbungsstatus ändert',
+    'subcontractors.dashboard.notifyByEmailHint':
+        'Du wirst per E-Mail benachrichtigt, wenn eine deiner Bewerbungen geprüft, angenommen oder abgelehnt wird.',
     'subcontractors.dashboard.saved': 'Gespeichert!',
     'subcontractors.dashboard.saving': 'Wird gespeichert...',
     'subcontractors.dashboard.save': 'Speichern',
     'subcontractors.dashboard.loadError': 'Profil konnte nicht geladen werden',
-    'subcontractors.dashboard.tradeRequiredError': 'Du musst mindestens ein Gewerk/einen Beruf auswählen',
+    'subcontractors.dashboard.tradeRequiredError':
+        'Du musst mindestens ein Gewerk/einen Beruf auswählen',
     'subcontractors.dashboard.saveError': 'Konnte nicht gespeichert werden',
     'subcontractors.detail.title': 'Subunternehmer-Details',
-    'subcontractors.detail.shareText': '🏢 {{companyName}} — {{city}}\nSieh es dir auf İmece Burada an:',
+    'subcontractors.detail.shareText':
+        '🏢 {{companyName}} — {{city}}\nSieh es dir auf İmece Burada an:',
     'subcontractors.detail.contactLabel': 'Kontakt',
     'subcontractors.detail.contactMessage':
         'Hallo, ich habe Ihr Profil {{companyName}} auf der Plattform gesehen. Hätten Sie Zeit für ein Gespräch?',
     'subcontractors.directory.title': 'Subunternehmer-Verzeichnis',
-    'subcontractors.directory.hint': 'Finde rechnungsfähige Subunternehmen nach Gewerk und Region.',
+    'subcontractors.directory.hint':
+        'Finde rechnungsfähige Subunternehmen nach Gewerk und Region.',
     'subcontractors.directory.searchLabel': 'Firma suchen',
     'subcontractors.directory.searchPlaceholder': 'Firmenname eingeben...',
     'subcontractors.directory.tradeLabel': 'Beruf',
     'subcontractors.directory.allTrades': 'Alle Berufe',
     'subcontractors.directory.noResults': 'Keine Ergebnisse gefunden.',
-    'subcontractors.directory.companyOnlyNotice': 'Das Ansehen von Subunternehmer-Details ist nur für Unternehmenskonten möglich.',
+    'subcontractors.directory.companyOnlyNotice':
+        'Das Ansehen von Subunternehmer-Details ist nur für Unternehmenskonten möglich.',
   },
   'ru': {
     'subcontractors.connectionError': 'Ошибка соединения, попробуйте снова',
@@ -115,14 +149,23 @@ const Map<String, Map<String, String>> subcontractorsDict = {
         'Показывать мой номер телефона в профиле в каталоге',
     'subcontractors.dashboard.phoneVisibleHint':
         'Если отключить, номер телефона останется сохранённым, но не будет виден другим пользователям; если включить, его увидит любой, кто попытается с вами связаться.',
+    'subcontractors.dashboard.serviceRadiusLabel': 'Радиус обслуживания (км)',
+    'subcontractors.dashboard.serviceRadiusHint':
+        'Необязательно, только для информации — не используется в поиске/подборе.',
+    'subcontractors.dashboard.notifyByEmailLabel':
+        'Уведомлять по эл. почте об изменении статуса заявки',
+    'subcontractors.dashboard.notifyByEmailHint':
+        'Вы получите уведомление по эл. почте, когда статус вашей заявки на вакансию изменится (рассмотрена/принята/отклонена).',
     'subcontractors.dashboard.saved': 'Сохранено!',
     'subcontractors.dashboard.saving': 'Сохранение...',
     'subcontractors.dashboard.save': 'Сохранить',
     'subcontractors.dashboard.loadError': 'Не удалось загрузить профиль',
-    'subcontractors.dashboard.tradeRequiredError': 'Выберите хотя бы одну специальность/профессию',
+    'subcontractors.dashboard.tradeRequiredError':
+        'Выберите хотя бы одну специальность/профессию',
     'subcontractors.dashboard.saveError': 'Не удалось сохранить',
     'subcontractors.detail.title': 'Детали субподрядчика',
-    'subcontractors.detail.shareText': '🏢 {{companyName}} — {{city}}\nПосмотрите на İmece Burada:',
+    'subcontractors.detail.shareText':
+        '🏢 {{companyName}} — {{city}}\nПосмотрите на İmece Burada:',
     'subcontractors.detail.contactLabel': 'Контакт',
     'subcontractors.detail.contactMessage':
         'Здравствуйте, я увидел ваш профиль {{companyName}} на платформе. Могли бы вы уделить время для разговора?',
@@ -130,11 +173,13 @@ const Map<String, Map<String, String>> subcontractorsDict = {
     'subcontractors.directory.hint':
         'Найдите субподрядные компании, работающие по счетам, по профессии и региону.',
     'subcontractors.directory.searchLabel': 'Поиск компании',
-    'subcontractors.directory.searchPlaceholder': 'Введите название компании...',
+    'subcontractors.directory.searchPlaceholder':
+        'Введите название компании...',
     'subcontractors.directory.tradeLabel': 'Профессия',
     'subcontractors.directory.allTrades': 'Все профессии',
     'subcontractors.directory.noResults': 'Результатов не найдено.',
-    'subcontractors.directory.companyOnlyNotice': 'Просмотр данных субподрядчика доступен только для аккаунтов компаний.',
+    'subcontractors.directory.companyOnlyNotice':
+        'Просмотр данных субподрядчика доступен только для аккаунтов компаний.',
   },
   'ar': {
     'subcontractors.connectionError': 'خطأ في الاتصال، يرجى المحاولة مرة أخرى',
@@ -150,25 +195,36 @@ const Map<String, Map<String, String>> subcontractorsDict = {
         'إظهار رقم هاتفي في ملفي الشخصي بالدليل',
     'subcontractors.dashboard.phoneVisibleHint':
         'عند التعطيل، يبقى رقم هاتفك محفوظًا لكنه لا يظهر لباقي المستخدمين؛ وعند التفعيل، يمكن لأي شخص يحاول التواصل معك رؤيته.',
+    'subcontractors.dashboard.serviceRadiusLabel': 'نطاق الخدمة (كم)',
+    'subcontractors.dashboard.serviceRadiusHint':
+        'اختياري وللعلم فقط — لا يُستخدم في البحث أو المطابقة.',
+    'subcontractors.dashboard.notifyByEmailLabel':
+        'أرسل بريدًا إلكترونيًا عند تغيّر حالة طلبي',
+    'subcontractors.dashboard.notifyByEmailHint':
+        'ستصلك رسالة إلكترونية عند مراجعة طلب تقدّمت به أو قبوله أو رفضه.',
     'subcontractors.dashboard.saved': 'تم الحفظ!',
     'subcontractors.dashboard.saving': 'جارٍ الحفظ...',
     'subcontractors.dashboard.save': 'حفظ',
     'subcontractors.dashboard.loadError': 'تعذر تحميل الملف الشخصي',
-    'subcontractors.dashboard.tradeRequiredError': 'يجب اختيار مجال/مهنة واحدة على الأقل',
+    'subcontractors.dashboard.tradeRequiredError':
+        'يجب اختيار مجال/مهنة واحدة على الأقل',
     'subcontractors.dashboard.saveError': 'تعذر الحفظ',
     'subcontractors.detail.title': 'تفاصيل المقاول من الباطن',
-    'subcontractors.detail.shareText': '🏢 {{companyName}} — {{city}}\nاطّلع عليه في İmece Burada:',
+    'subcontractors.detail.shareText':
+        '🏢 {{companyName}} — {{city}}\nاطّلع عليه في İmece Burada:',
     'subcontractors.detail.contactLabel': 'التواصل',
     'subcontractors.detail.contactMessage':
         'مرحبًا، شاهدت ملف شركتكم {{companyName}} على المنصة. هل أنتم متاحون للتحدث؟',
     'subcontractors.directory.title': 'دليل المقاولين من الباطن',
-    'subcontractors.directory.hint': 'ابحث عن شركات المقاولين من الباطن التي تصدر فواتير حسب المهنة والمنطقة.',
+    'subcontractors.directory.hint':
+        'ابحث عن شركات المقاولين من الباطن التي تصدر فواتير حسب المهنة والمنطقة.',
     'subcontractors.directory.searchLabel': 'البحث عن شركة',
     'subcontractors.directory.searchPlaceholder': 'اكتب اسم الشركة...',
     'subcontractors.directory.tradeLabel': 'المهنة',
     'subcontractors.directory.allTrades': 'جميع المهن',
     'subcontractors.directory.noResults': 'لم يتم العثور على نتائج.',
-    'subcontractors.directory.companyOnlyNotice': 'عرض تفاصيل المقاول من الباطن متاح فقط لحسابات الشركات.',
+    'subcontractors.directory.companyOnlyNotice':
+        'عرض تفاصيل المقاول من الباطن متاح فقط لحسابات الشركات.',
   },
   'es': {
     'subcontractors.connectionError': 'Error de conexión, inténtalo de nuevo',
@@ -184,25 +240,37 @@ const Map<String, Map<String, String>> subcontractorsDict = {
         'Mostrar mi número de teléfono en mi perfil del directorio',
     'subcontractors.dashboard.phoneVisibleHint':
         'Si lo desactivas, tu número de teléfono seguirá guardado pero no se mostrará a otros usuarios; si lo activas, cualquiera que quiera contactarte podrá verlo.',
+    'subcontractors.dashboard.serviceRadiusLabel': 'Radio de Servicio (km)',
+    'subcontractors.dashboard.serviceRadiusHint':
+        'Opcional, solo informativo — no se usa en la búsqueda/emparejamiento.',
+    'subcontractors.dashboard.notifyByEmailLabel':
+        'Enviarme un correo cuando cambie el estado de mi postulación',
+    'subcontractors.dashboard.notifyByEmailHint':
+        'Recibirás un correo cuando se revise, acepte o rechace una postulación que hayas enviado.',
     'subcontractors.dashboard.saved': '¡Guardado!',
     'subcontractors.dashboard.saving': 'Guardando...',
     'subcontractors.dashboard.save': 'Guardar',
     'subcontractors.dashboard.loadError': 'No se pudo cargar el perfil',
-    'subcontractors.dashboard.tradeRequiredError': 'Debes seleccionar al menos un oficio/profesión',
+    'subcontractors.dashboard.tradeRequiredError':
+        'Debes seleccionar al menos un oficio/profesión',
     'subcontractors.dashboard.saveError': 'No se pudo guardar',
     'subcontractors.detail.title': 'Detalle del Subcontratista',
-    'subcontractors.detail.shareText': '🏢 {{companyName}} — {{city}}\nMíralo en İmece Burada:',
+    'subcontractors.detail.shareText':
+        '🏢 {{companyName}} — {{city}}\nMíralo en İmece Burada:',
     'subcontractors.detail.contactLabel': 'Contacto',
     'subcontractors.detail.contactMessage':
         'Hola, vi el perfil de {{companyName}} en la plataforma. ¿Estarías disponible si quieres hablar?',
     'subcontractors.directory.title': 'Directorio de Subcontratistas',
-    'subcontractors.directory.hint': 'Encuentra empresas subcontratistas que facturan, por oficio y región.',
+    'subcontractors.directory.hint':
+        'Encuentra empresas subcontratistas que facturan, por oficio y región.',
     'subcontractors.directory.searchLabel': 'Buscar Empresa',
-    'subcontractors.directory.searchPlaceholder': 'Escriba el nombre de la empresa...',
+    'subcontractors.directory.searchPlaceholder':
+        'Escriba el nombre de la empresa...',
     'subcontractors.directory.tradeLabel': 'Oficio',
     'subcontractors.directory.allTrades': 'Todos los Oficios',
     'subcontractors.directory.noResults': 'No se encontraron resultados.',
-    'subcontractors.directory.companyOnlyNotice': 'Ver los detalles del subcontratista solo está disponible para cuentas de empresa.',
+    'subcontractors.directory.companyOnlyNotice':
+        'Ver los detalles del subcontratista solo está disponible para cuentas de empresa.',
   },
   'fr': {
     'subcontractors.connectionError': 'Erreur de connexion, veuillez réessayer',
@@ -218,24 +286,36 @@ const Map<String, Map<String, String>> subcontractorsDict = {
         "Afficher mon numéro de téléphone sur mon profil dans l'annuaire",
     'subcontractors.dashboard.phoneVisibleHint':
         "Si désactivé, votre numéro de téléphone reste enregistré mais n'est pas affiché aux autres utilisateurs ; si activé, toute personne cherchant à vous contacter pourra le voir.",
+    'subcontractors.dashboard.serviceRadiusLabel': 'Rayon de Service (km)',
+    'subcontractors.dashboard.serviceRadiusHint':
+        'Facultatif, à titre informatif uniquement — non utilisé dans la recherche/le rapprochement.',
+    'subcontractors.dashboard.notifyByEmailLabel':
+        "M'envoyer un e-mail quand le statut de ma candidature change",
+    'subcontractors.dashboard.notifyByEmailHint':
+        'Tu recevras un e-mail quand une candidature que tu as envoyée est examinée, acceptée ou refusée.',
     'subcontractors.dashboard.saved': 'Enregistré !',
     'subcontractors.dashboard.saving': 'Enregistrement en cours...',
     'subcontractors.dashboard.save': 'Enregistrer',
     'subcontractors.dashboard.loadError': 'Impossible de charger le profil',
-    'subcontractors.dashboard.tradeRequiredError': 'Vous devez sélectionner au moins un métier/une profession',
+    'subcontractors.dashboard.tradeRequiredError':
+        'Vous devez sélectionner au moins un métier/une profession',
     'subcontractors.dashboard.saveError': "Impossible d'enregistrer",
     'subcontractors.detail.title': 'Détail du Sous-traitant',
-    'subcontractors.detail.shareText': '🏢 {{companyName}} — {{city}}\nDécouvrez-le sur İmece Burada :',
+    'subcontractors.detail.shareText':
+        '🏢 {{companyName}} — {{city}}\nDécouvrez-le sur İmece Burada :',
     'subcontractors.detail.contactLabel': 'Contact',
     'subcontractors.detail.contactMessage':
         "Bonjour, j'ai vu votre profil {{companyName}} sur la plateforme. Seriez-vous disponible pour échanger ?",
     'subcontractors.directory.title': 'Annuaire des Sous-traitants',
-    'subcontractors.directory.hint': 'Trouvez des entreprises sous-traitantes facturées par métier et région.',
+    'subcontractors.directory.hint':
+        'Trouvez des entreprises sous-traitantes facturées par métier et région.',
     'subcontractors.directory.searchLabel': 'Rechercher une Entreprise',
-    'subcontractors.directory.searchPlaceholder': "Saisissez un nom d'entreprise...",
+    'subcontractors.directory.searchPlaceholder':
+        "Saisissez un nom d'entreprise...",
     'subcontractors.directory.tradeLabel': 'Métier',
     'subcontractors.directory.allTrades': 'Tous les Métiers',
     'subcontractors.directory.noResults': 'Aucun résultat trouvé.',
-    'subcontractors.directory.companyOnlyNotice': "La consultation des détails du sous-traitant est réservée aux comptes d'entreprise.",
+    'subcontractors.directory.companyOnlyNotice':
+        "La consultation des détails du sous-traitant est réservée aux comptes d'entreprise.",
   },
 };
