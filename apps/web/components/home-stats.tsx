@@ -63,6 +63,9 @@ export function HomeStats() {
       ]);
       return { jobs: jobs.total, equipment: equipment.total, materials: materials.total };
     },
+    // "Platformda Şu An" canlı olmayı iddia ediyor — sayfa açık kalsa bile periyodik yenilensin.
+    refetchInterval: 60_000,
+    refetchIntervalInBackground: false,
   });
 
   const totals = data ?? { jobs: 0, equipment: 0, materials: 0 };

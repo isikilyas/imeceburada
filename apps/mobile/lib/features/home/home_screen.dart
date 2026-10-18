@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/api_client.dart';
@@ -408,7 +409,24 @@ class _PlatformStats extends StatefulWidget {
 
 class _PlatformStatsState extends State<_PlatformStats> {
   final _api = ApiClient();
-  late final Future<List<int>> _future = _loadTotals();
+  late Future<List<int>> _future;
+  Timer? _refreshTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = _loadTotals();
+    // "Platformda Şu An" canlı olmayı iddia ediyor — ekran açık kalsa bile periyodik yenilensin.
+    _refreshTimer = Timer.periodic(const Duration(seconds: 60), (_) {
+      if (mounted) setState(() => _future = _loadTotals());
+    });
+  }
+
+  @override
+  void dispose() {
+    _refreshTimer?.cancel();
+    super.dispose();
+  }
 
   Future<List<int>> _loadTotals() async {
     try {
