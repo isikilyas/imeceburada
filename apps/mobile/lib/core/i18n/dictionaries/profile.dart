@@ -55,6 +55,22 @@ const Map<String, Map<String, String>> profileDict = {
         'Kapatırsan telefon numaran kaydedilmiş kalır ama başka kullanıcılara gösterilmez; açarsan aktif üyeliği olan firmalar seninle iletişime geçebilir.',
     'profile.candidateProfile.saved': 'Kaydedildi!',
     'profile.candidateProfile.saving': 'Kaydediliyor...',
+    'profile.candidateProfile.serviceRadiusLabel': 'Hizmet Verilen Km Yarıçapı',
+    'profile.candidateProfile.serviceRadiusHint':
+        'İsteğe bağlı, bilgi amaçlıdır — arama/eşleştirmede kullanılmaz.',
+    'profile.candidateProfile.availableFromLabel':
+        'Ne zaman müsait olacaksınız?',
+    'profile.candidateProfile.certsHeading': 'Belge ve Yeterlilikler',
+    'profile.candidateProfile.certProfessionalQualification':
+        'Mesleki Yeterlilik Belgesi',
+    'profile.candidateProfile.certMasterCraftsman': 'Ustalık Belgesi',
+    'profile.candidateProfile.certOsh': 'İSG Sertifikası',
+    'profile.candidateProfile.certsHint':
+        'Bu bilgiler kendi beyanınızdır, belge yükleme veya doğrulama gerekmez.',
+    'profile.candidateProfile.notifyByEmailLabel':
+        'Başvuru durumu değiştiğinde e-posta gönder',
+    'profile.candidateProfile.notifyByEmailHint':
+        'Bir ilana yaptığın başvurunun durumu değiştiğinde (incelendi/kabul/red) e-posta ile haberdar olursun.',
     'profile.candidateProfile.saveButton': 'Kaydet',
     'adminAccount.title': 'Hesap Ayarları',
     'adminAccount.loadFailed': 'Hesap bilgileri yüklenemedi',
@@ -154,6 +170,24 @@ const Map<String, Map<String, String>> profileDict = {
         "If disabled, your phone number stays saved but isn't shown to other users; if enabled, companies with an active membership can see it to reach you.",
     'profile.candidateProfile.saved': 'Saved!',
     'profile.candidateProfile.saving': 'Saving...',
+    'profile.candidateProfile.serviceRadiusLabel': 'Service Radius (km)',
+    'profile.candidateProfile.serviceRadiusHint':
+        'Optional, informational only — not used in search/matching.',
+    'profile.candidateProfile.availableFromLabel':
+        'When will you be available?',
+    'profile.candidateProfile.certsHeading': 'Documents & Qualifications',
+    'profile.candidateProfile.certProfessionalQualification':
+        'Professional Qualification Certificate',
+    'profile.candidateProfile.certMasterCraftsman':
+        'Master Craftsman Certificate',
+    'profile.candidateProfile.certOsh':
+        'Occupational Health & Safety Certificate',
+    'profile.candidateProfile.certsHint':
+        'This is your own declaration — no document upload or verification required.',
+    'profile.candidateProfile.notifyByEmailLabel':
+        'Email me when my application status changes',
+    'profile.candidateProfile.notifyByEmailHint':
+        'Get notified by email when a job application you submitted is reviewed, accepted, or rejected.',
     'profile.candidateProfile.saveButton': 'Save',
     'adminAccount.title': 'Account Settings',
     'adminAccount.loadFailed': 'Could not load account info',
@@ -228,7 +262,8 @@ const Map<String, Map<String, String>> profileDict = {
     'profile.deleteAccountDialogTitle': 'Konto löschen',
     'profile.deleteAccountDialogWarning':
         'Beim Löschen deines Kontos werden dein Profil, deine Anzeigen, Bewerbungen und alle deine Daten dauerhaft entfernt. Dies kann nicht rückgängig gemacht werden.',
-    'profile.deleteAccountPasswordLabel': 'Gib zur Bestätigung dein Passwort ein',
+    'profile.deleteAccountPasswordLabel':
+        'Gib zur Bestätigung dein Passwort ein',
     'profile.deleteAccountConfirmButton': 'Ja, dauerhaft löschen',
     'profile.deleteAccountCancelButton': 'Abbrechen',
     'profile.deleteAccountFailed': 'Konto konnte nicht gelöscht werden',
@@ -254,9 +289,26 @@ const Map<String, Map<String, String>> profileDict = {
         'Wenn deaktiviert, bleibt deine Telefonnummer gespeichert, wird aber anderen Nutzern nicht angezeigt; wenn aktiviert, können Firmen mit aktiver Mitgliedschaft dich darüber erreichen.',
     'profile.candidateProfile.saved': 'Gespeichert!',
     'profile.candidateProfile.saving': 'Wird gespeichert...',
+    'profile.candidateProfile.serviceRadiusLabel': 'Einsatzradius (km)',
+    'profile.candidateProfile.serviceRadiusHint':
+        'Optional, nur informativ — wird nicht für Suche/Matching verwendet.',
+    'profile.candidateProfile.availableFromLabel':
+        'Ab wann sind Sie verfügbar?',
+    'profile.candidateProfile.certsHeading': 'Dokumente & Qualifikationen',
+    'profile.candidateProfile.certProfessionalQualification':
+        'Berufsqualifikationsnachweis',
+    'profile.candidateProfile.certMasterCraftsman': 'Meisterbrief',
+    'profile.candidateProfile.certOsh': 'Arbeitsschutzzertifikat',
+    'profile.candidateProfile.certsHint':
+        'Dies ist Ihre eigene Angabe — kein Dokumenten-Upload oder Verifizierung erforderlich.',
+    'profile.candidateProfile.notifyByEmailLabel':
+        'Per E-Mail benachrichtigen, wenn sich mein Bewerbungsstatus ändert',
+    'profile.candidateProfile.notifyByEmailHint':
+        'Du wirst per E-Mail benachrichtigt, wenn eine deiner Bewerbungen geprüft, angenommen oder abgelehnt wird.',
     'profile.candidateProfile.saveButton': 'Speichern',
     'adminAccount.title': 'Kontoeinstellungen',
-    'adminAccount.loadFailed': 'Kontoinformationen konnten nicht geladen werden',
+    'adminAccount.loadFailed':
+        'Kontoinformationen konnten nicht geladen werden',
     'adminAccount.connectionError': 'Verbindungsfehler, bitte erneut versuchen',
     'adminAccount.infoHeading': 'Kontoinformationen',
     'adminAccount.emailLabel': 'E-Mail',
@@ -290,7 +342,8 @@ const Map<String, Map<String, String>> profileDict = {
     'adminAccount.changeEmail.verifying': 'Wird bestätigt...',
     'adminAccount.changeEmail.cancelButton': 'Abbrechen',
     'adminAccount.changeEmail.changed': 'E-Mail geändert!',
-    'adminAccount.changeEmail.requestFailed': 'Code konnte nicht gesendet werden',
+    'adminAccount.changeEmail.requestFailed':
+        'Code konnte nicht gesendet werden',
     'adminAccount.changeEmail.confirmFailed':
         'Code konnte nicht bestätigt werden',
     'adminAccount.logoutAll.heading': 'Von allen Geräten abmelden',
@@ -356,6 +409,22 @@ const Map<String, Map<String, String>> profileDict = {
         'Если отключить, номер телефона останется сохранённым, но не будет виден другим пользователям; если включить, компании с активным членством смогут его увидеть, чтобы связаться с вами.',
     'profile.candidateProfile.saved': 'Сохранено!',
     'profile.candidateProfile.saving': 'Сохранение...',
+    'profile.candidateProfile.serviceRadiusLabel': 'Радиус обслуживания (км)',
+    'profile.candidateProfile.serviceRadiusHint':
+        'Необязательно, только для информации — не используется в поиске/подборе.',
+    'profile.candidateProfile.availableFromLabel':
+        'С какой даты вы будете доступны?',
+    'profile.candidateProfile.certsHeading': 'Документы и квалификация',
+    'profile.candidateProfile.certProfessionalQualification':
+        'Свидетельство о профессиональной квалификации',
+    'profile.candidateProfile.certMasterCraftsman': 'Свидетельство мастера',
+    'profile.candidateProfile.certOsh': 'Сертификат по охране труда',
+    'profile.candidateProfile.certsHint':
+        'Это ваше собственное заявление — загрузка или проверка документов не требуется.',
+    'profile.candidateProfile.notifyByEmailLabel':
+        'Уведомлять по эл. почте об изменении статуса заявки',
+    'profile.candidateProfile.notifyByEmailHint':
+        'Вы получите уведомление по эл. почте, когда статус вашей заявки на вакансию изменится (рассмотрена/принята/отклонена).',
     'profile.candidateProfile.saveButton': 'Сохранить',
     'adminAccount.title': 'Настройки аккаунта',
     'adminAccount.loadFailed': 'Не удалось загрузить информацию об аккаунте',
@@ -455,6 +524,21 @@ const Map<String, Map<String, String>> profileDict = {
         'عند التعطيل، يبقى رقم هاتفك محفوظًا لكنه لا يظهر لباقي المستخدمين؛ وعند التفعيل، يمكن للشركات ذات العضوية النشطة رؤيته للتواصل معك.',
     'profile.candidateProfile.saved': 'تم الحفظ!',
     'profile.candidateProfile.saving': 'جارٍ الحفظ...',
+    'profile.candidateProfile.serviceRadiusLabel': 'نطاق الخدمة (كم)',
+    'profile.candidateProfile.serviceRadiusHint':
+        'اختياري وللعلم فقط — لا يُستخدم في البحث أو المطابقة.',
+    'profile.candidateProfile.availableFromLabel': 'متى ستكون متاحًا؟',
+    'profile.candidateProfile.certsHeading': 'المستندات والمؤهلات',
+    'profile.candidateProfile.certProfessionalQualification':
+        'شهادة الكفاءة المهنية',
+    'profile.candidateProfile.certMasterCraftsman': 'شهادة أستاذ حرفي',
+    'profile.candidateProfile.certOsh': 'شهادة الصحة والسلامة المهنية',
+    'profile.candidateProfile.certsHint':
+        'هذا إقرار شخصي منك — لا حاجة لرفع مستندات أو التحقق منها.',
+    'profile.candidateProfile.notifyByEmailLabel':
+        'أرسل بريدًا إلكترونيًا عند تغيّر حالة طلبي',
+    'profile.candidateProfile.notifyByEmailHint':
+        'ستصلك رسالة إلكترونية عند مراجعة طلب تقدّمت به أو قبوله أو رفضه.',
     'profile.candidateProfile.saveButton': 'حفظ',
     'adminAccount.title': 'إعدادات الحساب',
     'adminAccount.loadFailed': 'تعذّر تحميل معلومات الحساب',
@@ -529,7 +613,8 @@ const Map<String, Map<String, String>> profileDict = {
     'profile.deleteAccountDialogTitle': 'Eliminar cuenta',
     'profile.deleteAccountDialogWarning':
         'Al eliminar tu cuenta se borran permanentemente tu perfil, anuncios, postulaciones y todos tus datos. Esta acción no se puede deshacer.',
-    'profile.deleteAccountPasswordLabel': 'Ingresa tu contraseña para confirmar',
+    'profile.deleteAccountPasswordLabel':
+        'Ingresa tu contraseña para confirmar',
     'profile.deleteAccountConfirmButton': 'Sí, eliminar permanentemente',
     'profile.deleteAccountCancelButton': 'Cancelar',
     'profile.deleteAccountFailed': 'No se pudo eliminar la cuenta',
@@ -555,6 +640,24 @@ const Map<String, Map<String, String>> profileDict = {
         'Si lo desactivas, tu número de teléfono seguirá guardado pero no se mostrará a otros usuarios; si lo activas, las empresas con membresía activa podrán verlo para contactarte.',
     'profile.candidateProfile.saved': '¡Guardado!',
     'profile.candidateProfile.saving': 'Guardando...',
+    'profile.candidateProfile.serviceRadiusLabel': 'Radio de Servicio (km)',
+    'profile.candidateProfile.serviceRadiusHint':
+        'Opcional, solo informativo — no se usa en la búsqueda/emparejamiento.',
+    'profile.candidateProfile.availableFromLabel':
+        '¿A partir de cuándo estarás disponible?',
+    'profile.candidateProfile.certsHeading': 'Documentos y Cualificaciones',
+    'profile.candidateProfile.certProfessionalQualification':
+        'Certificado de Cualificación Profesional',
+    'profile.candidateProfile.certMasterCraftsman':
+        'Certificado de Maestro Artesano',
+    'profile.candidateProfile.certOsh':
+        'Certificado de Seguridad y Salud Laboral',
+    'profile.candidateProfile.certsHint':
+        'Esta es tu propia declaración — no requiere subir ni verificar documentos.',
+    'profile.candidateProfile.notifyByEmailLabel':
+        'Enviarme un correo cuando cambie el estado de mi postulación',
+    'profile.candidateProfile.notifyByEmailHint':
+        'Recibirás un correo cuando se revise, acepte o rechace una postulación que hayas enviado.',
     'profile.candidateProfile.saveButton': 'Guardar',
     'adminAccount.title': 'Configuración de la Cuenta',
     'adminAccount.loadFailed': 'No se pudo cargar la información de la cuenta',
@@ -630,7 +733,8 @@ const Map<String, Map<String, String>> profileDict = {
     'profile.deleteAccountDialogTitle': 'Supprimer le compte',
     'profile.deleteAccountDialogWarning':
         'La suppression de ton compte efface définitivement ton profil, tes annonces, tes candidatures et toutes tes données. Cette action est irréversible.',
-    'profile.deleteAccountPasswordLabel': 'Saisis ton mot de passe pour confirmer',
+    'profile.deleteAccountPasswordLabel':
+        'Saisis ton mot de passe pour confirmer',
     'profile.deleteAccountConfirmButton': 'Oui, supprimer définitivement',
     'profile.deleteAccountCancelButton': 'Annuler',
     'profile.deleteAccountFailed': 'Impossible de supprimer le compte',
@@ -638,7 +742,8 @@ const Map<String, Map<String, String>> profileDict = {
     'profile.candidateProfile.loadFailed': 'Impossible de charger le profil',
     'profile.candidateProfile.saveFailed': "Impossible d'enregistrer",
     'profile.candidateProfile.experienceYearsLabel': 'Expérience (années)',
-    'profile.candidateProfile.expectedSalaryPeriodLabel': 'Unité de Rémunération',
+    'profile.candidateProfile.expectedSalaryPeriodLabel':
+        'Unité de Rémunération',
     'profile.candidateProfile.expectedSalaryMinLabel': 'Montant Attendu (₺)',
     'profile.candidateProfile.phoneLabel': 'Téléphone',
     'profile.candidateProfile.workPreferencesLabel': "Mes préférences d'emploi",
@@ -655,9 +760,28 @@ const Map<String, Map<String, String>> profileDict = {
         "Si désactivé, votre numéro de téléphone reste enregistré mais n'est pas affiché aux autres utilisateurs ; si activé, les entreprises disposant d'un abonnement actif pourront le voir pour vous contacter.",
     'profile.candidateProfile.saved': 'Enregistré !',
     'profile.candidateProfile.saving': 'Enregistrement...',
+    'profile.candidateProfile.serviceRadiusLabel': 'Rayon de Service (km)',
+    'profile.candidateProfile.serviceRadiusHint':
+        'Facultatif, à titre informatif uniquement — non utilisé dans la recherche/le rapprochement.',
+    'profile.candidateProfile.availableFromLabel':
+        'À partir de quand serez-vous disponible ?',
+    'profile.candidateProfile.certsHeading': 'Documents et Qualifications',
+    'profile.candidateProfile.certProfessionalQualification':
+        'Certificat de Qualification Professionnelle',
+    'profile.candidateProfile.certMasterCraftsman':
+        'Certificat de Maître Artisan',
+    'profile.candidateProfile.certOsh':
+        'Certificat de Santé et Sécurité au Travail',
+    'profile.candidateProfile.certsHint':
+        "Il s'agit de votre propre déclaration — aucun téléversement ni vérification de document requis.",
+    'profile.candidateProfile.notifyByEmailLabel':
+        "M'envoyer un e-mail quand le statut de ma candidature change",
+    'profile.candidateProfile.notifyByEmailHint':
+        'Tu recevras un e-mail quand une candidature que tu as envoyée est examinée, acceptée ou refusée.',
     'profile.candidateProfile.saveButton': 'Enregistrer',
     'adminAccount.title': 'Paramètres du Compte',
-    'adminAccount.loadFailed': 'Impossible de charger les informations du compte',
+    'adminAccount.loadFailed':
+        'Impossible de charger les informations du compte',
     'adminAccount.connectionError': 'Erreur de connexion, veuillez réessayer',
     'adminAccount.infoHeading': 'Informations du Compte',
     'adminAccount.emailLabel': 'E-mail',

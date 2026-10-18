@@ -13,6 +13,12 @@ class CandidateProfile {
   final String availabilityStatus;
   final int? expectedSalaryMin;
   final String? expectedSalaryPeriod;
+  final String? availableFrom;
+  final bool notifyByEmail;
+  final bool hasProfessionalQualificationCert;
+  final bool hasMasterCraftsmanCert;
+  final bool hasOshCert;
+  final int? serviceRadiusKm;
 
   const CandidateProfile({
     required this.id,
@@ -29,6 +35,12 @@ class CandidateProfile {
     this.availabilityStatus = 'AVAILABLE',
     this.expectedSalaryMin,
     this.expectedSalaryPeriod,
+    this.availableFrom,
+    this.notifyByEmail = true,
+    this.hasProfessionalQualificationCert = false,
+    this.hasMasterCraftsmanCert = false,
+    this.hasOshCert = false,
+    this.serviceRadiusKm,
   });
 
   factory CandidateProfile.fromJson(Map<String, dynamic> json) => CandidateProfile(
@@ -46,5 +58,11 @@ class CandidateProfile {
         availabilityStatus: json['availabilityStatus'] as String? ?? 'AVAILABLE',
         expectedSalaryMin: json['expectedSalaryMin'] as int?,
         expectedSalaryPeriod: json['expectedSalaryPeriod'] as String?,
+        availableFrom: json['availableFrom'] as String?,
+        notifyByEmail: json['notifyByEmail'] as bool? ?? true,
+        hasProfessionalQualificationCert: json['hasProfessionalQualificationCert'] as bool? ?? false,
+        hasMasterCraftsmanCert: json['hasMasterCraftsmanCert'] as bool? ?? false,
+        hasOshCert: json['hasOshCert'] as bool? ?? false,
+        serviceRadiusKm: json['serviceRadiusKm'] as int?,
       );
 }
