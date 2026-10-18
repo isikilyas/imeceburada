@@ -5,9 +5,12 @@ import '../../core/auth_store.dart';
 import '../../core/constants.dart';
 import '../../core/locale_store.dart';
 import '../../models/material_listing.dart';
+import '../../models/supplier_profile.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/app_dropdown.dart';
+import '../../widgets/company_name_warning.dart';
 import '../../widgets/custom_term_field.dart';
+import '../../widgets/material_category_picker.dart';
 import '../../widgets/province_district_picker.dart';
 import '../membership/membership_screen.dart';
 
@@ -31,10 +34,109 @@ class _SupplierDashboardScreenState extends State<SupplierDashboardScreen> {
   bool _isSubmitting = false;
   String? _error;
 
+  bool _isProfileLoading = true;
+  final _companyNameController = TextEditingController();
+  final _serviceRadiusController = TextEditingController();
+  final _profileDescriptionController = TextEditingController();
+  final _authorizedPersonController = TextEditingController();
+  final _taxOfficeController = TextEditingController();
+  final _taxNumberController = TextEditingController();
+  final _mersisController = TextEditingController();
+  final _websiteController = TextEditingController();
+  final _companyEmailController = TextEditingController();
+  String _profileCity = turkishProvinces.first;
+  String _profileDistrict = '';
+  List<String> _supplyCategories = [];
+  bool _phoneVisible = false;
+  bool _hasActivityCertificate = false;
+  bool _isProfileSaving = false;
+  String? _profileError;
+  bool _profileSaved = false;
+
   @override
   void initState() {
     super.initState();
     _load();
+    _loadProfile();
+  }
+
+  @override
+  void dispose() {
+    _priceController.dispose();
+    _descriptionController.dispose();
+    _companyNameController.dispose();
+    _serviceRadiusController.dispose();
+    _profileDescriptionController.dispose();
+    _authorizedPersonController.dispose();
+    _taxOfficeController.dispose();
+    _taxNumberController.dispose();
+    _mersisController.dispose();
+    _websiteController.dispose();
+    _companyEmailController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadProfile() async {
+    setState(() => _isProfileLoading = true);
+    try {
+      final raw = await context.read<AuthStore>().authorizedGet('/users/me/profile');
+      final profile = SupplierProfile.fromJson(raw as Map<String, dynamic>);
+      setState(() {
+        _companyNameController.text = profile.companyName;
+        _profileCity = profile.city;
+        _profileDistrict = profile.district ?? '';
+        _serviceRadiusController.text = profile.serviceRadiusKm?.toString() ?? '';
+        _profileDescriptionController.text = profile.description ?? '';
+        _authorizedPersonController.text = profile.authorizedPersonName ?? '';
+        _taxOfficeController.text = profile.taxOffice ?? '';
+        _taxNumberController.text = profile.taxNumber ?? '';
+        _mersisController.text = profile.mersisNumber ?? '';
+        _websiteController.text = profile.website ?? '';
+        _companyEmailController.text = profile.companyEmail ?? '';
+        _supplyCategories = profile.supplyCategories;
+        _phoneVisible = profile.phoneVisible;
+        _hasActivityCertificate = profile.hasActivityCertificate;
+      });
+    } catch (_) {
+      // sessizce geç
+    } finally {
+      if (mounted) setState(() => _isProfileLoading = false);
+    }
+  }
+
+  Future<void> _saveProfile() async {
+    setState(() {
+      _isProfileSaving = true;
+      _profileError = null;
+      _profileSaved = false;
+    });
+    try {
+      await context.read<AuthStore>().authorizedPatch('/users/me/profile/supplier', body: {
+        'companyName': _companyNameController.text.trim(),
+        'city': _profileCity,
+        if (_profileDistrict.isNotEmpty) 'district': _profileDistrict,
+        if (_serviceRadiusController.text.trim().isNotEmpty)
+          'serviceRadiusKm': int.tryParse(_serviceRadiusController.text.trim()),
+        'description': _profileDescriptionController.text.trim(),
+        if (_authorizedPersonController.text.trim().isNotEmpty)
+          'authorizedPersonName': _authorizedPersonController.text.trim(),
+        if (_taxOfficeController.text.trim().isNotEmpty) 'taxOffice': _taxOfficeController.text.trim(),
+        if (_taxNumberController.text.trim().isNotEmpty) 'taxNumber': _taxNumberController.text.trim(),
+        if (_mersisController.text.trim().isNotEmpty) 'mersisNumber': _mersisController.text.trim(),
+        if (_websiteController.text.trim().isNotEmpty) 'website': _websiteController.text.trim(),
+        if (_companyEmailController.text.trim().isNotEmpty) 'companyEmail': _companyEmailController.text.trim(),
+        'supplyCategories': _supplyCategories,
+        'phoneVisible': _phoneVisible,
+        'hasActivityCertificate': _hasActivityCertificate,
+      });
+      setState(() => _profileSaved = true);
+    } on ApiException catch (e) {
+      setState(() => _profileError = e.message);
+    } catch (_) {
+      setState(() => _profileError = context.read<LocaleStore>().t('materialListings.dashboard.submitError'));
+    } finally {
+      if (mounted) setState(() => _isProfileSaving = false);
+    }
   }
 
   Future<void> _load() async {
@@ -120,6 +222,125 @@ class _SupplierDashboardScreenState extends State<SupplierDashboardScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          Text(t('materialListings.dashboard.profileHeading'),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18)),
+          const SizedBox(height: 12),
+          if (_isProfileLoading)
+            const Center(child: CircularProgressIndicator(color: AppColors.gold500))
+          else ...[
+            TextField(
+              controller: _companyNameController,
+              onChanged: (_) => setState(() {}),
+              decoration: InputDecoration(labelText: t('company.dashboard.companyNameLabel')),
+            ),
+            CompanyNameWarning(name: _companyNameController.text),
+            const SizedBox(height: 12),
+            ProvinceDistrictPicker(
+              city: _profileCity,
+              district: _profileDistrict,
+              allowEmptyDistrict: true,
+              onCityChanged: (v) => setState(() {
+                _profileCity = v;
+                _profileDistrict = '';
+              }),
+              onDistrictChanged: (v) => setState(() => _profileDistrict = v),
+            ),
+            TextField(
+              controller: _serviceRadiusController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: t('profile.candidateProfile.serviceRadiusLabel'),
+                hintText: '50',
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              t('profile.candidateProfile.serviceRadiusHint'),
+              style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+            ),
+            const SizedBox(height: 12),
+            MaterialCategoryMultiPicker(
+              values: _supplyCategories,
+              onChanged: (v) => setState(() => _supplyCategories = v),
+            ),
+            TextField(
+              controller: _profileDescriptionController,
+              maxLines: 3,
+              decoration: InputDecoration(labelText: t('materialListings.dashboard.descriptionLabel')),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _authorizedPersonController,
+              decoration: InputDecoration(labelText: t('company.dashboard.authorizedPersonLabel')),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _taxOfficeController,
+              decoration: InputDecoration(labelText: t('company.dashboard.taxOfficeLabel')),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _taxNumberController,
+              decoration: InputDecoration(labelText: t('company.dashboard.taxNumberLabel')),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _mersisController,
+              decoration: InputDecoration(labelText: t('company.dashboard.mersisLabel')),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _websiteController,
+              decoration: InputDecoration(labelText: t('company.dashboard.websiteLabel')),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _companyEmailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(labelText: t('company.dashboard.companyEmailLabel')),
+            ),
+            const SizedBox(height: 14),
+            CheckboxListTile(
+              value: _hasActivityCertificate,
+              onChanged: (v) => setState(() => _hasActivityCertificate = v ?? false),
+              title: Text(
+                t('company.dashboard.activityCertificateLabel'),
+                style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+              ),
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: EdgeInsets.zero,
+              activeColor: AppColors.gold500,
+            ),
+            CheckboxListTile(
+              value: _phoneVisible,
+              onChanged: (v) => setState(() => _phoneVisible = v ?? false),
+              title: Text(
+                t('company.dashboard.phoneVisibleLabel'),
+                style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+              ),
+              subtitle: Text(
+                t('company.dashboard.phoneVisibleHint'),
+                style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+              ),
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: EdgeInsets.zero,
+              activeColor: AppColors.gold500,
+            ),
+            if (_profileError != null) ...[
+              const SizedBox(height: 8),
+              Text(_profileError!, style: const TextStyle(color: AppColors.red400)),
+            ],
+            if (_profileSaved) ...[
+              const SizedBox(height: 8),
+              Text(t('company.dashboard.saved'), style: const TextStyle(color: AppColors.green400)),
+            ],
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _isProfileSaving ? null : _saveProfile,
+              child: Text(_isProfileSaving ? t('company.dashboard.saving') : t('company.dashboard.save')),
+            ),
+          ],
+          const Divider(height: 32, color: AppColors.ink800),
           Text(t('materialListings.dashboard.myListings'), style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18)),
           const SizedBox(height: 12),
           if (_isLoading) const Center(child: CircularProgressIndicator(color: AppColors.gold500)),
