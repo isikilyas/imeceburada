@@ -29,6 +29,8 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
   List<String> _tradeCategories = [tradeFields.first.branches.first.professions.first.value];
   bool _isPublic = true;
   bool _phoneVisible = false;
+  final _serviceRadiusController = TextEditingController();
+  bool _notifyByEmail = true;
 
   bool _isSaving = false;
   String? _saveError;
@@ -44,6 +46,7 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
   void dispose() {
     _companyNameController.dispose();
     _descriptionController.dispose();
+    _serviceRadiusController.dispose();
     super.dispose();
   }
 
@@ -63,6 +66,8 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
         _descriptionController.text = profile.description ?? '';
         _isPublic = profile.isPublic;
         _phoneVisible = profile.phoneVisible;
+        _serviceRadiusController.text = profile.serviceRadiusKm?.toString() ?? '';
+        _notifyByEmail = profile.notifyByEmail;
       });
     } on ApiException catch (e) {
       setState(() => _loadError = e.message);
@@ -93,6 +98,9 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
         'description': _descriptionController.text.trim(),
         'isPublic': _isPublic,
         'phoneVisible': _phoneVisible,
+        if (_serviceRadiusController.text.trim().isNotEmpty)
+          'serviceRadiusKm': int.tryParse(_serviceRadiusController.text.trim()),
+        'notifyByEmail': _notifyByEmail,
       });
       setState(() => _saved = true);
     } on ApiException catch (e) {
@@ -151,6 +159,20 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
                       allowEmptyDistrict: true,
                     ),
                     TextField(
+                      controller: _serviceRadiusController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: t('subcontractors.dashboard.serviceRadiusLabel'),
+                        hintText: '50',
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      t('subcontractors.dashboard.serviceRadiusHint'),
+                      style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
                       controller: _descriptionController,
                       maxLines: 3,
                       decoration: InputDecoration(labelText: t('subcontractors.dashboard.descriptionLabel')),
@@ -176,6 +198,21 @@ class _SubcontractorDashboardScreenState extends State<SubcontractorDashboardScr
                       ),
                       subtitle: Text(
                         t('subcontractors.dashboard.phoneVisibleHint'),
+                        style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: AppColors.gold500,
+                    ),
+                    CheckboxListTile(
+                      value: _notifyByEmail,
+                      onChanged: (v) => setState(() => _notifyByEmail = v ?? true),
+                      title: Text(
+                        t('subcontractors.dashboard.notifyByEmailLabel'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      subtitle: Text(
+                        t('subcontractors.dashboard.notifyByEmailHint'),
                         style: const TextStyle(color: AppColors.silver500, fontSize: 12),
                       ),
                       controlAffinity: ListTileControlAffinity.leading,

@@ -60,6 +60,8 @@ class SubcontractorProfile {
   final bool isPublic;
   final bool phoneVisible;
   final String membershipStatus;
+  final int? serviceRadiusKm;
+  final bool notifyByEmail;
 
   const SubcontractorProfile({
     required this.id,
@@ -72,6 +74,8 @@ class SubcontractorProfile {
     required this.isPublic,
     this.phoneVisible = false,
     required this.membershipStatus,
+    this.serviceRadiusKm,
+    this.notifyByEmail = true,
   });
 
   factory SubcontractorProfile.fromJson(Map<String, dynamic> json) => SubcontractorProfile(
@@ -85,5 +89,7 @@ class SubcontractorProfile {
         isPublic: json['isPublic'] as bool? ?? true,
         phoneVisible: json['phoneVisible'] as bool? ?? false,
         membershipStatus: json['membershipStatus'] as String? ?? 'NONE',
+        serviceRadiusKm: json['serviceRadiusKm'] as int?,
+        notifyByEmail: json['notifyByEmail'] as bool? ?? true,
       );
 }
