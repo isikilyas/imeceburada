@@ -74,6 +74,7 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
   @override
   Widget build(BuildContext context) {
     final t = context.watch<LocaleStore>().t;
+    final userRole = context.watch<AuthStore>().user?.role;
     final allTrades = Option('', t('candidates.directory.allTrades'));
     return Scaffold(
       appBar: AppBar(title: Text(t('candidates.directory.title'))),
@@ -154,9 +155,17 @@ class _CandidateDirectoryScreenState extends State<CandidateDirectoryScreen> {
                   tradeCategories.labelFor(c.primaryTradeCategory ?? ''),
                   style: const TextStyle(color: AppColors.gold400, fontSize: 12),
                 ),
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => CandidateDetailScreen(id: c.id)),
-                ),
+                onTap: () {
+                  if (userRole != 'COMPANY') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(t('candidates.directory.companyOnlyNotice'))),
+                    );
+                    return;
+                  }
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => CandidateDetailScreen(id: c.id)),
+                  );
+                },
               ),
             ),
           ),

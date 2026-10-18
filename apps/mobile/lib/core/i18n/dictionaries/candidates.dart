@@ -17,6 +17,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.directory.skillPlaceholder': 'Örn. TIG kaynağı, kalıp söküm...',
     'candidates.directory.noResults': 'Sonuç bulunamadı.',
     'candidates.directory.itemSubtitle': '{{location}} · {{years}} yıl deneyim',
+    'candidates.directory.companyOnlyNotice': 'Aday detaylarını görüntülemek sadece firma hesapları için geçerlidir.',
   },
   'en': {
     'candidates.connectionError': 'Connection error, please try again',
@@ -36,6 +37,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.directory.skillPlaceholder': 'E.g. TIG welding, formwork stripping...',
     'candidates.directory.noResults': 'No results found.',
     'candidates.directory.itemSubtitle': '{{location}} · {{years}} years of experience',
+    'candidates.directory.companyOnlyNotice': 'Viewing candidate details is only available to company accounts.',
   },
   'de': {
     'candidates.connectionError': 'Verbindungsfehler, bitte erneut versuchen',
@@ -55,6 +57,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.directory.skillPlaceholder': 'Z.B. WIG-Schweißen, Schalungsabbau...',
     'candidates.directory.noResults': 'Keine Ergebnisse gefunden.',
     'candidates.directory.itemSubtitle': '{{location}} · {{years}} Jahre Erfahrung',
+    'candidates.directory.companyOnlyNotice': 'Das Ansehen von Kandidatendetails ist nur für Unternehmenskonten möglich.',
   },
   'ru': {
     'candidates.connectionError': 'Ошибка соединения, попробуйте снова',
@@ -74,6 +77,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.directory.skillPlaceholder': 'Напр. сварка TIG, разборка опалубки...',
     'candidates.directory.noResults': 'Результатов не найдено.',
     'candidates.directory.itemSubtitle': '{{location}} · опыт {{years}} лет',
+    'candidates.directory.companyOnlyNotice': 'Просмотр данных кандидата доступен только для аккаунтов компаний.',
   },
   'ar': {
     'candidates.connectionError': 'خطأ في الاتصال، يرجى المحاولة مرة أخرى',
@@ -93,6 +97,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.directory.skillPlaceholder': 'مثال: لحام TIG، فك الشدة...',
     'candidates.directory.noResults': 'لم يتم العثور على نتائج.',
     'candidates.directory.itemSubtitle': '{{location}} · {{years}} سنوات خبرة',
+    'candidates.directory.companyOnlyNotice': 'عرض تفاصيل المرشح متاح فقط لحسابات الشركات.',
   },
   'es': {
     'candidates.connectionError': 'Error de conexión, inténtalo de nuevo',
@@ -112,6 +117,7 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.directory.skillPlaceholder': 'Ej. soldadura TIG, desencofrado...',
     'candidates.directory.noResults': 'No se encontraron resultados.',
     'candidates.directory.itemSubtitle': '{{location}} · {{years}} años de experiencia',
+    'candidates.directory.companyOnlyNotice': 'Ver los detalles de los candidatos solo está disponible para cuentas de empresa.',
   },
   'fr': {
     'candidates.connectionError': 'Erreur de connexion, veuillez réessayer',
@@ -131,5 +137,6 @@ const Map<String, Map<String, String>> candidatesDict = {
     'candidates.directory.skillPlaceholder': 'Ex. soudure TIG, décoffrage...',
     'candidates.directory.noResults': 'Aucun résultat trouvé.',
     'candidates.directory.itemSubtitle': "{{location}} · {{years}} ans d'expérience",
+    'candidates.directory.companyOnlyNotice': "La consultation des détails des candidats est réservée aux comptes d'entreprise.",
   },
 };
