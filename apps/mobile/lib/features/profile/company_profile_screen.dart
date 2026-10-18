@@ -25,9 +25,17 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
   final _sectorController = TextEditingController();
   final _maxSalaryOfferController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _authorizedPersonController = TextEditingController();
+  final _taxOfficeController = TextEditingController();
+  final _taxNumberController = TextEditingController();
+  final _mersisController = TextEditingController();
+  final _websiteController = TextEditingController();
+  final _companyEmailController = TextEditingController();
   String _city = turkishProvinces.first;
   String _district = '';
   bool _phoneVisible = false;
+  bool _notifyByEmail = true;
+  bool _hasActivityCertificate = false;
 
   bool _isSaving = false;
   String? _saveError;
@@ -45,6 +53,12 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
     _sectorController.dispose();
     _maxSalaryOfferController.dispose();
     _descriptionController.dispose();
+    _authorizedPersonController.dispose();
+    _taxOfficeController.dispose();
+    _taxNumberController.dispose();
+    _mersisController.dispose();
+    _websiteController.dispose();
+    _companyEmailController.dispose();
     super.dispose();
   }
 
@@ -63,7 +77,15 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
         _city = profile.city;
         _district = profile.district ?? '';
         _descriptionController.text = profile.description ?? '';
+        _authorizedPersonController.text = profile.authorizedPersonName ?? '';
+        _taxOfficeController.text = profile.taxOffice ?? '';
+        _taxNumberController.text = profile.taxNumber ?? '';
+        _mersisController.text = profile.mersisNumber ?? '';
+        _websiteController.text = profile.website ?? '';
+        _companyEmailController.text = profile.companyEmail ?? '';
         _phoneVisible = profile.phoneVisible;
+        _notifyByEmail = profile.notifyByEmail;
+        _hasActivityCertificate = profile.hasActivityCertificate;
       });
     } on ApiException catch (e) {
       setState(() => _loadError = e.message);
@@ -94,7 +116,16 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
         'city': _city,
         if (_district.isNotEmpty) 'district': _district,
         'description': _descriptionController.text.trim(),
+        if (_authorizedPersonController.text.trim().isNotEmpty)
+          'authorizedPersonName': _authorizedPersonController.text.trim(),
+        if (_taxOfficeController.text.trim().isNotEmpty) 'taxOffice': _taxOfficeController.text.trim(),
+        if (_taxNumberController.text.trim().isNotEmpty) 'taxNumber': _taxNumberController.text.trim(),
+        if (_mersisController.text.trim().isNotEmpty) 'mersisNumber': _mersisController.text.trim(),
+        if (_websiteController.text.trim().isNotEmpty) 'website': _websiteController.text.trim(),
+        if (_companyEmailController.text.trim().isNotEmpty) 'companyEmail': _companyEmailController.text.trim(),
         'phoneVisible': _phoneVisible,
+        'notifyByEmail': _notifyByEmail,
+        'hasActivityCertificate': _hasActivityCertificate,
       });
       setState(() => _saved = true);
     } on ApiException catch (e) {
@@ -164,7 +195,49 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                       maxLines: 3,
                       decoration: InputDecoration(labelText: t('company.dashboard.descriptionLabel')),
                     ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: _authorizedPersonController,
+                      decoration: InputDecoration(labelText: t('company.dashboard.authorizedPersonLabel')),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: _taxOfficeController,
+                      decoration: InputDecoration(labelText: t('company.dashboard.taxOfficeLabel')),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: _taxNumberController,
+                      decoration: InputDecoration(labelText: t('company.dashboard.taxNumberLabel')),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: _mersisController,
+                      decoration: InputDecoration(labelText: t('company.dashboard.mersisLabel')),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: _websiteController,
+                      decoration: InputDecoration(labelText: t('company.dashboard.websiteLabel')),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: _companyEmailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(labelText: t('company.dashboard.companyEmailLabel')),
+                    ),
                     const SizedBox(height: 14),
+                    CheckboxListTile(
+                      value: _hasActivityCertificate,
+                      onChanged: (v) => setState(() => _hasActivityCertificate = v ?? false),
+                      title: Text(
+                        t('company.dashboard.activityCertificateLabel'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: AppColors.gold500,
+                    ),
                     CheckboxListTile(
                       value: _phoneVisible,
                       onChanged: (v) => setState(() => _phoneVisible = v ?? false),
@@ -174,6 +247,21 @@ class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
                       ),
                       subtitle: Text(
                         t('company.dashboard.phoneVisibleHint'),
+                        style: const TextStyle(color: AppColors.silver500, fontSize: 12),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      activeColor: AppColors.gold500,
+                    ),
+                    CheckboxListTile(
+                      value: _notifyByEmail,
+                      onChanged: (v) => setState(() => _notifyByEmail = v ?? true),
+                      title: Text(
+                        t('company.dashboard.notifyByEmailLabel'),
+                        style: const TextStyle(color: AppColors.silver300, fontSize: 14),
+                      ),
+                      subtitle: Text(
+                        t('company.dashboard.notifyByEmailHint'),
                         style: const TextStyle(color: AppColors.silver500, fontSize: 12),
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
