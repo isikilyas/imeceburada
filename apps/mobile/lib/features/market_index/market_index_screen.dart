@@ -23,7 +23,6 @@ class MarketIndexScreen extends StatefulWidget {
 }
 
 class _MarketIndexScreenState extends State<MarketIndexScreen> {
-  final _api = ApiClient();
   final _numberFormat = NumberFormat.decimalPattern('tr_TR');
 
   _IndexMode _mode = _IndexMode.labor;
@@ -50,7 +49,9 @@ class _MarketIndexScreenState extends State<MarketIndexScreen> {
     try {
       final path = _mode == _IndexMode.labor ? '/wage-index' : '/material-index';
       final categoryKey = _mode == _IndexMode.labor ? 'tradeCategory' : 'materialType';
-      final raw = await _api.get(path, query: {categoryKey: _category, 'city': _city});
+      final raw = await context
+          .read<AuthStore>()
+          .authorizedGet(path, query: {categoryKey: _category, 'city': _city});
       final list = (raw as List)
           .map((e) => _mode == _IndexMode.labor
               ? IndexPoint.fromWageJson(e as Map<String, dynamic>)
