@@ -50,6 +50,33 @@ class _SupplierDashboardScreenState extends State<SupplierDashboardScreen> {
     }
   }
 
+  Future<void> _deactivate(String id) async {
+    final t = context.read<LocaleStore>().t;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        content: Text(t('materialListings.dashboard.deactivateConfirm')),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(t('profile.deleteAccountCancelButton')),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(t('materialListings.dashboard.deactivateButton')),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    try {
+      await context.read<AuthStore>().authorizedDelete('/material-listings/$id');
+      await _load();
+    } on ApiException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+    }
+  }
+
   Future<void> _create() async {
     setState(() {
       _isSubmitting = true;
@@ -108,6 +135,12 @@ class _SupplierDashboardScreenState extends State<SupplierDashboardScreen> {
                   '${listing.status == "AVAILABLE" ? t('materialListings.dashboard.active') : t('materialListings.dashboard.inactive')}',
                   style: const TextStyle(color: AppColors.silver500),
                 ),
+                trailing: listing.status == 'AVAILABLE'
+                    ? TextButton(
+                        onPressed: () => _deactivate(listing.id),
+                        child: Text(t('materialListings.dashboard.deactivateButton')),
+                      )
+                    : null,
               ),
             ),
           ),
