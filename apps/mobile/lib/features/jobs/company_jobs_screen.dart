@@ -6,6 +6,7 @@ import '../../core/constants.dart';
 import '../../core/locale_store.dart';
 import '../../models/job.dart';
 import '../../theme/app_theme.dart';
+import 'job_applications_screen.dart';
 import 'new_job_screen.dart';
 
 class CompanyJobsScreen extends StatefulWidget {
@@ -111,11 +112,22 @@ class _CompanyJobsScreenState extends State<CompanyJobsScreen> {
                                     ],
                                   ),
                                 ),
-                                if (active)
-                                  TextButton(
-                                    onPressed: () => _close(job.id),
-                                    child: Text(t('jobs.company.close')),
-                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (_) => JobApplicationsScreen(jobId: job.id)),
+                                      ),
+                                      child: Text(t('jobs.company.applicationsLink')),
+                                    ),
+                                    if (active)
+                                      TextButton(
+                                        onPressed: () => _close(job.id),
+                                        child: Text(t('jobs.company.close')),
+                                      ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
