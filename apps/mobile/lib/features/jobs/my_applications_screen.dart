@@ -61,7 +61,7 @@ class _MyApplicationsScreenState extends State<MyApplicationsScreen> {
                           child: ListTile(
                             title: Text(app.jobTitle, style: Theme.of(context).textTheme.titleMedium),
                             subtitle: Text(
-                              applicationStatusLabels[app.status] ?? app.status,
+                              t('jobs.status.${app.status}'),
                               style: const TextStyle(color: AppColors.silver500),
                             ),
                             onTap: () => Navigator.of(context).push(

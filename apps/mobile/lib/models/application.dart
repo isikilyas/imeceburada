@@ -10,6 +10,8 @@ class JobApplication {
   final String applicantId;
   final String applicantName;
   final String status; // PENDING | REVIEWED | ACCEPTED | REJECTED
+  final int? expectedWage;
+  final int? offeredWage;
   final String createdAt;
 
   const JobApplication({
@@ -20,6 +22,8 @@ class JobApplication {
     required this.applicantId,
     required this.applicantName,
     required this.status,
+    this.expectedWage,
+    this.offeredWage,
     required this.createdAt,
   });
 
@@ -31,13 +35,8 @@ class JobApplication {
         applicantId: json['applicantId'] as String,
         applicantName: json['applicantName'] as String,
         status: json['status'] as String,
+        expectedWage: json['expectedWage'] as int?,
+        offeredWage: json['offeredWage'] as int?,
         createdAt: json['createdAt'] as String,
       );
 }
-
-const Map<String, String> applicationStatusLabels = {
-  'PENDING': 'Beklemede',
-  'REVIEWED': 'İncelendi',
-  'ACCEPTED': 'Kabul Edildi',
-  'REJECTED': 'Reddedildi',
-};
